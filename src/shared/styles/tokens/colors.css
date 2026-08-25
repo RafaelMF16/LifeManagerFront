@@ -1,0 +1,103 @@
+:root {
+  /* ---- Brand: teal ---- */
+  --teal-50: #f0fdfa;
+  --teal-200: #99f6e4;
+  --teal-300: #5eead4;
+  --teal-400: #2dd4bf;
+  --teal-500: #14b8a6;
+  --teal-600: #0d9488;
+  --teal-700: #0f766e;
+  --teal-800: #115e59;
+
+  /* ---- Neutrals: cool slate ---- */
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --slate-950: #020617;
+  --white: #ffffff;
+
+  /* ---- Semantic value colors. RESERVED. Never decorative. ---- */
+  --money-in-500: #16a34a;
+  --money-in-600: #15803d;
+  --money-in-300: #4ade80;
+  --money-in-tint: #f0fdf4;
+  --money-out-500: #dc2626;
+  --money-out-600: #b91c1c;
+  --money-out-300: #f87171;
+  --money-out-tint: #fef2f2;
+  --warn-500: #d97706;
+  --warn-300: #fbbf24;
+  --warn-tint: #fffbeb;
+
+  /* ---- Light theme aliases (default) ---- */
+  --background: var(--slate-50);
+  --surface: var(--white);
+  --surface-raised: var(--white);
+  --surface-sunken: var(--slate-100);
+  --surface-hover: var(--slate-100);
+  --border: var(--slate-200);
+  --border-strong: var(--slate-300);
+  --text-primary: var(--slate-900);
+  --text-secondary: var(--slate-500);
+  --text-tertiary: var(--slate-400);
+  --text-inverse: var(--white);
+
+  --accent: var(--teal-600);
+  --accent-hover: var(--teal-700);
+  --accent-active: var(--teal-800);
+  --accent-tint: var(--teal-50);
+  --accent-text: var(--teal-700);
+  --focus-ring: color-mix(in oklch, var(--teal-600) 32%, transparent);
+
+  --amount-positive: var(--money-in-600);
+  --amount-negative: var(--money-out-600);
+  --amount-neutral: var(--text-primary);
+  --positive-tint: var(--money-in-tint);
+  --negative-tint: var(--money-out-tint);
+  --danger: var(--money-out-500);
+  --danger-hover: var(--money-out-600);
+  --warning: var(--warn-500);
+  --warning-tint: var(--warn-tint);
+
+  color-scheme: light;
+}
+
+/* ---- Dark theme. Applied via [data-theme="dark"] on <html>. ---- */
+[data-theme='dark'] {
+  --background: var(--slate-950);
+  --surface: #0b1220;
+  --surface-raised: var(--slate-900);
+  --surface-sunken: #060c17;
+  --surface-hover: var(--slate-800);
+  --border: #1f2b3d;
+  --border-strong: var(--slate-700);
+  --text-primary: var(--slate-100);
+  --text-secondary: var(--slate-400);
+  --text-tertiary: var(--slate-500);
+  --text-inverse: var(--slate-950);
+
+  --accent: var(--teal-400);
+  --accent-hover: var(--teal-300);
+  --accent-active: var(--teal-200);
+  --accent-tint: color-mix(in oklch, var(--teal-400) 14%, transparent);
+  --accent-text: var(--teal-300);
+  --focus-ring: color-mix(in oklch, var(--teal-400) 42%, transparent);
+
+  --amount-positive: var(--money-in-300);
+  --amount-negative: var(--money-out-300);
+  --positive-tint: color-mix(in oklch, var(--money-in-300) 12%, transparent);
+  --negative-tint: color-mix(in oklch, var(--money-out-300) 12%, transparent);
+  --danger: var(--money-out-500);
+  --danger-hover: var(--money-out-600);
+  --warning: var(--warn-300);
+  --warning-tint: color-mix(in oklch, var(--warn-300) 12%, transparent);
+
+  color-scheme: dark;
+}

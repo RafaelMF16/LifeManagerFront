@@ -1,0 +1,10 @@
+:root {
+  --radius-input: 4px;
+  --radius-sm: 4px;
+  --radius-button: 6px;
+  --radius-md: 6px;
+  --radius-card: 8px;
+  --radius-lg: 8px;
+  --radius-pill: 999px;
+  --border-width: 1px;
+}
