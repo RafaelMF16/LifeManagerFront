@@ -1,0 +1,116 @@
+.lm-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-snug);
+  line-height: 1;
+  border-radius: var(--radius-button);
+  border-style: solid;
+  border-width: var(--border-width);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition-control);
+}
+
+.lm-button--full-width {
+  display: flex;
+  width: 100%;
+}
+
+.lm-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* Sizes */
+.lm-button--sm {
+  height: var(--control-height-sm);
+  padding: 0 var(--space-2);
+  font-size: var(--text-xs);
+  gap: var(--space-1);
+}
+.lm-button--md {
+  height: var(--control-height-md);
+  padding: 0 var(--space-3);
+  font-size: var(--text-base);
+}
+.lm-button--lg {
+  height: var(--control-height-lg);
+  padding: 0 var(--space-4);
+  font-size: var(--text-base);
+}
+
+/* Variants */
+.lm-button--primary {
+  background: var(--accent);
+  color: var(--text-inverse);
+  border-color: transparent;
+  box-shadow: var(--elevation-1);
+}
+.lm-button--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+.lm-button--primary:active:not(:disabled) {
+  background: var(--accent-active);
+  box-shadow: none;
+}
+
+.lm-button--secondary {
+  background: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  box-shadow: var(--elevation-1);
+}
+.lm-button--secondary:hover:not(:disabled) {
+  background: var(--surface-hover);
+}
+.lm-button--secondary:active:not(:disabled) {
+  background: var(--surface-sunken);
+  box-shadow: none;
+}
+
+.lm-button--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: transparent;
+}
+.lm-button--ghost:hover:not(:disabled) {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+.lm-button--ghost:active:not(:disabled) {
+  background: var(--surface-sunken);
+}
+
+.lm-button--destructive {
+  background: var(--danger);
+  color: var(--white);
+  border-color: transparent;
+  box-shadow: var(--elevation-1);
+}
+.lm-button--destructive:hover:not(:disabled) {
+  background: var(--danger-hover);
+}
+.lm-button--destructive:active:not(:disabled) {
+  background: var(--danger-hover);
+  box-shadow: none;
+}
+
+.lm-button__spinner {
+  width: 1em;
+  height: 1em;
+  border-radius: var(--radius-pill);
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  opacity: 0.9;
+  animation: lm-spin 700ms linear infinite;
+}
+
+@keyframes lm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
