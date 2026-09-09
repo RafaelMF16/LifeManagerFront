@@ -43,10 +43,12 @@ export const registerSchema = z
 export type RegisterFormValues = z.infer<typeof registerSchema>
 
 // Login NÃO passa pelo Email.Create no backend: AuthService/UserService.AuthenticateUser
-// busca o e-mail diretamente no repositório, sem validar formato. Por isso aqui só
-// exigimos presença, sem replicar a regra de formato de e-mail do registro.
+// busca o e-mail diretamente no repositório, sem validar formato. Ainda assim, replicamos aqui
+// a mesma regra de formato do registro (via emailSchema) por otimização de UX: um e-mail sem
+// "@" nunca vai casar com nenhum usuário cadastrado, então vale rejeitar no client antes de
+// gastar uma request.
 export const loginSchema = z.object({
-  email: z.string().trim().min(1, { message: 'E-mail é obrigatório' }),
+  email: emailSchema,
   password: z.string().min(1, { message: 'Senha é obrigatória' }),
 })
 

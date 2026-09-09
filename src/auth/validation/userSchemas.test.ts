@@ -107,9 +107,9 @@ describe('loginSchema', () => {
     expect(result.success).toBe(false)
   })
 
-  it('aceita e-mail sem @ (login não valida formato, só obrigatoriedade)', () => {
+  it('rejeita e-mail sem @ (evita request desnecessária ao backend)', () => {
     const result = loginSchema.safeParse({ email: 'semarroba', password: '12345678' })
-    expect(result.success).toBe(true)
+    expect(result.success).toBe(false)
   })
 
   it('aceita payload válido', () => {

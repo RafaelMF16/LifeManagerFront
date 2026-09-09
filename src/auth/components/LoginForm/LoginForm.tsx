@@ -33,7 +33,7 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   })
 
   return (
-    <form className="lm-auth-tabs__panel" onSubmit={onSubmit}>
+    <form className="lm-auth-tabs__panel" onSubmit={onSubmit} noValidate>
       <div className="lm-auth-form__header">
         <h1 className="lm-auth-form__title">Entrar na sua conta</h1>
         <p className="lm-auth-form__subtitle">Organize sua vida financeira e seus hábitos em um só lugar.</p>

@@ -33,7 +33,7 @@ function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   })
 
   return (
-    <form className="lm-auth-tabs__panel" onSubmit={onSubmit}>
+    <form className="lm-auth-tabs__panel" onSubmit={onSubmit} noValidate>
       <div className="lm-auth-form__header">
         <h1 className="lm-auth-form__title">Criar sua conta</h1>
         <p className="lm-auth-form__subtitle">Leva menos de um minuto.</p>
