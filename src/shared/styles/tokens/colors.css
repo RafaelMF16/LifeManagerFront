@@ -63,6 +63,7 @@
   --negative-tint: var(--money-out-tint);
   --danger: var(--money-out-500);
   --danger-hover: var(--money-out-600);
+  --success: var(--money-in-500);
   --warning: var(--warn-500);
   --warning-tint: var(--warn-tint);
 
@@ -96,6 +97,7 @@
   --negative-tint: color-mix(in oklch, var(--money-out-300) 12%, transparent);
   --danger: var(--money-out-500);
   --danger-hover: var(--money-out-600);
+  --success: var(--money-in-500);
   --warning: var(--warn-300);
   --warning-tint: color-mix(in oklch, var(--warn-300) 12%, transparent);
 
