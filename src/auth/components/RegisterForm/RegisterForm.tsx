@@ -1,6 +1,11 @@
-import { useState } from 'react'
 import Button from '../../../shared/components/Button/Button'
 import Input from '../../../shared/components/Input/Input'
+import { useZodForm } from '../../../shared/hooks/useZodForm'
+import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
+import { isApiError } from '../../../shared/types/ApiError'
+import { registerErrorFieldMap } from '../../validation/userErrorMap'
+import { registerSchema } from '../../validation/userSchemas'
+import type { RegisterFormValues } from '../../validation/userSchemas'
 import '../AuthForm.css'
 
 interface RegisterFormProps {
@@ -8,44 +13,75 @@ interface RegisterFormProps {
 }
 
 function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useZodForm(registerSchema)
 
-  const mismatch = confirmPassword.length > 0 && confirmPassword !== password
+  const onSubmit = handleSubmit(async (_data: RegisterFormValues) => {
+    try {
+      // TODO: chamar auth/services quando a integração com o backend existir.
+    } catch (err) {
+      if (isApiError(err)) {
+        applyApiErrorToForm(err, setError, registerErrorFieldMap)
+      } else {
+        setError('root.serverError', { message: 'Não foi possível concluir. Tente novamente.' })
+      }
+    }
+  })
 
   return (
-    <form className="lm-auth-tabs__panel" onSubmit={(e) => e.preventDefault()}>
+    <form className="lm-auth-tabs__panel" onSubmit={onSubmit} noValidate>
       <div className="lm-auth-form__header">
         <h1 className="lm-auth-form__title">Criar sua conta</h1>
         <p className="lm-auth-form__subtitle">Leva menos de um minuto.</p>
       </div>
 
       <div className="lm-auth-form__fields">
-        <Input label="Nome" type="text" name="name" placeholder="Seu nome completo" autoComplete="name" />
-        <Input label="E-mail" type="email" name="email" placeholder="voce@exemplo.com" autoComplete="email" />
+        <Input
+          label="Nome"
+          type="text"
+          placeholder="Seu nome completo"
+          autoComplete="name"
+          error={errors.name?.message}
+          {...register('name')}
+        />
+        <Input
+          label="E-mail"
+          type="email"
+          placeholder="voce@exemplo.com"
+          autoComplete="email"
+          error={errors.email?.message}
+          {...register('email')}
+        />
         <Input
           label="Senha"
           type="password"
-          name="new-password"
           placeholder="••••••••"
           autoComplete="new-password"
           hint="Mínimo de 8 caracteres"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          error={errors.password?.message}
+          {...register('password')}
         />
         <Input
           label="Confirmar senha"
           type="password"
-          name="confirm-password"
           placeholder="••••••••"
           autoComplete="new-password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          error={mismatch ? 'As senhas não coincidem' : undefined}
+          error={errors.confirmPassword?.message}
+          {...register('confirmPassword')}
         />
       </div>
 
-      <Button type="submit" variant="primary" size="lg" fullWidth>
+      {errors.root?.serverError?.message ? (
+        <p className="lm-auth-form__error" role="alert">
+          {errors.root.serverError.message}
+        </p>
+      ) : null}
+
+      <Button type="submit" variant="primary" size="lg" fullWidth disabled={isSubmitting}>
         Criar conta
       </Button>
 
