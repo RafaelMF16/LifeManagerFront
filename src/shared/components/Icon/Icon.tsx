@@ -1,4 +1,4 @@
-import { Check, Moon, Sun, Wallet, X } from 'lucide-react'
+import { Check, ChevronDown, Languages, LogOut, Moon, Sun, User, Wallet, X } from 'lucide-react'
 import type { LucideProps } from 'lucide-react'
 
 const ICONS = {
@@ -7,6 +7,10 @@ const ICONS = {
   moon: Moon,
   check: Check,
   x: X,
+  user: User,
+  'chevron-down': ChevronDown,
+  languages: Languages,
+  'log-out': LogOut,
 } as const
 
 export type IconName = keyof typeof ICONS

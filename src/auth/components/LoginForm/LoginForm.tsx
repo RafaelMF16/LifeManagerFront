@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import Button from '../../../shared/components/Button/Button'
 import Input from '../../../shared/components/Input/Input'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
@@ -23,11 +24,13 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   } = useZodForm(loginSchema)
   const { show: showToast } = useToast()
   const { show: showErrorModal } = useErrorModal()
+  const navigate = useNavigate()
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       await login(data)
       showToast('Login realizado com sucesso')
+      navigate('/home')
     } catch (err) {
       if (isApiError(err)) {
         applyApiErrorToForm(err, setError, loginErrorFieldMap, loginFallbackMessage)

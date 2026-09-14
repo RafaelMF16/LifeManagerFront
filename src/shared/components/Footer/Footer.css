@@ -1,0 +1,15 @@
+.lm-footer {
+  border-top: var(--border-width) solid var(--border);
+  background: var(--surface);
+}
+
+.lm-footer__copyright {
+  display: block;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-6);
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}

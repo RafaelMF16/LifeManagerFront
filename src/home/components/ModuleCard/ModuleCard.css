@@ -1,0 +1,71 @@
+.lm-module-card {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans);
+  transition: var(--transition-control);
+}
+
+.lm-module-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--elevation-2);
+}
+
+.lm-module-card--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.lm-module-card--disabled:hover {
+  border-color: var(--border);
+  box-shadow: var(--elevation-1);
+}
+
+.lm-module-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-card);
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.lm-module-card__icon--disabled {
+  background: var(--surface-sunken);
+  color: var(--text-tertiary);
+}
+
+.lm-module-card__name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-module-card__badge {
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  color: var(--text-tertiary);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+}
+
+.lm-module-card__description {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-snug);
+}
