@@ -8,15 +8,16 @@ const userNameSchema = z
   .max(100, { message: 'Nome não pode ter mais de 100 caracteres' }) // code: User.UserNameTooLong
 
 // Espelha LifeManager.Domain/Users/ValueObjects/Email.cs (Email.Create)
-// A regra do backend não é um regex de e-mail "de verdade": só exige presença de "@"
-// que não esteja no início nem no fim da string. Reproduzida literalmente aqui,
-// em vez de z.string().email() (que seria mais estrito que o backend e rejeitaria
-// e-mails que o backend aceitaria).
+// Não é um regex de e-mail "de verdade" (não cobre todos os casos do RFC), mas exige
+// o formato mínimo algo@algo.algo — mais do que só checar a presença de "@" (regra antiga),
+// sem virar uma validação tão complexa a ponto de divergir do backend.
+const EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+
 const emailSchema = z
   .string()
   .trim()
   .min(1, { message: 'E-mail é obrigatório' }) // code: User.EmailIsNullOrWhiteSpace
-  .refine((value) => value.includes('@') && !value.startsWith('@') && !value.endsWith('@'), {
+  .refine((value) => EMAIL_PATTERN.test(value), {
     message: 'E-mail inválido', // code: User.EmailIsInvalid
   })
 

@@ -1,11 +1,13 @@
 import Button from '../../../shared/components/Button/Button'
 import Input from '../../../shared/components/Input/Input'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
+import { useToast } from '../../../shared/hooks/useToast'
+import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
 import { isApiError } from '../../../shared/types/ApiError'
+import { login } from '../../services/authService'
 import { loginErrorFieldMap, loginFallbackMessage } from '../../validation/userErrorMap'
 import { loginSchema } from '../../validation/userSchemas'
-import type { LoginFormValues } from '../../validation/userSchemas'
 import '../AuthForm.css'
 
 interface LoginFormProps {
@@ -19,15 +21,21 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
     setError,
     formState: { errors, isSubmitting },
   } = useZodForm(loginSchema)
+  const { show: showToast } = useToast()
+  const { show: showErrorModal } = useErrorModal()
 
-  const onSubmit = handleSubmit(async (_data: LoginFormValues) => {
+  const onSubmit = handleSubmit(async (data) => {
     try {
-      // TODO: chamar auth/services quando a integração com o backend existir.
+      await login(data)
+      showToast('Login realizado com sucesso')
     } catch (err) {
       if (isApiError(err)) {
         applyApiErrorToForm(err, setError, loginErrorFieldMap, loginFallbackMessage)
       } else {
-        setError('root.serverError', { message: 'Não foi possível concluir. Tente novamente.' })
+        showErrorModal(
+          'Erro de conexão',
+          'Não foi possível se comunicar com o servidor. Verifique sua conexão e tente novamente.',
+        )
       }
     }
   })
@@ -68,7 +76,7 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
         </p>
       ) : null}
 
-      <Button type="submit" variant="primary" size="lg" fullWidth disabled={isSubmitting}>
+      <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
         Entrar
       </Button>
 

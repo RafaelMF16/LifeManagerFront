@@ -41,6 +41,16 @@ describe('registerSchema - email', () => {
     expect(result.success).toBe(false)
   })
 
+  it('rejeita e-mail sem domínio (sem ponto depois do @)', () => {
+    const result = registerSchema.safeParse({ ...validRegisterPayload, email: 'foo@bar' })
+    expect(result.success).toBe(false)
+  })
+
+  it('rejeita e-mail com domínio terminando em ponto', () => {
+    const result = registerSchema.safeParse({ ...validRegisterPayload, email: 'foo@bar.' })
+    expect(result.success).toBe(false)
+  })
+
   it('aceita e-mail com @ no meio', () => {
     const result = registerSchema.safeParse({ ...validRegisterPayload, email: 'foo@bar.com' })
     expect(result.success).toBe(true)
