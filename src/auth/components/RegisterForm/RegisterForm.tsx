@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import Input from '../../../shared/components/Input/Input'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
@@ -15,6 +16,7 @@ interface RegisterFormProps {
 }
 
 function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
+  const { t: translate } = useTranslation(['auth', 'common'])
   const {
     register,
     handleSubmit,
@@ -27,16 +29,13 @@ function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await registerUser(data)
-      showToast('Conta criada com sucesso')
+      showToast(translate('auth:register.successToast'))
       onSwitchToLogin()
     } catch (err) {
       if (isApiError(err)) {
-        applyApiErrorToForm(err, setError, registerErrorFieldMap)
+        applyApiErrorToForm(err, setError, registerErrorFieldMap, translate)
       } else {
-        showErrorModal(
-          'Erro de conexão',
-          'Não foi possível se comunicar com o servidor. Verifique sua conexão e tente novamente.',
-        )
+        showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       }
     }
   })
@@ -44,42 +43,42 @@ function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   return (
     <form className="lm-auth-tabs__panel" onSubmit={onSubmit} noValidate>
       <div className="lm-auth-form__header">
-        <h1 className="lm-auth-form__title">Criar sua conta</h1>
-        <p className="lm-auth-form__subtitle">Leva menos de um minuto.</p>
+        <h1 className="lm-auth-form__title">{translate('auth:register.title')}</h1>
+        <p className="lm-auth-form__subtitle">{translate('auth:register.subtitle')}</p>
       </div>
 
       <div className="lm-auth-form__fields">
         <Input
-          label="Nome"
+          label={translate('auth:fields.name.label')}
           type="text"
-          placeholder="Seu nome completo"
+          placeholder={translate('auth:fields.name.placeholder')}
           autoComplete="name"
-          error={errors.name?.message}
+          error={errors.name?.message ? translate(errors.name.message) : undefined}
           {...register('name')}
         />
         <Input
-          label="E-mail"
+          label={translate('auth:fields.email.label')}
           type="email"
-          placeholder="voce@exemplo.com"
+          placeholder={translate('auth:fields.email.placeholder')}
           autoComplete="email"
-          error={errors.email?.message}
+          error={errors.email?.message ? translate(errors.email.message) : undefined}
           {...register('email')}
         />
         <Input
-          label="Senha"
+          label={translate('auth:fields.password.label')}
           type="password"
-          placeholder="••••••••"
+          placeholder={translate('auth:fields.password.placeholder')}
           autoComplete="new-password"
-          hint="Mínimo de 8 caracteres"
-          error={errors.password?.message}
+          hint={translate('auth:fields.password.hint')}
+          error={errors.password?.message ? translate(errors.password.message) : undefined}
           {...register('password')}
         />
         <Input
-          label="Confirmar senha"
+          label={translate('auth:fields.confirmPassword.label')}
           type="password"
-          placeholder="••••••••"
+          placeholder={translate('auth:fields.confirmPassword.placeholder')}
           autoComplete="new-password"
-          error={errors.confirmPassword?.message}
+          error={errors.confirmPassword?.message ? translate(errors.confirmPassword.message) : undefined}
           {...register('confirmPassword')}
         />
       </div>
@@ -91,11 +90,11 @@ function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
       ) : null}
 
       <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
-        Criar conta
+        {translate('auth:register.submit')}
       </Button>
 
       <p className="lm-auth-form__footer">
-        Já tem conta?{' '}
+        {translate('auth:register.hasAccount')}{' '}
         <a
           href="#"
           onClick={(e) => {
@@ -103,7 +102,7 @@ function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             onSwitchToLogin()
           }}
         >
-          Entrar
+          {translate('auth:register.logIn')}
         </a>
       </p>
     </form>

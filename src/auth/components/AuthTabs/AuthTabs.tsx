@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { AuthMode } from '../../types/AuthMode'
 import './AuthTabs.css'
 
@@ -11,6 +12,7 @@ interface AuthTabsProps {
 }
 
 function AuthTabs({ active, onChange, loginPanel, signupPanel }: AuthTabsProps) {
+  const { t: translate } = useTranslation('auth')
   const loginRef = useRef<HTMLDivElement>(null)
   const signupRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState<number | null>(null)
@@ -41,14 +43,14 @@ function AuthTabs({ active, onChange, loginPanel, signupPanel }: AuthTabsProps) 
           className={`lm-auth-tabs__tab${isSignup ? '' : ' lm-auth-tabs__tab--active'}`}
           onClick={() => onChange('login')}
         >
-          Entrar
+          {translate('tabs.login')}
         </button>
         <button
           type="button"
           className={`lm-auth-tabs__tab${isSignup ? ' lm-auth-tabs__tab--active' : ''}`}
           onClick={() => onChange('signup')}
         >
-          Criar conta
+          {translate('tabs.signup')}
         </button>
         <div
           aria-hidden="true"

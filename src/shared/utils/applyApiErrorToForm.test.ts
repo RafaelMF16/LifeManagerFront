@@ -8,22 +8,25 @@ interface TestFormValues {
 }
 
 const fieldMap: ApiErrorFieldMap<TestFormValues> = {
-  'User.EmailRegistered': { field: 'email', message: 'Este e-mail já está cadastrado' },
+  'User.EmailRegistered': { field: 'email', message: 'test:email.taken' },
 }
 
+const translate = (key: string) => `translated:${key}`
+
 describe('applyApiErrorToForm', () => {
-  it('seta o erro no campo mapeado com a mensagem em português', () => {
+  it('seta o erro no campo mapeado com a mensagem traduzida', () => {
     const setError = vi.fn()
 
     applyApiErrorToForm(
       { code: 'User.EmailRegistered', message: 'Email already registered', type: 'Conflict' },
       setError,
       fieldMap,
+      translate,
     )
 
     expect(setError).toHaveBeenCalledWith('email', {
       type: 'server',
-      message: 'Este e-mail já está cadastrado',
+      message: 'translated:test:email.taken',
     })
   })
 
@@ -34,27 +37,29 @@ describe('applyApiErrorToForm', () => {
       { code: 'User.InvalidCredentials', message: 'Invalid email or password', type: 'Unauthorized' },
       setError,
       fieldMap,
+      translate,
     )
 
     expect(setError).toHaveBeenCalledWith('root.serverError', {
       type: 'server',
-      message: 'Não foi possível concluir. Tente novamente.',
+      message: 'translated:common:errors.generic',
     })
   })
 
-  it('usa a mensagem de fallback customizada quando informada', () => {
+  it('usa a chave de fallback customizada quando informada', () => {
     const setError = vi.fn()
 
     applyApiErrorToForm(
       { code: 'User.InvalidCredentials', message: 'Invalid email or password', type: 'Unauthorized' },
       setError,
       fieldMap,
-      'E-mail ou senha inválidos',
+      translate,
+      'common:errors.invalidCredentials',
     )
 
     expect(setError).toHaveBeenCalledWith('root.serverError', {
       type: 'server',
-      message: 'E-mail ou senha inválidos',
+      message: 'translated:common:errors.invalidCredentials',
     })
   })
 })

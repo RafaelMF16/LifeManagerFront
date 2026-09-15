@@ -4,8 +4,8 @@ import { z } from 'zod'
 const userNameSchema = z
   .string()
   .trim()
-  .min(1, { message: 'Nome é obrigatório' }) // code: User.UserNameIsNullOrWhiteSpace
-  .max(100, { message: 'Nome não pode ter mais de 100 caracteres' }) // code: User.UserNameTooLong
+  .min(1, { message: 'auth:validation.name.required' }) // code: User.UserNameIsNullOrWhiteSpace
+  .max(100, { message: 'auth:validation.name.tooLong' }) // code: User.UserNameTooLong
 
 // Espelha LifeManager.Domain/Users/ValueObjects/Email.cs (Email.Create)
 // Não é um regex de e-mail "de verdade" (não cobre todos os casos do RFC), mas exige
@@ -16,28 +16,28 @@ const EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 const emailSchema = z
   .string()
   .trim()
-  .min(1, { message: 'E-mail é obrigatório' }) // code: User.EmailIsNullOrWhiteSpace
+  .min(1, { message: 'auth:validation.email.required' }) // code: User.EmailIsNullOrWhiteSpace
   .refine((value) => EMAIL_PATTERN.test(value), {
-    message: 'E-mail inválido', // code: User.EmailIsInvalid
+    message: 'auth:validation.email.invalid', // code: User.EmailIsInvalid
   })
 
 // Espelha LifeManager.Domain/Users/ValueObjects/PlainPassword.cs (PlainPassword.Create)
 const plainPasswordSchema = z
   .string()
-  .min(1, { message: 'Senha é obrigatória' }) // code: User.PlainPasswordIsNullOrWhiteSpace
-  .min(8, { message: 'Senha deve ter no mínimo 8 caracteres' }) // code: User.PlainPasswordTooShort
-  .max(50, { message: 'Senha não pode ter mais de 50 caracteres' }) // code: User.PlainPasswordTooLong
+  .min(1, { message: 'auth:validation.password.required' }) // code: User.PlainPasswordIsNullOrWhiteSpace
+  .min(8, { message: 'auth:validation.password.tooShort' }) // code: User.PlainPasswordTooShort
+  .max(50, { message: 'auth:validation.password.tooLong' }) // code: User.PlainPasswordTooLong
 
 export const registerSchema = z
   .object({
     name: userNameSchema,
     email: emailSchema,
     password: plainPasswordSchema,
-    confirmPassword: z.string().min(1, { message: 'Confirme sua senha' }),
+    confirmPassword: z.string().min(1, { message: 'auth:validation.confirmPassword.required' }),
   })
   // Cross-field: regra só de UI, sem equivalente no backend (o backend só recebe "password").
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'As senhas não coincidem',
+    message: 'auth:validation.confirmPassword.mismatch',
     path: ['confirmPassword'],
   })
 
@@ -50,7 +50,7 @@ export type RegisterFormValues = z.infer<typeof registerSchema>
 // gastar uma request.
 export const loginSchema = z.object({
   email: emailSchema,
-  password: z.string().min(1, { message: 'Senha é obrigatória' }),
+  password: z.string().min(1, { message: 'auth:validation.password.required' }),
 })
 
 export type LoginFormValues = z.infer<typeof loginSchema>

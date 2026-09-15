@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import Icon from '../../../shared/components/Icon/Icon'
 import type { HomeModule } from '../../types/HomeModule'
 import './ModuleCard.css'
@@ -8,6 +9,7 @@ interface ModuleCardProps {
 }
 
 function ModuleCard({ module, onClick }: ModuleCardProps) {
+  const { t: translate } = useTranslation('home')
   const classes = `lm-module-card${module.ready ? '' : ' lm-module-card--disabled'}`
 
   return (
@@ -25,11 +27,11 @@ function ModuleCard({ module, onClick }: ModuleCardProps) {
       </span>
 
       <span className="lm-module-card__name">
-        {module.name}
-        {!module.ready ? <span className="lm-module-card__badge">Em breve</span> : null}
+        {translate(`modules.${module.id}.name`)}
+        {!module.ready ? <span className="lm-module-card__badge">{translate('moduleCard.comingSoon')}</span> : null}
       </span>
 
-      <span className="lm-module-card__description">{module.description}</span>
+      <span className="lm-module-card__description">{translate(`modules.${module.id}.description`)}</span>
     </button>
   )
 }
