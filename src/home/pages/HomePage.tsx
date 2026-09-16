@@ -5,20 +5,8 @@ import type { HomeModule } from '../types/HomeModule'
 import './HomePage.css'
 
 const MODULES: HomeModule[] = [
-  {
-    id: 'financas',
-    name: 'Financeiro',
-    icon: 'wallet',
-    description: 'Transações, categorias e resumos mensais.',
-    ready: true,
-  },
-  {
-    id: 'habitos',
-    name: 'Hábitos',
-    icon: 'check',
-    description: 'Rotinas diárias e sequências em andamento.',
-    ready: false,
-  },
+  { id: 'financas', icon: 'wallet', ready: true },
+  { id: 'habitos', icon: 'check', ready: false },
 ]
 
 function HomePage() {

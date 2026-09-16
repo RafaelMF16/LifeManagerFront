@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Icon from '../Icon/Icon'
 import SegmentedControl from '../SegmentedControl/SegmentedControl'
 import { useTheme } from '../../hooks/useTheme'
+import { useLanguage } from '../../hooks/useLanguage'
+import type { SupportedLanguage } from '../../i18n/languages'
 import './Header.css'
-
-type Language = 'pt' | 'en'
 
 const PLACEHOLDER_USER = { name: 'Ana Ribeiro', email: 'ana@exemplo.com' }
 
 function Header() {
+  const { t: translate } = useTranslation('common')
   const { theme, toggleTheme } = useTheme()
-  const [language, setLanguage] = useState<Language>('pt')
+  const { language, setLanguage } = useLanguage()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -66,17 +68,17 @@ function Header() {
             <div className="lm-header__menu-row">
               <span className="lm-header__menu-row-label">
                 <Icon name="sun" size={16} />
-                Tema
+                {translate('theme.label')}
               </span>
               <SegmentedControl
-                aria-label="Tema"
+                aria-label={translate('theme.label')}
                 value={theme}
                 onChange={(value) => {
                   if (value !== theme) toggleTheme()
                 }}
                 options={[
-                  { value: 'light', label: <Icon name="sun" size={14} />, srLabel: 'Claro' },
-                  { value: 'dark', label: <Icon name="moon" size={14} />, srLabel: 'Escuro' },
+                  { value: 'light', label: <Icon name="sun" size={14} />, srLabel: translate('theme.light') },
+                  { value: 'dark', label: <Icon name="moon" size={14} />, srLabel: translate('theme.dark') },
                 ]}
               />
             </div>
@@ -84,15 +86,15 @@ function Header() {
             <div className="lm-header__menu-row">
               <span className="lm-header__menu-row-label">
                 <Icon name="languages" size={16} />
-                Idioma
+                {translate('language.label')}
               </span>
               <SegmentedControl
-                aria-label="Idioma"
+                aria-label={translate('language.label')}
                 value={language}
-                onChange={setLanguage}
+                onChange={(value: SupportedLanguage) => setLanguage(value)}
                 options={[
-                  { value: 'pt', label: 'PT' },
-                  { value: 'en', label: 'EN' },
+                  { value: 'pt-BR', label: 'PT' },
+                  { value: 'en-US', label: 'EN' },
                 ]}
               />
             </div>
@@ -106,7 +108,7 @@ function Header() {
               onClick={(event) => event.preventDefault()}
             >
               <Icon name="log-out" size={16} />
-              Sair
+              {translate('logout')}
             </button>
           </div>
         ) : null}

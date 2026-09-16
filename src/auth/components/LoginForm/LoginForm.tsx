@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import Input from '../../../shared/components/Input/Input'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
@@ -16,6 +17,7 @@ interface LoginFormProps {
 }
 
 function LoginForm({ onSwitchToSignup }: LoginFormProps) {
+  const { t: translate } = useTranslation(['auth', 'common'])
   const {
     register,
     handleSubmit,
@@ -29,16 +31,13 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await login(data)
-      showToast('Login realizado com sucesso')
+      showToast(translate('auth:login.successToast'))
       navigate('/home')
     } catch (err) {
       if (isApiError(err)) {
-        applyApiErrorToForm(err, setError, loginErrorFieldMap, loginFallbackMessage)
+        applyApiErrorToForm(err, setError, loginErrorFieldMap, translate, loginFallbackMessage)
       } else {
-        showErrorModal(
-          'Erro de conexão',
-          'Não foi possível se comunicar com o servidor. Verifique sua conexão e tente novamente.',
-        )
+        showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       }
     }
   })
@@ -46,31 +45,31 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   return (
     <form className="lm-auth-tabs__panel" onSubmit={onSubmit} noValidate>
       <div className="lm-auth-form__header">
-        <h1 className="lm-auth-form__title">Entrar na sua conta</h1>
-        <p className="lm-auth-form__subtitle">Organize sua vida financeira e seus hábitos em um só lugar.</p>
+        <h1 className="lm-auth-form__title">{translate('auth:login.title')}</h1>
+        <p className="lm-auth-form__subtitle">{translate('auth:login.subtitle')}</p>
       </div>
 
       <div className="lm-auth-form__fields">
         <Input
-          label="E-mail"
+          label={translate('auth:fields.email.label')}
           type="email"
-          placeholder="voce@exemplo.com"
+          placeholder={translate('auth:fields.email.placeholder')}
           autoComplete="email"
-          error={errors.email?.message}
+          error={errors.email?.message ? translate(errors.email.message) : undefined}
           {...register('email')}
         />
         <Input
-          label="Senha"
+          label={translate('auth:fields.password.label')}
           type="password"
-          placeholder="••••••••"
+          placeholder={translate('auth:fields.password.placeholder')}
           autoComplete="current-password"
-          error={errors.password?.message}
+          error={errors.password?.message ? translate(errors.password.message) : undefined}
           {...register('password')}
         />
       </div>
 
       <div className="lm-auth-form__forgot">
-        <a href="#">Esqueceu a senha?</a>
+        <a href="#">{translate('auth:login.forgotPassword')}</a>
       </div>
 
       {errors.root?.serverError?.message ? (
@@ -80,11 +79,11 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
       ) : null}
 
       <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
-        Entrar
+        {translate('auth:login.submit')}
       </Button>
 
       <p className="lm-auth-form__footer">
-        Não tem conta?{' '}
+        {translate('auth:login.noAccount')}{' '}
         <a
           href="#"
           onClick={(e) => {
@@ -92,7 +91,7 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
             onSwitchToSignup()
           }}
         >
-          Criar conta
+          {translate('auth:login.createAccount')}
         </a>
       </p>
     </form>

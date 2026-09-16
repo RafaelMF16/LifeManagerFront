@@ -94,7 +94,7 @@ describe('registerSchema - password', () => {
     expect(result.success).toBe(false)
     if (!result.success) {
       const confirmError = result.error.issues.find((issue) => issue.path.includes('confirmPassword'))
-      expect(confirmError?.message).toBe('As senhas não coincidem')
+      expect(confirmError?.message).toBe('auth:validation.confirmPassword.mismatch')
     }
   })
 })
