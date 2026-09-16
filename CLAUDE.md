@@ -31,6 +31,17 @@ There is no test runner configured yet.
 - Icons use `lucide-react`. The shared `Icon` component (`src/shared/components/Icon/Icon.tsx`) wraps a small explicit name→icon registry rather than importing the whole library — add new icons to that registry as they're needed, don't import `lucide-react` icons directly elsewhere.
 - Dark mode is real, not decorative: `src/shared/hooks/useTheme.ts` toggles `data-theme="dark"` on `<html>` and persists the choice in `localStorage`; all color tokens have light/dark values keyed off that attribute.
 
+## Internationalization (i18n)
+
+**Every new screen or UI text from now on must ship with i18n already wired up — never land a hardcoded user-facing string, not even "to translate later."** This is part of finishing a feature, not a follow-up cleanup task.
+
+- The app uses `react-i18next` (`i18next` + `react-i18next`), initialized once in `src/i18n/i18n.ts` and imported as a side effect at the top of `src/main.tsx`. Supported languages: `en-US` (default/fallback) and `pt-BR`, tracked by `src/shared/hooks/useLanguage.ts` — mirrors `useTheme.ts`'s pattern (plain hook, `localStorage['lm-language']`, no Context/Provider).
+- Every feature owns its own i18next **namespace**, mirroring the per-feature folder convention: strings live in `<feature>/locales/{en-US,pt-BR}.ts` (see `src/auth/locales/`, `src/home/locales/`), and any new namespace must be registered in the `resources`/`ns` list in `src/i18n/i18n.ts`. A string only belongs in the shared `common` namespace (`src/shared/locales/`) if it's rendered from `src/shared/**` or reused verbatim by 2+ features — otherwise it stays in the owning feature's namespace, even if similar wording exists elsewhere.
+- In components: `const { t: translate } = useTranslation('<namespace>')` (or an array of namespaces if the component needs more than one), then `translate('namespace:key.path')` — always with the explicit `ns:` prefix, even for a single-namespace call.
+- Data-shaped content (e.g. a config array like `HomePage.tsx`'s `MODULES`) can't hold translated text directly, since it's evaluated once rather than re-rendered — store an id/key instead and look the copy up with `translate(...)` inside the component that renders it (see `ModuleCard.tsx`).
+- Validation messages (Zod schemas, backend error-code maps) are also evaluated once at import time, so they store translation **keys** as the message and get translated at the render boundary — see `src/auth/validation/userSchemas.ts` and `src/shared/utils/applyApiErrorToForm.ts`.
+- When adding a new screen: create its `locales/en-US.ts` + `locales/pt-BR.ts` pair, register the namespace in `src/i18n/i18n.ts`, and translate every string as it's written.
+
 ## Folder structure: feature modules
 
 This frontend mirrors the feature-based organization of its sibling backend project, `LifeManager` (`../LifeManager`), which is a .NET Clean Architecture solution where each layer (Domain, Application, Infrastructure, WebApi) has one subfolder per domain (`Auth/`, `Users/`, ...), each split further by responsibility (`DTOs/`, `Services/`, `Controllers/`, ...).
