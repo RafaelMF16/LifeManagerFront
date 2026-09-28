@@ -8,6 +8,9 @@ export default {
   language: {
     label: 'Idioma',
   },
+  preferences: {
+    saveError: 'Não foi possível salvar suas preferências.',
+  },
   logout: 'Sair',
   footer: {
     copyright: '© 2026 LifeManager',
