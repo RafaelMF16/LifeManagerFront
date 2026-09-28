@@ -30,6 +30,8 @@ There is no test runner configured yet.
 - Design tokens (color, typography, spacing, radius, shadows, motion) live as CSS custom properties in `src/shared/styles/tokens/*.css`, sourced from a Claude Design handoff — see the folder-structure section below. `src/index.css` (imported once, in `main.tsx`) is just the `@import` list for these plus `shared/styles/base.css`; don't add component-specific rules there.
 - Icons use `lucide-react`. The shared `Icon` component (`src/shared/components/Icon/Icon.tsx`) wraps a small explicit name→icon registry rather than importing the whole library — add new icons to that registry as they're needed, don't import `lucide-react` icons directly elsewhere.
 - Dark mode is real, not decorative: `src/shared/hooks/useTheme.ts` toggles `data-theme="dark"` on `<html>` and persists the choice in `localStorage`; all color tokens have light/dark values keyed off that attribute.
+- HTTP goes through `src/shared/services/httpClient.ts` (`apiRequest`), which attaches `Authorization: Bearer <token>` from `src/shared/services/tokenStorage.ts` (access token in `sessionStorage`) when present.
+- User preferences (theme + language) are persisted in the backend (`/api/UserPreferences`, enums as strings `Light|Dark`, `PTBR|EN` — mapped in `shared/utils/userPreferencesMapper.ts`). On login, `LoginForm` calls `loadAndApplyUserPreferences()` (`shared/services/userPreferencesService.ts`) before navigating, which applies them via `applyTheme`/`applyLanguage` (exported from `useTheme.ts`/`useLanguage.ts`) so the hooks initialize from them. `Header` calls `useUserPreferencesSync(theme, language)`, which saves changes with an 800 ms debounce (skips unchanged values, flushes on unmount).
 
 ## Internationalization (i18n)
 

@@ -1,7 +1,7 @@
 import { apiRequest } from '../../shared/services/httpClient'
 import type { LoginFormValues, RegisterFormValues } from '../validation/userSchemas'
 import type { LoginRequestDto, LoginResponseDto, RegisterRequestDto } from '../types/AuthDtos'
-import { setAccessToken } from './tokenStorage'
+import { setAccessToken } from '../../shared/services/tokenStorage'
 
 export async function login(data: LoginFormValues): Promise<void> {
   const response = await apiRequest<LoginResponseDto>('/api/Auth/Login', {

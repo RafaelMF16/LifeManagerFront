@@ -1,4 +1,5 @@
 import { isApiError } from '../types/ApiError'
+import { getAccessToken } from './tokenStorage'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -16,11 +17,15 @@ async function parseBody<T>(response: Response): Promise<T | undefined> {
 
 export async function apiRequest<TResponse>(path: string, options: RequestOptions): Promise<TResponse> {
   let response: Response
+  const accessToken = getAccessToken()
 
   try {
     response = await fetch(`${BASE_URL}${path}`, {
       method: options.method,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      },
       credentials: 'include',
       body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
     })

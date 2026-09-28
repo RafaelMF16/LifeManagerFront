@@ -4,6 +4,7 @@ import Icon from '../Icon/Icon'
 import SegmentedControl from '../SegmentedControl/SegmentedControl'
 import { useTheme } from '../../hooks/useTheme'
 import { useLanguage } from '../../hooks/useLanguage'
+import { useUserPreferencesSync } from '../../hooks/useUserPreferencesSync'
 import type { SupportedLanguage } from '../../i18n/languages'
 import './Header.css'
 
@@ -13,6 +14,7 @@ function Header() {
   const { t: translate } = useTranslation('common')
   const { theme, toggleTheme } = useTheme()
   const { language, setLanguage } = useLanguage()
+  useUserPreferencesSync(theme, language)
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 

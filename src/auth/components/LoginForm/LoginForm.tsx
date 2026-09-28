@@ -7,6 +7,7 @@ import { useToast } from '../../../shared/hooks/useToast'
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
 import { isApiError } from '../../../shared/types/ApiError'
+import { loadAndApplyUserPreferences } from '../../../shared/services/userPreferencesService'
 import { login } from '../../services/authService'
 import { loginErrorFieldMap, loginFallbackMessage } from '../../validation/userErrorMap'
 import { loginSchema } from '../../validation/userSchemas'
@@ -31,15 +32,19 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await login(data)
-      showToast(translate('auth:login.successToast'))
-      navigate('/home')
     } catch (err) {
       if (isApiError(err)) {
         applyApiErrorToForm(err, setError, loginErrorFieldMap, translate, loginFallbackMessage)
       } else {
         showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       }
+      return
     }
+
+    // A failure here must not block the login: the locally stored preferences stay applied.
+    await loadAndApplyUserPreferences().catch(() => {})
+    showToast(translate('auth:login.successToast'))
+    navigate('/home')
   })
 
   return (
