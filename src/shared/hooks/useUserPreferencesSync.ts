@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getAccessToken } from '../services/tokenStorage'
 import { saveUserPreferences } from '../services/userPreferencesService'
@@ -50,4 +50,10 @@ export function useUserPreferencesSync(theme: Theme, language: SupportedLanguage
 
   // Saves a still-pending change immediately if the component unmounts before the debounce fires.
   useEffect(() => () => flushRef.current(), [])
+
+  // Lets callers save a pending change right away, e.g. before logout clears the access token
+  // (the unmount flush would then be skipped for lack of a token).
+  const flush = useCallback(() => flushRef.current(), [])
+
+  return { flush }
 }

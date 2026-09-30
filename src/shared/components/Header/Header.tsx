@@ -5,6 +5,7 @@ import SegmentedControl from '../SegmentedControl/SegmentedControl'
 import { useTheme } from '../../hooks/useTheme'
 import { useLanguage } from '../../hooks/useLanguage'
 import { useUserPreferencesSync } from '../../hooks/useUserPreferencesSync'
+import { useLogout } from '../../hooks/useLogout'
 import type { SupportedLanguage } from '../../i18n/languages'
 import './Header.css'
 
@@ -14,7 +15,8 @@ function Header() {
   const { t: translate } = useTranslation('common')
   const { theme, toggleTheme } = useTheme()
   const { language, setLanguage } = useLanguage()
-  useUserPreferencesSync(theme, language)
+  const { flush: flushPreferences } = useUserPreferencesSync(theme, language)
+  const { logout, isLoggingOut } = useLogout()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -107,7 +109,12 @@ function Header() {
               type="button"
               role="menuitem"
               className="lm-header__menu-logout"
-              onClick={(event) => event.preventDefault()}
+              disabled={isLoggingOut}
+              onClick={() => {
+                // Sends a still-debounced preference change while the access token is still valid.
+                flushPreferences()
+                void logout()
+              }}
             >
               <Icon name="log-out" size={16} />
               {translate('logout')}

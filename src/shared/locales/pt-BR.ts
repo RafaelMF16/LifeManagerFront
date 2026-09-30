@@ -12,6 +12,7 @@ export default {
     saveError: 'Não foi possível salvar suas preferências.',
   },
   logout: 'Sair',
+  logoutSuccessToast: 'Você saiu da sua conta.',
   pagination: {
     navAria: 'Paginação',
     previous: 'Página anterior',
