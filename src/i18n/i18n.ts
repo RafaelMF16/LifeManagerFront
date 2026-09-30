@@ -7,16 +7,18 @@ import authEnUS from '../auth/locales/en-US'
 import authPtBR from '../auth/locales/pt-BR'
 import homeEnUS from '../home/locales/en-US'
 import homePtBR from '../home/locales/pt-BR'
+import financeEnUS from '../finance/locales/en-US'
+import financePtBR from '../finance/locales/pt-BR'
 
 void i18n.use(initReactI18next).init({
   resources: {
-    'en-US': { common: commonEnUS, auth: authEnUS, home: homeEnUS },
-    'pt-BR': { common: commonPtBR, auth: authPtBR, home: homePtBR },
+    'en-US': { common: commonEnUS, auth: authEnUS, home: homeEnUS, finance: financeEnUS },
+    'pt-BR': { common: commonPtBR, auth: authPtBR, home: homePtBR, finance: financePtBR },
   },
   lng: getInitialLanguage(),
   fallbackLng: DEFAULT_LANGUAGE,
   supportedLngs: SUPPORTED_LANGUAGES,
-  ns: ['common', 'auth', 'home'],
+  ns: ['common', 'auth', 'home', 'finance'],
   defaultNS: 'common',
   interpolation: { escapeValue: false },
   returnNull: false,

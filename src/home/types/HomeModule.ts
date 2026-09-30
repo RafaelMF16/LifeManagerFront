@@ -6,4 +6,6 @@ export interface HomeModule {
   id: string
   icon: IconName
   ready: boolean
+  /** Route the card opens; only meaningful when `ready`. */
+  path?: string
 }

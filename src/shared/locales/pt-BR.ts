@@ -12,6 +12,12 @@ export default {
     saveError: 'Não foi possível salvar suas preferências.',
   },
   logout: 'Sair',
+  pagination: {
+    navAria: 'Paginação',
+    previous: 'Página anterior',
+    next: 'Próxima página',
+    page: 'Página {{page}}',
+  },
   footer: {
     copyright: '© 2026 LifeManager',
   },
