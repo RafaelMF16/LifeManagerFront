@@ -12,6 +12,12 @@ export default {
     saveError: 'Could not save your preferences.',
   },
   logout: 'Log out',
+  pagination: {
+    navAria: 'Pagination',
+    previous: 'Previous page',
+    next: 'Next page',
+    page: 'Page {{page}}',
+  },
   footer: {
     copyright: '© 2026 LifeManager',
   },

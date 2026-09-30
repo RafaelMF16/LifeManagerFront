@@ -1,4 +1,26 @@
-import { Check, ChevronDown, Languages, LogOut, Moon, Sun, User, Wallet, X } from 'lucide-react'
+import {
+  Calendar,
+  Check,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Languages,
+  LayoutDashboard,
+  LogOut,
+  Moon,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Pencil,
+  Plus,
+  Search,
+  Sun,
+  Tags,
+  Trash2,
+  User,
+  Wallet,
+  X,
+} from 'lucide-react'
 import type { LucideProps } from 'lucide-react'
 
 const ICONS = {
@@ -9,8 +31,20 @@ const ICONS = {
   x: X,
   user: User,
   'chevron-down': ChevronDown,
+  'chevron-up': ChevronUp,
+  'chevron-left': ChevronLeft,
+  'chevron-right': ChevronRight,
   languages: Languages,
   'log-out': LogOut,
+  calendar: Calendar,
+  tags: Tags,
+  'layout-dashboard': LayoutDashboard,
+  'panel-left-close': PanelLeftClose,
+  'panel-left-open': PanelLeftOpen,
+  plus: Plus,
+  search: Search,
+  pencil: Pencil,
+  'trash-2': Trash2,
 } as const
 
 export type IconName = keyof typeof ICONS

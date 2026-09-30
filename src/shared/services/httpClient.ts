@@ -8,6 +8,16 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 interface RequestOptions {
   method: HttpMethod
   body?: unknown
+  /**
+   * Aborting it closes the connection, which fires the backend's `CancellationToken`
+   * (`HttpContext.RequestAborted`). Meant for reads only: a cancelled mutation may already
+   * have been persisted server-side, leaving the UI out of sync.
+   */
+  signal?: AbortSignal
+}
+
+export function isAbortError(error: unknown): boolean {
+  return error instanceof DOMException && error.name === 'AbortError'
 }
 
 async function parseBody<T>(response: Response): Promise<T | undefined> {
@@ -28,8 +38,10 @@ export async function apiRequest<TResponse>(path: string, options: RequestOption
       },
       credentials: 'include',
       body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+      signal: options.signal,
     })
-  } catch {
+  } catch (error) {
+    if (isAbortError(error)) throw error
     throw new Error('Não foi possível se comunicar com o servidor.')
   }
 
