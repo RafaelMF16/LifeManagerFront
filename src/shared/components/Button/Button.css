@@ -44,14 +44,30 @@
 }
 
 /* Variants */
+
+/* Hover only where a real pointer hovers; on touch it would stick after a tap.
+   Declared before the :active rules below, which share its specificity and must win while pressed. */
+@media (hover: hover) {
+  .lm-button--primary:hover:not(:disabled) {
+    background: var(--accent-hover);
+  }
+  .lm-button--secondary:hover:not(:disabled) {
+    background: var(--surface-hover);
+  }
+  .lm-button--ghost:hover:not(:disabled) {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+  }
+  .lm-button--destructive:hover:not(:disabled) {
+    background: var(--danger-hover);
+  }
+}
+
 .lm-button--primary {
   background: var(--accent);
   color: var(--text-inverse);
   border-color: transparent;
   box-shadow: var(--elevation-1);
-}
-.lm-button--primary:hover:not(:disabled) {
-  background: var(--accent-hover);
 }
 .lm-button--primary:active:not(:disabled) {
   background: var(--accent-active);
@@ -64,9 +80,6 @@
   border-color: var(--border-strong);
   box-shadow: var(--elevation-1);
 }
-.lm-button--secondary:hover:not(:disabled) {
-  background: var(--surface-hover);
-}
 .lm-button--secondary:active:not(:disabled) {
   background: var(--surface-sunken);
   box-shadow: none;
@@ -77,10 +90,6 @@
   color: var(--text-secondary);
   border-color: transparent;
 }
-.lm-button--ghost:hover:not(:disabled) {
-  background: var(--surface-hover);
-  color: var(--text-primary);
-}
 .lm-button--ghost:active:not(:disabled) {
   background: var(--surface-sunken);
 }
@@ -90,9 +99,6 @@
   color: var(--white);
   border-color: transparent;
   box-shadow: var(--elevation-1);
-}
-.lm-button--destructive:hover:not(:disabled) {
-  background: var(--danger-hover);
 }
 .lm-button--destructive:active:not(:disabled) {
   background: var(--danger-hover);

@@ -23,7 +23,7 @@ function Header() {
   useEffect(() => {
     if (!menuOpen) return
 
-    function onMouseDown(event: MouseEvent) {
+    function onPointerDown(event: PointerEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false)
       }
@@ -33,10 +33,10 @@ function Header() {
       if (event.key === 'Escape') setMenuOpen(false)
     }
 
-    window.addEventListener('mousedown', onMouseDown)
+    window.addEventListener('pointerdown', onPointerDown)
     window.addEventListener('keydown', onKeyDown)
     return () => {
-      window.removeEventListener('mousedown', onMouseDown)
+      window.removeEventListener('pointerdown', onPointerDown)
       window.removeEventListener('keydown', onKeyDown)
     }
   }, [menuOpen])

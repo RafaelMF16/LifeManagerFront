@@ -1,4 +1,5 @@
 .lm-icon-button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -28,14 +29,28 @@
   height: var(--control-height-lg);
 }
 
+/* Extends the tap area past the visual box so small icon buttons still get a ~44px target on touch. */
+@media (pointer: coarse) {
+  .lm-icon-button::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+  }
+}
+
 .lm-icon-button--ghost {
   background: transparent;
   border-color: transparent;
   color: var(--text-secondary);
 }
-.lm-icon-button--ghost:hover:not(:disabled) {
-  background: var(--surface-hover);
-  color: var(--text-primary);
+@media (hover: hover) {
+  .lm-icon-button--ghost:hover:not(:disabled) {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+  }
+  .lm-icon-button--secondary:hover:not(:disabled) {
+    background: var(--surface-hover);
+  }
 }
 .lm-icon-button--ghost:active:not(:disabled) {
   background: var(--surface-sunken);
@@ -45,9 +60,6 @@
   background: var(--surface);
   border-color: var(--border-strong);
   color: var(--text-primary);
-}
-.lm-icon-button--secondary:hover:not(:disabled) {
-  background: var(--surface-hover);
 }
 .lm-icon-button--secondary:active:not(:disabled) {
   background: var(--surface-sunken);

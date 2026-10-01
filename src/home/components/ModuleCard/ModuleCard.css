@@ -15,9 +15,11 @@
   transition: var(--transition-control);
 }
 
-.lm-module-card:hover {
-  border-color: var(--accent);
-  box-shadow: var(--elevation-2);
+@media (hover: hover) {
+  .lm-module-card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--elevation-2);
+  }
 }
 
 .lm-module-card--disabled {

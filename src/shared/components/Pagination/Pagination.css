@@ -40,8 +40,10 @@
   transition: var(--transition-control);
 }
 
-.lm-pagination__page:hover {
-  background: var(--surface-hover);
+@media (hover: hover) {
+  .lm-pagination__page:hover {
+    background: var(--surface-hover);
+  }
 }
 
 .lm-pagination__page--current,
@@ -56,4 +58,11 @@
   text-align: center;
   font-size: var(--text-sm);
   color: var(--text-tertiary);
+}
+
+@media (max-width: 768px) {
+  .lm-pagination {
+    flex-direction: column;
+    padding: var(--space-3) var(--space-4);
+  }
 }

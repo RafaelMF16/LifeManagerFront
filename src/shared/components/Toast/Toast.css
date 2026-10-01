@@ -79,3 +79,13 @@
   color: var(--text-primary);
   background: var(--surface-hover);
 }
+
+/* Compact: full-width above whatever fixed chrome sits at the bottom (see --app-bottom-inset). */
+@media (max-width: 768px) {
+  .lm-toast {
+    left: var(--page-gutter);
+    right: var(--page-gutter);
+    bottom: calc(var(--app-bottom-inset) + var(--space-4) + env(safe-area-inset-bottom));
+    max-width: none;
+  }
+}

@@ -69,6 +69,13 @@
   color: var(--text-primary);
 }
 
+/* iOS Safari zooms in on focus when an input's font is under 16px. */
+@media (pointer: coarse) {
+  .lm-input-field__input {
+    font-size: var(--text-md);
+  }
+}
+
 .lm-input-field__input--numeric {
   text-align: right;
   font-variant-numeric: tabular-nums slashed-zero;

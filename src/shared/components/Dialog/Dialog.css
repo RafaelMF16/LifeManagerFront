@@ -79,3 +79,47 @@
   background: var(--surface-sunken);
   border-top: var(--border-width) solid var(--border);
 }
+
+@keyframes lm-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Compact: the dialog becomes a bottom sheet, within thumb reach and clear of the on-screen keyboard. */
+@media (max-width: 768px) {
+  .lm-dialog__scrim {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .lm-dialog {
+    max-width: none;
+    max-height: 90vh;
+    max-height: 90dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-bottom: none;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    animation: lm-sheet-in var(--duration-slow) var(--ease-out) both;
+  }
+
+  .lm-dialog__header {
+    padding: var(--space-5) var(--page-gutter) var(--space-4);
+  }
+
+  .lm-dialog__body {
+    padding: 0 var(--page-gutter) var(--space-5);
+  }
+
+  .lm-dialog__footer {
+    padding: var(--space-3) var(--page-gutter) calc(var(--space-3) + env(safe-area-inset-bottom));
+  }
+
+  .lm-dialog__footer > * {
+    flex: 1;
+  }
+}
