@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { isSessionExpiredError } from '../services/httpClient'
 import { getAccessToken } from '../services/tokenStorage'
 import { saveUserPreferences } from '../services/userPreferencesService'
 import type { SupportedLanguage } from '../i18n/languages'
@@ -13,7 +14,6 @@ function isSamePreferences(a: UserPreferences, b: UserPreferences) {
   return a.theme === b.theme && a.language === b.language
 }
 
-// Persists theme/language changes to the backend, debounced so rapid toggling sends a single request.
 export function useUserPreferencesSync(theme: Theme, language: SupportedLanguage) {
   const { t: translate } = useTranslation('common')
   const { show: showToast } = useToast()
@@ -29,8 +29,9 @@ export function useUserPreferencesSync(theme: Theme, language: SupportedLanguage
 
       const previous = lastSavedRef.current
       lastSavedRef.current = pending
-      saveUserPreferences(pending).catch(() => {
+      saveUserPreferences(pending).catch((error: unknown) => {
         lastSavedRef.current = previous
+        if (isSessionExpiredError(error)) return
         showToast(translate('common:preferences.saveError'))
       })
     }
@@ -48,11 +49,8 @@ export function useUserPreferencesSync(theme: Theme, language: SupportedLanguage
     return () => clearTimeout(timeoutId)
   }, [theme, language])
 
-  // Saves a still-pending change immediately if the component unmounts before the debounce fires.
   useEffect(() => () => flushRef.current(), [])
 
-  // Lets callers save a pending change right away, e.g. before logout clears the access token
-  // (the unmount flush would then be skipped for lack of a token).
   const flush = useCallback(() => flushRef.current(), [])
 
   return { flush }

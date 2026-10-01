@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import Button from '../../shared/components/Button/Button'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
+import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
 import CategoryFormModal from '../components/CategoryFormModal/CategoryFormModal'
 import CategoryList from '../components/CategoryList/CategoryList'
@@ -40,6 +41,7 @@ function CategoriesPage() {
       await deleteCategory(category.id)
       showToast(translate('finance:categories.toasts.deleted'))
     } catch (err) {
+      if (isSessionExpiredError(err)) return
       if (!isApiError(err)) {
         showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       } else if (err.code === CATEGORY_NOT_FOUND_CODE) {

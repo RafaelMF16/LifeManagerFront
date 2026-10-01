@@ -6,6 +6,7 @@ import IconButton from '../../../shared/components/IconButton/IconButton'
 import Input from '../../../shared/components/Input/Input'
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
+import { isSessionExpiredError } from '../../../shared/services/httpClient'
 import { isApiError } from '../../../shared/types/ApiError'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
 import type { CategoryResponseDto } from '../../types/CategoryDtos'
@@ -39,6 +40,7 @@ function CategoryFormModal({ category, onClose, onSubmit }: CategoryFormModalPro
     try {
       await onSubmit(values)
     } catch (err) {
+      if (isSessionExpiredError(err)) return
       if (isApiError(err)) {
         applyApiErrorToForm(err, setError, categoryErrorFieldMap, translate)
       } else {

@@ -13,6 +13,7 @@ export default {
   },
   logout: 'Sair',
   logoutSuccessToast: 'Você saiu da sua conta.',
+  sessionExpiredToast: 'Sua sessão expirou. Entre novamente.',
   pagination: {
     navAria: 'Paginação',
     previous: 'Página anterior',
