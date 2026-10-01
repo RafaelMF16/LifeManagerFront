@@ -12,6 +12,7 @@ export default {
     saveError: 'Could not save your preferences.',
   },
   logout: 'Log out',
+  logoutSuccessToast: 'You have been signed out.',
   pagination: {
     navAria: 'Pagination',
     previous: 'Previous page',
