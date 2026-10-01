@@ -1,4 +1,6 @@
 import {
+  ArrowDownWideNarrow,
+  ArrowUpNarrowWide,
   Calendar,
   Check,
   ChevronDown,
@@ -25,6 +27,8 @@ import type { LucideProps } from 'lucide-react'
 
 const ICONS = {
   wallet: Wallet,
+  'arrow-up-narrow-wide': ArrowUpNarrowWide,
+  'arrow-down-wide-narrow': ArrowDownWideNarrow,
   sun: Sun,
   moon: Moon,
   check: Check,

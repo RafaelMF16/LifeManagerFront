@@ -12,6 +12,9 @@ interface SegmentedControlProps<TValue extends string> {
   value: TValue
   onChange: (value: TValue) => void
   'aria-label': string
+  /** `sm` fits compact toggles (theme, language); `md` matches `sm` buttons and inputs, for text filters. */
+  size?: 'sm' | 'md'
+  className?: string
 }
 
 function SegmentedControl<TValue extends string>({
@@ -19,9 +22,13 @@ function SegmentedControl<TValue extends string>({
   value,
   onChange,
   'aria-label': ariaLabel,
+  size = 'sm',
+  className,
 }: SegmentedControlProps<TValue>) {
+  const classes = ['lm-segmented-control', size === 'md' && 'lm-segmented-control--md', className].filter(Boolean).join(' ')
+
   return (
-    <div className="lm-segmented-control" role="radiogroup" aria-label={ariaLabel}>
+    <div className={classes} role="radiogroup" aria-label={ariaLabel}>
       {options.map((option) => (
         <button
           key={option.value}

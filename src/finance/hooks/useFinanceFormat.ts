@@ -1,0 +1,32 @@
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
+const CURRENCY = 'BRL'
+const MINUS_SIGN = '−'
+
+function capitalize(value: string) {
+  return value.charAt(0).toLocaleUpperCase() + value.slice(1)
+}
+
+/** Month names and money in the active UI language (Intl), so they follow the language switch. */
+export function useFinanceFormat() {
+  const { i18n } = useTranslation()
+  const language = i18n.language
+
+  return useMemo(() => {
+    const monthFormatter = new Intl.DateTimeFormat(language, { month: 'long', timeZone: 'UTC' })
+    const moneyFormatter = new Intl.NumberFormat(language, { style: 'currency', currency: CURRENCY })
+
+    const monthName = (month: number) => capitalize(monthFormatter.format(Date.UTC(2000, month - 1, 1)))
+
+    return {
+      monthName,
+      /** "Setembro 2026" / "September 2026". */
+      periodLabel: (month: number, year: number) => `${monthName(month)} ${year}`,
+      /** Unsigned amount, e.g. "R$ 1.200,00". */
+      money: (value: number) => moneyFormatter.format(Math.abs(value)),
+      /** Signed amount with a true minus sign (U+2212) for negatives. */
+      signedMoney: (value: number) => `${value < 0 ? MINUS_SIGN : ''}${moneyFormatter.format(Math.abs(value))}`,
+    }
+  }, [language])
+}
