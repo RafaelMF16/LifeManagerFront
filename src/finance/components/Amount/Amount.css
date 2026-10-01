@@ -1,0 +1,25 @@
+.lm-amount {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+
+.lm-amount--positive {
+  color: var(--amount-positive);
+}
+
+.lm-amount--negative {
+  color: var(--amount-negative);
+}
+
+.lm-amount--zero {
+  color: var(--text-secondary);
+}
+
+.lm-amount--emphasis {
+  font-weight: var(--weight-semibold);
+}
+
+.lm-amount--emphasis.lm-amount--zero {
+  color: var(--text-primary);
+}

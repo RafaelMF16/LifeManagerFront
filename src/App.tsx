@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AuthPage from './auth/pages/AuthPage'
 import FinanceLayout from './finance/components/FinanceLayout/FinanceLayout'
 import CategoriesPage from './finance/pages/CategoriesPage'
+import MonthsPage from './finance/pages/MonthsPage'
 import HomePage from './home/pages/HomePage'
 import { ErrorModalProvider } from './shared/components/ErrorModal/ErrorModalProvider'
 import { ToastProvider } from './shared/components/Toast/ToastProvider'
@@ -23,7 +24,8 @@ function App() {
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/finance" element={<FinanceLayout />}>
-              <Route index element={<Navigate to="categories" replace />} />
+              <Route index element={<Navigate to="months" replace />} />
+              <Route path="months" element={<MonthsPage />} />
               <Route path="categories" element={<CategoriesPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/auth" replace />} />

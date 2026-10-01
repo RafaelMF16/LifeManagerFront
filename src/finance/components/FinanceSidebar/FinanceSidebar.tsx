@@ -14,7 +14,7 @@ interface FinanceNavItem {
 }
 
 const NAV_ITEMS: FinanceNavItem[] = [
-  { id: 'months', icon: 'calendar', path: null },
+  { id: 'months', icon: 'calendar', path: '/finance/months' },
   { id: 'categories', icon: 'tags', path: '/finance/categories' },
 ]
 

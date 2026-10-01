@@ -1,0 +1,11 @@
+.lm-month-form__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-4);
+}
+
+.lm-month-form__error {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--danger);
+}

@@ -32,3 +32,10 @@
   color: var(--accent-text);
   box-shadow: var(--elevation-1);
 }
+
+/* The track's padding + border (2 × 3px) keep the whole control at a small control's height. */
+.lm-segmented-control--md .lm-segmented-control__option {
+  height: calc(var(--control-height-sm) - 6px);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+}
