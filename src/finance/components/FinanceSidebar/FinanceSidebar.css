@@ -5,6 +5,7 @@
   flex: none;
   width: var(--sidebar-width);
   height: calc(100vh - var(--topbar-height));
+  height: calc(100dvh - var(--topbar-height));
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -67,9 +68,14 @@
 }
 
 .lm-finance-sidebar__link:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
   text-decoration: none;
+}
+
+@media (hover: hover) {
+  .lm-finance-sidebar__link:hover {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+  }
 }
 
 .lm-finance-sidebar__link--active,
@@ -140,43 +146,67 @@
   display: none;
 }
 
+/* Compact: a fixed bottom tab bar (thumb reach). The nav wrapper is flattened with `display: contents`
+   so the module links and "All modules" become equal-width sibling tabs; the collapsed state doesn't apply. */
 @media (max-width: 768px) {
+  :root:has(.lm-finance-sidebar) {
+    --app-bottom-inset: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+  }
+
   .lm-finance-sidebar,
   .lm-finance-sidebar--collapsed {
-    position: static;
-    width: 100%;
+    position: fixed;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+    width: auto;
     height: auto;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 0 0 env(safe-area-inset-bottom);
     border-right: none;
-    border-bottom: var(--border-width) solid var(--border);
+    border-top: var(--border-width) solid var(--border);
+    transition: none;
+  }
+
+  .lm-finance-sidebar__nav {
+    display: contents;
   }
 
   .lm-finance-sidebar__module,
   .lm-finance-sidebar__spacer,
-  .lm-finance-sidebar__toggle {
+  .lm-finance-sidebar__toggle,
+  .lm-finance-sidebar .lm-finance-sidebar__badge {
     display: none;
   }
 
-  .lm-finance-sidebar__nav {
-    flex-direction: row;
+  .lm-finance-sidebar .lm-finance-sidebar__link {
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    min-width: 0;
+    height: var(--bottom-nav-height);
+    padding: 0 var(--space-1);
+    border-radius: 0;
+    font-size: var(--text-2xs);
   }
 
-  /* The horizontal bar has room for labels, so the collapsed state doesn't apply here. */
-  .lm-finance-sidebar--collapsed .lm-finance-sidebar__link {
-    justify-content: flex-start;
-    padding: 0 var(--space-3);
+  .lm-finance-sidebar .lm-finance-sidebar__link--active {
+    background: transparent;
   }
 
-  .lm-finance-sidebar--collapsed .lm-finance-sidebar__label {
+  .lm-finance-sidebar .lm-finance-sidebar__label {
     position: static;
     width: auto;
+    max-width: 100%;
     height: auto;
     margin: 0;
-    overflow: visible;
+    overflow: hidden;
     clip: auto;
+    text-overflow: ellipsis;
   }
 }

@@ -41,7 +41,8 @@
 .lm-category-list__columns,
 .lm-category-list__row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 72px;
+  /* Header and rows are separate grids: a computed width (two icon buttons, which grow on touch) keeps them aligned. */
+  grid-template-columns: minmax(0, 1fr) max(72px, calc(2 * var(--control-height-sm) + var(--space-1)));
   gap: var(--space-4);
   align-items: center;
   padding: 0 var(--space-5);
@@ -88,8 +89,10 @@
   transition: background var(--duration-instant) var(--ease-standard);
 }
 
-.lm-category-list__row:hover {
-  background: var(--surface-hover);
+@media (hover: hover) {
+  .lm-category-list__row:hover {
+    background: var(--surface-hover);
+  }
 }
 
 .lm-category-list__name {
@@ -127,4 +130,31 @@
 .lm-category-list--fetching .lm-category-list__rows {
   opacity: 0.55;
   pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .lm-category-list__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .lm-category-list__search {
+    width: 100%;
+  }
+
+  .lm-category-list__columns,
+  .lm-category-list__row {
+    padding: 0 var(--space-4);
+  }
+
+  .lm-category-list__columns {
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+  }
+
+  .lm-category-list__state {
+    padding: var(--space-8) var(--space-4);
+  }
 }
