@@ -6,10 +6,9 @@ import { useTheme } from '../../hooks/useTheme'
 import { useLanguage } from '../../hooks/useLanguage'
 import { useUserPreferencesSync } from '../../hooks/useUserPreferencesSync'
 import { useLogout } from '../../hooks/useLogout'
+import { useCurrentUser } from '../../hooks/useCurrentUser'
 import type { SupportedLanguage } from '../../i18n/languages'
 import './Header.css'
-
-const PLACEHOLDER_USER = { name: 'Ana Ribeiro', email: 'ana@exemplo.com' }
 
 function Header() {
   const { t: translate } = useTranslation('common')
@@ -17,6 +16,7 @@ function Header() {
   const { language, setLanguage } = useLanguage()
   const { flush: flushPreferences } = useUserPreferencesSync(theme, language)
   const { logout, isLoggingOut } = useLogout()
+  const { name: userName } = useCurrentUser()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -62,12 +62,17 @@ function Header() {
 
         {menuOpen ? (
           <div role="menu" className="lm-header__menu">
-            <div className="lm-header__menu-user">
-              <span className="lm-header__menu-user-name">{PLACEHOLDER_USER.name}</span>
-              <span className="lm-header__menu-user-email">{PLACEHOLDER_USER.email}</span>
-            </div>
+            {userName ? (
+              <>
+                <div className="lm-header__menu-user">
+                  <span className="lm-header__menu-user-name" title={userName}>
+                    {userName}
+                  </span>
+                </div>
 
-            <div className="lm-header__menu-divider" />
+                <div className="lm-header__menu-divider" />
+              </>
+            ) : null}
 
             <div className="lm-header__menu-row">
               <span className="lm-header__menu-row-label">
