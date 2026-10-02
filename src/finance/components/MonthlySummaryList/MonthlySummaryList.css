@@ -136,6 +136,7 @@
 }
 
 .lm-month-list__row {
+  position: relative;
   min-height: var(--row-height-default);
   padding-top: var(--space-3);
   padding-bottom: var(--space-3);
@@ -163,6 +164,30 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: none;
+}
+
+/* The period link stretches over the whole row, so tapping anywhere on a month opens it. */
+.lm-month-list__period-label::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.lm-month-list__period-label:focus-visible {
+  outline: none;
+}
+
+.lm-month-list__period-label:focus-visible::after {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) {
+  .lm-month-list__row:hover .lm-month-list__period-label {
+    color: var(--accent-text);
+    text-decoration: none;
+  }
 }
 
 .lm-month-list__badge {

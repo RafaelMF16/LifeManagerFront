@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import Button from '../../../shared/components/Button/Button'
 import Icon from '../../../shared/components/Icon/Icon'
 import IconButton from '../../../shared/components/IconButton/IconButton'
@@ -122,7 +123,9 @@ function MonthlySummaryList({
     return data.items.map((summary) => (
       <div key={summary.id} className="lm-month-list__row">
         <span className="lm-month-list__period">
-          <span className="lm-month-list__period-label">{periodLabel(summary.month, summary.year)}</span>
+          <Link to={`/finance/months/${summary.id}`} className="lm-month-list__period-label">
+            {periodLabel(summary.month, summary.year)}
+          </Link>
           {isCurrentMonth(summary, today) ? (
             <span className="lm-month-list__badge">{translate('finance:months.list.currentMonth')}</span>
           ) : null}

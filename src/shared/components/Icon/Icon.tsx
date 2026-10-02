@@ -1,6 +1,8 @@
 import {
+  ArrowDownLeft,
   ArrowDownWideNarrow,
   ArrowUpNarrowWide,
+  ArrowUpRight,
   Calendar,
   Check,
   ChevronDown,
@@ -29,6 +31,8 @@ const ICONS = {
   wallet: Wallet,
   'arrow-up-narrow-wide': ArrowUpNarrowWide,
   'arrow-down-wide-narrow': ArrowDownWideNarrow,
+  'arrow-down-left': ArrowDownLeft,
+  'arrow-up-right': ArrowUpRight,
   sun: Sun,
   moon: Moon,
   check: Check,

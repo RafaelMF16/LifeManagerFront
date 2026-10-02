@@ -7,5 +7,8 @@ export interface PagedResponse<T> {
   totalPages: number
 }
 
+// Espelha PageRequest.MaxPageSize (LifeManager.Domain/Shared/Paging/PageRequest.cs).
+export const PAGE_SIZE_MAX = 100
+
 // Espelha LifeManager.Domain/Shared/Enums/SortDirection.cs (binds by name in the query string).
 export type SortDirection = 'Asc' | 'Desc'

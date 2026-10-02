@@ -1,6 +1,11 @@
 import { apiRequest } from '../../shared/services/httpClient'
 import type { PagedResponse } from '../../shared/types/Paging'
-import type { MonthlySummaryListQuery, MonthlySummaryRequestDto, MonthlySummaryResponseDto } from '../types/MonthlySummaryDtos'
+import type {
+  MonthlySummaryDetailsDto,
+  MonthlySummaryListQuery,
+  MonthlySummaryRequestDto,
+  MonthlySummaryResponseDto,
+} from '../types/MonthlySummaryDtos'
 import type { MonthlySummaryFormValues } from '../validation/monthlySummarySchema'
 
 const MONTHLY_SUMMARIES_PATH = '/api/MonthlySummaries'
@@ -19,6 +24,11 @@ export function getMonthlySummaries(
   if (query.year !== null) params.set('year', String(query.year))
 
   return apiRequest<PagedResponse<MonthlySummaryResponseDto>>(`${MONTHLY_SUMMARIES_PATH}?${params}`, { method: 'GET', signal })
+}
+
+/** One month with its totals, transaction counts and the user's neighbouring months. */
+export function getMonthlySummary(id: number, signal?: AbortSignal): Promise<MonthlySummaryDetailsDto> {
+  return apiRequest<MonthlySummaryDetailsDto>(`${MONTHLY_SUMMARIES_PATH}/${id}`, { method: 'GET', signal })
 }
 
 /** The distinct years the user has months in, newest first. */

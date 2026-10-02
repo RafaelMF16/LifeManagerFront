@@ -18,6 +18,16 @@ export interface MonthlySummaryResponseDto {
   balance: number
 }
 
+// Espelha MonthlySummaryDetailsResponseDto (GET /api/MonthlySummaries/{id})
+export interface MonthlySummaryDetailsDto extends MonthlySummaryResponseDto {
+  incomeCount: number
+  expenseCount: number
+  /** The user's month right before this one; null when there is none. */
+  previousId: number | null
+  /** The user's month right after this one; null when there is none. */
+  nextId: number | null
+}
+
 // Espelha MonthlySummaryListQueryDto (query string de GET /api/MonthlySummaries)
 export interface MonthlySummaryListQuery {
   page: number
