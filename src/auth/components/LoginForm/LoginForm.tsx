@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import type { Location } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import Input from '../../../shared/components/Input/Input'
@@ -28,6 +29,7 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   const { show: showToast } = useToast()
   const { show: showErrorModal } = useErrorModal()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -44,7 +46,9 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
     // A failure here must not block the login: the locally stored preferences stay applied.
     await loadAndApplyUserPreferences().catch(() => {})
     showToast(translate('auth:login.successToast'))
-    navigate('/home')
+    // Back to the screen ProtectedRoute bounced the user from; `replace` so "back" doesn't return to /auth.
+    const from = (location.state as { from?: Location } | null)?.from
+    navigate(from ? `${from.pathname}${from.search}` : '/home', { replace: true })
   })
 
   return (

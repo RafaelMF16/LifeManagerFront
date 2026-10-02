@@ -1,6 +1,6 @@
 import { apiRequest } from './httpClient'
 import { emitSessionExpired } from './sessionEvents'
-import { clearAccessToken, setAccessToken } from './tokenStorage'
+import { clearAccessToken, getAccessToken, setAccessToken } from './tokenStorage'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 const REFRESH_LOCK_NAME = 'lm-token-refresh'
@@ -19,6 +19,34 @@ export async function logout(): Promise<void> {
 }
 
 let refreshInFlight: Promise<boolean> | null = null
+let notifyingRefreshInFlight: Promise<boolean> | null = null
+
+/**
+ * Trades the HttpOnly refresh token cookie for a new access token, announcing an expired session when the
+ * backend rejects it. Used by `apiRequest` on a 401, when the user was signed in until now.
+ *
+ * Single-flight, so N concurrent 401s refresh (and announce) only once.
+ */
+export function refreshAccessToken(): Promise<boolean> {
+  notifyingRefreshInFlight ??= refreshSession()
+    .then((refreshed) => {
+      if (!refreshed) emitSessionExpired()
+      return refreshed
+    })
+    .finally(() => {
+      notifyingRefreshInFlight = null
+    })
+
+  return notifyingRefreshInFlight
+}
+
+/**
+ * Resolves whether this tab has a session, renewing it from the refresh cookie when there's no access token
+ * (a new tab or a reload). Silent: someone who never signed in, or just signed out, isn't told it "expired".
+ */
+export function restoreSession(): Promise<boolean> {
+  return getAccessToken() ? Promise.resolve(true) : refreshSession()
+}
 
 /**
  * Trades the HttpOnly refresh token cookie for a new access token (the backend rotates the cookie too).
@@ -28,7 +56,7 @@ let refreshInFlight: Promise<boolean> | null = null
  * reuse to the backend, which then revokes the whole session. Inside the lock, a waiting tab sends the cookie
  * the previous tab already rotated.
  */
-export function refreshAccessToken(): Promise<boolean> {
+function refreshSession(): Promise<boolean> {
   refreshInFlight ??= withRefreshLock(requestNewAccessToken).finally(() => {
     refreshInFlight = null
   })
@@ -49,8 +77,6 @@ async function requestNewAccessToken(): Promise<boolean> {
 
   if (!response.ok) {
     clearAccessToken()
-    // Emitted here, inside the single-flight, so N concurrent 401s redirect (and toast) only once.
-    emitSessionExpired()
     return false
   }
 

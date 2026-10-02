@@ -6,6 +6,8 @@ import MonthDetailsPage from './finance/pages/MonthDetailsPage'
 import MonthsPage from './finance/pages/MonthsPage'
 import HomePage from './home/pages/HomePage'
 import { ErrorModalProvider } from './shared/components/ErrorModal/ErrorModalProvider'
+import ProtectedRoute from './shared/components/ProtectedRoute/ProtectedRoute'
+import PublicOnlyRoute from './shared/components/PublicOnlyRoute/PublicOnlyRoute'
 import { ToastProvider } from './shared/components/Toast/ToastProvider'
 import { useSessionExpiredRedirect } from './shared/hooks/useSessionExpiredRedirect'
 
@@ -22,15 +24,20 @@ function App() {
         <BrowserRouter>
           <SessionExpiredListener />
           <Routes>
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/finance" element={<FinanceLayout />}>
-              <Route index element={<Navigate to="months" replace />} />
-              <Route path="months" element={<MonthsPage />} />
-              <Route path="months/:monthlySummaryId" element={<MonthDetailsPage />} />
-              <Route path="categories" element={<CategoriesPage />} />
+            <Route element={<PublicOnlyRoute />}>
+              <Route path="/auth" element={<AuthPage />} />
             </Route>
-            <Route path="*" element={<Navigate to="/auth" replace />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/finance" element={<FinanceLayout />}>
+                <Route index element={<Navigate to="months" replace />} />
+                <Route path="months" element={<MonthsPage />} />
+                <Route path="months/:monthlySummaryId" element={<MonthDetailsPage />} />
+                <Route path="categories" element={<CategoriesPage />} />
+              </Route>
+            </Route>
+            {/* Signed-out users are sent on to /auth by ProtectedRoute. */}
+            <Route path="*" element={<Navigate to="/home" replace />} />
           </Routes>
         </BrowserRouter>
       </ErrorModalProvider>
