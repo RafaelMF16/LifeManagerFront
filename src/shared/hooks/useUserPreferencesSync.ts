@@ -25,7 +25,7 @@ export function useUserPreferencesSync(theme: Theme, language: SupportedLanguage
     flushRef.current = () => {
       const pending = pendingRef.current
       pendingRef.current = null
-      if (!pending || !getAccessToken()) return
+      if (!pending) return
 
       const previous = lastSavedRef.current
       lastSavedRef.current = pending
@@ -49,9 +49,14 @@ export function useUserPreferencesSync(theme: Theme, language: SupportedLanguage
     return () => clearTimeout(timeoutId)
   }, [theme, language])
 
-  useEffect(() => () => flushRef.current(), [])
+  // The debounced save goes through apiRequest even without an access token (e.g. a new tab), so a 401
+  // refreshes it from the cookie. Leaving flushes (unmount, before logout) skip it instead: with no token
+  // the user is signing out, and a refresh there would fail and show the session-expired toast.
+  const flushIfAuthenticated = useCallback(() => {
+    if (getAccessToken()) flushRef.current()
+  }, [])
 
-  const flush = useCallback(() => flushRef.current(), [])
+  useEffect(() => flushIfAuthenticated, [flushIfAuthenticated])
 
-  return { flush }
+  return { flush: flushIfAuthenticated }
 }
