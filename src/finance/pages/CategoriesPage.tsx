@@ -10,7 +10,7 @@ import CategoryList from '../components/CategoryList/CategoryList'
 import DeleteCategoryModal from '../components/DeleteCategoryModal/DeleteCategoryModal'
 import { useCategories } from '../hooks/useCategories'
 import type { CategoryResponseDto } from '../types/CategoryDtos'
-import { CATEGORY_NOT_FOUND_CODE } from '../validation/categoryErrorMap'
+import { CATEGORY_IN_USE_CODE, CATEGORY_NOT_FOUND_CODE } from '../validation/categoryErrorMap'
 import type { CategoryFormValues } from '../validation/categorySchema'
 import './CategoriesPage.css'
 
@@ -47,6 +47,8 @@ function CategoriesPage() {
       } else if (err.code === CATEGORY_NOT_FOUND_CODE) {
         showErrorModal(translate('finance:categories.delete.errorTitle'), translate('finance:categories.validation.notFound'))
         reload()
+      } else if (err.code === CATEGORY_IN_USE_CODE) {
+        showErrorModal(translate('finance:categories.delete.errorTitle'), translate('finance:categories.delete.inUse'))
       } else {
         showErrorModal(translate('finance:categories.delete.errorTitle'), translate('common:errors.generic'))
       }
