@@ -123,3 +123,9 @@
     background: var(--negative-tint);
   }
 }
+
+.lm-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}

@@ -9,6 +9,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronUp,
+  Eye,
+  EyeOff,
   Languages,
   LayoutDashboard,
   LogOut,
@@ -53,6 +55,8 @@ const ICONS = {
   search: Search,
   pencil: Pencil,
   'trash-2': Trash2,
+  eye: Eye,
+  'eye-off': EyeOff,
 } as const
 
 export type IconName = keyof typeof ICONS

@@ -14,6 +14,11 @@ export default {
     collapse: 'Collapse menu',
     expand: 'Expand menu',
   },
+  privacy: {
+    hide: 'Hide amounts',
+    show: 'Show amounts',
+    hiddenValue: 'Hidden amount',
+  },
   actions: {
     cancel: 'Cancel',
     close: 'Close',
