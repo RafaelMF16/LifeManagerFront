@@ -6,9 +6,17 @@ const CURRENCY = 'BRL'
 const MINUS_SIGN = '−'
 const MONEY_MASK = '••••••'
 const PERCENT_MASK = '••'
+/** Changes beyond ±999% read as noise; they show capped (">+999%"). */
+const CHANGE_RATIO_CAP = 9.99
 
 function capitalize(value: string) {
   return value.charAt(0).toLocaleUpperCase() + value.slice(1)
+}
+
+/** "2026-09" → { year: 2026, month: 9 }. */
+function parseYearMonth(value: string) {
+  const [year, month] = value.split('-').map(Number)
+  return { year, month }
 }
 
 /**
@@ -32,11 +40,21 @@ export function createFinanceFormat(language: string, hidden: boolean) {
 
   const dayMonthFormatter = new Intl.DateTimeFormat(language, { day: 'numeric', month: 'short', timeZone: 'UTC' })
   const percentFormatter = new Intl.NumberFormat(language, { style: 'percent', maximumFractionDigits: 1 })
+  const compactMoneyFormatter = new Intl.NumberFormat(language, {
+    style: 'currency',
+    currency: CURRENCY,
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  })
+  const shortMonthFormatter = new Intl.DateTimeFormat(language, { month: 'short', timeZone: 'UTC' })
 
   const maskedMoney = maskedLayout(moneyFormatter, MONEY_MASK)
   const maskedPercent = maskedLayout(percentFormatter, PERCENT_MASK)
 
   const monthName = (month: number) => capitalize(monthFormatter.format(Date.UTC(2000, month - 1, 1)))
+  const shortMonthName = (month: number) =>
+    capitalize(shortMonthFormatter.format(Date.UTC(2000, month - 1, 1)).replace('.', ''))
+  const compactMoney = (value: number) => (hidden ? maskedMoney : compactMoneyFormatter.format(Math.abs(value)))
 
   return {
     monthName,
@@ -58,6 +76,27 @@ export function createFinanceFormat(language: string, hidden: boolean) {
     /** Signed amount with a true minus sign (U+2212) for negatives; masked without a sign, so it doesn't leak. */
     signedMoney: (value: number) =>
       hidden ? maskedMoney : `${value < 0 ? MINUS_SIGN : ''}${moneyFormatter.format(Math.abs(value))}`,
+    /** Short unsigned amount for tight spots (chart axes), e.g. "R$ 1,2 mil" / "R$1.2K". */
+    compactMoney,
+    /** `compactMoney` with a true minus sign for negatives. */
+    signedCompactMoney: (value: number) => (hidden ? maskedMoney : `${value < 0 ? MINUS_SIGN : ''}${compactMoney(value)}`),
+    /** A change ratio with its sign, e.g. 0.12 → "+12%", −0.05 → "−5%"; capped at ±999%. */
+    signedPercent: (ratio: number) => {
+      if (hidden) return maskedPercent
+      const sign = ratio > 0 ? '+' : ratio < 0 ? MINUS_SIGN : ''
+      const capped = Math.abs(ratio) > CHANGE_RATIO_CAP
+      return `${capped ? '>' : ''}${sign}${percentFormatter.format(Math.min(Math.abs(ratio), CHANGE_RATIO_CAP))}`
+    },
+    /** "Set" / "Sep". */
+    shortMonthName,
+    /** A run of months from `yyyy-MM` bounds: "Set 2026", "Abr – Set 2026" or "Nov 2025 – Jan 2026". */
+    rangeLabel: (from: string, to: string) => {
+      const start = parseYearMonth(from)
+      const end = parseYearMonth(to)
+      if (start.year === end.year && start.month === end.month) return `${shortMonthName(start.month)} ${start.year}`
+      if (start.year === end.year) return `${shortMonthName(start.month)} – ${shortMonthName(end.month)} ${end.year}`
+      return `${shortMonthName(start.month)} ${start.year} – ${shortMonthName(end.month)} ${end.year}`
+    },
   }
 }
 

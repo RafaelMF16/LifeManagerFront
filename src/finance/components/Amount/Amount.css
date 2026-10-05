@@ -12,6 +12,10 @@
   color: var(--amount-negative);
 }
 
+.lm-amount--investment {
+  color: var(--amount-investment);
+}
+
 .lm-amount--zero {
   color: var(--text-secondary);
 }

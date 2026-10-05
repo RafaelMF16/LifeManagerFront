@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import Icon from '../../../shared/components/Icon/Icon'
+import type { IconName } from '../../../shared/components/Icon/Icon'
 import IconButton from '../../../shared/components/IconButton/IconButton'
 import Input from '../../../shared/components/Input/Input'
 import Pagination from '../../../shared/components/Pagination/Pagination'
@@ -10,12 +11,30 @@ import type { PagedResponse, SortDirection } from '../../../shared/types/Paging'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import type { TransactionsStatus } from '../../hooks/useTransactions'
 import type { CategoryResponseDto } from '../../types/CategoryDtos'
-import type { TransactionResponseDto, TransactionSortBy, TransactionTypeFilter } from '../../types/TransactionDtos'
+import type {
+  MoneyFlowType,
+  TransactionResponseDto,
+  TransactionSortBy,
+  TransactionTypeFilter,
+} from '../../types/TransactionDtos'
 import Amount from '../Amount/Amount'
 import './TransactionList.css'
 
 const ALL_CATEGORIES = 'all'
-const TYPE_FILTERS: TransactionTypeFilter[] = ['All', 'Income', 'Expense']
+const TYPE_FILTERS: TransactionTypeFilter[] = ['All', 'Income', 'Expense', 'Investment']
+
+// How each type reads in a row. Money leaving the account (expense, investment) shows negative, so the
+// list matches the Amount sort, which orders by the signed value.
+const TYPE_DISPLAY: Record<MoneyFlowType, { icon: IconName; modifier: string; labelKey: string; sign: 1 | -1 }> = {
+  Income: { icon: 'arrow-down-left', modifier: 'income', labelKey: 'finance:transactions.list.income', sign: 1 },
+  Expense: { icon: 'arrow-up-right', modifier: 'expense', labelKey: 'finance:transactions.list.expense', sign: -1 },
+  Investment: {
+    icon: 'piggy-bank',
+    modifier: 'investment',
+    labelKey: 'finance:transactions.list.investment',
+    sign: -1,
+  },
+}
 
 // `id` doubles as an i18next key lookup (`finance:transactions.list.columns.${id}`).
 const COLUMNS: { id: TransactionSortBy; numeric: boolean }[] = [
@@ -127,16 +146,16 @@ function TransactionList({
     }
 
     return data.items.map((transaction) => {
-      const isIncome = transaction.type === 'Income'
+      const display = TYPE_DISPLAY[transaction.type]
       return (
         <div key={transaction.id} className="lm-transaction-list__row">
           <span className="lm-transaction-list__date lm-numeric">{dayLabel(transaction.date)}</span>
           <span className="lm-transaction-list__description">
             <Icon
-              name={isIncome ? 'arrow-down-left' : 'arrow-up-right'}
+              name={display.icon}
               size={16}
-              className={`lm-transaction-list__type-icon lm-transaction-list__type-icon--${isIncome ? 'income' : 'expense'}`}
-              aria-label={translate(isIncome ? 'finance:transactions.list.income' : 'finance:transactions.list.expense')}
+              className={`lm-transaction-list__type-icon lm-transaction-list__type-icon--${display.modifier}`}
+              aria-label={translate(display.labelKey)}
               role="img"
             />
             <span className="lm-transaction-list__description-text">{transaction.description}</span>
@@ -145,7 +164,10 @@ function TransactionList({
             <span className="lm-transaction-list__badge">{transaction.categoryName}</span>
           </span>
           <span className="lm-transaction-list__amount">
-            <Amount value={isIncome ? transaction.amount : -transaction.amount} tone="signed" />
+            <Amount
+              value={display.sign * transaction.amount}
+              tone={transaction.type === 'Investment' ? 'investment' : 'signed'}
+            />
           </span>
           <div className="lm-transaction-list__actions">
             <IconButton

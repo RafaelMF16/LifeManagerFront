@@ -21,6 +21,7 @@ const COLUMNS: { id: MonthlySummarySortBy; numeric: boolean }[] = [
   { id: 'Period', numeric: false },
   { id: 'TotalIncome', numeric: true },
   { id: 'TotalExpense', numeric: true },
+  { id: 'TotalInvestment', numeric: true },
   { id: 'Balance', numeric: true },
 ]
 
@@ -137,6 +138,10 @@ function MonthlySummaryList({
         <span className="lm-month-list__cell lm-month-list__cell--expense">
           <span className="lm-month-list__cell-label">{translate('finance:months.list.columns.TotalExpense')}</span>
           <Amount value={summary.totalExpense} tone="negative" />
+        </span>
+        <span className="lm-month-list__cell lm-month-list__cell--investment">
+          <span className="lm-month-list__cell-label">{translate('finance:months.list.columns.TotalInvestment')}</span>
+          <Amount value={summary.totalInvestment} tone="investment" />
         </span>
         <span className="lm-month-list__cell lm-month-list__cell--balance">
           <span className="lm-month-list__cell-label">{translate('finance:months.list.columns.Balance')}</span>

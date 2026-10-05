@@ -6,6 +6,7 @@ export default {
   sidebar: {
     navAria: 'Finance module navigation',
     items: {
+      dashboard: 'Dashboard',
       months: 'Months',
       categories: 'Categories',
     },
@@ -22,6 +23,55 @@ export default {
   actions: {
     cancel: 'Cancel',
     close: 'Close',
+  },
+  dashboard: {
+    title: 'Dashboard',
+    periodLabel: 'Period',
+    comparedTo: 'Compared with {{range}}',
+    loading: 'Loading the dashboard…',
+    loadError: "Couldn't load the dashboard.",
+    retry: 'Try again',
+    presets: {
+      thisMonth: 'This month',
+      last3Months: 'Last 3 months',
+      last6Months: 'Last 6 months',
+      last12Months: 'Last 12 months',
+      thisYear: 'This year',
+      year: '{{year}}',
+    },
+    totals: {
+      label: 'Period totals',
+      income: 'Income',
+      expense: 'Expenses',
+      investment: 'Invested',
+      balance: 'Balance',
+    },
+    change: {
+      up: 'Up {{value}} compared with {{range}}',
+      down: 'Down {{value}} compared with {{range}}',
+      same: 'Same as {{range}}',
+      none: 'Nothing in {{range}} to compare with',
+      hidden: 'Change hidden',
+    },
+    evolution: {
+      title: 'Monthly overview',
+      legendLabel: 'Legend',
+      balance: 'Balance',
+      tableCaption: 'Income, investments, expenses and balance per month',
+      month: 'Month',
+      selectHint: 'Select a month to see its figures.',
+    },
+    categories: {
+      expensesTitle: 'Spending by category',
+      investmentsTitle: 'Investments by category',
+      others_one: 'Others ({{count}} category)',
+      others_other: 'Others ({{count}} categories)',
+      shareOfTotal: '{{percent}} of total',
+      previous: 'In {{range}}',
+      byMonth: 'By month',
+      emptyExpenses: 'No spending in this period.',
+      emptyInvestments: 'No investments in this period.',
+    },
   },
   months: {
     title: 'Months',
@@ -54,6 +104,7 @@ export default {
         Period: 'Month',
         TotalIncome: 'Income',
         TotalExpense: 'Expenses',
+        TotalInvestment: 'Invested',
         Balance: 'Balance',
       },
       currentMonth: 'Current month',
@@ -100,6 +151,7 @@ export default {
     totals: {
       income: 'Income',
       expense: 'Expenses',
+      investment: 'Invested',
       balance: 'Balance',
       count_one: '{{count}} transaction',
       count_other: '{{count}} transactions',
@@ -121,6 +173,7 @@ export default {
           All: 'All',
           Income: 'Income',
           Expense: 'Expenses',
+          Investment: 'Investments',
         },
         category: 'Category',
         allCategories: 'All',
@@ -142,6 +195,7 @@ export default {
       },
       income: 'Income',
       expense: 'Expense',
+      investment: 'Investment',
       edit: 'Edit',
       delete: 'Delete',
       loading: 'Loading transactions…',
@@ -161,6 +215,7 @@ export default {
       typeLabel: 'Type',
       typeOptions: {
         Expense: 'Expense',
+        Investment: 'Investment',
         Income: 'Income',
       },
       descriptionLabel: 'Description',
@@ -187,12 +242,13 @@ export default {
     toasts: {
       createdIncome: 'Income recorded',
       createdExpense: 'Expense recorded',
+      createdInvestment: 'Investment recorded',
       updated: 'Transaction updated',
       deleted: 'Transaction deleted',
     },
     validation: {
       type: {
-        invalid: 'Choose expense or income',
+        invalid: 'Choose expense, income or investment',
       },
       description: {
         required: 'Enter a description',

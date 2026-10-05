@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AuthPage from './auth/pages/AuthPage'
 import FinanceLayout from './finance/components/FinanceLayout/FinanceLayout'
 import CategoriesPage from './finance/pages/CategoriesPage'
+import DashboardPage from './finance/pages/DashboardPage'
 import MonthDetailsPage from './finance/pages/MonthDetailsPage'
 import MonthsPage from './finance/pages/MonthsPage'
 import HomePage from './home/pages/HomePage'
@@ -30,7 +31,8 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/home" element={<HomePage />} />
               <Route path="/finance" element={<FinanceLayout />}>
-                <Route index element={<Navigate to="months" replace />} />
+                <Route index element={<Navigate to="dashboard" replace />} />
+                <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="months" element={<MonthsPage />} />
                 <Route path="months/:monthlySummaryId" element={<MonthDetailsPage />} />
                 <Route path="categories" element={<CategoriesPage />} />

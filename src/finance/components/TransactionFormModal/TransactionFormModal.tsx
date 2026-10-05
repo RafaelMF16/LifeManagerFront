@@ -22,7 +22,7 @@ import { TRANSACTION_DESCRIPTION_MAX_LENGTH, createTransactionSchema, monthDateR
 import type { TransactionFormValues } from '../../validation/transactionSchema'
 import './TransactionFormModal.css'
 
-const TYPES: MoneyFlowType[] = ['Expense', 'Income']
+const TYPES: MoneyFlowType[] = ['Expense', 'Income', 'Investment']
 
 interface TransactionFormModalProps {
   year: number

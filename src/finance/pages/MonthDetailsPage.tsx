@@ -16,12 +16,18 @@ import { useCategoryOptions } from '../hooks/useCategoryOptions'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
 import { useMonthlySummaryDetails } from '../hooks/useMonthlySummaryDetails'
 import { useTransactions } from '../hooks/useTransactions'
-import type { TransactionResponseDto } from '../types/TransactionDtos'
+import type { MoneyFlowType, TransactionResponseDto } from '../types/TransactionDtos'
 import { TRANSACTION_NOT_FOUND_CODE } from '../validation/transactionErrorMap'
 import type { TransactionFormValues } from '../validation/transactionSchema'
 import './MonthDetailsPage.css'
 
 type FormTarget = { mode: 'create' } | { mode: 'edit'; transaction: TransactionResponseDto }
+
+const CREATED_TOAST_KEYS: Record<MoneyFlowType, string> = {
+  Income: 'finance:transactions.toasts.createdIncome',
+  Expense: 'finance:transactions.toasts.createdExpense',
+  Investment: 'finance:transactions.toasts.createdInvestment',
+}
 
 function isCurrentMonth(year: number, month: number) {
   const today = new Date()
@@ -51,9 +57,7 @@ function MonthDetailsPage() {
       showToast(translate('finance:transactions.toasts.updated'))
     } else {
       await createTransaction(values)
-      showToast(
-        translate(values.type === 'Income' ? 'finance:transactions.toasts.createdIncome' : 'finance:transactions.toasts.createdExpense'),
-      )
+      showToast(translate(CREATED_TOAST_KEYS[values.type]))
     }
     setFormTarget(null)
   }
@@ -160,7 +164,7 @@ function MonthDetailsPage() {
         data={transactions.data}
         status={transactions.status}
         isFetching={transactions.isFetching}
-        monthTransactionCount={data.incomeCount + data.expenseCount}
+        monthTransactionCount={data.incomeCount + data.expenseCount + data.investmentCount}
         categories={categoryOptions.categories}
         type={transactions.type}
         onTypeChange={transactions.setType}

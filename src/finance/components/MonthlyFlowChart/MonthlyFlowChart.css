@@ -1,0 +1,334 @@
+.lm-flow-chart {
+  --lm-plot-height: 200px;
+  --lm-axis-width: 64px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-5);
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+}
+
+.lm-flow-chart__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.lm-flow-chart__title {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-flow-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-flow-chart__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-flow-chart__swatch {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.lm-flow-chart__swatch--income {
+  background: var(--chart-income);
+}
+
+.lm-flow-chart__swatch--investment {
+  background: var(--chart-investment);
+}
+
+.lm-flow-chart__swatch--expense {
+  background: var(--chart-expense);
+}
+
+/* The selected month's exact figures: what a tooltip would show, but always visible and reachable by touch. */
+.lm-flow-chart__detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+}
+
+.lm-flow-chart__detail-month {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-flow-chart__detail-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+}
+
+.lm-flow-chart__detail-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lm-flow-chart__detail-figure dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-2xs);
+  color: var(--text-secondary);
+}
+
+.lm-flow-chart__detail-figure dd {
+  margin: 0;
+}
+
+.lm-flow-chart__plot {
+  position: relative;
+  padding-left: var(--lm-axis-width);
+}
+
+/* Hairline gridlines behind the bars, each with its value in the left gutter. */
+.lm-flow-chart__grid {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--lm-plot-height);
+  pointer-events: none;
+}
+
+.lm-flow-chart__gridline {
+  position: absolute;
+  left: var(--lm-axis-width);
+  right: 0;
+  bottom: calc(var(--lm-bar) * 100%);
+  border-top: var(--border-width) solid var(--border);
+}
+
+.lm-flow-chart__gridlabel {
+  position: absolute;
+  right: 100%;
+  top: 0;
+  transform: translateY(-50%);
+  padding-right: var(--space-2);
+  font-size: var(--text-2xs);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.lm-flow-chart__groups {
+  position: relative;
+  display: flex;
+  gap: var(--space-1);
+}
+
+/* Each month is the hit target: far bigger than its bars, so it's easy to point at or tap. */
+.lm-flow-chart__group {
+  appearance: none;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 2px var(--space-1);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .lm-flow-chart__group:hover {
+    background: var(--surface-hover);
+  }
+}
+
+.lm-flow-chart__group--selected {
+  background: var(--surface-sunken);
+}
+
+.lm-flow-chart__bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  height: var(--lm-plot-height);
+}
+
+/* Thin columns, 4px rounded at the data end and square on the baseline. */
+.lm-flow-chart__bar {
+  flex: 0 1 16px;
+  max-width: 24px;
+  min-width: 2px;
+  height: calc(var(--lm-bar) * 100%);
+  min-height: 2px;
+  border-radius: 4px 4px 0 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lm-flow-chart__bar {
+    transition:
+      height var(--duration-base) var(--ease-standard),
+      width var(--duration-base) var(--ease-standard);
+  }
+}
+
+.lm-flow-chart__bar--income {
+  background: var(--chart-income);
+}
+
+.lm-flow-chart__bar--investment {
+  background: var(--chart-investment);
+}
+
+.lm-flow-chart__bar--expense {
+  background: var(--chart-expense);
+}
+
+.lm-flow-chart__bar--empty {
+  min-height: 0;
+  min-width: 0;
+}
+
+/* Privacy mode: same-size neutral placeholders, so not even the proportions show. */
+.lm-flow-chart--hidden .lm-flow-chart__bar {
+  background: var(--border-strong);
+}
+
+.lm-flow-chart__month {
+  padding-top: 6px;
+  font-size: var(--text-2xs);
+  color: var(--text-secondary);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.lm-flow-chart__month--quiet {
+  visibility: hidden;
+}
+
+.lm-flow-chart__balance {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.lm-flow-chart__balance .lm-amount {
+  font-size: var(--text-2xs);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lm-flow-chart__hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* The screen-reader alternative to the bars: every figure, in a real table. */
+.lm-flow-chart__table {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .lm-flow-chart {
+    padding: var(--space-4);
+  }
+
+  .lm-flow-chart__plot {
+    padding-left: 0;
+  }
+
+  /* No room for an axis: the detail strip carries the exact figures. */
+  .lm-flow-chart__grid {
+    display: none;
+  }
+
+  /* One row per month: name, three horizontal bars, balance. */
+  .lm-flow-chart__groups {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .lm-flow-chart__group {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    grid-template-areas: 'month bars balance';
+    align-items: center;
+    column-gap: var(--space-3);
+    min-height: 44px;
+    padding: var(--space-2);
+  }
+
+  .lm-flow-chart__bars {
+    grid-area: bars;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    height: auto;
+  }
+
+  .lm-flow-chart__bar {
+    flex: none;
+    width: calc(var(--lm-bar) * 100%);
+    max-width: none;
+    height: 6px;
+    min-height: 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .lm-flow-chart__month {
+    grid-area: month;
+    padding-top: 0;
+    text-align: left;
+  }
+
+  .lm-flow-chart__month--quiet {
+    visibility: visible;
+  }
+
+  .lm-flow-chart__balance {
+    grid-area: balance;
+    justify-content: flex-end;
+  }
+
+  .lm-flow-chart__balance .lm-amount {
+    font-size: var(--text-xs);
+  }
+}

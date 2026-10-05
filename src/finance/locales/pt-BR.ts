@@ -6,6 +6,7 @@ export default {
   sidebar: {
     navAria: 'Navegação do módulo Financeiro',
     items: {
+      dashboard: 'Painel',
       months: 'Meses',
       categories: 'Categorias',
     },
@@ -22,6 +23,55 @@ export default {
   actions: {
     cancel: 'Cancelar',
     close: 'Fechar',
+  },
+  dashboard: {
+    title: 'Painel',
+    periodLabel: 'Período',
+    comparedTo: 'Comparado com {{range}}',
+    loading: 'Carregando o painel…',
+    loadError: 'Não foi possível carregar o painel.',
+    retry: 'Tentar de novo',
+    presets: {
+      thisMonth: 'Este mês',
+      last3Months: 'Últimos 3 meses',
+      last6Months: 'Últimos 6 meses',
+      last12Months: 'Últimos 12 meses',
+      thisYear: 'Este ano',
+      year: '{{year}}',
+    },
+    totals: {
+      label: 'Totais do período',
+      income: 'Receitas',
+      expense: 'Gastos',
+      investment: 'Investido',
+      balance: 'Saldo',
+    },
+    change: {
+      up: 'Subiu {{value}} em relação a {{range}}',
+      down: 'Caiu {{value}} em relação a {{range}}',
+      same: 'Igual a {{range}}',
+      none: 'Sem valor em {{range}} para comparar',
+      hidden: 'Variação oculta',
+    },
+    evolution: {
+      title: 'Evolução mensal',
+      legendLabel: 'Legenda',
+      balance: 'Saldo',
+      tableCaption: 'Receitas, investimentos, gastos e saldo por mês',
+      month: 'Mês',
+      selectHint: 'Selecione um mês para ver os valores.',
+    },
+    categories: {
+      expensesTitle: 'Gastos por categoria',
+      investmentsTitle: 'Investimentos por categoria',
+      others_one: 'Outras ({{count}} categoria)',
+      others_other: 'Outras ({{count}} categorias)',
+      shareOfTotal: '{{percent}} do total',
+      previous: 'Em {{range}}',
+      byMonth: 'Por mês',
+      emptyExpenses: 'Nenhum gasto neste período.',
+      emptyInvestments: 'Nenhum investimento neste período.',
+    },
   },
   months: {
     title: 'Meses',
@@ -54,6 +104,7 @@ export default {
         Period: 'Mês',
         TotalIncome: 'Receitas',
         TotalExpense: 'Gastos',
+        TotalInvestment: 'Investido',
         Balance: 'Saldo',
       },
       currentMonth: 'Mês atual',
@@ -100,6 +151,7 @@ export default {
     totals: {
       income: 'Receitas',
       expense: 'Gastos',
+      investment: 'Investido',
       balance: 'Saldo',
       count_one: '{{count}} lançamento',
       count_other: '{{count}} lançamentos',
@@ -121,6 +173,7 @@ export default {
           All: 'Todos',
           Income: 'Receitas',
           Expense: 'Gastos',
+          Investment: 'Investimentos',
         },
         category: 'Categoria',
         allCategories: 'Todas',
@@ -142,6 +195,7 @@ export default {
       },
       income: 'Receita',
       expense: 'Gasto',
+      investment: 'Investimento',
       edit: 'Editar',
       delete: 'Excluir',
       loading: 'Carregando lançamentos…',
@@ -161,6 +215,7 @@ export default {
       typeLabel: 'Tipo',
       typeOptions: {
         Expense: 'Gasto',
+        Investment: 'Investimento',
         Income: 'Receita',
       },
       descriptionLabel: 'Descrição',
@@ -187,12 +242,13 @@ export default {
     toasts: {
       createdIncome: 'Receita registrada',
       createdExpense: 'Gasto registrado',
+      createdInvestment: 'Investimento registrado',
       updated: 'Lançamento atualizado',
       deleted: 'Lançamento excluído',
     },
     validation: {
       type: {
-        invalid: 'Escolha gasto ou receita',
+        invalid: 'Escolha gasto, receita ou investimento',
       },
       description: {
         required: 'Informe uma descrição',
