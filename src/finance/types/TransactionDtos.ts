@@ -1,8 +1,8 @@
 import type { SortDirection } from '../../shared/types/Paging'
 
 // Espelha LifeManager.Domain/Shared/Enums/MoneyFlowType.cs e LifeManager.Domain/Transactions/Enums (binds by name).
-export type MoneyFlowType = 'Expense' | 'Income'
-export type TransactionTypeFilter = 'All' | 'Expense' | 'Income'
+export type MoneyFlowType = 'Expense' | 'Income' | 'Investment'
+export type TransactionTypeFilter = 'All' | 'Expense' | 'Income' | 'Investment'
 export type TransactionSortBy = 'Date' | 'Description' | 'Category' | 'Amount'
 
 // Espelha LifeManager.Application/Transactions/DTOs
@@ -20,7 +20,7 @@ export interface TransactionResponseDto {
   type: MoneyFlowType
   categoryId: number
   categoryName: string
-  /** Always positive; `type` says whether it came in or went out. */
+  /** Always positive; `type` says whether it came in, was spent or was invested. */
   amount: number
   description: string
   /** ISO date, `YYYY-MM-DD`. */

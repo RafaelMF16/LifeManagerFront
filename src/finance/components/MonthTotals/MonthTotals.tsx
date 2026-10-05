@@ -8,7 +8,7 @@ interface MonthTotalsProps {
   month: MonthlySummaryDetailsDto
 }
 
-/** Income, expenses and balance of one month, each with the figure that explains it. */
+/** Income, expenses, investment and balance of one month, each with the figure that explains it. */
 function MonthTotals({ month }: MonthTotalsProps) {
   const { t: translate } = useTranslation('finance')
   const { percent } = useFinanceFormat()
@@ -32,6 +32,13 @@ function MonthTotals({ month }: MonthTotalsProps) {
         <Amount value={month.totalExpense} tone="negative" emphasis className="lm-month-totals__value" />
         <span className="lm-month-totals__caption">
           {translate('finance:monthDetails.totals.count', { count: month.expenseCount })}
+        </span>
+      </div>
+      <div className="lm-month-totals__card">
+        <span className="lm-month-totals__label">{translate('finance:monthDetails.totals.investment')}</span>
+        <Amount value={month.totalInvestment} tone="investment" emphasis className="lm-month-totals__value" />
+        <span className="lm-month-totals__caption">
+          {translate('finance:monthDetails.totals.count', { count: month.investmentCount })}
         </span>
       </div>
       <div className="lm-month-totals__card">

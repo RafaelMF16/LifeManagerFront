@@ -1,4 +1,4 @@
-.lm-month-totals {
+.lm-dashboard-totals {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   background: var(--surface);
@@ -8,7 +8,20 @@
   overflow: hidden;
 }
 
-.lm-month-totals__card {
+/* The section is named for screen readers; the cards' labels already say what each figure is. */
+.lm-dashboard-totals__title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lm-dashboard-totals__card {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -16,11 +29,11 @@
   padding: var(--space-4) var(--space-5);
 }
 
-.lm-month-totals__card + .lm-month-totals__card {
+.lm-dashboard-totals__card + .lm-dashboard-totals__card {
   border-left: var(--border-width) solid var(--border);
 }
 
-.lm-month-totals__label {
+.lm-dashboard-totals__label {
   font-size: var(--text-2xs);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-wide);
@@ -28,50 +41,47 @@
   color: var(--text-secondary);
 }
 
-.lm-month-totals__value {
-  font-size: var(--text-lg);
+/* A standalone figure: proportional digits read tighter than tabular ones at this size. */
+.lm-dashboard-totals__value {
+  font-size: var(--text-xl);
+  font-variant-numeric: normal;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.lm-month-totals__caption {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-}
-
 @media (max-width: 768px) {
-  /* Stacked rows: label and caption on the left, the figure on the right, so all four fit one screen. */
-  .lm-month-totals {
+  /* Stacked rows: label and change on the left, the figure on the right, so all four fit one screen. */
+  .lm-dashboard-totals {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .lm-month-totals__card {
+  .lm-dashboard-totals__card {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       'label value'
-      'caption value';
+      'change value';
     align-items: center;
     column-gap: var(--space-3);
     row-gap: 2px;
     padding: var(--space-3) var(--space-4);
   }
 
-  .lm-month-totals__card + .lm-month-totals__card {
+  .lm-dashboard-totals__card + .lm-dashboard-totals__card {
     border-left: none;
     border-top: var(--border-width) solid var(--border);
   }
 
-  .lm-month-totals__label {
+  .lm-dashboard-totals__label {
     grid-area: label;
   }
 
-  .lm-month-totals__value {
+  .lm-dashboard-totals__value {
     grid-area: value;
     font-size: var(--text-lg);
   }
 
-  .lm-month-totals__caption {
-    grid-area: caption;
+  .lm-dashboard-totals__change {
+    grid-area: change;
   }
 }

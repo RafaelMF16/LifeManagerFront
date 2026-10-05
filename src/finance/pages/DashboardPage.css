@@ -1,0 +1,122 @@
+.lm-dashboard-page {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-8) var(--page-gutter) var(--space-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.lm-dashboard-page__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.lm-dashboard-page__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.lm-dashboard-page__eyebrow {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-dashboard-page__title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+.lm-dashboard-page__period {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+
+.lm-dashboard-page__period-select {
+  width: 220px;
+}
+
+.lm-dashboard-page__comparison {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.lm-dashboard-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+/* Keeps the previous period visible, dimmed, while the next one loads. */
+.lm-dashboard-page__content--fetching {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.lm-dashboard-page__rankings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-5);
+}
+
+.lm-dashboard-page__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-5);
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .lm-dashboard-page {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-8);
+    gap: var(--space-4);
+  }
+
+  .lm-dashboard-page__title {
+    font-size: var(--text-xl);
+  }
+
+  .lm-dashboard-page__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lm-dashboard-page__period {
+    align-items: stretch;
+  }
+
+  .lm-dashboard-page__period-select {
+    width: 100%;
+  }
+
+  .lm-dashboard-page__content {
+    gap: var(--space-4);
+  }
+
+  .lm-dashboard-page__rankings {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+}

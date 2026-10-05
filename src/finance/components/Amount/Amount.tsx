@@ -3,24 +3,28 @@ import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import { usePrivacyMode } from '../../hooks/usePrivacyMode'
 import './Amount.css'
 
-type AmountTone = 'positive' | 'negative' | 'signed'
+type AmountTone = 'positive' | 'negative' | 'signed' | 'investment'
 
 interface AmountProps {
   value: number
   /**
    * `positive`/`negative` color a value by what it is (income, expense) and show no sign;
-   * `signed` colors by the value's own sign and shows a minus when negative (balances).
+   * `signed` colors by the value's own sign and shows a minus when negative (balances);
+   * `investment` is always the investment color and shows the value's own sign (a list passes it negative,
+   * as money leaving the account; a total passes it positive).
    * Zero is always neutral: no money moved, so there is nothing to color.
    */
   tone: AmountTone
+  /** `compact` shortens it for tight spots ("R$ 1,2 mil"). */
+  notation?: 'standard' | 'compact'
   emphasis?: boolean
   className?: string
 }
 
-/** The one way to render money: tabular figures, semantic color reserved for money in and out. */
-function Amount({ value, tone, emphasis = false, className }: AmountProps) {
+/** The one way to render money: tabular figures, semantic color reserved for money in, out and invested. */
+function Amount({ value, tone, notation = 'standard', emphasis = false, className }: AmountProps) {
   const { t: translate } = useTranslation('finance')
-  const { money, signedMoney } = useFinanceFormat()
+  const { money, signedMoney, compactMoney, signedCompactMoney } = useFinanceFormat()
   const { hidden } = usePrivacyMode()
 
   // Hidden amounts go neutral: a green/red balance would still tell whether it is positive.
@@ -39,7 +43,13 @@ function Amount({ value, tone, emphasis = false, className }: AmountProps) {
     )
   }
 
-  return <span className={classes}>{tone === 'signed' ? signedMoney(value) : money(value)}</span>
+  const showsSign = tone === 'signed' || tone === 'investment'
+  const compact = notation === 'compact'
+  const text = showsSign
+    ? (compact ? signedCompactMoney : signedMoney)(value)
+    : (compact ? compactMoney : money)(value)
+
+  return <span className={classes}>{text}</span>
 }
 
 export default Amount

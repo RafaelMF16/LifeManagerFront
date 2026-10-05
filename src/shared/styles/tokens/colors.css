@@ -32,6 +32,10 @@
   --money-out-600: #b91c1c;
   --money-out-300: #f87171;
   --money-out-tint: #fef2f2;
+  --money-invested-500: #8b5cf6;
+  --money-invested-600: #7c3aed;
+  --money-invested-300: #c4b5fd;
+  --money-invested-tint: #f5f3ff;
   --warn-500: #d97706;
   --warn-300: #fbbf24;
   --warn-tint: #fffbeb;
@@ -61,6 +65,13 @@
   --amount-neutral: var(--text-primary);
   --positive-tint: var(--money-in-tint);
   --negative-tint: var(--money-out-tint);
+  --amount-investment: var(--money-invested-600);
+  --investment-tint: var(--money-invested-tint);
+  /* Chart marks (bars), validated as a palette in this order: income, investment, expense — violet between
+     green and red keeps the pair apart for red–green colour blindness. Text never uses these. */
+  --chart-income: var(--money-in-600);
+  --chart-investment: var(--money-invested-600);
+  --chart-expense: var(--money-out-600);
   --danger: var(--money-out-500);
   --danger-hover: var(--money-out-600);
   --success: var(--money-in-500);
@@ -95,6 +106,11 @@
   --amount-negative: var(--money-out-300);
   --positive-tint: color-mix(in oklch, var(--money-in-300) 12%, transparent);
   --negative-tint: color-mix(in oklch, var(--money-out-300) 12%, transparent);
+  --amount-investment: var(--money-invested-300);
+  --investment-tint: color-mix(in oklch, var(--money-invested-300) 12%, transparent);
+  --chart-income: var(--money-in-500);
+  --chart-investment: var(--money-invested-500);
+  --chart-expense: var(--money-out-500);
   --danger: var(--money-out-500);
   --danger-hover: var(--money-out-600);
   --success: var(--money-in-500);

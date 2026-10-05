@@ -48,6 +48,14 @@ describe('createTransactionSchema', () => {
     expect(result.data?.description).toBe('Supermercado')
   })
 
+  it.each(['Expense', 'Income', 'Investment'])('accepts the type %s', (type) => {
+    expect(messagesFor({ ...valid, type }, 'type')).toEqual([])
+  })
+
+  it('rejects an unknown type', () => {
+    expect(messagesFor({ ...valid, type: 'Transfer' }, 'type')).toEqual(['finance:transactions.validation.type.invalid'])
+  })
+
   it.each([
     ['', 'finance:transactions.validation.amount.required'],
     ['abc', 'finance:transactions.validation.amount.invalid'],

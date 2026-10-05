@@ -28,10 +28,10 @@
   color: var(--text-secondary);
 }
 
-/* Expense and income split the width evenly, like the design's two-option toggle. */
+/* The three types split the width evenly, like the design's toggle. */
 .lm-transaction-form__type-control {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .lm-transaction-form__row {

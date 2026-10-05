@@ -1,7 +1,7 @@
 import type { SortDirection } from '../../shared/types/Paging'
 
 // Espelha LifeManager.Domain/MonthlySummaries/Enums (binds by name in the query string).
-export type MonthlySummarySortBy = 'Period' | 'TotalIncome' | 'TotalExpense' | 'Balance'
+export type MonthlySummarySortBy = 'Period' | 'TotalIncome' | 'TotalExpense' | 'TotalInvestment' | 'Balance'
 export type BalanceFilter = 'All' | 'Positive' | 'Negative'
 
 // Espelha LifeManager.Application/MonthlySummaries/DTOs
@@ -15,6 +15,8 @@ export interface MonthlySummaryResponseDto {
   year: number
   totalIncome: number
   totalExpense: number
+  totalInvestment: number
+  /** Income − expenses − investment. */
   balance: number
 }
 
@@ -22,6 +24,7 @@ export interface MonthlySummaryResponseDto {
 export interface MonthlySummaryDetailsDto extends MonthlySummaryResponseDto {
   incomeCount: number
   expenseCount: number
+  investmentCount: number
   /** The user's month right before this one; null when there is none. */
   previousId: number | null
   /** The user's month right after this one; null when there is none. */

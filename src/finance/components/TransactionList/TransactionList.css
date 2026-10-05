@@ -180,6 +180,10 @@
   color: var(--amount-negative);
 }
 
+.lm-transaction-list__type-icon--investment {
+  color: var(--amount-investment);
+}
+
 .lm-transaction-list__description-text {
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
@@ -259,12 +263,10 @@
     align-items: stretch;
   }
 
+  /* Four types don't fit one row at 360px: two by two, each option a full cell. */
   .lm-transaction-list__type-control {
-    display: flex;
-  }
-
-  .lm-transaction-list__type-control .lm-segmented-control__option {
-    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .lm-transaction-list__category-filter,

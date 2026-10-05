@@ -1,0 +1,209 @@
+.lm-category-ranking {
+  --lm-ranking-color: var(--chart-expense);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+}
+
+.lm-category-ranking--investment {
+  --lm-ranking-color: var(--chart-investment);
+}
+
+/* Privacy mode: same-length neutral bars, so not even the proportions show. */
+.lm-category-ranking--hidden {
+  --lm-ranking-color: var(--border-strong);
+}
+
+.lm-category-ranking__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-category-ranking__title {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-category-ranking__empty {
+  margin: 0;
+  padding: var(--space-8) var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.lm-category-ranking__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-category-ranking__item + .lm-category-ranking__item {
+  border-top: var(--border-width) solid var(--border);
+}
+
+/* Name and amount on top, the share bar across, share and change below; the chevron says it opens. */
+.lm-category-ranking__row {
+  appearance: none;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    'name amount chevron'
+    'track track chevron'
+    'meta meta chevron';
+  align-items: center;
+  column-gap: var(--space-3);
+  row-gap: 6px;
+  padding: var(--space-3) var(--space-5);
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .lm-category-ranking__row:hover {
+    background: var(--surface-hover);
+  }
+}
+
+.lm-category-ranking__name {
+  grid-area: name;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.lm-category-ranking__amount {
+  grid-area: amount;
+}
+
+.lm-category-ranking__track,
+.lm-category-ranking__month-track {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.lm-category-ranking__track {
+  grid-area: track;
+}
+
+.lm-category-ranking__fill {
+  display: block;
+  width: calc(var(--lm-bar) * 100%);
+  height: 100%;
+  border-radius: 0 3px 3px 0;
+  background: var(--lm-ranking-color);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lm-category-ranking__fill {
+    transition: width var(--duration-base) var(--ease-standard);
+  }
+}
+
+.lm-category-ranking__meta {
+  grid-area: meta;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-category-ranking__chevron {
+  grid-area: chevron;
+  color: var(--text-tertiary);
+}
+
+.lm-category-ranking__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5) var(--space-4);
+  background: var(--surface-sunken);
+}
+
+.lm-category-ranking__panel-title {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.lm-category-ranking__months {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-category-ranking__month {
+  display: grid;
+  grid-template-columns: minmax(0, 8rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-category-ranking__month-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lm-category-ranking__month-track {
+  background: var(--surface);
+}
+
+.lm-category-ranking__previous {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: var(--border-width) solid var(--border);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .lm-category-ranking__header,
+  .lm-category-ranking__row,
+  .lm-category-ranking__panel {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .lm-category-ranking__month {
+    grid-template-columns: minmax(0, 6rem) minmax(0, 1fr) auto;
+  }
+}

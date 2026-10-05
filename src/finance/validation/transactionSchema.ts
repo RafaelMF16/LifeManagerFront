@@ -38,7 +38,7 @@ export function createTransactionSchema(year: number, month: number) {
   const { min, max } = monthDateRange(year, month)
 
   return z.object({
-    type: z.enum(['Expense', 'Income'], { message: 'finance:transactions.validation.type.invalid' }), // code: Transaction.InvalidType
+    type: z.enum(['Expense', 'Income', 'Investment'], { message: 'finance:transactions.validation.type.invalid' }), // code: Transaction.InvalidType
     description: z
       .string()
       .trim()

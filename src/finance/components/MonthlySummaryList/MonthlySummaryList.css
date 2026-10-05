@@ -65,7 +65,7 @@
 .lm-month-list__columns,
 .lm-month-list__row {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr));
   gap: var(--space-4);
   align-items: center;
   padding: 0 var(--space-5);
@@ -287,12 +287,13 @@
     display: none;
   }
 
-  /* Each month becomes a block: period and balance on top, income and expenses below. */
+  /* Each month becomes a block: period and balance on top, income, expenses and investment below. */
   .lm-month-list__row {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
     grid-template-areas:
-      'period balance'
-      'income expense';
+      'period period balance'
+      'income expense investment';
+    column-gap: var(--space-3);
     row-gap: var(--space-2);
     padding: var(--space-3) var(--space-4);
   }
@@ -310,11 +311,15 @@
     font-size: var(--text-base);
   }
 
+  /* Three small figures: label above value, so they fit side by side at 360px. */
   .lm-month-list__cell--income,
-  .lm-month-list__cell--expense {
+  .lm-month-list__cell--expense,
+  .lm-month-list__cell--investment {
+    flex-direction: column;
     justify-content: flex-start;
-    align-items: baseline;
-    gap: var(--space-1);
+    align-items: flex-start;
+    gap: 0;
+    min-width: 0;
   }
 
   .lm-month-list__cell--income {
@@ -323,11 +328,16 @@
 
   .lm-month-list__cell--expense {
     grid-area: expense;
-    justify-content: flex-end;
+  }
+
+  .lm-month-list__cell--investment {
+    grid-area: investment;
+    align-items: flex-end;
   }
 
   .lm-month-list__cell--income .lm-month-list__cell-label,
-  .lm-month-list__cell--expense .lm-month-list__cell-label {
+  .lm-month-list__cell--expense .lm-month-list__cell-label,
+  .lm-month-list__cell--investment .lm-month-list__cell-label {
     position: static;
     width: auto;
     height: auto;
@@ -339,7 +349,11 @@
   }
 
   .lm-month-list__cell--income .lm-amount,
-  .lm-month-list__cell--expense .lm-amount {
+  .lm-month-list__cell--expense .lm-amount,
+  .lm-month-list__cell--investment .lm-amount {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: var(--text-xs);
   }
 
