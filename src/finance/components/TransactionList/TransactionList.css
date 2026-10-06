@@ -193,6 +193,12 @@
   white-space: nowrap;
 }
 
+/* Marks a transaction posted by a recurrence. */
+.lm-transaction-list__recurring {
+  flex: none;
+  color: var(--text-tertiary);
+}
+
 .lm-transaction-list__category {
   display: flex;
   min-width: 0;

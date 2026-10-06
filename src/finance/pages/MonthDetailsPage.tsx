@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
@@ -9,6 +9,7 @@ import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
 import DeleteTransactionModal from '../components/DeleteTransactionModal/DeleteTransactionModal'
+import MonthBudgetsSummary from '../components/MonthBudgetsSummary/MonthBudgetsSummary'
 import MonthTotals from '../components/MonthTotals/MonthTotals'
 import TransactionFormModal from '../components/TransactionFormModal/TransactionFormModal'
 import TransactionList from '../components/TransactionList/TransactionList'
@@ -44,7 +45,14 @@ function MonthDetailsPage() {
   const { show: showErrorModal } = useErrorModal()
   const { periodLabel } = useFinanceFormat()
   const month = useMonthlySummaryDetails(monthlySummaryId)
-  const transactions = useTransactions(monthlySummaryId, month.reload)
+  // Every transaction change moves the month's totals and its goals' actual amounts.
+  const [budgetsRefreshKey, setBudgetsRefreshKey] = useState(0)
+  const reloadMonth = month.reload
+  const handleTransactionsMutated = useCallback(() => {
+    reloadMonth()
+    setBudgetsRefreshKey((key) => key + 1)
+  }, [reloadMonth])
+  const transactions = useTransactions(monthlySummaryId, handleTransactionsMutated)
   const categoryOptions = useCategoryOptions()
   const [formTarget, setFormTarget] = useState<FormTarget | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<TransactionResponseDto | null>(null)
@@ -159,6 +167,8 @@ function MonthDetailsPage() {
       <div className={month.isFetching ? 'lm-month-details__totals lm-month-details__totals--fetching' : 'lm-month-details__totals'}>
         <MonthTotals month={data} />
       </div>
+
+      <MonthBudgetsSummary year={data.year} month={data.month} refreshKey={budgetsRefreshKey} />
 
       <TransactionList
         data={transactions.data}

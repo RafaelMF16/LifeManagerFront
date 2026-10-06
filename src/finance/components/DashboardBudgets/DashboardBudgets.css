@@ -1,0 +1,181 @@
+.lm-dashboard-budgets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-5);
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+}
+
+.lm-dashboard-budgets--empty {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lm-dashboard-budgets__empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.lm-dashboard-budgets__empty-text {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-dashboard-budgets__cta,
+.lm-dashboard-budgets__manage {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.lm-dashboard-budgets__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.lm-dashboard-budgets__title {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-dashboard-budgets__summaries,
+.lm-dashboard-budgets__columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-6);
+}
+
+.lm-dashboard-budgets__summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+}
+
+.lm-dashboard-budgets__summary-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.lm-dashboard-budgets__score {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-dashboard-budgets__muted {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-dashboard-budgets__note {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.lm-dashboard-budgets__categories {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.lm-dashboard-budgets__categories-title {
+  margin: 0;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.lm-dashboard-budgets__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Name and gap on one line, how often it was met below. */
+.lm-dashboard-budgets__category {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'name gap'
+    'meta meta';
+  gap: 2px var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+.lm-dashboard-budgets__category + .lm-dashboard-budgets__category {
+  border-top: var(--border-width) solid var(--border);
+}
+
+.lm-dashboard-budgets__category-name {
+  grid-area: name;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.lm-dashboard-budgets__category-gap {
+  grid-area: gap;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.lm-dashboard-budgets__category-gap--over {
+  color: var(--amount-negative);
+}
+
+.lm-dashboard-budgets__category-gap--short {
+  color: var(--amount-investment);
+}
+
+.lm-dashboard-budgets__category-meta {
+  grid-area: meta;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 768px) {
+  .lm-dashboard-budgets {
+    padding: var(--space-4);
+  }
+
+  .lm-dashboard-budgets__summaries,
+  .lm-dashboard-budgets__columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lm-dashboard-budgets__summary {
+    padding: var(--space-3);
+  }
+}

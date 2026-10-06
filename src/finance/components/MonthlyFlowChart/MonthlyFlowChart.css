@@ -181,14 +181,39 @@
   height: var(--lm-plot-height);
 }
 
-/* Thin columns, 4px rounded at the data end and square on the baseline. */
-.lm-flow-chart__bar {
+/* Each bar sits in a full-height slot, which also holds its goal marker. */
+.lm-flow-chart__slot {
+  position: relative;
   flex: 0 1 16px;
   max-width: 24px;
   min-width: 2px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Thin columns, 4px rounded at the data end and square on the baseline. */
+.lm-flow-chart__bar {
+  width: 100%;
   height: calc(var(--lm-bar) * 100%);
   min-height: 2px;
   border-radius: 4px 4px 0 0;
+}
+
+/* The month's total goal: a short line across its bar, at the goal's height. */
+.lm-flow-chart__goal {
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  bottom: calc(var(--lm-goal) * 100%);
+  border-top: 2px solid var(--text-primary);
+  border-radius: 1px;
+}
+
+.lm-flow-chart__goal-swatch {
+  flex: none;
+  width: 12px;
+  border-top: 2px solid var(--text-primary);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -304,13 +329,29 @@
     height: auto;
   }
 
-  .lm-flow-chart__bar {
+  .lm-flow-chart__slot {
     flex: none;
-    width: calc(var(--lm-bar) * 100%);
+    width: 100%;
     max-width: none;
     height: 6px;
+    align-items: stretch;
+  }
+
+  .lm-flow-chart__bar {
+    width: calc(var(--lm-bar) * 100%);
+    height: 100%;
     min-height: 0;
     border-radius: 0 4px 4px 0;
+  }
+
+  /* Horizontal bars: the goal becomes a short vertical tick at its length. */
+  .lm-flow-chart__goal {
+    top: -3px;
+    right: auto;
+    bottom: -3px;
+    left: calc(var(--lm-goal) * 100%);
+    border-top: none;
+    border-left: 2px solid var(--text-primary);
   }
 
   .lm-flow-chart__month {
