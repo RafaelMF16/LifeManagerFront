@@ -25,6 +25,8 @@ export interface TransactionResponseDto {
   description: string
   /** ISO date, `YYYY-MM-DD`. */
   date: string
+  /** The recurrence that posted it; null for transactions entered by hand. */
+  recurringTransactionId: number | null
 }
 
 // Espelha TransactionListQueryDto (query string de GET /api/MonthlySummaries/{id}/Transactions)

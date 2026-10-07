@@ -78,6 +78,54 @@ export interface DashboardCategoryBreakdownDto {
   others: DashboardOthersDto | null
 }
 
+/** A month's goals on its totals; a goal and its flag are null when the month had none. */
+export interface DashboardBudgetMonthDto {
+  year: number
+  month: number
+  expenseGoal: number | null
+  expenseAchieved: boolean | null
+  investmentGoal: number | null
+  investmentAchieved: boolean | null
+}
+
+/** A month-total goal over the months of the period that had it (the current month included). */
+export interface DashboardBudgetSummaryDto {
+  /** Those months' goals, summed. */
+  goal: number
+  /** What was actually spent or invested in those same months. */
+  actual: number
+  /** Actual / goal; null when no month had the goal. */
+  ratio: number | null
+  monthsWithGoal: number
+  monthsAchieved: number
+}
+
+/** One category's goal over the months of the period that had it. */
+export interface DashboardBudgetCategoryDto {
+  categoryId: number
+  name: string
+  goal: number
+  actual: number
+  ratio: number
+  /** Summed over the months: spent over the limit (expense) or missing to the target (investment). */
+  gap: number
+  monthsWithGoal: number
+  monthsAchieved: number
+}
+
+export interface DashboardBudgetsDto {
+  /** Whether any goal was in force in the period. */
+  hasGoals: boolean
+  /** One row per month, in the same order as `months`. */
+  months: DashboardBudgetMonthDto[]
+  expense: DashboardBudgetSummaryDto
+  investment: DashboardBudgetSummaryDto
+  /** Most overspent first (top 5). */
+  expenseCategories: DashboardBudgetCategoryDto[]
+  /** Furthest from the target first (top 5). */
+  investmentCategories: DashboardBudgetCategoryDto[]
+}
+
 export interface FinanceDashboardResponseDto {
   period: DashboardPeriodDto
   comparisonPeriod: DashboardPeriodDto
@@ -85,4 +133,5 @@ export interface FinanceDashboardResponseDto {
   months: DashboardMonthDto[]
   expenses: DashboardCategoryBreakdownDto
   investments: DashboardCategoryBreakdownDto
+  budgets: DashboardBudgetsDto
 }

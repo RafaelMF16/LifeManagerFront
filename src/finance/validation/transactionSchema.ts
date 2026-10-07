@@ -1,30 +1,11 @@
 import { z } from 'zod'
+import { amountField } from './amountSchema'
 
 // Espelha LifeManager.Domain/Transactions/ValueObjects (TransactionDescription.Create, TransactionAmount.Create)
 // e a regra de data de Transaction.Create.
 export const TRANSACTION_DESCRIPTION_MAX_LENGTH = 80
-export const TRANSACTION_AMOUNT_MAX_DECIMALS = 2
-export const TRANSACTION_AMOUNT_MAX_VALUE = 999_999_999_999.99
 
-const AMOUNT_PATTERN = /^\d+(\.\d+)?$/
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/
-
-/**
- * Reads what the user typed as money: "1234,56", "1.234,56" and "1234.56" are all 1234.56.
- * With a comma present, dots are thousands separators. Returns null when it isn't a plain number.
- */
-export function parseAmount(value: string): number | null {
-  const compact = value.replace(/\s/g, '')
-  const normalized = compact.includes(',') ? compact.replace(/\./g, '').replace(',', '.') : compact
-  return AMOUNT_PATTERN.test(normalized) ? Number(normalized) : null
-}
-
-function decimalPlaces(value: string) {
-  const compact = value.replace(/\s/g, '')
-  const separator = compact.includes(',') ? ',' : '.'
-  const index = compact.lastIndexOf(separator)
-  return index === -1 ? 0 : compact.length - index - 1
-}
 
 /** `YYYY-MM-DD` of the first and last day of the month, for the date input's min/max. */
 export function monthDateRange(year: number, month: number) {
@@ -44,21 +25,8 @@ export function createTransactionSchema(year: number, month: number) {
       .trim()
       .min(1, { message: 'finance:transactions.validation.description.required' }) // code: Transaction.DescriptionIsNullOrWhiteSpace
       .max(TRANSACTION_DESCRIPTION_MAX_LENGTH, { message: 'finance:transactions.validation.description.tooLong' }), // code: Transaction.DescriptionTooLong
-    amount: z
-      .string()
-      .trim()
-      .superRefine((value, context) => {
-        const fail = (message: string) => context.addIssue({ code: 'custom', message })
-        if (value === '') return fail('finance:transactions.validation.amount.required')
-
-        const amount = parseAmount(value)
-        if (amount === null) return fail('finance:transactions.validation.amount.invalid')
-        if (amount <= 0) return fail('finance:transactions.validation.amount.notPositive') // code: Transaction.AmountNotPositive
-        if (decimalPlaces(value) > TRANSACTION_AMOUNT_MAX_DECIMALS) {
-          return fail('finance:transactions.validation.amount.tooManyDecimals') // code: Transaction.AmountTooManyDecimals
-        }
-        if (amount > TRANSACTION_AMOUNT_MAX_VALUE) return fail('finance:transactions.validation.amount.tooLarge') // code: Transaction.AmountTooLarge
-      }),
+    // codes: Transaction.AmountNotPositive, Transaction.AmountTooManyDecimals, Transaction.AmountTooLarge
+    amount: amountField('finance:transactions.validation.amount'),
     date: z
       .string()
       .min(1, { message: 'finance:transactions.validation.date.required' })

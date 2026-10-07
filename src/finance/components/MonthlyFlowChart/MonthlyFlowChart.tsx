@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import { usePrivacyMode } from '../../hooks/usePrivacyMode'
-import type { DashboardMonthDto } from '../../types/DashboardDtos'
+import type { DashboardBudgetMonthDto, DashboardMonthDto } from '../../types/DashboardDtos'
 import { barRatio, niceMax } from '../../utils/chartScale'
 import Amount from '../Amount/Amount'
 import './MonthlyFlowChart.css'
@@ -27,8 +27,16 @@ const MAX_LABELLED_MONTHS = 12
 /** Hidden bars all get this length: their real lengths would give the proportions away. */
 const HIDDEN_BAR_RATIO = 0.5
 
+/** The series that can carry a month-total goal, and where it is in a goal row. */
+const GOAL_SERIES: Partial<Record<Series, 'expenseGoal' | 'investmentGoal'>> = {
+  expense: 'expenseGoal',
+  investment: 'investmentGoal',
+}
+
 interface MonthlyFlowChartProps {
   months: DashboardMonthDto[]
+  /** The months' total goals, in the same order as `months`; drawn as a marker on their bars. */
+  goals?: DashboardBudgetMonthDto[]
 }
 
 /**
@@ -36,7 +44,7 @@ interface MonthlyFlowChartProps {
  * No hover-only information: each month is a button that fills the detail strip with its exact figures, and a
  * visually hidden table carries every value for screen readers.
  */
-function MonthlyFlowChart({ months }: MonthlyFlowChartProps) {
+function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
   const { t: translate } = useTranslation('finance')
   const { compactMoney, periodLabel, shortMonthName } = useFinanceFormat()
   const { hidden } = usePrivacyMode()
@@ -44,14 +52,34 @@ function MonthlyFlowChart({ months }: MonthlyFlowChartProps) {
   // The newest month is the one people look for first.
   const [selectedIndex, setSelectedIndex] = useState(months.length - 1)
 
-  const selected = months[Math.min(selectedIndex, months.length - 1)]
-  const scaleMax = niceMax(Math.max(0, ...months.flatMap((month) => [month.income, month.investment, month.expense])))
+  const selectedPosition = Math.min(selectedIndex, months.length - 1)
+  const selected = months[selectedPosition]
+  const selectedGoals = goals[selectedPosition]
+  const hasGoals = goals.some((goal) => goal.expenseGoal !== null || goal.investmentGoal !== null)
+  // Goals are part of the scale, so a marker above every bar still fits the plot.
+  const scaleMax = niceMax(
+    Math.max(
+      0,
+      ...months.flatMap((month) => [month.income, month.investment, month.expense]),
+      ...goals.flatMap((goal) => [goal.expenseGoal ?? 0, goal.investmentGoal ?? 0]),
+    ),
+  )
   const labelEvery = Math.ceil(months.length / MAX_LABELLED_MONTHS)
   const showsBalanceRow = months.length <= MAX_LABELLED_MONTHS
 
   function barStyle(value: number): CSSProperties {
     const ratio = hidden ? HIDDEN_BAR_RATIO : barRatio(value, scaleMax)
     return { '--lm-bar': ratio } as CSSProperties
+  }
+
+  /** The month's goal on the series' bar, if it has one; markers stay hidden in privacy mode, like the real lengths. */
+  function goalOf(index: number, series: Series) {
+    const key = GOAL_SERIES[series]
+    return key ? (goals[index]?.[key] ?? null) : null
+  }
+
+  function renderGoalCell(goal: number | null, tone: 'negative' | 'investment') {
+    return goal === null ? translate('finance:dashboard.evolution.noGoal') : <Amount value={goal} tone={tone} />
   }
 
   return (
@@ -70,6 +98,12 @@ function MonthlyFlowChart({ months }: MonthlyFlowChartProps) {
               {translate(`finance:dashboard.totals.${series.id}`)}
             </li>
           ))}
+          {hasGoals && !hidden ? (
+            <li className="lm-flow-chart__legend-item">
+              <span className="lm-flow-chart__goal-swatch" aria-hidden="true" />
+              {translate('finance:dashboard.evolution.goal')}
+            </li>
+          ) : null}
         </ul>
       </div>
 
@@ -94,6 +128,22 @@ function MonthlyFlowChart({ months }: MonthlyFlowChartProps) {
                 <Amount value={selected.balance} tone="signed" emphasis />
               </dd>
             </div>
+            {selectedGoals?.expenseGoal != null ? (
+              <div className="lm-flow-chart__detail-figure">
+                <dt>{translate('finance:dashboard.evolution.expenseGoal')}</dt>
+                <dd>
+                  <Amount value={selectedGoals.expenseGoal} tone="negative" />
+                </dd>
+              </div>
+            ) : null}
+            {selectedGoals?.investmentGoal != null ? (
+              <div className="lm-flow-chart__detail-figure">
+                <dt>{translate('finance:dashboard.evolution.investmentGoal')}</dt>
+                <dd>
+                  <Amount value={selectedGoals.investmentGoal} tone="investment" />
+                </dd>
+              </div>
+            ) : null}
           </dl>
         </div>
       ) : null}
@@ -126,13 +176,23 @@ function MonthlyFlowChart({ months }: MonthlyFlowChartProps) {
                 }}
               >
                 <span className="lm-flow-chart__bars" aria-hidden="true">
-                  {SERIES.map((series) => (
-                    <span
-                      key={series.id}
-                      className={`lm-flow-chart__bar lm-flow-chart__bar--${series.id}${month[series.id] === 0 && !hidden ? ' lm-flow-chart__bar--empty' : ''}`}
-                      style={barStyle(month[series.id])}
-                    />
-                  ))}
+                  {SERIES.map((series) => {
+                    const goal = hidden ? null : goalOf(index, series.id)
+                    return (
+                      <span key={series.id} className="lm-flow-chart__slot">
+                        <span
+                          className={`lm-flow-chart__bar lm-flow-chart__bar--${series.id}${month[series.id] === 0 && !hidden ? ' lm-flow-chart__bar--empty' : ''}`}
+                          style={barStyle(month[series.id])}
+                        />
+                        {goal !== null ? (
+                          <span
+                            className="lm-flow-chart__goal"
+                            style={{ '--lm-goal': barRatio(goal, scaleMax) } as CSSProperties}
+                          />
+                        ) : null}
+                      </span>
+                    )
+                  })}
                 </span>
                 <span
                   className={`lm-flow-chart__month${showsLabel ? '' : ' lm-flow-chart__month--quiet'}`}
@@ -164,10 +224,16 @@ function MonthlyFlowChart({ months }: MonthlyFlowChartProps) {
               </th>
             ))}
             <th scope="col">{translate('finance:dashboard.evolution.balance')}</th>
+            {hasGoals ? (
+              <>
+                <th scope="col">{translate('finance:dashboard.evolution.expenseGoal')}</th>
+                <th scope="col">{translate('finance:dashboard.evolution.investmentGoal')}</th>
+              </>
+            ) : null}
           </tr>
         </thead>
         <tbody>
-          {months.map((month) => (
+          {months.map((month, index) => (
             <tr key={`${month.year}-${month.month}`}>
               <th scope="row">{periodLabel(month.month, month.year)}</th>
               {SERIES.map((series) => (
@@ -178,6 +244,12 @@ function MonthlyFlowChart({ months }: MonthlyFlowChartProps) {
               <td>
                 <Amount value={month.balance} tone="signed" />
               </td>
+              {hasGoals ? (
+                <>
+                  <td>{renderGoalCell(goals[index]?.expenseGoal ?? null, 'negative')}</td>
+                  <td>{renderGoalCell(goals[index]?.investmentGoal ?? null, 'investment')}</td>
+                </>
+              ) : null}
             </tr>
           ))}
         </tbody>

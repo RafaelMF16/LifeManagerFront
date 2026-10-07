@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createTransactionSchema, monthDateRange, parseAmount } from './transactionSchema'
+import { createTransactionSchema, monthDateRange } from './transactionSchema'
 
 const schema = createTransactionSchema(2026, 3)
 
@@ -16,22 +16,6 @@ function messagesFor(values: Record<string, string>, field: string) {
   if (result.success) return []
   return result.error.issues.filter((issue) => issue.path[0] === field).map((issue) => issue.message)
 }
-
-describe('parseAmount', () => {
-  it.each([
-    ['1234,56', 1234.56],
-    ['1.234,56', 1234.56],
-    ['1234.56', 1234.56],
-    [' 10 ', 10],
-    ['0,5', 0.5],
-  ])('reads %s as %d', (input, expected) => {
-    expect(parseAmount(input)).toBe(expected)
-  })
-
-  it.each(['', 'abc', '1,2,3', '-5', '12a'])('rejects %j', (input) => {
-    expect(parseAmount(input)).toBeNull()
-  })
-})
 
 describe('monthDateRange', () => {
   it('covers the whole month, leap years included', () => {

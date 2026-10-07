@@ -159,6 +159,15 @@ function TransactionList({
               role="img"
             />
             <span className="lm-transaction-list__description-text">{transaction.description}</span>
+            {transaction.recurringTransactionId !== null ? (
+              <Icon
+                name="repeat"
+                size={12}
+                className="lm-transaction-list__recurring"
+                aria-label={translate('finance:transactions.list.recurring')}
+                role="img"
+              />
+            ) : null}
           </span>
           <span className="lm-transaction-list__category">
             <span className="lm-transaction-list__badge">{transaction.categoryName}</span>

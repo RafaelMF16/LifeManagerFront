@@ -1,0 +1,111 @@
+.lm-budget-progress {
+  --lm-budget-color: var(--accent);
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.lm-budget-progress--nearLimit {
+  --lm-budget-color: var(--warning);
+}
+
+.lm-budget-progress--overLimit {
+  --lm-budget-color: var(--danger);
+}
+
+.lm-budget-progress--belowTarget {
+  --lm-budget-color: var(--chart-investment);
+}
+
+.lm-budget-progress--reached {
+  --lm-budget-color: var(--success);
+}
+
+/* Privacy mode: same-length neutral bars, and no status color that would tell over from under. */
+.lm-budget-progress--hidden {
+  --lm-budget-color: var(--border-strong);
+}
+
+.lm-budget-progress__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+}
+
+.lm-budget-progress__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.lm-budget-progress__figures {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.lm-budget-progress__track {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.lm-budget-progress__fill {
+  display: block;
+  width: calc(var(--lm-bar) * 100%);
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  background: var(--lm-budget-color);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lm-budget-progress__fill {
+    transition: width var(--duration-base) var(--ease-standard);
+  }
+}
+
+.lm-budget-progress__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  min-height: var(--control-height-sm);
+}
+
+.lm-budget-progress__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.lm-budget-progress__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lm-budget-color);
+}
+
+.lm-budget-progress__since {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.lm-budget-progress__actions {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}

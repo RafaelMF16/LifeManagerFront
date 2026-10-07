@@ -1,7 +1,7 @@
 import { apiRequest } from '../../shared/services/httpClient'
 import type { PagedResponse } from '../../shared/types/Paging'
 import type { TransactionListQuery, TransactionRequestDto, TransactionResponseDto } from '../types/TransactionDtos'
-import { parseAmount } from '../validation/transactionSchema'
+import { parseAmount } from '../validation/amountSchema'
 import type { TransactionFormValues } from '../validation/transactionSchema'
 
 function transactionsPath(monthlySummaryId: number) {

@@ -17,6 +17,7 @@ import type { CategoryOptionsStatus } from '../../hooks/useCategoryOptions'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import type { CategoryResponseDto } from '../../types/CategoryDtos'
 import type { MoneyFlowType, TransactionResponseDto } from '../../types/TransactionDtos'
+import { toFormAmount } from '../../validation/amountSchema'
 import { transactionErrorFieldMap } from '../../validation/transactionErrorMap'
 import { TRANSACTION_DESCRIPTION_MAX_LENGTH, createTransactionSchema, monthDateRange } from '../../validation/transactionSchema'
 import type { TransactionFormValues } from '../../validation/transactionSchema'
@@ -43,10 +44,6 @@ function defaultDate(year: number, month: number) {
   if (today.getFullYear() !== year || today.getMonth() + 1 !== month) return min
 
   return `${min.slice(0, 8)}${String(today.getDate()).padStart(2, '0')}`
-}
-
-function toFormAmount(amount: number, language: string) {
-  return new Intl.NumberFormat(language, { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false }).format(amount)
 }
 
 function TransactionFormModal({

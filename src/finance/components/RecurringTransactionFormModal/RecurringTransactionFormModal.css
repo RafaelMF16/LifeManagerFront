@@ -1,0 +1,55 @@
+.lm-recurring-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.lm-recurring-form__type {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.lm-recurring-form__label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+/* The three types split the width evenly, like the transaction form. */
+.lm-recurring-form__type-control {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.lm-recurring-form__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.lm-recurring-form__note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-recurring-form__hint {
+  margin: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-recurring-form__error {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-xs);
+  color: var(--danger);
+}
