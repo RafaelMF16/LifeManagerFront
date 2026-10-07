@@ -7,7 +7,7 @@ import './HomePage.css'
 
 const MODULES: HomeModule[] = [
   { id: 'financas', icon: 'wallet', ready: true, path: '/finance' },
-  { id: 'habitos', icon: 'check', ready: false },
+  { id: 'habitos', icon: 'check', ready: true, path: '/habits' },
 ]
 
 function HomePage() {

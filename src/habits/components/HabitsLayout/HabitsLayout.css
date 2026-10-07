@@ -1,0 +1,43 @@
+.lm-habits-layout {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+}
+
+.lm-habits-layout__body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.lm-habits-layout__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Same column as the pages below it, so the character lines up with their content. */
+.lm-habits-layout__player {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-8) var(--page-gutter) 0;
+}
+
+.lm-habits-layout__player:empty {
+  display: none;
+}
+
+/* Compact: the sidebar is a fixed bottom tab bar, so keep the content (footer included) clear of it. */
+@media (max-width: 768px) {
+  .lm-habits-layout__content {
+    padding-bottom: var(--app-bottom-inset);
+  }
+
+  .lm-habits-layout__player {
+    padding-top: var(--space-4);
+  }
+}

@@ -1,4 +1,4 @@
-.lm-finance-sidebar {
+.lm-module-sidebar {
   position: sticky;
   top: var(--topbar-height);
   align-self: flex-start;
@@ -16,7 +16,7 @@
   transition: width var(--duration-base) var(--ease-standard);
 }
 
-.lm-finance-sidebar__module {
+.lm-module-sidebar__module {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
@@ -24,7 +24,7 @@
   white-space: nowrap;
 }
 
-.lm-finance-sidebar__module-label {
+.lm-module-sidebar__module-label {
   font-size: var(--text-2xs);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-wide);
@@ -32,23 +32,23 @@
   color: var(--text-tertiary);
 }
 
-.lm-finance-sidebar__module-name {
+.lm-module-sidebar__module-name {
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   color: var(--text-primary);
 }
 
-.lm-finance-sidebar__nav {
+.lm-module-sidebar__nav {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.lm-finance-sidebar__spacer {
+.lm-module-sidebar__spacer {
   flex: 1;
 }
 
-.lm-finance-sidebar__link {
+.lm-module-sidebar__link {
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -63,39 +63,39 @@
   transition: var(--transition-control);
 }
 
-.lm-finance-sidebar__link svg {
+.lm-module-sidebar__link svg {
   flex: none;
 }
 
-.lm-finance-sidebar__link:hover {
+.lm-module-sidebar__link:hover {
   text-decoration: none;
 }
 
 @media (hover: hover) {
-  .lm-finance-sidebar__link:hover {
+  .lm-module-sidebar__link:hover {
     background: var(--surface-hover);
     color: var(--text-primary);
   }
 }
 
-.lm-finance-sidebar__link--active,
-.lm-finance-sidebar__link--active:hover {
+.lm-module-sidebar__link--active,
+.lm-module-sidebar__link--active:hover {
   background: var(--accent-tint);
   color: var(--accent-text);
 }
 
-.lm-finance-sidebar__link--muted {
+.lm-module-sidebar__link--muted {
   font-weight: var(--weight-regular);
 }
 
-.lm-finance-sidebar__link--disabled,
-.lm-finance-sidebar__link--disabled:hover {
+.lm-module-sidebar__link--disabled,
+.lm-module-sidebar__link--disabled:hover {
   background: transparent;
   color: var(--text-tertiary);
   cursor: not-allowed;
 }
 
-.lm-finance-sidebar__toggle {
+.lm-module-sidebar__toggle {
   appearance: none;
   width: 100%;
   margin-top: calc(-1 * var(--space-3));
@@ -106,7 +106,7 @@
   text-align: left;
 }
 
-.lm-finance-sidebar__badge {
+.lm-module-sidebar__badge {
   margin-left: auto;
   padding: 2px var(--space-2);
   border-radius: var(--radius-pill);
@@ -117,20 +117,20 @@
 }
 
 /* Collapsed: icons only. Labels stay in the accessibility tree (sr-only), the rest is hidden. */
-.lm-finance-sidebar--collapsed {
+.lm-module-sidebar--collapsed {
   width: var(--sidebar-width-collapsed);
 }
 
-.lm-finance-sidebar--collapsed .lm-finance-sidebar__module {
+.lm-module-sidebar--collapsed .lm-module-sidebar__module {
   visibility: hidden;
 }
 
-.lm-finance-sidebar--collapsed .lm-finance-sidebar__link {
+.lm-module-sidebar--collapsed .lm-module-sidebar__link {
   justify-content: center;
   padding: 0;
 }
 
-.lm-finance-sidebar--collapsed .lm-finance-sidebar__label {
+.lm-module-sidebar--collapsed .lm-module-sidebar__label {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -142,19 +142,19 @@
   border: 0;
 }
 
-.lm-finance-sidebar--collapsed .lm-finance-sidebar__badge {
+.lm-module-sidebar--collapsed .lm-module-sidebar__badge {
   display: none;
 }
 
 /* Compact: a fixed bottom tab bar (thumb reach). The nav wrapper is flattened with `display: contents`
    so the module links and "All modules" become equal-width sibling tabs; the collapsed state doesn't apply. */
 @media (max-width: 768px) {
-  :root:has(.lm-finance-sidebar) {
+  :root:has(.lm-module-sidebar) {
     --app-bottom-inset: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
   }
 
-  .lm-finance-sidebar,
-  .lm-finance-sidebar--collapsed {
+  .lm-module-sidebar,
+  .lm-module-sidebar--collapsed {
     position: fixed;
     top: auto;
     right: 0;
@@ -173,18 +173,18 @@
     transition: none;
   }
 
-  .lm-finance-sidebar__nav {
+  .lm-module-sidebar__nav {
     display: contents;
   }
 
-  .lm-finance-sidebar__module,
-  .lm-finance-sidebar__spacer,
-  .lm-finance-sidebar__toggle,
-  .lm-finance-sidebar .lm-finance-sidebar__badge {
+  .lm-module-sidebar__module,
+  .lm-module-sidebar__spacer,
+  .lm-module-sidebar__toggle,
+  .lm-module-sidebar .lm-module-sidebar__badge {
     display: none;
   }
 
-  .lm-finance-sidebar .lm-finance-sidebar__link {
+  .lm-module-sidebar .lm-module-sidebar__link {
     flex-direction: column;
     justify-content: center;
     gap: 2px;
@@ -195,11 +195,11 @@
     font-size: var(--text-2xs);
   }
 
-  .lm-finance-sidebar .lm-finance-sidebar__link--active {
+  .lm-module-sidebar .lm-module-sidebar__link--active {
     background: transparent;
   }
 
-  .lm-finance-sidebar .lm-finance-sidebar__label {
+  .lm-module-sidebar .lm-module-sidebar__label {
     position: static;
     width: auto;
     max-width: 100%;

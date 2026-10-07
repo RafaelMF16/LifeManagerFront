@@ -23,6 +23,12 @@ export default {
   footer: {
     copyright: '© 2026 LifeManager',
   },
+  moduleSidebar: {
+    comingSoon: 'Em breve',
+    allModules: 'Todos os módulos',
+    collapse: 'Recolher menu',
+    expand: 'Expandir menu',
+  },
   errors: {
     connection: {
       title: 'Erro de conexão',

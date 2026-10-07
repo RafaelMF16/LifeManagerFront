@@ -11,10 +11,6 @@ export default {
       planning: 'Planejamento',
       categories: 'Categorias',
     },
-    comingSoon: 'Em breve',
-    allModules: 'Todos os módulos',
-    collapse: 'Recolher menu',
-    expand: 'Expandir menu',
   },
   privacy: {
     hide: 'Ocultar valores',
