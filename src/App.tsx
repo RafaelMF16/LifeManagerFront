@@ -9,6 +9,7 @@ import MonthsPage from './finance/pages/MonthsPage'
 import PlanningPage from './finance/pages/PlanningPage'
 import RecurringTransactionsPage from './finance/pages/RecurringTransactionsPage'
 import HabitsLayout from './habits/components/HabitsLayout/HabitsLayout'
+import HabitsPage from './habits/pages/HabitsPage'
 import TodayPage from './habits/pages/TodayPage'
 import HomePage from './home/pages/HomePage'
 import { ErrorModalProvider } from './shared/components/ErrorModal/ErrorModalProvider'
@@ -50,6 +51,7 @@ function App() {
               <Route path="/habits" element={<HabitsLayout />}>
                 <Route index element={<Navigate to="today" replace />} />
                 <Route path="today" element={<TodayPage />} />
+                <Route path="list" element={<HabitsPage />} />
               </Route>
             </Route>
             {/* Signed-out users are sent on to /auth by ProtectedRoute. */}

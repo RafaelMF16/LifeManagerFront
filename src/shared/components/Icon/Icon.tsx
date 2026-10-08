@@ -1,4 +1,6 @@
 import {
+  Archive,
+  ArchiveRestore,
   ArrowDownLeft,
   ArrowDownWideNarrow,
   ArrowUpNarrowWide,
@@ -93,6 +95,8 @@ const ICONS = {
   coins: Coins,
   snowflake: Snowflake,
   flame: Flame,
+  archive: Archive,
+  'archive-restore': ArchiveRestore,
 } as const
 
 export type IconName = keyof typeof ICONS

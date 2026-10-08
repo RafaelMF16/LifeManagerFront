@@ -6,7 +6,7 @@ import type { IconName } from '../../../shared/components/Icon/Icon'
 // `path: null` marks a screen that isn't built yet — rendered disabled with a "coming soon" badge.
 const NAV_ITEMS: { id: string; icon: IconName; path: string | null }[] = [
   { id: 'today', icon: 'calendar-check', path: '/habits/today' },
-  { id: 'habits', icon: 'list-checks', path: null },
+  { id: 'habits', icon: 'list-checks', path: '/habits/list' },
   { id: 'shop', icon: 'store', path: null },
   { id: 'history', icon: 'history', path: null },
 ]

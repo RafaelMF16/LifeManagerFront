@@ -1,0 +1,61 @@
+.lm-habits-page {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-6) var(--page-gutter) var(--space-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.lm-habits-page__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.lm-habits-page__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.lm-habits-page__eyebrow {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-habits-page__title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+.lm-habits-page__intro {
+  margin: 0;
+  max-width: 60ch;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .lm-habits-page {
+    padding-bottom: var(--space-8);
+    gap: var(--space-4);
+  }
+
+  .lm-habits-page__title {
+    font-size: var(--text-xl);
+  }
+
+  /* "New habit" drops below the title at full width, within easy thumb reach. */
+  .lm-habits-page__header > .lm-button {
+    width: 100%;
+  }
+}
