@@ -8,6 +8,8 @@ export const HABIT_ARCHIVED_CODE = 'Habit.Archived'
 export const HABIT_ALREADY_CHECKED_IN_CODE = 'Habit.AlreadyCheckedIn'
 export const HABIT_CHECK_IN_NOT_FOUND_CODE = 'Habit.CheckInNotFound'
 export const HABIT_CHECK_IN_OUTSIDE_WINDOW_CODE = 'Habit.CheckInOutsideWindow'
+export const HABIT_ALREADY_RELAPSED_CODE = 'Habit.AlreadyRelapsed'
+export const HABIT_RELAPSE_NOT_FOUND_CODE = 'Habit.RelapseNotFound'
 
 export const habitErrorFieldMap: ApiErrorFieldMap<HabitFormValues> = {
   'Habit.NameIsNullOrWhiteSpace': { field: 'name', message: 'habits:habits.validation.name.required' },

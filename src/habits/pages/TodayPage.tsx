@@ -7,23 +7,31 @@ import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
+import HabitAvoidCard from '../components/HabitAvoidCard/HabitAvoidCard'
+import type { RelapseDay } from '../components/HabitAvoidCard/HabitAvoidCard'
 import HabitCheckItem from '../components/HabitCheckItem/HabitCheckItem'
+import RelapseDialog from '../components/RelapseDialog/RelapseDialog'
 import WelcomeBackBanner from '../components/WelcomeBackBanner/WelcomeBackBanner'
 import { useHabitsToday } from '../hooks/useHabitsToday'
 import type { HabitsOutletContext } from '../types/HabitsOutletContext'
-import type { HabitTodayItemDto } from '../types/HabitTodayDtos'
+import type { HabitAvoidItemDto, HabitTodayItemDto } from '../types/HabitTodayDtos'
 import { checkInHighlight, formatDayTitle, formatWalletChange, todayProgress } from '../utils/todayProgress'
 import { readWelcomeBackDismissed, shouldWelcomeBack, writeWelcomeBackDismissed } from '../utils/welcomeBack'
 import {
   HABIT_ALREADY_CHECKED_IN_CODE,
+  HABIT_ALREADY_RELAPSED_CODE,
   HABIT_ARCHIVED_CODE,
   HABIT_CHECK_IN_NOT_FOUND_CODE,
   HABIT_CHECK_IN_OUTSIDE_WINDOW_CODE,
   HABIT_NOT_FOUND_CODE,
+  HABIT_RELAPSE_NOT_FOUND_CODE,
 } from '../validation/habitErrorMap'
 import './TodayPage.css'
 
-/** The Habits home: today's checklist, with yesterday's leftovers on top while they can still be checked in. */
+/**
+ * The Habits home: today's checklist, with yesterday's leftovers on top while they can still be checked in, then the
+ * habits to avoid (relapses) and the ones free today.
+ */
 function TodayPage() {
   const { t: translate, i18n } = useTranslation(['habits', 'common'])
   const navigate = useNavigate()
@@ -32,6 +40,7 @@ function TodayPage() {
   const { show: showErrorModal } = useErrorModal()
   const habits = useHabitsToday()
   const [welcomeDismissedFor, setWelcomeDismissedFor] = useState(readWelcomeBackDismissed)
+  const [relapseTarget, setRelapseTarget] = useState<HabitAvoidItemDto | null>(null)
 
   // A streak freeze would cover yesterday if it's left unchecked: the warning says so instead of alarming.
   const yesterdayRisk = (profile?.streakFreezes ?? 0) > 0 ? 'protected' : 'unprotected'
@@ -55,26 +64,70 @@ function TodayPage() {
         showToast(translate('habits:today.toasts.undone'), change || undefined)
       }
     } catch (err) {
-      if (isSessionExpiredError(err)) return
-      if (!isApiError(err)) {
-        showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
-        return
-      }
-      // Changed in another tab or device: the reloaded list already shows it as it is.
-      if (err.code === HABIT_ALREADY_CHECKED_IN_CODE || err.code === HABIT_CHECK_IN_NOT_FOUND_CODE) {
-        habits.reload()
-        return
-      }
-
-      const message =
-        err.code === HABIT_CHECK_IN_OUTSIDE_WINDOW_CODE
-          ? 'habits:today.errors.outsideWindow'
-          : err.code === HABIT_NOT_FOUND_CODE || err.code === HABIT_ARCHIVED_CODE
-            ? 'habits:today.errors.gone'
-            : 'common:errors.generic'
-      showErrorModal(translate('habits:today.errors.title'), translate(message))
-      habits.reload()
+      showSaveError(err)
     }
+  }
+
+  function dateOf(day: RelapseDay) {
+    return day === 'today' ? habits.date! : habits.yesterday
+  }
+
+  async function handleRelapse(item: HabitAvoidItemDto, day: RelapseDay) {
+    try {
+      const saved = await habits.setRelapse(item, dateOf(day), true)
+      setRelapseTarget(null)
+      if (!saved) return
+
+      reloadProfile()
+      const change = formatWalletChange(saved.wallet, translate)
+      const knockout = saved.wallet.knockedOut
+        ? translate('habits:today.reward.knockedOut', { count: saved.wallet.knockoutCoinsLost })
+        : undefined
+      showToast(translate('habits:today.toasts.relapsed'), [change || translate('habits:today.toasts.withinLimit'), knockout].filter(Boolean).join(' · '))
+    } catch (err) {
+      setRelapseTarget(null)
+      showSaveError(err)
+    }
+  }
+
+  async function handleUndoRelapse(item: HabitAvoidItemDto, day: RelapseDay) {
+    try {
+      const saved = await habits.setRelapse(item, dateOf(day), false)
+      if (!saved) return
+
+      reloadProfile()
+      showToast(translate('habits:today.toasts.relapseUndone'), formatWalletChange(saved.wallet, translate) || undefined)
+    } catch (err) {
+      showSaveError(err)
+    }
+  }
+
+  /** A failed check-in or relapse: changes made elsewhere just reload; the rest also explain what happened. */
+  function showSaveError(err: unknown) {
+    if (isSessionExpiredError(err)) return
+    if (!isApiError(err)) {
+      showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
+      return
+    }
+    // Changed in another tab or device: the reloaded list already shows it as it is.
+    if (
+      err.code === HABIT_ALREADY_CHECKED_IN_CODE ||
+      err.code === HABIT_CHECK_IN_NOT_FOUND_CODE ||
+      err.code === HABIT_ALREADY_RELAPSED_CODE ||
+      err.code === HABIT_RELAPSE_NOT_FOUND_CODE
+    ) {
+      habits.reload()
+      return
+    }
+
+    const message =
+      err.code === HABIT_CHECK_IN_OUTSIDE_WINDOW_CODE
+        ? 'habits:today.errors.outsideWindow'
+        : err.code === HABIT_NOT_FOUND_CODE || err.code === HABIT_ARCHIVED_CODE
+          ? 'habits:today.errors.gone'
+          : 'common:errors.generic'
+    showErrorModal(translate('habits:today.errors.title'), translate(message))
+    habits.reload()
   }
 
   function renderList(items: HabitTodayItemDto[], date: string, streakRisk?: 'unprotected' | 'protected') {
@@ -110,7 +163,9 @@ function TodayPage() {
       )
     }
 
-    if (habits.today.length === 0 && habits.yesterdayPending.length === 0) {
+    const hasAvoiding = habits.avoiding.length > 0 || habits.freeToday.length > 0
+
+    if (habits.today.length === 0 && habits.yesterdayPending.length === 0 && !hasAvoiding) {
       return (
         <div className="lm-today-page__empty">
           <span className="lm-today-page__empty-icon" aria-hidden="true">
@@ -143,31 +198,63 @@ function TodayPage() {
           </section>
         ) : null}
 
-        <section className="lm-today-page__section" aria-labelledby="lm-today-today">
-          <div className="lm-today-page__section-header">
-            <h2 id="lm-today-today" className="lm-today-page__section-title">
-              {translate('habits:today.list.title')}
-            </h2>
-            {progress.total > 0 ? (
-              <span className="lm-today-page__progress">
-                {translate('habits:today.list.progress', { done: progress.done, count: progress.total })}
-              </span>
+        {habits.today.length > 0 || !hasAvoiding ? (
+          <section className="lm-today-page__section" aria-labelledby="lm-today-today">
+            <div className="lm-today-page__section-header">
+              <h2 id="lm-today-today" className="lm-today-page__section-title">
+                {translate('habits:today.list.title')}
+              </h2>
+              {progress.total > 0 ? (
+                <span className="lm-today-page__progress">
+                  {translate('habits:today.list.progress', { done: progress.done, count: progress.total })}
+                </span>
+              ) : null}
+            </div>
+
+            {progress.allDone ? (
+              <p className="lm-today-page__all-done" role="status">
+                <Icon name="sparkles" size={16} aria-hidden="true" />
+                {translate('habits:today.list.allDone')}
+              </p>
             ) : null}
-          </div>
 
-          {progress.allDone ? (
-            <p className="lm-today-page__all-done" role="status">
-              <Icon name="sparkles" size={16} aria-hidden="true" />
-              {translate('habits:today.list.allDone')}
-            </p>
-          ) : null}
+            {progress.total > 0 ? (
+              renderList(habits.today, habits.date)
+            ) : (
+              <p className="lm-today-page__state">{translate('habits:today.list.nothingToday')}</p>
+            )}
+          </section>
+        ) : null}
 
-          {progress.total > 0 ? (
-            renderList(habits.today, habits.date)
-          ) : (
-            <p className="lm-today-page__state">{translate('habits:today.list.nothingToday')}</p>
-          )}
-        </section>
+        {hasAvoiding ? (
+          <section className="lm-today-page__section" aria-labelledby="lm-today-avoiding">
+            <div className="lm-today-page__section-header">
+              <h2 id="lm-today-avoiding" className="lm-today-page__section-title">
+                {translate('habits:today.avoid.title')}
+              </h2>
+              <span className="lm-today-page__section-hint">{translate('habits:today.avoid.hint')}</span>
+            </div>
+            {habits.avoiding.length > 0 ? (
+              <ul className="lm-today-page__list">
+                {habits.avoiding.map((item) => (
+                  <li key={item.id}>
+                    <HabitAvoidCard
+                      item={item}
+                      pending={habits.isPending(item.id, habits.date!) || habits.isPending(item.id, habits.yesterday)}
+                      onRelapse={() => setRelapseTarget(item)}
+                      onUndo={(day) => void handleUndoRelapse(item, day)}
+                    />
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            {habits.freeToday.length > 0 ? (
+              <p className="lm-today-page__free">
+                {translate('habits:today.avoid.freeToday', { names: habits.freeToday.join(', ') })}
+              </p>
+            ) : null}
+          </section>
+        ) : null}
       </>
     )
   }
@@ -181,6 +268,14 @@ function TodayPage() {
       </div>
 
       {renderContent()}
+
+      {relapseTarget ? (
+        <RelapseDialog
+          item={relapseTarget}
+          onClose={() => setRelapseTarget(null)}
+          onConfirm={(day) => handleRelapse(relapseTarget, day)}
+        />
+      ) : null}
     </main>
   )
 }

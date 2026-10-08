@@ -1,0 +1,17 @@
+.lm-relapse-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Today and yesterday split the width evenly. */
+.lm-relapse-dialog__when {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lm-relapse-dialog__note {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}

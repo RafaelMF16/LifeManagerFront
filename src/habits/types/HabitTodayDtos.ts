@@ -13,6 +13,32 @@ export interface HabitTodayDto {
   /** The latest day an active habit was missed in the last 7 days (`yyyy-MM-dd`); null when none. */
   lastMissedOn: string | null
   recentMissCount: number
+  /** Habits to avoid in force today (a weekly limit always is). */
+  avoiding: HabitAvoidItemDto[]
+  /** Names of set-days habits to avoid whose day off is today. */
+  freeToday: string[]
+}
+
+/** A habit to avoid on the day's checklist. */
+export interface HabitAvoidItemDto {
+  id: number
+  name: string
+  trigger: string | null
+  difficulty: HabitDifficulty
+  frequencyType: HabitFrequencyType
+  /** The weekly limit, for `TimesPerWeek`. */
+  timesPerWeek: number | null
+  /** Clean days in a row (weeks within the limit, for a weekly limit). */
+  currentStreak: number
+  longestStreak: number
+  relapsedToday: boolean
+  relapsedYesterday: boolean
+  /** Yesterday was avoided, can still change and has no relapse. */
+  canRelapseYesterday: boolean
+  /** Weekly limit only: relapses logged this week. */
+  weekRelapseCount: number | null
+  /** HP a relapse today would cost: 0 while within a weekly limit, or once relapsed today. */
+  damagePreview: number
 }
 
 export interface HabitTodayItemDto {
@@ -59,4 +85,17 @@ export interface HabitCheckInResultDto {
   milestoneCoins: number
   /** Streak freezes earned (the player holds at most 2). */
   freezesEarned: number
+}
+
+/** `POST /api/Habits/{id}/Relapses` and `DELETE /api/Habits/{id}/Relapses/{date}`. */
+export interface HabitRelapseResultDto {
+  habitId: number
+  date: string
+  /** False after an undo. */
+  relapsed: boolean
+  currentStreak: number
+  longestStreak: number
+  wallet: WalletChangeDto
+  /** Weekly limit only: the week's relapses now. */
+  weekRelapseCount: number | null
 }

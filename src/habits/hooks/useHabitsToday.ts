@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { checkIn, getToday, undoCheckIn } from '../services/habitCheckInService'
-import type { HabitCheckInResultDto, HabitTodayDto, HabitTodayItemDto } from '../types/HabitTodayDtos'
+import { relapse as relapseRequest, undoRelapse as undoRelapseRequest } from '../services/habitRelapseService'
+import type {
+  HabitAvoidItemDto,
+  HabitCheckInResultDto,
+  HabitRelapseResultDto,
+  HabitTodayDto,
+  HabitTodayItemDto,
+} from '../types/HabitTodayDtos'
 
 export type HabitsTodayStatus = 'loading' | 'ready' | 'error'
 
@@ -17,7 +24,8 @@ function toggleKey(habitId: number, date: string) {
 
 /**
  * The day's checklist. `toggle` checks a habit in (or undoes it) optimistically: the item flips at once and flips
- * back if the request fails. A habit already being saved ignores further taps.
+ * back if the request fails. `setRelapse` logs (or undoes) a relapse of a habit to avoid and waits for the server,
+ * since it costs HP. A habit already being saved ignores further taps.
  */
 export function useHabitsToday() {
   const [reloadKey, setReloadKey] = useState(0)
@@ -79,6 +87,26 @@ export function useHabitsToday() {
     [reload],
   )
 
+  const setRelapse = useCallback(
+    async (item: HabitAvoidItemDto, date: string, relapsed: boolean): Promise<HabitRelapseResultDto | undefined> => {
+      const key = toggleKey(item.id, date)
+      if (pendingRef.current.has(key)) return undefined
+
+      pendingRef.current.add(key)
+      setPending(new Set(pendingRef.current))
+
+      try {
+        const saved = relapsed ? await relapseRequest(item.id, date) : await undoRelapseRequest(item.id, date)
+        reload()
+        return saved
+      } finally {
+        pendingRef.current.delete(key)
+        setPending(new Set(pendingRef.current))
+      }
+    },
+    [reload],
+  )
+
   const data = result?.data
   const status: HabitsTodayStatus = data ? 'ready' : result?.failed ? 'error' : 'loading'
 
@@ -98,8 +126,11 @@ export function useHabitsToday() {
     yesterday,
     today: data ? withOverrides(data.today, data.date) : [],
     yesterdayPending: data ? withOverrides(data.yesterdayPending, yesterday) : [],
+    avoiding: data?.avoiding ?? [],
+    freeToday: data?.freeToday ?? [],
     isPending: (habitId: number, date: string) => pending.has(toggleKey(habitId, date)),
     toggle,
+    setRelapse,
     reload,
   }
 }

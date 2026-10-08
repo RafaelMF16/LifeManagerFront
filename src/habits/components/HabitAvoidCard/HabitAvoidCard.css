@@ -1,0 +1,102 @@
+.lm-habit-avoid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--elevation-1);
+}
+
+.lm-habit-avoid--relapsed {
+  background: var(--surface-sunken);
+}
+
+.lm-habit-avoid__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lm-habit-avoid__name {
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lm-habit-avoid__trigger {
+  font-size: var(--text-xs);
+  font-style: italic;
+  color: var(--text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lm-habit-avoid__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  margin-top: 2px;
+}
+
+.lm-habit-avoid__streak {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--text-tertiary);
+}
+
+.lm-habit-avoid__streak--on {
+  color: var(--warning);
+}
+
+.lm-habit-avoid__record,
+.lm-habit-avoid__limit {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-habit-avoid__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+
+.lm-habit-avoid__logged {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--danger);
+}
+
+@media (max-width: 768px) {
+  /* The button drops below the text at full width, within easy thumb reach. */
+  .lm-habit-avoid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lm-habit-avoid__actions {
+    align-items: stretch;
+  }
+
+  .lm-habit-avoid__logged {
+    justify-content: space-between;
+  }
+
+  .lm-habit-avoid__relapse {
+    width: 100%;
+  }
+}
