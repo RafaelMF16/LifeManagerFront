@@ -1,0 +1,100 @@
+.lm-shop-page {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-6) var(--page-gutter) var(--space-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.lm-shop-page__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.lm-shop-page__eyebrow {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-shop-page__title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+.lm-shop-page__intro {
+  margin: 0;
+  max-width: 60ch;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* Underlined tabs: each section is its own route, so they are links, not a toggle. */
+.lm-shop-page__tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-shop-page__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-height-md);
+  padding: 0 var(--space-4);
+  margin-bottom: calc(-1 * var(--border-width));
+  border-bottom: 2px solid transparent;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: var(--transition-control);
+}
+
+@media (hover: hover) {
+  .lm-shop-page__tab:hover {
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+}
+
+.lm-shop-page__tab--active {
+  border-bottom-color: var(--accent);
+  color: var(--text-primary);
+}
+
+/* The rewards tab's action row: "New reward" on the right. */
+.lm-shop-page__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .lm-shop-page {
+    padding-bottom: var(--space-8);
+    gap: var(--space-4);
+  }
+
+  .lm-shop-page__title {
+    font-size: var(--text-xl);
+  }
+
+  /* Two tabs split the width, each a full-size tap target. */
+  .lm-shop-page__tab {
+    flex: 1;
+    justify-content: center;
+    padding: 0 var(--space-2);
+  }
+
+  /* "New reward" at full width, within easy thumb reach. */
+  .lm-shop-page__actions > .lm-button {
+    width: 100%;
+  }
+}

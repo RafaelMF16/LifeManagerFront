@@ -1,0 +1,187 @@
+.lm-redemption-list {
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+}
+
+.lm-redemption-list__toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-redemption-list__title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-redemption-list__hint {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+/* Keeps the previous page visible, dimmed, while the next one loads from the server. */
+.lm-redemption-list__body {
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.lm-redemption-list--fetching .lm-redemption-list__body {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.lm-redemption-list__rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Icon, name and time, the price, then the undo button or the "undone" badge. */
+.lm-redemption-list__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--row-height-default);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-redemption-list__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-button);
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.lm-redemption-list__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lm-redemption-list__name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lm-redemption-list__when {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-redemption-list__cost {
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.lm-redemption-list__status {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lm-redemption-list__badge {
+  display: inline-block;
+  height: 18px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  border: var(--border-width) solid var(--border);
+  color: var(--text-secondary);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+/* An undone redemption cost nothing in the end: its price is struck through. */
+.lm-redemption-list__row--undone .lm-redemption-list__cost {
+  color: var(--text-tertiary);
+  text-decoration: line-through;
+}
+
+.lm-redemption-list__row--undone .lm-redemption-list__main,
+.lm-redemption-list__row--undone .lm-redemption-list__icon {
+  opacity: 0.65;
+}
+
+.lm-redemption-list__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.lm-redemption-list__state-title {
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .lm-redemption-list__toolbar {
+    padding: var(--space-4);
+  }
+
+  /* Each redemption becomes a block: icon, name and price on top, the undo button below at full width. */
+  .lm-redemption-list__row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'icon main cost'
+      'status status status';
+    gap: var(--space-2) var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .lm-redemption-list__icon {
+    grid-area: icon;
+  }
+
+  .lm-redemption-list__main {
+    grid-area: main;
+  }
+
+  .lm-redemption-list__cost {
+    grid-area: cost;
+  }
+
+  .lm-redemption-list__status {
+    grid-area: status;
+    justify-content: flex-start;
+  }
+
+  .lm-redemption-list__status:empty {
+    display: none;
+  }
+
+  .lm-redemption-list__status > .lm-button {
+    width: 100%;
+  }
+
+  .lm-redemption-list__state {
+    padding: var(--space-8) var(--space-4);
+  }
+}

@@ -10,6 +10,9 @@ import PlanningPage from './finance/pages/PlanningPage'
 import RecurringTransactionsPage from './finance/pages/RecurringTransactionsPage'
 import HabitsLayout from './habits/components/HabitsLayout/HabitsLayout'
 import HabitsPage from './habits/pages/HabitsPage'
+import RedemptionsPage from './habits/pages/RedemptionsPage'
+import RewardsPage from './habits/pages/RewardsPage'
+import ShopPage from './habits/pages/ShopPage'
 import TodayPage from './habits/pages/TodayPage'
 import HomePage from './home/pages/HomePage'
 import { ErrorModalProvider } from './shared/components/ErrorModal/ErrorModalProvider'
@@ -52,6 +55,11 @@ function App() {
                 <Route index element={<Navigate to="today" replace />} />
                 <Route path="today" element={<TodayPage />} />
                 <Route path="list" element={<HabitsPage />} />
+                <Route path="shop" element={<ShopPage />}>
+                  <Route index element={<Navigate to="rewards" replace />} />
+                  <Route path="rewards" element={<RewardsPage />} />
+                  <Route path="redemptions" element={<RedemptionsPage />} />
+                </Route>
               </Route>
             </Route>
             {/* Signed-out users are sent on to /auth by ProtectedRoute. */}

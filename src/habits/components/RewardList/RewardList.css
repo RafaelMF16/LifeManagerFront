@@ -1,0 +1,208 @@
+.lm-reward-list {
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+}
+
+.lm-reward-list__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-reward-list__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lm-reward-list__title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-reward-list__count {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-reward-list__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.lm-reward-list__search {
+  width: 200px;
+}
+
+.lm-reward-list__sort {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.lm-reward-list__sort-select {
+  width: 140px;
+}
+
+/* Keeps the previous page visible, dimmed, while the next one loads from the server. */
+.lm-reward-list__body {
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.lm-reward-list--fetching .lm-reward-list__body {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.lm-reward-list__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  list-style: none;
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+/* Icon, name and price on top; the redeem button and the actions pinned to the bottom. */
+.lm-reward-list__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface-raised);
+}
+
+.lm-reward-list__top {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.lm-reward-list__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-button);
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.lm-reward-list__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lm-reward-list__name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.lm-reward-list__price {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--warning);
+}
+
+.lm-reward-list__pace {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.lm-reward-list__actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.lm-reward-list__redeem {
+  flex: 1;
+  margin-right: var(--space-2);
+}
+
+/* An archived reward can't be bought: it reads quieter than the ones on sale. */
+.lm-reward-list__card--archived .lm-reward-list__top {
+  opacity: 0.65;
+}
+
+.lm-reward-list__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.lm-reward-list__state-title {
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .lm-reward-list__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .lm-reward-list__filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .lm-reward-list__status {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lm-reward-list__search {
+    width: 100%;
+  }
+
+  .lm-reward-list__sort-select {
+    flex: 1;
+    width: auto;
+  }
+
+  .lm-reward-list__grid {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-4);
+  }
+
+  .lm-reward-list__state {
+    padding: var(--space-8) var(--space-4);
+  }
+}
