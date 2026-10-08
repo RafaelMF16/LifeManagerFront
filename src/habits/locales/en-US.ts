@@ -31,9 +31,47 @@ export default {
   },
   today: {
     title: 'Today',
+    loading: "Loading today's habits…",
+    loadError: "Couldn't load today's habits.",
+    retry: 'Try again',
     empty: {
       title: 'No habits here yet',
       message: "Today's habits will show up here. Start with 1 to 3 easy habits.",
+      action: 'Create a habit',
+    },
+    yesterday: {
+      title: 'Left over from yesterday',
+      hint: 'You can still check these until today ends; then the day closes and counts as missed.',
+    },
+    list: {
+      title: 'For today',
+      progress_one: '{{done}} of {{count}} done',
+      progress_other: '{{done}} of {{count}} done',
+      allDone: 'All done for today. Your streak thanks you!',
+      nothingToday: 'No habits scheduled for today.',
+    },
+    item: {
+      week: '{{done}}/{{target}} this week',
+      coins_one: '+{{count}} coin',
+      coins_other: '+{{count}} coins',
+    },
+    reward: {
+      coins_one: '{{value}} coin',
+      coins_other: '{{value}} coins',
+      xp: '{{value}} XP',
+      hp: '{{value}} HP',
+      levelUp: 'Level {{level}} reached! HP refilled.',
+      knockedOut_one: 'You were knocked out: −{{count}} coin, HP restored.',
+      knockedOut_other: 'You were knocked out: −{{count}} coins, HP restored.',
+    },
+    toasts: {
+      doneNoReward: "Done! This week's target was already met.",
+      undone: 'Check-in undone',
+    },
+    errors: {
+      title: "Couldn't save",
+      outsideWindow: 'That day has closed and can no longer change.',
+      gone: 'This habit was archived or no longer exists.',
     },
   },
   actions: {
@@ -126,7 +164,19 @@ export default {
       weekDaysLabel: 'Days of the week',
       timesPerWeekLabel: 'Times per week',
       timesPerWeekHint: 'From 1 to 6, on any days from Monday to Sunday.',
-      negativeFrequencyHint: 'A habit to avoid counts every day: each day without a relapse is a clean day.',
+      frequencyLabelNegative: 'When to avoid it',
+      frequencyOptionsNegative: {
+        Daily: 'Every day',
+        WeekDays: 'Set days',
+        TimesPerWeek: 'Weekly limit',
+      },
+      weekDaysLabelNegative: 'Days you avoid it',
+      timesPerWeekLabelNegative: 'Most times per week',
+      frequencyHintsNegative: {
+        Daily: 'Each day without a relapse is a clean day and earns coins.',
+        WeekDays: 'The other days are free: no damage and no coins.',
+        TimesPerWeek: 'Up to this many times a week costs no HP. A week that closes within the limit earns coins.',
+      },
       triggerLabel: 'Cue (optional)',
       triggerPlaceholder: 'After my morning coffee…',
       triggerHint: 'Tying the habit to something you already do makes it easier to remember.',
@@ -172,7 +222,6 @@ export default {
       },
       frequency: {
         invalid: 'Pick a frequency',
-        negativeMustBeDaily: 'A habit to avoid is always daily',
       },
       weekDays: {
         required: 'Pick at least one day',
@@ -187,6 +236,8 @@ export default {
       daily: 'Every day',
       timesPerWeek_one: '{{count}}× a week',
       timesPerWeek_other: '{{count}}× a week',
+      limitPerWeek_one: 'Up to {{count}}× a week',
+      limitPerWeek_other: 'Up to {{count}}× a week',
     },
   },
 } as const

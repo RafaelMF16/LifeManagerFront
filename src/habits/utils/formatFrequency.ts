@@ -1,4 +1,4 @@
-import type { HabitFrequencyType, WeekDay } from '../types/HabitDtos'
+import type { HabitFrequencyType, HabitKind, WeekDay } from '../types/HabitDtos'
 import { WEEK_DAYS } from '../types/HabitDtos'
 
 // 2024-01-01 was a Monday: WEEK_DAYS[i] falls on January (1 + i).
@@ -16,18 +16,22 @@ export function weekDayLabels(locale: string, width: 'short' | 'long'): Record<W
 }
 
 interface FrequencyLike {
+  /** Omitted reads as `Positive`. */
+  kind?: HabitKind
   frequencyType: HabitFrequencyType
   weekDays: readonly WeekDay[]
   timesPerWeek: number | null
 }
 
 /**
- * One line describing how often a habit is due: "Every day", "Mon, Wed, Fri" or "3× a week". Every day of the week
- * picked reads as "every day", and the days always come Monday first.
+ * One line describing how often a habit is due: "Every day", "Mon, Wed, Fri" or "3× a week" ("Up to 2× a week" for a
+ * habit to avoid, whose number is a limit). Every day of the week picked reads as "every day", and the days always
+ * come Monday first.
  */
 export function formatFrequency(habit: FrequencyLike, translate: (key: string, options?: Record<string, unknown>) => string, locale: string) {
   if (habit.frequencyType === 'TimesPerWeek') {
-    return translate('habits:habits.frequencySummary.timesPerWeek', { count: habit.timesPerWeek ?? 0 })
+    const key = habit.kind === 'Negative' ? 'habits:habits.frequencySummary.limitPerWeek' : 'habits:habits.frequencySummary.timesPerWeek'
+    return translate(key, { count: habit.timesPerWeek ?? 0 })
   }
 
   if (habit.frequencyType === 'WeekDays' && habit.weekDays.length < WEEK_DAYS.length) {

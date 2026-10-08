@@ -6,11 +6,11 @@ import type { HabitFormValues } from '../validation/habitSchema'
 const HABITS_PATH = '/api/Habits'
 
 /**
- * Sends only what the frequency uses (the backend rejects days on a TimesPerWeek habit and vice versa); a habit to
- * avoid is always daily. Blank optional texts go as null.
+ * Sends only what the frequency uses (the backend rejects days on a TimesPerWeek habit and vice versa). Blank optional
+ * texts go as null.
  */
 export function toUpdateRequestDto(values: HabitFormValues): HabitUpdateRequestDto {
-  const frequencyType = values.kind === 'Negative' ? 'Daily' : values.frequencyType
+  const { frequencyType } = values
 
   return {
     name: values.name,

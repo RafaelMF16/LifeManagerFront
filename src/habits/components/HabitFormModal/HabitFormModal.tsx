@@ -121,23 +121,24 @@ function HabitFormModal({ habit, onClose, onSubmit }: HabitFormModalProps) {
   }
 
   function renderFrequencyField() {
-    // A habit to avoid counts every day without a relapse: there is nothing to choose.
-    if (kind === 'Negative') {
-      return <p className="lm-habit-form__note">{translate('habits:habits.form.negativeFrequencyHint')}</p>
-    }
+    // A habit to avoid reads the same choices differently: the days it is avoided, or a weekly limit.
+    const negative = kind === 'Negative'
+    const frequencyLabel = translate(negative ? 'habits:habits.form.frequencyLabelNegative' : 'habits:habits.form.frequencyLabel')
 
     return (
       <>
         <div className="lm-habit-form__group">
           <span className="lm-habit-form__label" aria-hidden="true">
-            {translate('habits:habits.form.frequencyLabel')}
+            {frequencyLabel}
           </span>
           <SegmentedControl
             size="md"
-            aria-label={translate('habits:habits.form.frequencyLabel')}
+            aria-label={frequencyLabel}
             options={FREQUENCIES.map((option) => ({
               value: option,
-              label: translate(`habits:habits.form.frequencyOptions.${option}`),
+              label: translate(
+                negative ? `habits:habits.form.frequencyOptionsNegative.${option}` : `habits:habits.form.frequencyOptions.${option}`,
+              ),
             }))}
             value={frequencyType}
             onChange={(value) => setValue('frequencyType', value, { shouldValidate: true })}
@@ -146,11 +147,14 @@ function HabitFormModal({ habit, onClose, onSubmit }: HabitFormModalProps) {
           {errors.frequencyType?.message ? (
             <span className="lm-habit-form__error">{translate(errors.frequencyType.message)}</span>
           ) : null}
+          {negative ? (
+            <span className="lm-habit-form__hint">{translate(`habits:habits.form.frequencyHintsNegative.${frequencyType}`)}</span>
+          ) : null}
         </div>
 
         {frequencyType === 'WeekDays' ? (
           <WeekdayPicker
-            label={translate('habits:habits.form.weekDaysLabel')}
+            label={translate(negative ? 'habits:habits.form.weekDaysLabelNegative' : 'habits:habits.form.weekDaysLabel')}
             value={weekDays}
             onChange={(value) => setValue('weekDays', value, { shouldValidate: true })}
             error={fieldError(errors.weekDays?.message)}
@@ -160,8 +164,8 @@ function HabitFormModal({ habit, onClose, onSubmit }: HabitFormModalProps) {
         {frequencyType === 'TimesPerWeek' ? (
           <Input
             type="number"
-            label={translate('habits:habits.form.timesPerWeekLabel')}
-            hint={translate('habits:habits.form.timesPerWeekHint')}
+            label={translate(negative ? 'habits:habits.form.timesPerWeekLabelNegative' : 'habits:habits.form.timesPerWeekLabel')}
+            hint={negative ? undefined : translate('habits:habits.form.timesPerWeekHint')}
             min={HABIT_MIN_TIMES_PER_WEEK}
             max={HABIT_MAX_TIMES_PER_WEEK}
             inputMode="numeric"

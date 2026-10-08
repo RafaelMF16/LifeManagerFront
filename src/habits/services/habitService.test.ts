@@ -41,10 +41,18 @@ describe('toRequestDto', () => {
     expect(dto.timesPerWeek).toBeNull()
   })
 
-  it('always sends a habit to avoid as daily', () => {
-    const dto = toRequestDto({ ...values, kind: 'Negative' })
-
-    expect(dto).toMatchObject({ kind: 'Negative', frequencyType: 'Daily', weekDays: null, timesPerWeek: null })
+  it('sends the frequency chosen for a habit to avoid', () => {
+    expect(toRequestDto({ ...values, kind: 'Negative' })).toMatchObject({
+      kind: 'Negative',
+      frequencyType: 'WeekDays',
+      weekDays: ['Monday', 'Thursday'],
+      timesPerWeek: null,
+    })
+    expect(toRequestDto({ ...values, kind: 'Negative', frequencyType: 'TimesPerWeek', timesPerWeek: '2' })).toMatchObject({
+      frequencyType: 'TimesPerWeek',
+      weekDays: null,
+      timesPerWeek: 2,
+    })
   })
 })
 

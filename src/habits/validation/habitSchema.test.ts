@@ -82,7 +82,14 @@ describe('habitSchema', () => {
     expect(habitSchema.safeParse({ ...valid, frequencyType: 'TimesPerWeek', timesPerWeek: '2', weekDays: [] }).success).toBe(true)
   })
 
-  it('skips the frequency checks for a habit to avoid, which is always daily', () => {
-    expect(habitSchema.safeParse({ ...valid, kind: 'Negative', frequencyType: 'WeekDays', weekDays: [] }).success).toBe(true)
+  it('checks the days and the weekly limit of a habit to avoid like any other', () => {
+    const negative = { ...valid, kind: 'Negative' }
+
+    expect(messagesFor({ ...negative, frequencyType: 'WeekDays' }, 'weekDays')).toEqual(['habits:habits.validation.weekDays.required'])
+    expect(messagesFor({ ...negative, frequencyType: 'TimesPerWeek', timesPerWeek: '7' }, 'timesPerWeek')).toEqual([
+      'habits:habits.validation.timesPerWeek.invalid',
+    ])
+    expect(habitSchema.safeParse({ ...negative, frequencyType: 'WeekDays', weekDays: ['Monday', 'Friday'] }).success).toBe(true)
+    expect(habitSchema.safeParse({ ...negative, frequencyType: 'TimesPerWeek', timesPerWeek: '2' }).success).toBe(true)
   })
 })

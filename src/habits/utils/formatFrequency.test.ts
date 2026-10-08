@@ -49,4 +49,16 @@ describe('formatFrequency', () => {
       'habits:habits.frequencySummary.timesPerWeek:{"count":3}',
     )
   })
+
+  it('reads the number of a habit to avoid as a weekly limit', () => {
+    const habit = { kind: 'Negative' as const, frequencyType: 'TimesPerWeek' as const, weekDays: [], timesPerWeek: 2 }
+
+    expect(formatFrequency(habit, translate, 'en-US')).toBe('habits:habits.frequencySummary.limitPerWeek:{"count":2}')
+  })
+
+  it('lists the days a habit to avoid is avoided on, like any other', () => {
+    const habit = { kind: 'Negative' as const, frequencyType: 'WeekDays' as const, weekDays: ['Monday', 'Tuesday'] as const, timesPerWeek: null }
+
+    expect(formatFrequency(habit, translate, 'en-US')).toBe('Mon, Tue')
+  })
 })

@@ -31,9 +31,47 @@ export default {
   },
   today: {
     title: 'Hoje',
+    loading: 'Carregando seus hábitos de hoje…',
+    loadError: 'Não foi possível carregar os hábitos de hoje.',
+    retry: 'Tentar novamente',
     empty: {
       title: 'Nenhum hábito por aqui ainda',
       message: 'Seus hábitos de hoje vão aparecer aqui. Comece com 1 a 3 hábitos fáceis.',
+      action: 'Criar um hábito',
+    },
+    yesterday: {
+      title: 'Ontem ficou pendente',
+      hint: 'Dá para marcar até o fim de hoje; depois o dia fecha e conta como falha.',
+    },
+    list: {
+      title: 'Para hoje',
+      progress_one: '{{done}} de {{count}} feito',
+      progress_other: '{{done}} de {{count}} feitos',
+      allDone: 'Tudo feito hoje. Sua ofensiva agradece!',
+      nothingToday: 'Nenhum hábito agendado para hoje.',
+    },
+    item: {
+      week: '{{done}}/{{target}} esta semana',
+      coins_one: '+{{count}} moeda',
+      coins_other: '+{{count}} moedas',
+    },
+    reward: {
+      coins_one: '{{value}} moeda',
+      coins_other: '{{value}} moedas',
+      xp: '{{value}} XP',
+      hp: '{{value}} HP',
+      levelUp: 'Subiu para o nível {{level}}! HP cheio.',
+      knockedOut_one: 'Você foi nocauteado: −{{count}} moeda, HP restaurado.',
+      knockedOut_other: 'Você foi nocauteado: −{{count}} moedas, HP restaurado.',
+    },
+    toasts: {
+      doneNoReward: 'Feito! A meta da semana já tinha sido batida.',
+      undone: 'Check-in desfeito',
+    },
+    errors: {
+      title: 'Não foi possível salvar',
+      outsideWindow: 'Esse dia já fechou e não pode mais ser alterado.',
+      gone: 'Esse hábito foi arquivado ou não existe mais.',
     },
   },
   actions: {
@@ -126,7 +164,19 @@ export default {
       weekDaysLabel: 'Dias da semana',
       timesPerWeekLabel: 'Vezes por semana',
       timesPerWeekHint: 'De 1 a 6, em quaisquer dias de segunda a domingo.',
-      negativeFrequencyHint: 'Um hábito a evitar conta todos os dias: cada dia sem recaída é um dia limpo.',
+      frequencyLabelNegative: 'Quando evitar',
+      frequencyOptionsNegative: {
+        Daily: 'Todo dia',
+        WeekDays: 'Dias fixos',
+        TimesPerWeek: 'Limite semanal',
+      },
+      weekDaysLabelNegative: 'Dias em que você evita',
+      timesPerWeekLabelNegative: 'Máximo de vezes por semana',
+      frequencyHintsNegative: {
+        Daily: 'Cada dia sem recaída é um dia limpo e rende moedas.',
+        WeekDays: 'Nos outros dias está liberado: sem punição e sem moedas.',
+        TimesPerWeek: 'Até esse número de vezes na semana não tira HP. A semana que fecha dentro do limite rende moedas.',
+      },
       triggerLabel: 'Gatilho (opcional)',
       triggerPlaceholder: 'Depois de tomar café…',
       triggerHint: 'Ligar o hábito a algo que você já faz ajuda a não esquecer.',
@@ -172,7 +222,6 @@ export default {
       },
       frequency: {
         invalid: 'Escolha a frequência',
-        negativeMustBeDaily: 'Um hábito a evitar é sempre diário',
       },
       weekDays: {
         required: 'Escolha pelo menos um dia',
@@ -187,6 +236,8 @@ export default {
       daily: 'Todo dia',
       timesPerWeek_one: '{{count}}× por semana',
       timesPerWeek_other: '{{count}}× por semana',
+      limitPerWeek_one: 'Até {{count}}× por semana',
+      limitPerWeek_other: 'Até {{count}}× por semana',
     },
   },
 } as const

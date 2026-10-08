@@ -33,10 +33,9 @@ export const habitSchema = z
     /** Typed as text; only read when the frequency is `TimesPerWeek`. */
     timesPerWeek: z.string().trim(),
   })
+  // The same rules for both kinds: for a habit to avoid, the days are the ones it is avoided on and the number is the
+  // weekly limit.
   .superRefine((values, context) => {
-    // A habit to avoid counts every day without a relapse: the form hides the frequency and sends Daily.
-    if (values.kind === 'Negative') return
-
     if (values.frequencyType === 'WeekDays' && values.weekDays.length === 0) {
       context.addIssue({
         code: 'custom',
