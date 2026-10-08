@@ -1,4 +1,4 @@
-import type { WalletChangeDto } from '../types/HabitTodayDtos'
+import type { HabitCheckInResultDto, WalletChangeDto } from '../types/HabitTodayDtos'
 
 type Translate = (key: string, options?: Record<string, unknown>) => string
 
@@ -17,11 +17,20 @@ export function formatWalletChange(wallet: WalletChangeDto, translate: Translate
   return parts.join(' · ')
 }
 
-/** The toast's second line: a level up or a knockout, the moments worth more than the numbers. */
-export function walletChangeHighlight(wallet: WalletChangeDto, translate: Translate) {
-  if (wallet.knockedOut) return translate('habits:today.reward.knockedOut', { count: wallet.knockoutCoinsLost })
-  if (wallet.levelsGained > 0) return translate('habits:today.reward.levelUp', { level: wallet.profile.level })
-  return undefined
+/**
+ * The toast's second line: the moments worth more than the numbers, most important first (knockout, streak
+ * milestone, level up, streak freeze earned), joined with " · "; undefined when there is none.
+ */
+export function checkInHighlight(result: HabitCheckInResultDto, translate: Translate) {
+  const { wallet } = result
+  const highlights: string[] = []
+  if (wallet.knockedOut) highlights.push(translate('habits:today.reward.knockedOut', { count: wallet.knockoutCoinsLost }))
+  if (result.milestoneDays !== null) {
+    highlights.push(translate('habits:today.reward.milestone', { days: result.milestoneDays, count: result.milestoneCoins }))
+  }
+  if (wallet.levelsGained > 0) highlights.push(translate('habits:today.reward.levelUp', { level: wallet.profile.level }))
+  if (result.freezesEarned > 0) highlights.push(translate('habits:today.reward.freezeEarned', { count: result.freezesEarned }))
+  return highlights.length > 0 ? highlights.join(' · ') : undefined
 }
 
 function signed(value: number) {

@@ -137,6 +137,19 @@
   white-space: nowrap;
 }
 
+.lm-habit-list__streaks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.lm-habit-list__record {
+  font-size: var(--text-2xs);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
 .lm-habit-list__streak {
   display: inline-flex;
   align-items: center;
@@ -160,7 +173,7 @@
 
 /* An archived habit isn't counted any more: it reads quieter than the active ones. */
 .lm-habit-list__row--archived .lm-habit-list__main,
-.lm-habit-list__row--archived .lm-habit-list__streak {
+.lm-habit-list__row--archived .lm-habit-list__streaks {
   opacity: 0.65;
 }
 
@@ -245,7 +258,7 @@
     grid-area: main;
   }
 
-  .lm-habit-list__streak {
+  .lm-habit-list__streaks {
     grid-area: streak;
     align-self: start;
   }

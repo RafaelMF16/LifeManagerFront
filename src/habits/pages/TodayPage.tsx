@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
@@ -7,10 +8,12 @@ import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
 import HabitCheckItem from '../components/HabitCheckItem/HabitCheckItem'
+import WelcomeBackBanner from '../components/WelcomeBackBanner/WelcomeBackBanner'
 import { useHabitsToday } from '../hooks/useHabitsToday'
 import type { HabitsOutletContext } from '../types/HabitsOutletContext'
 import type { HabitTodayItemDto } from '../types/HabitTodayDtos'
-import { formatDayTitle, formatWalletChange, todayProgress, walletChangeHighlight } from '../utils/todayProgress'
+import { checkInHighlight, formatDayTitle, formatWalletChange, todayProgress } from '../utils/todayProgress'
+import { readWelcomeBackDismissed, shouldWelcomeBack, writeWelcomeBackDismissed } from '../utils/welcomeBack'
 import {
   HABIT_ALREADY_CHECKED_IN_CODE,
   HABIT_ARCHIVED_CODE,
@@ -24,10 +27,20 @@ import './TodayPage.css'
 function TodayPage() {
   const { t: translate, i18n } = useTranslation(['habits', 'common'])
   const navigate = useNavigate()
-  const { reloadProfile } = useOutletContext<HabitsOutletContext>()
+  const { profile, reloadProfile } = useOutletContext<HabitsOutletContext>()
   const { show: showToast } = useToast()
   const { show: showErrorModal } = useErrorModal()
   const habits = useHabitsToday()
+  const [welcomeDismissedFor, setWelcomeDismissedFor] = useState(readWelcomeBackDismissed)
+
+  // A streak freeze would cover yesterday if it's left unchecked: the warning says so instead of alarming.
+  const yesterdayRisk = (profile?.streakFreezes ?? 0) > 0 ? 'protected' : 'unprotected'
+
+  function dismissWelcomeBack() {
+    if (!habits.lastMissedOn) return
+    writeWelcomeBackDismissed(habits.lastMissedOn)
+    setWelcomeDismissedFor(habits.lastMissedOn)
+  }
 
   async function handleToggle(item: HabitTodayItemDto, date: string) {
     try {
@@ -37,7 +50,7 @@ function TodayPage() {
       reloadProfile()
       const change = formatWalletChange(saved.wallet, translate)
       if (saved.done) {
-        showToast(change || translate('habits:today.toasts.doneNoReward'), walletChangeHighlight(saved.wallet, translate))
+        showToast(change || translate('habits:today.toasts.doneNoReward'), checkInHighlight(saved, translate))
       } else {
         showToast(translate('habits:today.toasts.undone'), change || undefined)
       }
@@ -64,12 +77,17 @@ function TodayPage() {
     }
   }
 
-  function renderList(items: HabitTodayItemDto[], date: string) {
+  function renderList(items: HabitTodayItemDto[], date: string, streakRisk?: 'unprotected' | 'protected') {
     return (
       <ul className="lm-today-page__list">
         {items.map((item) => (
           <li key={item.id}>
-            <HabitCheckItem item={item} pending={habits.isPending(item.id, date)} onToggle={() => void handleToggle(item, date)} />
+            <HabitCheckItem
+              item={item}
+              pending={habits.isPending(item.id, date)}
+              onToggle={() => void handleToggle(item, date)}
+              streakRisk={streakRisk}
+            />
           </li>
         ))}
       </ul>
@@ -111,6 +129,8 @@ function TodayPage() {
 
     return (
       <>
+        {shouldWelcomeBack(habits.lastMissedOn, welcomeDismissedFor) ? <WelcomeBackBanner onDismiss={dismissWelcomeBack} /> : null}
+
         {habits.yesterdayPending.length > 0 ? (
           <section className="lm-today-page__section lm-today-page__section--yesterday" aria-labelledby="lm-today-yesterday">
             <div className="lm-today-page__section-header">
@@ -119,7 +139,7 @@ function TodayPage() {
               </h2>
               <span className="lm-today-page__section-hint">{translate('habits:today.yesterday.hint')}</span>
             </div>
-            {renderList(habits.yesterdayPending, habits.yesterday)}
+            {renderList(habits.yesterdayPending, habits.yesterday, yesterdayRisk)}
           </section>
         ) : null}
 

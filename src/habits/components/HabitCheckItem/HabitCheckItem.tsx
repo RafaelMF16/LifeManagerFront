@@ -8,18 +8,25 @@ interface HabitCheckItemProps {
   /** While its check-in is being saved: further taps are ignored. */
   pending: boolean
   onToggle: () => void
+  /**
+   * Yesterday's pending habit whose streak ends if it isn't checked in: `protected` when the player holds a streak
+   * freeze that would cover it.
+   */
+  streakRisk?: 'unprotected' | 'protected'
 }
 
 /**
  * One habit of the day's checklist. The whole row is the button (a large tap target on phones); tapping a done
  * habit undoes it.
  */
-function HabitCheckItem({ item, pending, onToggle }: HabitCheckItemProps) {
+function HabitCheckItem({ item, pending, onToggle, streakRisk }: HabitCheckItemProps) {
   const { t: translate } = useTranslation('habits')
   const weekly = item.frequencyType === 'TimesPerWeek'
-  const streakLabel = translate(weekly ? 'habits:habits.list.streakWeeks' : 'habits:habits.list.streakDays', {
-    count: item.currentStreak,
-  })
+  const streakLabel = [
+    translate(weekly ? 'habits:habits.list.streakWeeks' : 'habits:habits.list.streakDays', { count: item.currentStreak }),
+    translate('habits:habits.list.record', { count: item.longestStreak }),
+  ].join(' · ')
+  const showRisk = streakRisk !== undefined && !item.done && item.currentStreak > 0
 
   return (
     <button
@@ -43,6 +50,14 @@ function HabitCheckItem({ item, pending, onToggle }: HabitCheckItemProps) {
           ) : null}
           {item.trigger ? <span className="lm-habit-check__trigger">{item.trigger}</span> : null}
         </span>
+        {showRisk ? (
+          <span className={`lm-habit-check__risk lm-habit-check__risk--${streakRisk}`}>
+            <Icon name={streakRisk === 'protected' ? 'snowflake' : 'flame'} size={12} aria-hidden="true" />
+            {streakRisk === 'protected'
+              ? translate('habits:today.item.atRiskProtected')
+              : translate(weekly ? 'habits:today.item.atRiskWeeks' : 'habits:today.item.atRiskDays', { count: item.currentStreak })}
+          </span>
+        ) : null}
       </span>
 
       <span className="lm-habit-check__side">

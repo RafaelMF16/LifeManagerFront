@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { WalletChangeDto } from '../types/HabitTodayDtos'
-import { formatDayTitle, formatWalletChange, todayProgress, walletChangeHighlight } from './todayProgress'
+import type { HabitCheckInResultDto, WalletChangeDto } from '../types/HabitTodayDtos'
+import { checkInHighlight, formatDayTitle, formatWalletChange, todayProgress } from './todayProgress'
 
 function translate(key: string, options?: Record<string, unknown>) {
   return options ? `${key}:${JSON.stringify(options)}` : key
@@ -45,19 +45,54 @@ describe('formatWalletChange', () => {
   })
 })
 
-describe('walletChangeHighlight', () => {
+describe('checkInHighlight', () => {
+  const result: HabitCheckInResultDto = {
+    habitId: 1,
+    date: '2026-10-07',
+    done: true,
+    currentStreak: 3,
+    longestStreak: 3,
+    wallet,
+    milestoneDays: null,
+    milestoneCoins: 0,
+    freezesEarned: 0,
+  }
+
   it('announces a level up with the new level', () => {
-    expect(walletChangeHighlight({ ...wallet, levelsGained: 1 }, translate)).toBe('habits:today.reward.levelUp:{"level":3}')
+    expect(checkInHighlight({ ...result, wallet: { ...wallet, levelsGained: 1 } }, translate)).toBe('habits:today.reward.levelUp:{"level":3}')
   })
 
-  it('puts a knockout ahead of a level up', () => {
-    expect(walletChangeHighlight({ ...wallet, levelsGained: 1, knockedOut: true, knockoutCoinsLost: 12 }, translate)).toBe(
-      'habits:today.reward.knockedOut:{"count":12}',
+  it('announces a streak milestone with its coins', () => {
+    expect(checkInHighlight({ ...result, milestoneDays: 7, milestoneCoins: 25 }, translate)).toBe(
+      'habits:today.reward.milestone:{"days":7,"count":25}',
+    )
+  })
+
+  it('announces a freeze earned', () => {
+    expect(checkInHighlight({ ...result, freezesEarned: 1 }, translate)).toBe('habits:today.reward.freezeEarned:{"count":1}')
+  })
+
+  it('lists several moments most important first', () => {
+    const everything = {
+      ...result,
+      wallet: { ...wallet, levelsGained: 1, knockedOut: true, knockoutCoinsLost: 12 },
+      milestoneDays: 7,
+      milestoneCoins: 25,
+      freezesEarned: 1,
+    }
+
+    expect(checkInHighlight(everything, translate)).toBe(
+      [
+        'habits:today.reward.knockedOut:{"count":12}',
+        'habits:today.reward.milestone:{"days":7,"count":25}',
+        'habits:today.reward.levelUp:{"level":3}',
+        'habits:today.reward.freezeEarned:{"count":1}',
+      ].join(' · '),
     )
   })
 
   it('has nothing to add otherwise', () => {
-    expect(walletChangeHighlight(wallet, translate)).toBeUndefined()
+    expect(checkInHighlight(result, translate)).toBeUndefined()
   })
 })
 

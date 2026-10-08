@@ -90,19 +90,24 @@ function HabitList({
     )
   }
 
+  /** The current streak, with the record always beside it: a broken streak never erases the best one. */
   function renderStreak(habit: HabitResponseDto) {
     const label = translate(
       habit.frequencyType === 'TimesPerWeek' ? 'habits:habits.list.streakWeeks' : 'habits:habits.list.streakDays',
       { count: habit.currentStreak },
     )
+    const record = translate('habits:habits.list.record', { count: habit.longestStreak })
     return (
-      <span
-        className={`lm-habit-list__streak${habit.currentStreak > 0 ? ' lm-habit-list__streak--on' : ''}`}
-        title={label}
-      >
-        <Icon name="flame" size={14} aria-hidden="true" />
-        <span aria-hidden="true">{habit.currentStreak}</span>
-        <span className="lm-habit-list__visually-hidden">{label}</span>
+      <span className="lm-habit-list__streaks">
+        <span
+          className={`lm-habit-list__streak${habit.currentStreak > 0 ? ' lm-habit-list__streak--on' : ''}`}
+          title={label}
+        >
+          <Icon name="flame" size={14} aria-hidden="true" />
+          <span aria-hidden="true">{habit.currentStreak}</span>
+          <span className="lm-habit-list__visually-hidden">{label}</span>
+        </span>
+        {habit.longestStreak > 0 ? <span className="lm-habit-list__record">{record}</span> : null}
       </span>
     )
   }
