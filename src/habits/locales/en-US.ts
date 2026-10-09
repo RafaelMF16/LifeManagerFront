@@ -37,7 +37,6 @@ export default {
     empty: {
       title: 'No habits here yet',
       message: "Today's habits will show up here. Start with 1 to 3 easy habits.",
-      action: 'Create a habit',
     },
     yesterday: {
       title: 'Left over from yesterday',
@@ -66,8 +65,6 @@ export default {
       xp: '{{value}} XP',
       hp: '{{value}} HP',
       levelUp: 'Level {{level}} reached! HP refilled.',
-      knockedOut_one: 'You were knocked out: −{{count}} coin, HP restored.',
-      knockedOut_other: 'You were knocked out: −{{count}} coins, HP restored.',
       milestone_one: '{{days}}-day streak milestone! +{{count}} coin',
       milestone_other: '{{days}}-day streak milestone! +{{count}} coins',
       freezeEarned_one: 'You earned a streak freeze',
@@ -504,6 +501,45 @@ export default {
       coins_other: '{{value}} coins',
       xp: '{{value}} XP',
       hp: '{{value}} HP',
+    },
+  },
+  moments: {
+    knockout: {
+      title: 'You were knocked out',
+      loss_one: '−{{count}} coin · HP restored',
+      loss_other: '−{{count}} coins · HP restored',
+      message: "Your level and XP are still here. A bad day doesn't erase what you built: pick an easy habit and start again today.",
+      confirm: 'Start again',
+    },
+    levelUp: {
+      title: 'Level {{level}}!',
+      message: 'Your HP is full again. Consistency is paying off.',
+      confirm: 'Keep going',
+    },
+  },
+  onboarding: {
+    habitsTitle: 'Ideas to start with (easy and daily)',
+    rewardsTitle: 'Reward ideas',
+    ownHabit: 'Create my own habit',
+    ownReward: 'Create my own reward',
+    habits: {
+      water: {
+        name: 'Drink a glass of water',
+        trigger: 'When I wake up',
+      },
+      read: {
+        name: 'Read 10 pages',
+        trigger: 'Before bed',
+      },
+      walk: {
+        name: 'Walk for 10 minutes',
+        trigger: 'After lunch',
+      },
+    },
+    rewards: {
+      games: '1h of video games',
+      coffee: 'A fancy coffee',
+      episode: 'One episode of a show',
     },
   },
 } as const

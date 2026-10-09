@@ -1,7 +1,11 @@
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Icon from '../../../shared/components/Icon/Icon'
 import type { HabitTodayItemDto } from '../../types/HabitTodayDtos'
 import './HabitCheckItem.css'
+
+/** How long the check-in celebration (the box's pop and the floating coins) stays on. */
+const CELEBRATION_MS = 700
 
 interface HabitCheckItemProps {
   item: HabitTodayItemDto
@@ -27,15 +31,36 @@ function HabitCheckItem({ item, pending, onToggle, streakRisk }: HabitCheckItemP
     translate('habits:habits.list.record', { count: item.longestStreak }),
   ].join(' · ')
   const showRisk = streakRisk !== undefined && !item.done && item.currentStreak > 0
+  // Each check-in gets its own key, so a quick undo and redo replays the animation.
+  const [celebration, setCelebration] = useState<{ key: number; coins: number } | null>(null)
+  const timeoutRef = useRef<number | undefined>(undefined)
+
+  useEffect(() => () => window.clearTimeout(timeoutRef.current), [])
+
+  function handleClick() {
+    // Celebrated on the tap itself: the check-in is optimistic, so the box turns done right away too.
+    if (!item.done && !pending) {
+      window.clearTimeout(timeoutRef.current)
+      setCelebration({ key: Date.now(), coins: item.coinsPreview })
+      timeoutRef.current = window.setTimeout(() => setCelebration(null), CELEBRATION_MS)
+    }
+    onToggle()
+  }
 
   return (
     <button
       type="button"
       aria-pressed={item.done}
       aria-busy={pending}
-      className={`lm-habit-check${item.done ? ' lm-habit-check--done' : ''}`}
-      onClick={onToggle}
+      className={`lm-habit-check${item.done ? ' lm-habit-check--done' : ''}${celebration ? ' lm-habit-check--celebrate' : ''}`}
+      onClick={handleClick}
     >
+      {celebration && celebration.coins > 0 ? (
+        <span key={celebration.key} className="lm-habit-check__burst" aria-hidden="true">
+          <Icon name="coins" size={14} />
+          {translate('habits:today.item.coins', { count: celebration.coins })}
+        </span>
+      ) : null}
       <span className="lm-habit-check__box" aria-hidden="true">
         {item.done ? <Icon name="check" size={16} strokeWidth={2.5} /> : null}
       </span>

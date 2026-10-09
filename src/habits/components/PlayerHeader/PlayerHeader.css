@@ -121,6 +121,56 @@
   .lm-player-header__fill {
     transition: width var(--duration-base) var(--ease-standard);
   }
+
+  /* Coins and level bump when they change, so the reward is felt where it lands. */
+  .lm-player-header__bump {
+    display: inline-block;
+    animation: lm-player-header-bump var(--duration-slow) var(--ease-out);
+  }
+
+  /* HP lost: the bar's track flashes red once. */
+  .lm-player-header__bar--hit-0 .lm-player-header__track {
+    animation: lm-player-header-hit-a 500ms var(--ease-standard);
+  }
+
+  .lm-player-header__bar--hit-1 .lm-player-header__track {
+    animation: lm-player-header-hit-b 500ms var(--ease-standard);
+  }
+}
+
+@keyframes lm-player-header-bump {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lm-player-header-hit-a {
+  0%,
+  100% {
+    background: var(--surface-sunken);
+  }
+  30% {
+    background: var(--negative-tint);
+    box-shadow: 0 0 0 2px var(--negative-tint);
+  }
+}
+
+/* The same as -a: a different name is what restarts the animation on the next hit. */
+@keyframes lm-player-header-hit-b {
+  0%,
+  100% {
+    background: var(--surface-sunken);
+  }
+  30% {
+    background: var(--negative-tint);
+    box-shadow: 0 0 0 2px var(--negative-tint);
+  }
 }
 
 /* Loading: same footprint as the loaded card, so nothing jumps when the profile arrives. */

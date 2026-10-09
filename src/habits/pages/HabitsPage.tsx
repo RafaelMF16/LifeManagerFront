@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
@@ -10,11 +11,18 @@ import HabitFormModal from '../components/HabitFormModal/HabitFormModal'
 import HabitList from '../components/HabitList/HabitList'
 import { useHabits } from '../hooks/useHabits'
 import type { HabitResponseDto } from '../types/HabitDtos'
+import { habitTemplateValues, isHabitTemplateId } from '../utils/starterTemplates'
+import type { HabitTemplateId } from '../utils/starterTemplates'
 import { HABIT_NAME_ALREADY_EXISTS_CODE, HABIT_NOT_FOUND_CODE } from '../validation/habitErrorMap'
 import type { HabitFormValues } from '../validation/habitSchema'
 import './HabitsPage.css'
 
-type FormTarget = { mode: 'create' } | { mode: 'edit'; habit: HabitResponseDto }
+type FormTarget = { mode: 'create'; template?: HabitTemplateId } | { mode: 'edit'; habit: HabitResponseDto }
+
+/** Router state the Today page sends to open the form with a starter habit. */
+export interface HabitsPageState {
+  habitTemplate?: HabitTemplateId
+}
 
 /** Where habits are created, edited, archived and restored. */
 function HabitsPage() {
@@ -23,9 +31,19 @@ function HabitsPage() {
   const { show: showErrorModal } = useErrorModal()
   const habits = useHabits()
   const { reload, createHabit, updateHabit, archiveHabit, restoreHabit } = habits
-  const [formTarget, setFormTarget] = useState<FormTarget | null>(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const templateFromToday = (location.state as HabitsPageState | null)?.habitTemplate
+  const [formTarget, setFormTarget] = useState<FormTarget | null>(() =>
+    isHabitTemplateId(templateFromToday) ? { mode: 'create', template: templateFromToday } : null,
+  )
   const [archiveTarget, setArchiveTarget] = useState<HabitResponseDto | null>(null)
   const [pendingId, setPendingId] = useState<number | null>(null)
+
+  // The template is in the form now: drop it from the history entry, so going back or reloading won't reopen it.
+  useEffect(() => {
+    if (templateFromToday) navigate('.', { replace: true, state: null })
+  }, [templateFromToday, navigate])
 
   async function handleSubmitForm(values: HabitFormValues) {
     if (formTarget?.mode === 'edit') {
@@ -106,6 +124,7 @@ function HabitsPage() {
         onPageChange={habits.setPage}
         onRetry={reload}
         onCreate={() => setFormTarget({ mode: 'create' })}
+        onCreateFromTemplate={(template) => setFormTarget({ mode: 'create', template })}
         onEdit={(habit) => setFormTarget({ mode: 'edit', habit })}
         onArchive={setArchiveTarget}
         onRestore={(habit) => void handleRestore(habit)}
@@ -115,6 +134,7 @@ function HabitsPage() {
       {formTarget ? (
         <HabitFormModal
           habit={formTarget.mode === 'edit' ? formTarget.habit : undefined}
+          initialValues={formTarget.mode === 'create' && formTarget.template ? habitTemplateValues(formTarget.template, translate) : undefined}
           onClose={() => setFormTarget(null)}
           onSubmit={handleSubmitForm}
         />

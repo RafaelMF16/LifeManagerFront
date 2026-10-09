@@ -11,4 +11,14 @@ export interface PlayerProfileDto {
   coins: number
   streakFreezes: number
   maxStreakFreezes: number
+  /** Only on `GET Profile`: the latest knockout, often caused by the day close while the player was away. */
+  lastKnockout?: LastKnockoutDto | null
+}
+
+export interface LastKnockoutDto {
+  /** Its ledger entry id: grows, so a newer knockout has a larger one. */
+  id: number
+  /** `yyyy-MM-dd`. */
+  occurredOn: string
+  coinsLost: number
 }

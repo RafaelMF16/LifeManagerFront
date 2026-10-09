@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import Icon from '../../../shared/components/Icon/Icon'
@@ -22,11 +23,42 @@ interface StatBarProps {
   valueText: string
 }
 
-function StatBar({ kind, icon, label, ariaLabel, value, max, valueText }: StatBarProps) {
-  const barStyle = { '--lm-bar': progressRatio(value, max) } as CSSProperties
+/**
+ * Counts how many times `value` changed in the direction asked for since mount, comparing with the previous render
+ * (React's "storing information from previous renders"). Used as a `key`, it replays a CSS animation on each change.
+ */
+function useChangeCount(value: number, direction: 'any' | 'down') {
+  const [previous, setPrevious] = useState(value)
+  const [count, setCount] = useState(0)
+
+  if (value !== previous) {
+    setPrevious(value)
+    if (direction === 'any' || value < previous) setCount((current) => current + 1)
+  }
+
+  return count
+}
+
+/** A number that "bumps" when it changes (not on its first render). */
+function BumpValue({ value, children }: { value: number; children: string | number }) {
+  const changes = useChangeCount(value, 'any')
 
   return (
-    <div className={`lm-player-header__bar lm-player-header__bar--${kind}`}>
+    <span key={changes} className={changes > 0 ? 'lm-player-header__bump' : undefined} aria-hidden="true">
+      {children}
+    </span>
+  )
+}
+
+function StatBar({ kind, icon, label, ariaLabel, value, max, valueText }: StatBarProps) {
+  const barStyle = { '--lm-bar': progressRatio(value, max) } as CSSProperties
+  // HP lost flashes the track; gains just slide. Two alternating classes restart the animation on every hit without
+  // remounting the bar, which would skip the width transition.
+  const drops = useChangeCount(value, 'down')
+  const hit = kind === 'hp' && drops > 0 ? ` lm-player-header__bar--hit-${drops % 2}` : ''
+
+  return (
+    <div className={`lm-player-header__bar lm-player-header__bar--${kind}${hit}`}>
       <div className="lm-player-header__bar-top">
         <span className="lm-player-header__bar-label">
           <Icon name={icon} size={14} aria-hidden="true" />
@@ -81,14 +113,14 @@ function PlayerHeader({ profile, status }: PlayerHeaderProps) {
       <div className="lm-player-header__top">
         <span className="lm-player-header__level" title={translate('habits:player.level', { level })}>
           <Icon name="sparkles" size={14} aria-hidden="true" />
-          <span aria-hidden="true">{translate('habits:player.levelShort', { level })}</span>
+          <BumpValue value={level}>{translate('habits:player.levelShort', { level })}</BumpValue>
           <span className="lm-player-header__visually-hidden">{translate('habits:player.level', { level })}</span>
         </span>
 
         <div className="lm-player-header__stats">
           <span className="lm-player-header__stat lm-player-header__stat--coins" title={translate('habits:player.coins')}>
             <Icon name="coins" size={16} aria-hidden="true" />
-            <span aria-hidden="true">{coins}</span>
+            <BumpValue value={coins}>{coins}</BumpValue>
             <span className="lm-player-header__visually-hidden">
               {translate('habits:player.coinsAria', { count: coins })}
             </span>

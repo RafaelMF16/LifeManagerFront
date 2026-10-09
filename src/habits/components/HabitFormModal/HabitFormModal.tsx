@@ -32,13 +32,15 @@ const FREQUENCIES: HabitFrequencyType[] = ['Daily', 'WeekDays', 'TimesPerWeek']
 interface HabitFormModalProps {
   /** The habit being edited; omitted when creating a new one. */
   habit?: HabitResponseDto
+  /** Creating only: values to start from, e.g. a starter habit. */
+  initialValues?: Partial<HabitFormValues>
   onClose: () => void
   /** Persists the values; a rejection is shown on the form and keeps the modal open. */
   onSubmit: (values: HabitFormValues) => Promise<void>
 }
 
-function toDefaultValues(habit: HabitResponseDto | undefined): HabitFormValues {
-  return {
+function toDefaultValues(habit: HabitResponseDto | undefined, initialValues?: Partial<HabitFormValues>): HabitFormValues {
+  const defaults: HabitFormValues = {
     name: habit?.name ?? '',
     description: habit?.description ?? '',
     trigger: habit?.trigger ?? '',
@@ -48,9 +50,10 @@ function toDefaultValues(habit: HabitResponseDto | undefined): HabitFormValues {
     weekDays: habit?.weekDays ?? [],
     timesPerWeek: habit?.timesPerWeek ? String(habit.timesPerWeek) : '3',
   }
+  return habit ? defaults : { ...defaults, ...initialValues }
 }
 
-function HabitFormModal({ habit, onClose, onSubmit }: HabitFormModalProps) {
+function HabitFormModal({ habit, initialValues, onClose, onSubmit }: HabitFormModalProps) {
   const { t: translate } = useTranslation(['habits', 'common'])
   const titleId = useId()
   const { show: showErrorModal } = useErrorModal()
@@ -63,7 +66,7 @@ function HabitFormModal({ habit, onClose, onSubmit }: HabitFormModalProps) {
     setError,
     setValue,
     formState: { errors, isSubmitting },
-  } = useZodForm(habitSchema, { defaultValues: toDefaultValues(habit) })
+  } = useZodForm(habitSchema, { defaultValues: toDefaultValues(habit, initialValues) })
   const kind = useWatch({ control, name: 'kind' })
   const difficulty = useWatch({ control, name: 'difficulty' })
   const frequencyType = useWatch({ control, name: 'frequencyType' })

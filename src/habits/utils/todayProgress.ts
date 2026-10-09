@@ -18,13 +18,13 @@ export function formatWalletChange(wallet: WalletChangeDto, translate: Translate
 }
 
 /**
- * The toast's second line: the moments worth more than the numbers, most important first (knockout, streak
- * milestone, level up, streak freeze earned), joined with " · "; undefined when there is none.
+ * The toast's second line: the moments worth more than the numbers, most important first (streak milestone, level
+ * up, streak freeze earned), joined with " · "; undefined when there is none. A knockout isn't one of them: the layout's
+ * `GameMomentDialog` tells the player about it, wherever it came from.
  */
 export function checkInHighlight(result: HabitCheckInResultDto, translate: Translate) {
   const { wallet } = result
   const highlights: string[] = []
-  if (wallet.knockedOut) highlights.push(translate('habits:today.reward.knockedOut', { count: wallet.knockoutCoinsLost }))
   if (result.milestoneDays !== null) {
     highlights.push(translate('habits:today.reward.milestone', { days: result.milestoneDays, count: result.milestoneCoins }))
   }

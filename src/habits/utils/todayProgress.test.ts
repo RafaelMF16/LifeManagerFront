@@ -72,6 +72,10 @@ describe('checkInHighlight', () => {
     expect(checkInHighlight({ ...result, freezesEarned: 1 }, translate)).toBe('habits:today.reward.freezeEarned:{"count":1}')
   })
 
+  it('leaves a knockout to the moment dialog', () => {
+    expect(checkInHighlight({ ...result, wallet: { ...wallet, knockedOut: true, knockoutCoinsLost: 12 } }, translate)).toBeUndefined()
+  })
+
   it('lists several moments most important first', () => {
     const everything = {
       ...result,
@@ -83,7 +87,6 @@ describe('checkInHighlight', () => {
 
     expect(checkInHighlight(everything, translate)).toBe(
       [
-        'habits:today.reward.knockedOut:{"count":12}',
         'habits:today.reward.milestone:{"days":7,"count":25}',
         'habits:today.reward.levelUp:{"level":3}',
         'habits:today.reward.freezeEarned:{"count":1}',

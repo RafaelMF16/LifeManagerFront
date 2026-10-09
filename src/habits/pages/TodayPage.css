@@ -147,7 +147,7 @@
 
 .lm-today-page__empty-message {
   max-width: 36ch;
-  margin: 0;
+  margin: 0 0 var(--space-3);
   font-size: var(--text-sm);
   color: var(--text-secondary);
 }

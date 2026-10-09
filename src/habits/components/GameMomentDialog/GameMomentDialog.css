@@ -1,0 +1,106 @@
+.lm-game-moment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+  text-align: center;
+}
+
+.lm-game-moment__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: var(--space-2);
+  border-radius: 50%;
+}
+
+.lm-game-moment--knockout .lm-game-moment__icon {
+  background: var(--negative-tint);
+  color: var(--danger);
+}
+
+.lm-game-moment--level-up .lm-game-moment__icon {
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.lm-game-moment__title {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+.lm-game-moment__loss {
+  margin: 0;
+  font-family: var(--font-numeric);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.lm-game-moment__message {
+  max-width: 36ch;
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lm-game-moment__icon {
+    animation: lm-game-moment-enter var(--duration-slow) var(--ease-out) both;
+  }
+
+  /* A soft glow pulses twice around a new level. */
+  .lm-game-moment--level-up .lm-game-moment__icon {
+    animation:
+      lm-game-moment-enter var(--duration-slow) var(--ease-out) both,
+      lm-game-moment-glow 1.2s var(--ease-standard) var(--duration-slow) 2;
+  }
+
+  /* A knockout lands with a short shake. */
+  .lm-game-moment--knockout .lm-game-moment__icon {
+    animation:
+      lm-game-moment-enter var(--duration-slow) var(--ease-out) both,
+      lm-game-moment-shake 400ms var(--ease-standard) var(--duration-slow);
+  }
+}
+
+@keyframes lm-game-moment-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes lm-game-moment-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--accent-tint);
+  }
+  50% {
+    box-shadow: 0 0 0 12px var(--accent-tint);
+  }
+}
+
+@keyframes lm-game-moment-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}

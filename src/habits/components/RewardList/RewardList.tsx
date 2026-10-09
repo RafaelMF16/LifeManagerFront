@@ -11,6 +11,9 @@ import type { RewardsStatus } from '../../hooks/useRewards'
 import type { RewardResponseDto, RewardSortBy, RewardStatusFilter } from '../../types/RewardDtos'
 import { rewardIcon } from '../../utils/rewardIcons'
 import { coinsMissing, daysOfHabits } from '../../utils/rewardPace'
+import { REWARD_TEMPLATES } from '../../utils/starterTemplates'
+import type { RewardTemplateId } from '../../utils/starterTemplates'
+import StarterSuggestions from '../StarterSuggestions/StarterSuggestions'
 import './RewardList.css'
 
 const STATUS_FILTERS: RewardStatusFilter[] = ['Active', 'Archived']
@@ -38,6 +41,8 @@ interface RewardListProps {
   /** Recent coins per day, for the "≈ N days of habits" hint; undefined while it loads. */
   averageDailyCoins: number | undefined
   onCreate: () => void
+  /** Opens the form filled with a starter reward (offered while the shop is empty). */
+  onCreateFromTemplate: (template: RewardTemplateId) => void
   onRedeem: (reward: RewardResponseDto) => void
   onEdit: (reward: RewardResponseDto) => void
   onArchive: (reward: RewardResponseDto) => void
@@ -65,6 +70,7 @@ function RewardList({
   coins,
   averageDailyCoins,
   onCreate,
+  onCreateFromTemplate,
   onRedeem,
   onEdit,
   onArchive,
@@ -93,8 +99,18 @@ function RewardList({
         <Icon name="gift" size={24} aria-hidden="true" />
         <span className="lm-reward-list__state-title">{translate('habits:shop.list.empty')}</span>
         <span>{translate('habits:shop.list.emptyHint')}</span>
+        <StarterSuggestions
+          title={translate('habits:onboarding.rewardsTitle')}
+          suggestions={REWARD_TEMPLATES.map((template) => ({
+            id: template.id,
+            icon: template.icon,
+            label: translate(`habits:onboarding.rewards.${template.id}`),
+            detail: translate('habits:shop.list.price', { count: template.cost }),
+          }))}
+          onPick={(id) => onCreateFromTemplate(id as RewardTemplateId)}
+        />
         <Button variant="secondary" size="sm" icon="plus" onClick={onCreate}>
-          {translate('habits:shop.newButton')}
+          {translate('habits:onboarding.ownReward')}
         </Button>
       </div>
     )

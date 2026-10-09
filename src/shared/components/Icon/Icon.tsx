@@ -6,6 +6,7 @@ import {
   ArrowUpNarrowWide,
   ArrowUpRight,
   Bed,
+  BookOpen,
   Calendar,
   CalendarCheck,
   ChartColumn,
@@ -19,8 +20,10 @@ import {
   Eye,
   EyeOff,
   Flame,
+  Footprints,
   Gamepad2,
   Gift,
+  GlassWater,
   Heart,
   History as HistoryIcon,
   Languages,
@@ -115,6 +118,9 @@ const ICONS = {
   'shopping-bag': ShoppingBag,
   ticket: Ticket,
   'undo-2': Undo2,
+  'glass-water': GlassWater,
+  'book-open': BookOpen,
+  footprints: Footprints,
 } as const
 
 export type IconName = keyof typeof ICONS

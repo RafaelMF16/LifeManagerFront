@@ -11,6 +11,9 @@ import type { PagedResponse, SortDirection } from '../../../shared/types/Paging'
 import type { HabitsStatus } from '../../hooks/useHabits'
 import type { HabitResponseDto, HabitSortBy, HabitStatusFilter } from '../../types/HabitDtos'
 import { formatFrequency } from '../../utils/formatFrequency'
+import { HABIT_TEMPLATES } from '../../utils/starterTemplates'
+import type { HabitTemplateId } from '../../utils/starterTemplates'
+import StarterSuggestions from '../StarterSuggestions/StarterSuggestions'
 import './HabitList.css'
 
 const STATUS_FILTERS: HabitStatusFilter[] = ['Active', 'Archived']
@@ -34,6 +37,8 @@ interface HabitListProps {
   onPageChange: (page: number) => void
   onRetry: () => void
   onCreate: () => void
+  /** Opens the form filled with a starter habit (offered while the list is empty). */
+  onCreateFromTemplate: (template: HabitTemplateId) => void
   onEdit: (habit: HabitResponseDto) => void
   onArchive: (habit: HabitResponseDto) => void
   onRestore: (habit: HabitResponseDto) => void
@@ -58,6 +63,7 @@ function HabitList({
   onPageChange,
   onRetry,
   onCreate,
+  onCreateFromTemplate,
   onEdit,
   onArchive,
   onRestore,
@@ -84,8 +90,18 @@ function HabitList({
       <div className="lm-habit-list__state">
         <span className="lm-habit-list__state-title">{translate('habits:habits.list.empty')}</span>
         <span>{translate('habits:habits.list.emptyHint')}</span>
+        <StarterSuggestions
+          title={translate('habits:onboarding.habitsTitle')}
+          suggestions={HABIT_TEMPLATES.map((template) => ({
+            id: template.id,
+            icon: template.icon,
+            label: translate(`habits:onboarding.habits.${template.id}.name`),
+            detail: translate(`habits:onboarding.habits.${template.id}.trigger`),
+          }))}
+          onPick={(id) => onCreateFromTemplate(id as HabitTemplateId)}
+        />
         <Button variant="secondary" size="sm" icon="plus" onClick={onCreate}>
-          {translate('habits:habits.newButton')}
+          {translate('habits:onboarding.ownHabit')}
         </Button>
       </div>
     )

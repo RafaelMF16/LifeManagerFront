@@ -26,6 +26,9 @@ import {
   HABIT_NOT_FOUND_CODE,
   HABIT_RELAPSE_NOT_FOUND_CODE,
 } from '../validation/habitErrorMap'
+import StarterSuggestions from '../components/StarterSuggestions/StarterSuggestions'
+import { HABIT_TEMPLATES } from '../utils/starterTemplates'
+import type { HabitsPageState } from './HabitsPage'
 import './TodayPage.css'
 
 /**
@@ -79,11 +82,8 @@ function TodayPage() {
       if (!saved) return
 
       reloadProfile()
-      const change = formatWalletChange(saved.wallet, translate)
-      const knockout = saved.wallet.knockedOut
-        ? translate('habits:today.reward.knockedOut', { count: saved.wallet.knockoutCoinsLost })
-        : undefined
-      showToast(translate('habits:today.toasts.relapsed'), [change || translate('habits:today.toasts.withinLimit'), knockout].filter(Boolean).join(' · '))
+      // A knockout is told by the layout's moment dialog once the profile reloads.
+      showToast(translate('habits:today.toasts.relapsed'), formatWalletChange(saved.wallet, translate) || translate('habits:today.toasts.withinLimit'))
     } catch (err) {
       setRelapseTarget(null)
       showSaveError(err)
@@ -173,8 +173,18 @@ function TodayPage() {
           </span>
           <h2 className="lm-today-page__empty-title">{translate('habits:today.empty.title')}</h2>
           <p className="lm-today-page__empty-message">{translate('habits:today.empty.message')}</p>
-          <Button variant="primary" size="sm" icon="plus" onClick={() => navigate('/habits/list')}>
-            {translate('habits:today.empty.action')}
+          <StarterSuggestions
+            title={translate('habits:onboarding.habitsTitle')}
+            suggestions={HABIT_TEMPLATES.map((template) => ({
+              id: template.id,
+              icon: template.icon,
+              label: translate(`habits:onboarding.habits.${template.id}.name`),
+              detail: translate(`habits:onboarding.habits.${template.id}.trigger`),
+            }))}
+            onPick={(id) => navigate('/habits/list', { state: { habitTemplate: id } as HabitsPageState })}
+          />
+          <Button variant="secondary" size="sm" icon="plus" onClick={() => navigate('/habits/list')}>
+            {translate('habits:onboarding.ownHabit')}
           </Button>
         </div>
       )

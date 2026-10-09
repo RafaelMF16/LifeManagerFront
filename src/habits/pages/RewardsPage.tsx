@@ -15,6 +15,8 @@ import { useRewards } from '../hooks/useRewards'
 import { redeemReward } from '../services/rewardService'
 import type { HabitsOutletContext } from '../types/HabitsOutletContext'
 import type { RewardResponseDto } from '../types/RewardDtos'
+import { rewardTemplateValues } from '../utils/starterTemplates'
+import type { RewardTemplateId } from '../utils/starterTemplates'
 import { formatWalletChange } from '../utils/todayProgress'
 import {
   REWARD_ARCHIVED_CODE,
@@ -24,7 +26,7 @@ import {
 } from '../validation/rewardErrorMap'
 import type { RewardFormValues } from '../validation/rewardSchema'
 
-type FormTarget = { mode: 'create' } | { mode: 'edit'; reward: RewardResponseDto }
+type FormTarget = { mode: 'create'; template?: RewardTemplateId } | { mode: 'edit'; reward: RewardResponseDto }
 
 /** The shop's rewards: created, edited, archived, restored and redeemed here. */
 function RewardsPage() {
@@ -130,6 +132,7 @@ function RewardsPage() {
         coins={profile?.coins}
         averageDailyCoins={pace?.averageDailyCoins}
         onCreate={() => setFormTarget({ mode: 'create' })}
+        onCreateFromTemplate={(template) => setFormTarget({ mode: 'create', template })}
         onRedeem={setRedeemTarget}
         onEdit={(reward) => setFormTarget({ mode: 'edit', reward })}
         onArchive={setArchiveTarget}
@@ -140,6 +143,7 @@ function RewardsPage() {
       {formTarget ? (
         <RewardFormModal
           reward={formTarget.mode === 'edit' ? formTarget.reward : undefined}
+          initialValues={formTarget.mode === 'create' && formTarget.template ? rewardTemplateValues(formTarget.template, translate) : undefined}
           onClose={() => setFormTarget(null)}
           onSubmit={handleSubmitForm}
         />

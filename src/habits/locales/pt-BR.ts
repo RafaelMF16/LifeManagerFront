@@ -37,7 +37,6 @@ export default {
     empty: {
       title: 'Nenhum hábito por aqui ainda',
       message: 'Seus hábitos de hoje vão aparecer aqui. Comece com 1 a 3 hábitos fáceis.',
-      action: 'Criar um hábito',
     },
     yesterday: {
       title: 'Ontem ficou pendente',
@@ -66,8 +65,6 @@ export default {
       xp: '{{value}} XP',
       hp: '{{value}} HP',
       levelUp: 'Subiu para o nível {{level}}! HP cheio.',
-      knockedOut_one: 'Você foi nocauteado: −{{count}} moeda, HP restaurado.',
-      knockedOut_other: 'Você foi nocauteado: −{{count}} moedas, HP restaurado.',
       milestone_one: 'Marco de {{days}} dias de ofensiva! +{{count}} moeda',
       milestone_other: 'Marco de {{days}} dias de ofensiva! +{{count}} moedas',
       freezeEarned_one: 'Você ganhou uma proteção de ofensiva',
@@ -504,6 +501,45 @@ export default {
       coins_other: '{{value}} moedas',
       xp: '{{value}} XP',
       hp: '{{value}} HP',
+    },
+  },
+  moments: {
+    knockout: {
+      title: 'Você foi nocauteado',
+      loss_one: '−{{count}} moeda · HP restaurado',
+      loss_other: '−{{count}} moedas · HP restaurado',
+      message: 'Seu nível e seu XP continuam aqui. Um dia ruim não apaga o que você construiu: escolha um hábito fácil e recomece hoje.',
+      confirm: 'Recomeçar',
+    },
+    levelUp: {
+      title: 'Nível {{level}}!',
+      message: 'Seu HP foi restaurado. A consistência está valendo a pena.',
+      confirm: 'Continuar',
+    },
+  },
+  onboarding: {
+    habitsTitle: 'Sugestões para começar (fáceis e diárias)',
+    rewardsTitle: 'Sugestões de recompensa',
+    ownHabit: 'Criar meu próprio hábito',
+    ownReward: 'Criar minha própria recompensa',
+    habits: {
+      water: {
+        name: 'Beber um copo de água',
+        trigger: 'Ao acordar',
+      },
+      read: {
+        name: 'Ler 10 páginas',
+        trigger: 'Antes de dormir',
+      },
+      walk: {
+        name: 'Caminhar 10 minutos',
+        trigger: 'Depois do almoço',
+      },
+    },
+    rewards: {
+      games: '1h de videogame',
+      coffee: 'Um café especial',
+      episode: 'Um episódio de série',
     },
   },
 } as const

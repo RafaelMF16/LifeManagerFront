@@ -21,12 +21,15 @@ import './RewardFormModal.css'
 interface RewardFormModalProps {
   /** The reward being edited; omitted when creating a new one. */
   reward?: RewardResponseDto
+  /** Creating only: values to start from, e.g. a starter reward. */
+  initialValues?: RewardFormValues
   onClose: () => void
   /** Persists the values; a rejection is shown on the form and keeps the modal open. */
   onSubmit: (values: RewardFormValues) => Promise<void>
 }
 
-function toDefaultValues(reward: RewardResponseDto | undefined): RewardFormValues {
+function toDefaultValues(reward: RewardResponseDto | undefined, initialValues?: RewardFormValues): RewardFormValues {
+  if (!reward && initialValues) return initialValues
   return {
     name: reward?.name ?? '',
     cost: reward ? String(reward.cost) : '',
@@ -34,7 +37,7 @@ function toDefaultValues(reward: RewardResponseDto | undefined): RewardFormValue
   }
 }
 
-function RewardFormModal({ reward, onClose, onSubmit }: RewardFormModalProps) {
+function RewardFormModal({ reward, initialValues, onClose, onSubmit }: RewardFormModalProps) {
   const { t: translate } = useTranslation(['habits', 'common'])
   const titleId = useId()
   const iconLabelId = useId()
@@ -48,7 +51,7 @@ function RewardFormModal({ reward, onClose, onSubmit }: RewardFormModalProps) {
     setError,
     setValue,
     formState: { errors, isSubmitting },
-  } = useZodForm(rewardSchema, { defaultValues: toDefaultValues(reward) })
+  } = useZodForm(rewardSchema, { defaultValues: toDefaultValues(reward, initialValues) })
   const icon = useWatch({ control, name: 'icon' })
 
   const fieldError = (message: string | undefined) => (message ? translate(message) : undefined)
