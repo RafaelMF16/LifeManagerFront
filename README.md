@@ -70,6 +70,26 @@ Na tela inicial, escolha **Criar conta**, cadastre-se e entre. Depois escolha um
 | `npm run lint` | Oxlint |
 | `npm test` | Testes do Vitest |
 
+## Deploy (Firebase Hosting)
+
+O front é publicado no Firebase Hosting, que também repassa `/api/**` para a API no Cloud Run. Assim o navegador fala com uma origem só e o build de produção chama `/api/...` sem URL fixa (`.env.production`). A API precisa estar publicada antes; veja `docs/deploy.md` no repositório da API.
+
+Primeira vez:
+
+```bash
+npm install -g firebase-tools
+firebase login
+firebase use --add      # escolha o projeto do Google Cloud; isso cria o .firebaserc (pode ser commitado)
+```
+
+Cada nova versão:
+
+```bash
+npm run deploy          # build de produção + firebase deploy --only hosting
+```
+
+O app fica em `https://<PROJECT_ID>.web.app`. As regras de rewrite e cache estão em `firebase.json`.
+
 ## Documentação
 
 - [docs/fluxo-de-telas.md](docs/fluxo-de-telas.md): guia de uso, com cada tela, o que ela mostra e o que cada botão faz.
