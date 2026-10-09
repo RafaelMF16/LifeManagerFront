@@ -57,6 +57,7 @@
 
 /* Name, badges and cue on the left, the streak, then the actions. */
 .lm-habit-list__row {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
@@ -87,6 +88,30 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-decoration: none;
+}
+
+/* The name link stretches over the whole row, so tapping anywhere on a habit opens its history. */
+.lm-habit-list__name::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.lm-habit-list__name:focus-visible {
+  outline: none;
+}
+
+.lm-habit-list__name:focus-visible::after {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) {
+  .lm-habit-list__row:hover .lm-habit-list__name {
+    color: var(--accent-text);
+    text-decoration: none;
+  }
 }
 
 .lm-habit-list__meta {
@@ -166,6 +191,9 @@
 }
 
 .lm-habit-list__actions {
+  /* Above the stretched link, so the buttons stay pressable. */
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: flex-end;
   gap: 2px;

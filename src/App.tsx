@@ -9,7 +9,9 @@ import MonthsPage from './finance/pages/MonthsPage'
 import PlanningPage from './finance/pages/PlanningPage'
 import RecurringTransactionsPage from './finance/pages/RecurringTransactionsPage'
 import HabitsLayout from './habits/components/HabitsLayout/HabitsLayout'
+import HabitDetailsPage from './habits/pages/HabitDetailsPage'
 import HabitsPage from './habits/pages/HabitsPage'
+import HistoryPage from './habits/pages/HistoryPage'
 import RedemptionsPage from './habits/pages/RedemptionsPage'
 import RewardsPage from './habits/pages/RewardsPage'
 import ShopPage from './habits/pages/ShopPage'
@@ -55,6 +57,8 @@ function App() {
                 <Route index element={<Navigate to="today" replace />} />
                 <Route path="today" element={<TodayPage />} />
                 <Route path="list" element={<HabitsPage />} />
+                <Route path="list/:habitId" element={<HabitDetailsPage />} />
+                <Route path="history" element={<HistoryPage />} />
                 <Route path="shop" element={<ShopPage />}>
                   <Route index element={<Navigate to="rewards" replace />} />
                   <Route path="rewards" element={<RewardsPage />} />

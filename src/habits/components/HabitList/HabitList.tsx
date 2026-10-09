@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import Button from '../../../shared/components/Button/Button'
 import Icon from '../../../shared/components/Icon/Icon'
 import IconButton from '../../../shared/components/IconButton/IconButton'
@@ -133,7 +134,9 @@ function HabitList({
     return data.items.map((habit) => (
       <div key={habit.id} className={`lm-habit-list__row${habit.archivedAt ? ' lm-habit-list__row--archived' : ''}`}>
         <div className="lm-habit-list__main">
-          <span className="lm-habit-list__name">{habit.name}</span>
+          <Link to={`/habits/list/${habit.id}`} className="lm-habit-list__name">
+            {habit.name}
+          </Link>
           <span className="lm-habit-list__meta">
             <span className={`lm-habit-list__badge lm-habit-list__badge--${habit.kind.toLowerCase()}`}>
               {translate(`habits:habits.list.kind.${habit.kind}`)}

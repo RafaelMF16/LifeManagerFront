@@ -1,0 +1,179 @@
+.lm-ledger-list {
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+}
+
+.lm-ledger-list__toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-ledger-list__heading {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-ledger-list__hint {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+/* Keeps the previous page visible, dimmed, while the next one loads from the server. */
+.lm-ledger-list__body {
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.lm-ledger-list--fetching .lm-ledger-list__body {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.lm-ledger-list__rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Icon, what and when, then the changes on the right. */
+.lm-ledger-list__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--row-height-default);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-ledger-list__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-button);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+
+.lm-ledger-list__icon--habitdone,
+.lm-ledger-list__icon--cleanday,
+.lm-ledger-list__icon--streakmilestone,
+.lm-ledger-list__icon--levelup {
+  background: var(--positive-tint);
+  color: var(--amount-positive);
+}
+
+.lm-ledger-list__icon--habitmissed,
+.lm-ledger-list__icon--relapse,
+.lm-ledger-list__icon--knockout {
+  background: var(--negative-tint);
+  color: var(--amount-negative);
+}
+
+.lm-ledger-list__icon--rewardredeemed,
+.lm-ledger-list__icon--freezeused {
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.lm-ledger-list__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lm-ledger-list__title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lm-ledger-list__day {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-ledger-list__deltas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-ledger-list__delta {
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.lm-ledger-list__delta--up {
+  color: var(--amount-positive);
+}
+
+.lm-ledger-list__delta--down {
+  color: var(--amount-negative);
+}
+
+.lm-ledger-list__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .lm-ledger-list__toolbar {
+    padding: var(--space-4);
+  }
+
+  /* Each entry becomes a block: icon and title on top, the changes below. */
+  .lm-ledger-list__row {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'icon main'
+      'icon deltas';
+    gap: var(--space-1) var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .lm-ledger-list__icon {
+    grid-area: icon;
+    align-self: start;
+  }
+
+  .lm-ledger-list__main {
+    grid-area: main;
+  }
+
+  .lm-ledger-list__deltas {
+    grid-area: deltas;
+    justify-content: flex-start;
+  }
+
+  .lm-ledger-list__state {
+    padding: var(--space-8) var(--space-4);
+  }
+}

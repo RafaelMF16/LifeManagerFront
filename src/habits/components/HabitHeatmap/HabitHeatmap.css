@@ -1,0 +1,161 @@
+/*
+ * State colors, validated with the dataviz skill's palette checker against each theme's surface (lightness band,
+ * colorblind separation, contrast >= 3:1): kept green, protected violet, failed red. Text never wears them.
+ */
+.lm-heatmap {
+  --heatmap-kept: var(--money-in-600);
+  --heatmap-frozen: var(--money-invested-600);
+  --heatmap-failed: var(--money-out-500);
+  --heatmap-label-width: 28px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+[data-theme='dark'] .lm-heatmap {
+  --heatmap-frozen: var(--money-invested-500);
+}
+
+/* Weeks as columns; capped so the cells stay small squares on a wide screen and still fit 360px. */
+.lm-heatmap__grid {
+  display: grid;
+  gap: 3px;
+  max-width: 460px;
+}
+
+.lm-heatmap__row {
+  display: contents;
+}
+
+.lm-heatmap__month,
+.lm-heatmap__weekday {
+  font-size: var(--text-2xs);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.lm-heatmap__month {
+  overflow: visible;
+  padding-bottom: 2px;
+}
+
+.lm-heatmap__weekday {
+  display: flex;
+  align-items: center;
+}
+
+.lm-heatmap__cell {
+  aspect-ratio: 1;
+  min-width: 0;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.lm-heatmap__cell:not(.lm-heatmap__cell--outside) {
+  cursor: default;
+  transition: transform var(--duration-instant) var(--ease-standard);
+}
+
+.lm-heatmap__cell--done,
+.lm-heatmap__cell--clean {
+  background: var(--heatmap-kept);
+}
+
+.lm-heatmap__cell--frozen {
+  background: var(--heatmap-frozen);
+}
+
+.lm-heatmap__cell--missed,
+.lm-heatmap__cell--relapse {
+  background: var(--heatmap-failed);
+}
+
+/* Still open: an outline, not a fill, since nothing happened yet. */
+.lm-heatmap__cell--pending {
+  border: 1.5px dashed var(--text-tertiary);
+}
+
+/* Nothing recorded on a due day: a quiet fill. */
+.lm-heatmap__cell--none {
+  background: var(--surface-sunken);
+  border: var(--border-width) solid var(--border);
+}
+
+/* Not due: only a hairline. */
+.lm-heatmap__cell--off {
+  border: var(--border-width) solid var(--border);
+}
+
+.lm-heatmap__cell--beforestart,
+.lm-heatmap__cell--outside {
+  background: transparent;
+}
+
+.lm-heatmap__cell--today {
+  box-shadow: 0 0 0 1.5px var(--surface), 0 0 0 3px var(--text-secondary);
+}
+
+.lm-heatmap__cell--selected:not(.lm-heatmap__cell--today) {
+  box-shadow: 0 0 0 1.5px var(--surface), 0 0 0 3px var(--accent);
+}
+
+@media (hover: hover) {
+  .lm-heatmap__cell:not(.lm-heatmap__cell--outside):not(.lm-heatmap__cell--beforestart):hover {
+    transform: scale(1.15);
+  }
+}
+
+.lm-heatmap__readout {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  min-height: 20px;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.lm-heatmap__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-heatmap__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-heatmap__legend-count {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.lm-heatmap__swatch {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .lm-heatmap {
+    --heatmap-label-width: 24px;
+  }
+
+  .lm-heatmap__grid {
+    gap: 2px;
+    max-width: none;
+  }
+}
