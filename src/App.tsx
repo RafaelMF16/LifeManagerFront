@@ -4,6 +4,8 @@ import FinanceLayout from './finance/components/FinanceLayout/FinanceLayout'
 import BudgetsPage from './finance/pages/BudgetsPage'
 import CategoriesPage from './finance/pages/CategoriesPage'
 import DashboardPage from './finance/pages/DashboardPage'
+import ImportReviewPage from './finance/pages/ImportReviewPage'
+import ImportsPage from './finance/pages/ImportsPage'
 import MonthDetailsPage from './finance/pages/MonthDetailsPage'
 import MonthsPage from './finance/pages/MonthsPage'
 import PlanningPage from './finance/pages/PlanningPage'
@@ -46,6 +48,8 @@ function App() {
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="months" element={<MonthsPage />} />
                 <Route path="months/:monthlySummaryId" element={<MonthDetailsPage />} />
+                <Route path="imports" element={<ImportsPage />} />
+                <Route path="imports/:importId" element={<ImportReviewPage />} />
                 <Route path="categories" element={<CategoriesPage />} />
                 <Route path="planning" element={<PlanningPage />}>
                   <Route index element={<Navigate to="goals" replace />} />

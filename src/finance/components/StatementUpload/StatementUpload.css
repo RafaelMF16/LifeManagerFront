@@ -1,0 +1,75 @@
+.lm-statement-upload {
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+  padding: var(--space-5);
+}
+
+.lm-statement-upload__area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-5);
+  border: var(--border-width) dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+  text-align: center;
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background var(--duration-fast) var(--ease-standard);
+}
+
+.lm-statement-upload__area--dragging {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+
+.lm-statement-upload__icon {
+  color: var(--accent-text);
+}
+
+.lm-statement-upload__title {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-statement-upload__drop-hint,
+.lm-statement-upload__status {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-statement-upload__formats {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.lm-statement-upload__input {
+  display: none;
+}
+
+/* No drag and drop on touch screens: the button is the way in, and there is nothing to drop on. */
+@media (hover: none) {
+  .lm-statement-upload__drop-hint {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .lm-statement-upload {
+    padding: var(--space-4);
+  }
+
+  .lm-statement-upload__area {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .lm-statement-upload__area > .lm-button {
+    width: 100%;
+  }
+}
