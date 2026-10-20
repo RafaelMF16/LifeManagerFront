@@ -1,0 +1,46 @@
+.lm-similar-prompt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--accent-tint);
+  border: var(--border-width) solid var(--accent);
+  border-radius: var(--radius-card);
+}
+
+.lm-similar-prompt__icon {
+  flex: none;
+  color: var(--accent-text);
+}
+
+.lm-similar-prompt__message {
+  flex: 1;
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--text-primary);
+  text-wrap: pretty;
+}
+
+.lm-similar-prompt__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+@media (max-width: 768px) {
+  .lm-similar-prompt {
+    flex-wrap: wrap;
+  }
+
+  .lm-similar-prompt__message {
+    flex-basis: calc(100% - 16px - var(--space-3));
+  }
+
+  .lm-similar-prompt__actions {
+    width: 100%;
+  }
+
+  .lm-similar-prompt__actions > * {
+    flex: 1;
+  }
+}

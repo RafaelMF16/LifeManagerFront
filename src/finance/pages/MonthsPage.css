@@ -37,6 +37,12 @@
   color: var(--text-primary);
 }
 
+.lm-months-page__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
 @media (max-width: 768px) {
   .lm-months-page {
     padding-top: var(--space-6);
@@ -48,8 +54,12 @@
     font-size: var(--text-xl);
   }
 
-  /* "New month" drops below the title at full width, within easy thumb reach. */
-  .lm-months-page__header > .lm-button {
+  /* The buttons drop below the title and share its width, within easy thumb reach. */
+  .lm-months-page__actions {
     width: 100%;
+  }
+
+  .lm-months-page__actions > .lm-button {
+    flex: 1;
   }
 }

@@ -18,6 +18,8 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   - [Detalhe do mês](#detalhe-do-mês)
   - [Planejamento: Metas](#planejamento-metas)
   - [Planejamento: Recorrentes](#planejamento-recorrentes)
+  - [Importar extrato](#importar-extrato)
+  - [Revisar importação](#revisar-importação)
   - [Categorias](#categorias)
 - [Hábitos](#hábitos)
   - [Barra do personagem](#barra-do-personagem)
@@ -40,6 +42,8 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   /finance/planning         → Metas
     /finance/planning/goals      Metas (?month=aaaa-mm)
     /finance/planning/recurring  Recorrentes
+  /finance/imports          Importar extrato
+  /finance/imports/:id      Revisar importação
   /finance/categories       Categorias
 /habits                     → Hoje
   /habits/today             Hoje
@@ -140,7 +144,7 @@ Mostra um cartão por módulo. Clicar abre o módulo:
 
 ## Financeiro
 
-Menu: **Painel**, **Meses**, **Planejamento**, **Categorias**.
+Menu: **Painel**, **Meses**, **Planejamento**, **Importar**, **Categorias**.
 
 ### Modo privacidade
 
@@ -175,8 +179,9 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
   - **Mês:** escolha de janeiro a dezembro.
   - **Ano:** fixo no ano atual e desabilitado ("Meses são criados no ano atual").
   - **Criar mês:** cria e mostra "Mês criado". Se o mês já existe: "Esse mês já foi criado".
+- **Importar extrato:** abre a tela [Importar extrato](#importar-extrato).
 
-> Meses de lançamentos recorrentes são criados sozinhos quando a recorrência é lançada.
+> Meses de lançamentos recorrentes são criados sozinhos quando a recorrência é lançada. Meses de anos anteriores entram pela [importação de extrato](#importar-extrato).
 
 ### Detalhe do mês
 
@@ -262,6 +267,71 @@ Lista de **Transações recorrentes**, um cartão por recorrência com:
 - **Pausar / Retomar:** os meses em que ela ficou pausada não são lançados.
 - **Excluir:** pede confirmação. As transações já lançadas continuam nos meses.
 - Se a recorrência acabou de ser lançada enquanto você editava, aparece "Essa recorrência acabou de ser lançada. Tente de novo."
+
+### Importar extrato
+
+**Rota:** `/finance/imports` (item **Importar** do menu, ou **Importar extrato** na tela de Meses).
+
+Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as transações, depois de uma revisão.
+
+**Extrato do banco**
+- **Escolher arquivo** (ou arrastar o arquivo para a área, com mouse): aceita **OFX** ou **CSV**, até 5 MB e 5.000 lançamentos.
+- **OFX:** é lido na hora e abre a revisão.
+- **CSV:** antes abre a janela **Colunas do CSV**, porque cada banco monta o arquivo de um jeito:
+  - **A primeira linha é o cabeçalho**, **Data**, **Descrição** e **Valor** (**Uma coluna** com sinal, ou **Débito e crédito** em colunas separadas);
+  - **Formato da data** (Dia/mês/ano, Ano-mês-dia, Mês/dia/ano) e **Separador dos centavos** (vírgula ou ponto);
+  - **Inverter os sinais**, para faturas de cartão que mostram as compras como valores positivos;
+  - a **Prévia** mostra as primeiras linhas como serão lidas, com "N lançamentos prontos para revisar" e as linhas que não puderam ser lidas;
+  - **Continuar** abre a revisão. As colunas escolhidas ficam guardadas neste navegador: o próximo arquivo com o mesmo cabeçalho já vem configurado.
+- Linhas com data futura, anterior a 2000 ou valor zero ficam de fora, com um aviso.
+- Ao terminar, aparece "Extrato pronto para revisar" e abre a tela [Revisar importação](#revisar-importação).
+
+**Importações**
+- Lista as importações: primeiro as **Em revisão**, depois as **Importado**, com o período, a quantidade de lançamentos e a data do envio.
+- **Continuar revisão:** volta a uma importação em revisão (ela fica salva, então dá para continuar depois ou em outro aparelho).
+- **Descartar** (em revisão): apaga a revisão; nada foi lançado ainda.
+- **Remover do histórico** (importadas): tira da lista; as transações lançadas continuam nos meses.
+- Uma importação deixada em revisão por mais de 30 dias é apagada sozinha.
+
+### Revisar importação
+
+**Rota:** `/finance/imports/:id`.
+
+**Topo**
+- **Importações** (voltar), o nome do arquivo e o período ("Jan 2023 – Mar 2024 · 120 lançamentos").
+- **Descartar:** pede confirmação e apaga a revisão.
+- **Confirmar importação:** fica desabilitado enquanto houver lançamentos incluídos sem categoria ("Falta a categoria de N lançamentos incluídos para poder confirmar.").
+- Contadores que também filtram a lista: **N para importar**, **N sem categoria**, **N sugeridos**, **N possíveis duplicatas**.
+
+**Meses do extrato**
+- Um cartão por mês com **Novo mês** (será criado) ou **Já existe**, as Entradas e Saídas dos lançamentos incluídos, "N de M incluídos" e quantos estão sem categoria.
+- Clicar num mês mostra só os lançamentos dele; **Todos os meses** volta. Com muitos meses, **Ver todos os N meses** mostra o resto.
+
+**Lançamentos**
+- Cada lançamento mostra a data, a descrição, o texto original do banco ("No banco: …") quando a descrição foi mudada, o valor e a categoria.
+- As categorias já vêm preenchidas pelo que você fez antes, com um selo que diz de onde veio e a confiança:
+  - **Aprendida:** de importações anteriores do mesmo estabelecimento ("usada 12 vezes");
+  - **Pelo histórico:** dos seus lançamentos com a mesma descrição;
+  - **Parecida:** de um estabelecimento com nome parecido (confiança média ou baixa: vale conferir).
+  - **Você deixou de fora antes:** lançamentos que você não importou da última vez (por exemplo, transferências entre suas contas) já vêm fora.
+- Alguns lançamentos já vêm arquivados pelo próprio texto do banco, mesmo na primeira importação, com um selo:
+  - **Investimento:** uma aplicação ("Aplicação RDB", "Dinheiro guardado…") vem como investimento, sem categoria;
+  - **Resgate:** um resgate ("Resgate RDB", "Crédito Tesouro Direto…") vem fora da importação, porque não é receita;
+  - **Entre contas:** um Pix ou transferência com o nome do seu cadastro (dinheiro entre as suas contas) vem fora da importação. Só funciona quando o nome do cadastro tem pelo menos duas palavras e aparece no extrato: com duas palavras, elas precisam estar juntas no extrato; com três ou mais, o banco pode ter nomes a mais no meio.
+  - O que você já decidiu antes para o mesmo estabelecimento vale mais que esses selos. Incluir um desses lançamentos ensina a próxima importação.
+- **Possível duplicata:** o lançamento parece já estar nos seus meses (mesma linha de um extrato já importado, ou mesma data e valor de um lançamento feito à mão). Vem fora da importação; **Ver no mês** abre o mês do lançamento existente numa nova aba.
+- **Categoria** (em cada lançamento): escolher salva na hora. **+ Nova categoria…** abre o formulário de categoria e já usa a nova.
+- **Deixar de fora / Incluir na importação** (ícone de olho): tira ou devolve o lançamento.
+- **Editar:** abre o formulário completo (Tipo, Descrição, Valor, Data entre 01/01/2000 e hoje, Categoria e **Incluir na importação**). A data pode mudar de mês.
+- Depois de mudar um lançamento, se houver outros do mesmo estabelecimento arquivados de outro jeito, aparece "Fazer o mesmo com N outros lançamentos parecidos com …?" com **Aplicar** e **Agora não**. Lançamentos que você editou um a um não mudam.
+- **Seleção:** a caixa de cada lançamento (ou **Selecionar todos desta página**) mostra a barra com **Definir categoria…**, **Definir tipo…**, **Incluir**, **Deixar de fora** e **Limpar seleção**.
+- **Mostrar** (Todos, Sem categoria, Sugeridos — com sugestão de categoria ou arquivados pelo texto do banco —, Possíveis duplicatas, Fora da importação), **Buscar descrição** e **Ordenar por** (Data, Descrição, Categoria, Valor).
+
+**Confirmar importação**
+- A janela resume: "N transações serão lançadas em M meses." e quantos meses ainda não existem e serão criados.
+- **Importar** lança tudo, cria os meses que faltam, guarda as categorias escolhidas para as próximas importações e abre a tela de Meses com "Importação concluída".
+- Uma linha do banco que já tinha sido lançada (por outra importação feita no meio tempo) é pulada e aparece no aviso.
+- Uma importação já confirmada mostra "Essa importação já foi confirmada." e **Ver meses**.
 
 ### Categorias
 

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
 import { useToast } from '../../shared/hooks/useToast'
 import MonthlySummaryFormModal from '../components/MonthlySummaryFormModal/MonthlySummaryFormModal'
@@ -11,6 +12,7 @@ import './MonthsPage.css'
 function MonthsPage() {
   const { t: translate } = useTranslation('finance')
   const { show: showToast } = useToast()
+  const navigate = useNavigate()
   const months = useMonthlySummaries()
   const [isFormOpen, setIsFormOpen] = useState(false)
 
@@ -27,9 +29,14 @@ function MonthsPage() {
           <span className="lm-months-page__eyebrow">{translate('finance:module.name')}</span>
           <h1 className="lm-months-page__title">{translate('finance:months.title')}</h1>
         </div>
-        <Button variant="primary" icon="plus" onClick={() => setIsFormOpen(true)}>
-          {translate('finance:months.newButton')}
-        </Button>
+        <div className="lm-months-page__actions">
+          <Button variant="secondary" icon="upload" onClick={() => navigate('/finance/imports')}>
+            {translate('finance:imports.monthsButton')}
+          </Button>
+          <Button variant="primary" icon="plus" onClick={() => setIsFormOpen(true)}>
+            {translate('finance:months.newButton')}
+          </Button>
+        </div>
       </div>
 
       <MonthlySummaryList
