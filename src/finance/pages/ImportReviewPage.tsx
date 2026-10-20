@@ -42,6 +42,7 @@ function toRequest(row: StatementImportRowDto): StatementImportRowRequestDto {
     description: row.description,
     date: row.date,
     included: row.included,
+    shiftToNextMonth: row.shiftToNextMonth,
   }
 }
 
@@ -143,6 +144,7 @@ function ImportReviewPage() {
       description: values.description,
       date: values.date,
       included: values.included,
+      shiftToNextMonth: values.shiftToNextMonth,
     })
     showToast(translate('finance:imports.toasts.rowSaved'))
     setEditTarget(null)
@@ -393,6 +395,7 @@ function ImportReviewPage() {
               onSetCategory={(categoryId) => void handleBulk({ categoryId, type: null, included: null })}
               onSetType={(type) => void handleBulk({ type, categoryId: null, included: null })}
               onSetIncluded={(included) => void handleBulk({ included, type: null, categoryId: null })}
+              onSetShiftToNextMonth={(shiftToNextMonth) => void handleBulk({ shiftToNextMonth, type: null, categoryId: null, included: null })}
               onClear={() => setSelection({ ids: NO_SELECTION, pageKey: '' })}
             />
           ) : null

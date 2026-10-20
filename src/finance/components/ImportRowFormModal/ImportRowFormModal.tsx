@@ -12,10 +12,13 @@ import { useZodForm } from '../../../shared/hooks/useZodForm'
 import { isSessionExpiredError } from '../../../shared/services/httpClient'
 import { isApiError } from '../../../shared/types/ApiError'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
+import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import type { CategoryResponseDto } from '../../types/CategoryDtos'
 import type { StatementImportRowDto } from '../../types/StatementImportDtos'
 import type { MoneyFlowType } from '../../types/TransactionDtos'
+import { nextMonthOf } from '../../utils/statementImport/monthShift'
 import { todayIso } from '../../utils/statementImport/statementLines'
+import { parseYearMonth } from '../../utils/yearMonth'
 import { toFormAmount } from '../../validation/amountSchema'
 import { IMPORT_ROW_MIN_DATE, createImportRowSchema } from '../../validation/importRowSchema'
 import type { ImportRowFormValues } from '../../validation/importRowSchema'
@@ -35,12 +38,14 @@ interface ImportRowFormModalProps {
 
 /**
  * Edits every field of a statement line before it is imported: unlike a transaction, its date may move to any
- * month (from 2000 to today), and the category may stay empty for now.
+ * month (from 2000 to today), and the category may stay empty for now. "Count in the next month" keeps the bank's
+ * date but posts it on the 1st of the next month; changing the date unticks it, so the user decides again.
  */
 function ImportRowFormModal({ row, categories, onClose, onSubmit }: ImportRowFormModalProps) {
   const { t: translate, i18n } = useTranslation(['finance', 'common'])
   const titleId = useId()
   const { show: showErrorModal } = useErrorModal()
+  const { periodLabel } = useFinanceFormat()
   const today = todayIso()
 
   const {
@@ -58,9 +63,13 @@ function ImportRowFormModal({ row, categories, onClose, onSubmit }: ImportRowFor
       date: row.date,
       categoryId: row.categoryId === null ? '' : String(row.categoryId),
       included: row.included,
+      shiftToNextMonth: row.shiftToNextMonth,
     },
   })
   const type = useWatch({ control, name: 'type' })
+  const date = useWatch({ control, name: 'date' })
+  const shiftToNextMonth = useWatch({ control, name: 'shiftToNextMonth' })
+  const shiftedMonth = parseYearMonth(nextMonthOf(date))
 
   const fieldError = (message: string | undefined) => (message ? translate(message) : undefined)
 
@@ -140,7 +149,7 @@ function ImportRowFormModal({ row, categories, onClose, onSubmit }: ImportRowFor
                 min={IMPORT_ROW_MIN_DATE}
                 max={today}
                 error={fieldError(errors.date?.message)}
-                {...register('date')}
+                {...register('date', { onChange: () => setValue('shiftToNextMonth', false) })}
               />
             </div>
 
@@ -155,6 +164,18 @@ function ImportRowFormModal({ row, categories, onClose, onSubmit }: ImportRowFor
               <input type="checkbox" {...register('included')} />
               {translate('finance:imports.rowForm.included')}
             </label>
+
+            <div className="lm-import-row-form__shift">
+              <label className="lm-import-row-form__check">
+                <input type="checkbox" aria-describedby={`${titleId}-shift`} {...register('shiftToNextMonth')} />
+                {translate('finance:imports.rowForm.shiftToNextMonth')}
+              </label>
+              <span id={`${titleId}-shift`} className="lm-import-row-form__hint">
+                {shiftToNextMonth && shiftedMonth
+                  ? translate('finance:imports.rowForm.shiftHintOn', { month: periodLabel(shiftedMonth.month, shiftedMonth.year) })
+                  : translate('finance:imports.rowForm.shiftHintOff')}
+              </span>
+            </div>
           </div>
 
           {errors.root?.serverError?.message ? (
