@@ -1,13 +1,13 @@
 import type { StatementImportRowDto, SuggestionConfidence, SuggestionSource } from '../../types/StatementImportDtos'
 
 /** Filed by what the bank wrote (an investment movement, a transfer between the user's own accounts), not by history. */
-export type DetectionSource = Extract<SuggestionSource, 'InvestmentApplication' | 'InvestmentRedemption' | 'OwnTransfer'>
+const DETECTION_SOURCES = ['InvestmentApplication', 'InvestmentRedemption', 'OwnTransfer'] as const satisfies readonly SuggestionSource[]
+
+export type DetectionSource = (typeof DETECTION_SOURCES)[number]
 type LearnedSource = Extract<SuggestionSource, 'Rule' | 'History' | 'Similar'>
 
-const DETECTION_SOURCES: readonly SuggestionSource[] = ['InvestmentApplication', 'InvestmentRedemption', 'OwnTransfer']
-
-export function isDetectionSource(source: SuggestionSource): source is DetectionSource {
-  return DETECTION_SOURCES.includes(source)
+function isDetectionSource(source: SuggestionSource): source is DetectionSource {
+  return (DETECTION_SOURCES as readonly SuggestionSource[]).includes(source)
 }
 
 export type SuggestionBadge =

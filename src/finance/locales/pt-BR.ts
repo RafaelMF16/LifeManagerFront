@@ -773,7 +773,7 @@ export default {
         options: {
           All: 'Todos',
           Uncategorized: 'Sem categoria',
-          Suggested: 'Com categoria sugerida',
+          Suggested: 'Sugeridos',
           Duplicates: 'Possíveis duplicatas',
           Excluded: 'Fora da importação',
         },

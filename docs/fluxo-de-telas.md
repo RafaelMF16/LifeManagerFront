@@ -317,7 +317,7 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
 - Alguns lançamentos já vêm arquivados pelo próprio texto do banco, mesmo na primeira importação, com um selo:
   - **Investimento:** uma aplicação ("Aplicação RDB", "Dinheiro guardado…") vem como investimento, sem categoria;
   - **Resgate:** um resgate ("Resgate RDB", "Crédito Tesouro Direto…") vem fora da importação, porque não é receita;
-  - **Entre contas:** um Pix ou transferência com o nome do seu cadastro (dinheiro entre as suas contas) vem fora da importação. Só funciona quando o nome do cadastro tem pelo menos duas palavras que aparecem no extrato.
+  - **Entre contas:** um Pix ou transferência com o nome do seu cadastro (dinheiro entre as suas contas) vem fora da importação. Só funciona quando o nome do cadastro tem pelo menos duas palavras e aparece no extrato: com duas palavras, elas precisam estar juntas no extrato; com três ou mais, o banco pode ter nomes a mais no meio.
   - O que você já decidiu antes para o mesmo estabelecimento vale mais que esses selos. Incluir um desses lançamentos ensina a próxima importação.
 - **Possível duplicata:** o lançamento parece já estar nos seus meses (mesma linha de um extrato já importado, ou mesma data e valor de um lançamento feito à mão). Vem fora da importação; **Ver no mês** abre o mês do lançamento existente numa nova aba.
 - **Categoria** (em cada lançamento): escolher salva na hora. **+ Nova categoria…** abre o formulário de categoria e já usa a nova.
@@ -325,7 +325,7 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
 - **Editar:** abre o formulário completo (Tipo, Descrição, Valor, Data entre 01/01/2000 e hoje, Categoria e **Incluir na importação**). A data pode mudar de mês.
 - Depois de mudar um lançamento, se houver outros do mesmo estabelecimento arquivados de outro jeito, aparece "Fazer o mesmo com N outros lançamentos parecidos com …?" com **Aplicar** e **Agora não**. Lançamentos que você editou um a um não mudam.
 - **Seleção:** a caixa de cada lançamento (ou **Selecionar todos desta página**) mostra a barra com **Definir categoria…**, **Definir tipo…**, **Incluir**, **Deixar de fora** e **Limpar seleção**.
-- **Mostrar** (Todos, Sem categoria, Com categoria sugerida, Possíveis duplicatas, Fora da importação), **Buscar descrição** e **Ordenar por** (Data, Descrição, Categoria, Valor).
+- **Mostrar** (Todos, Sem categoria, Sugeridos — com sugestão de categoria ou arquivados pelo texto do banco —, Possíveis duplicatas, Fora da importação), **Buscar descrição** e **Ordenar por** (Data, Descrição, Categoria, Valor).
 
 **Confirmar importação**
 - A janela resume: "N transações serão lançadas em M meses." e quantos meses ainda não existem e serão criados.
