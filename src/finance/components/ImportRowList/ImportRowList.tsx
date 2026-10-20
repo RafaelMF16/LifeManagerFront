@@ -15,8 +15,9 @@ import type { ImportRowsStatus } from '../../hooks/useImportRows'
 import type { CategoryResponseDto } from '../../types/CategoryDtos'
 import type { StatementImportRowDto, StatementImportRowFilter, StatementImportRowSortBy } from '../../types/StatementImportDtos'
 import type { MoneyFlowType } from '../../types/TransactionDtos'
-import { showsExcludedBadge, suggestionBadge } from '../../utils/statementImport/rowBadges'
+import { monthShiftBadge, showsExcludedBadge, suggestionBadge } from '../../utils/statementImport/rowBadges'
 import type { DetectionSource } from '../../utils/statementImport/rowBadges'
+import { parseYearMonth } from '../../utils/yearMonth'
 import Amount from '../Amount/Amount'
 import './ImportRowList.css'
 
@@ -103,7 +104,7 @@ function ImportRowList({
   bulkBar,
 }: ImportRowListProps) {
   const { t: translate } = useTranslation('finance')
-  const { dayLabel } = useFinanceFormat()
+  const { dayLabel, periodLabel } = useFinanceFormat()
 
   const sortedLabel = translate(sortDirection === 'Asc' ? 'finance:imports.rows.sort.ascending' : 'finance:imports.rows.sort.descending')
   const pageIds = data?.items.map((row) => row.id) ?? []
@@ -165,6 +166,19 @@ function ImportRowList({
           {' · '}
           {translate(`finance:imports.rows.confidence.${suggestion.confidence}`)}
           {suggestion.uses > 0 ? ` · ${translate('finance:imports.rows.uses', { count: suggestion.uses })}` : ''}
+        </span>,
+      )
+    }
+
+    const shift = monthShiftBadge(row)
+    const shiftMonth = shift ? parseYearMonth(shift.month) : null
+    if (shift && shiftMonth) {
+      badges.push(
+        <span key="shift" className="lm-import-rows__badge lm-import-rows__badge--suggestion">
+          <Icon name="calendar" size={12} aria-hidden="true" />
+          {translate(shift.learned ? 'finance:imports.rows.shiftLearned' : 'finance:imports.rows.shift', {
+            month: periodLabel(shiftMonth.month, shiftMonth.year),
+          })}
         </span>,
       )
     }

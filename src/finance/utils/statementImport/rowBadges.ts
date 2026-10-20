@@ -41,3 +41,10 @@ export function showsExcludedBadge(row: StatementImportRowDto) {
 
   return !isDetectionSource(row.suggestionSource) && row.categoryId !== null
 }
+
+/** The month a row counts in when it was moved to the month after its date, and whether history moved it. */
+export function monthShiftBadge(row: StatementImportRowDto): { month: string; learned: boolean } | null {
+  if (!row.shiftToNextMonth) return null
+
+  return { month: row.effectiveDate.slice(0, 7), learned: row.shiftLearned }
+}

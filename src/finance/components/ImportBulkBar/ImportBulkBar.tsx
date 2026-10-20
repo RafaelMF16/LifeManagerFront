@@ -14,11 +14,15 @@ interface ImportBulkBarProps {
   onSetCategory: (categoryId: number) => void
   onSetType: (type: MoneyFlowType) => void
   onSetIncluded: (included: boolean) => void
+  onSetShiftToNextMonth: (shiftToNextMonth: boolean) => void
   onClear: () => void
 }
 
-/** What can be done to the selected rows at once: file them, change their type, include or leave them out. */
-function ImportBulkBar({ count, categories, busy, onSetCategory, onSetType, onSetIncluded, onClear }: ImportBulkBarProps) {
+/**
+ * What can be done to the selected rows at once: file them, change their type, include or leave them out, and
+ * count them in the next month or in their date's month.
+ */
+function ImportBulkBar({ count, categories, busy, onSetCategory, onSetType, onSetIncluded, onSetShiftToNextMonth, onClear }: ImportBulkBarProps) {
   const { t: translate } = useTranslation('finance')
 
   return (
@@ -49,6 +53,19 @@ function ImportBulkBar({ count, categories, busy, onSetCategory, onSetType, onSe
           value=""
           disabled={busy}
           onChange={(event) => event.target.value && onSetType(event.target.value as MoneyFlowType)}
+          containerClassName="lm-import-bulk__select"
+        />
+        <Select
+          size="sm"
+          aria-label={translate('finance:imports.bulk.month')}
+          options={[
+            { value: '', label: translate('finance:imports.bulk.month') },
+            { value: 'next', label: translate('finance:imports.bulk.monthNext') },
+            { value: 'same', label: translate('finance:imports.bulk.monthSame') },
+          ]}
+          value=""
+          disabled={busy}
+          onChange={(event) => event.target.value && onSetShiftToNextMonth(event.target.value === 'next')}
           containerClassName="lm-import-bulk__select"
         />
         <Button variant="secondary" size="sm" icon="eye" disabled={busy} onClick={() => onSetIncluded(true)}>

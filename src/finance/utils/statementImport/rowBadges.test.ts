@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { StatementImportRowDto } from '../../types/StatementImportDtos'
-import { showsExcludedBadge, suggestionBadge } from './rowBadges'
+import { monthShiftBadge, showsExcludedBadge, suggestionBadge } from './rowBadges'
 
 function row(overrides: Partial<StatementImportRowDto> = {}): StatementImportRowDto {
   return {
@@ -75,5 +75,19 @@ describe('showsExcludedBadge', () => {
     expect(showsExcludedBadge(row({ included: false, duplicateOfTransactionId: 9 }))).toBe(false)
     expect(showsExcludedBadge(row({ included: false, suggestionSource: 'InvestmentRedemption', suggestionConfidence: 'High' }))).toBe(false)
     expect(showsExcludedBadge(row({ included: false, suggestionSource: 'Rule', suggestionConfidence: 'High' }))).toBe(false)
+  })
+})
+
+describe('monthShiftBadge', () => {
+  it('shows nothing for a row in the month of its date', () => {
+    expect(monthShiftBadge(row())).toBeNull()
+  })
+
+  it('names the month a shifted row counts in, and whether that came from history', () => {
+    expect(monthShiftBadge(row({ date: '2026-08-30', effectiveDate: '2026-09-01', shiftToNextMonth: true }))).toEqual({ month: '2026-09', learned: false })
+    expect(monthShiftBadge(row({ date: '2026-12-31', effectiveDate: '2027-01-01', shiftToNextMonth: true, shiftLearned: true }))).toEqual({
+      month: '2027-01',
+      learned: true,
+    })
   })
 })
