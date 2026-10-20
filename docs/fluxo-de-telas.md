@@ -322,9 +322,10 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
 - **Possível duplicata:** o lançamento parece já estar nos seus meses (mesma linha de um extrato já importado, ou mesma data e valor de um lançamento feito à mão). Vem fora da importação; **Ver no mês** abre o mês do lançamento existente numa nova aba.
 - **Categoria** (em cada lançamento): escolher salva na hora. **+ Nova categoria…** abre o formulário de categoria e já usa a nova.
 - **Deixar de fora / Incluir na importação** (ícone de olho): tira ou devolve o lançamento.
-- **Editar:** abre o formulário completo (Tipo, Descrição, Valor, Data entre 01/01/2000 e hoje, Categoria e **Incluir na importação**). A data pode mudar de mês.
+- **Editar:** abre o formulário completo (Tipo, Descrição, Valor, Data entre 01/01/2000 e hoje, Categoria, **Incluir na importação** e **Conta no mês seguinte**). A data pode mudar de mês.
+- **Conta no mês seguinte:** para um salário ou uma conta paga no fim do mês que pertence ao mês seguinte. O lançamento guarda a data do banco, mas vai para o dia 1º do mês seguinte ("Conta em Setembro 2026 (lançado no dia 1º)."). Trocar a data desmarca a caixa. O lançamento ganha o selo **Conta em Setembro 2026**; quando o app marcou sozinho, pelo que você fez nas importações anteriores com o mesmo estabelecimento (só nos últimos 5 dias do mês), o selo diz **Conta em Setembro 2026 · pelo histórico**.
 - Depois de mudar um lançamento, se houver outros do mesmo estabelecimento arquivados de outro jeito, aparece "Fazer o mesmo com N outros lançamentos parecidos com …?" com **Aplicar** e **Agora não**. Lançamentos que você editou um a um não mudam.
-- **Seleção:** a caixa de cada lançamento (ou **Selecionar todos desta página**) mostra a barra com **Definir categoria…**, **Definir tipo…**, **Incluir**, **Deixar de fora** e **Limpar seleção**.
+- **Seleção:** a caixa de cada lançamento (ou **Selecionar todos desta página**) mostra a barra com **Definir categoria…**, **Definir tipo…**, **Definir mês…** (**Conta no mês seguinte** ou **Conta no mês da data**), **Incluir**, **Deixar de fora** e **Limpar seleção**.
 - **Mostrar** (Todos, Sem categoria, Sugeridos — com sugestão de categoria ou arquivados pelo texto do banco —, Possíveis duplicatas, Fora da importação), **Buscar descrição** e **Ordenar por** (Data, Descrição, Categoria, Valor).
 
 **Confirmar importação**
