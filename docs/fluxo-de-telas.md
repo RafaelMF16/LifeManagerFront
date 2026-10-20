@@ -314,6 +314,11 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
   - **Pelo histórico:** dos seus lançamentos com a mesma descrição;
   - **Parecida:** de um estabelecimento com nome parecido (confiança média ou baixa: vale conferir).
   - **Você deixou de fora antes:** lançamentos que você não importou da última vez (por exemplo, transferências entre suas contas) já vêm fora.
+- Alguns lançamentos já vêm arquivados pelo próprio texto do banco, mesmo na primeira importação, com um selo:
+  - **Investimento:** uma aplicação ("Aplicação RDB", "Dinheiro guardado…") vem como investimento, sem categoria;
+  - **Resgate:** um resgate ("Resgate RDB", "Crédito Tesouro Direto…") vem fora da importação, porque não é receita;
+  - **Entre contas:** um Pix ou transferência com o nome do seu cadastro (dinheiro entre as suas contas) vem fora da importação. Só funciona quando o nome do cadastro tem pelo menos duas palavras que aparecem no extrato.
+  - O que você já decidiu antes para o mesmo estabelecimento vale mais que esses selos. Incluir um desses lançamentos ensina a próxima importação.
 - **Possível duplicata:** o lançamento parece já estar nos seus meses (mesma linha de um extrato já importado, ou mesma data e valor de um lançamento feito à mão). Vem fora da importação; **Ver no mês** abre o mês do lançamento existente numa nova aba.
 - **Categoria** (em cada lançamento): escolher salva na hora. **+ Nova categoria…** abre o formulário de categoria e já usa a nova.
 - **Deixar de fora / Incluir na importação** (ícone de olho): tira ou devolve o lançamento.
