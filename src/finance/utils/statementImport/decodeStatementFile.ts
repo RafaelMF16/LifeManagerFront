@@ -1,9 +1,9 @@
 const UTF8_BOM = [0xef, 0xbb, 0xbf]
 
 /**
- * Turns the file's bytes into text. Brazilian banks still export many statements in Windows-1252 (OFX 1.x says so in
- * its `CHARSET:1252` header): the header wins when it names the charset; otherwise the bytes are read as UTF-8 and,
- * if they aren't valid UTF-8, as Windows-1252.
+ * Turns the file's bytes into text: UTF-8 when they are valid UTF-8, else Windows-1252 (many Brazilian banks still
+ * export in it). The OFX `CHARSET`/`ENCODING` header isn't trusted: Banco Inter writes `CHARSET:1252` over UTF-8 bytes.
+ * Real Windows-1252 text with accents is practically never valid UTF-8, so the bytes decide.
  */
 export function decodeStatementFile(buffer: ArrayBuffer): string {
   const bytes = new Uint8Array(buffer)
@@ -11,10 +11,6 @@ export function decodeStatementFile(buffer: ArrayBuffer): string {
   if (UTF8_BOM.every((byte, index) => bytes[index] === byte)) {
     return new TextDecoder('utf-8').decode(bytes.subarray(UTF8_BOM.length))
   }
-
-  const head = new TextDecoder('windows-1252').decode(bytes.subarray(0, 1024)).toUpperCase()
-  if (/CHARSET:\s*(1252|ISO-8859-1|8859-1)/.test(head)) return new TextDecoder('windows-1252').decode(bytes)
-  if (/ENCODING:\s*UTF-?8|ENCODING="UTF-?8"|CHARSET:\s*UTF-?8/.test(head)) return new TextDecoder('utf-8').decode(bytes)
 
   try {
     return new TextDecoder('utf-8', { fatal: true }).decode(bytes)

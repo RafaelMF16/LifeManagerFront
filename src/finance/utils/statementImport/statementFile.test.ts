@@ -19,8 +19,21 @@ describe('decodeStatementFile', () => {
     expect(decodeStatementFile(windows1252('Débito'))).toBe('Débito')
   })
 
-  it('follows the OFX header charset', () => {
+  it('reads a Windows-1252 file that says so in its OFX header', () => {
     expect(decodeStatementFile(windows1252('CHARSET:1252\n<MEMO>Pão'))).toContain('Pão')
+  })
+
+  it('reads UTF-8 even when the OFX header claims Windows-1252, as Banco Inter exports', () => {
+    const inter = new TextEncoder().encode('ENCODING:USASCII\nCHARSET:1252\n<NAME>Aplicação\n<NAME>Fatura cartão Inter')
+
+    const text = decodeStatementFile(inter.buffer)
+
+    expect(text).toContain('<NAME>Aplicação')
+    expect(text).toContain('Fatura cartão Inter')
+  })
+
+  it('reads Windows-1252 even when the OFX header claims UTF-8', () => {
+    expect(decodeStatementFile(windows1252('ENCODING:UTF-8\nCHARSET:NONE\n<MEMO>Pão'))).toContain('Pão')
   })
 })
 
