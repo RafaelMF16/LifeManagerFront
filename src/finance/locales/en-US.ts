@@ -820,6 +820,11 @@ export default {
         History: 'From history',
         Similar: 'Similar',
       },
+      detected: {
+        InvestmentApplication: 'Investment',
+        InvestmentRedemption: 'Redemption',
+        OwnTransfer: 'Between accounts',
+      },
       confidence: {
         High: 'high confidence',
         Medium: 'medium confidence',

@@ -6,7 +6,14 @@ export type StatementImportSource = 'Ofx' | 'Csv'
 export type StatementImportStatus = 'Draft' | 'Committed'
 export type StatementImportRowFilter = 'All' | 'Uncategorized' | 'Suggested' | 'Duplicates' | 'Excluded'
 export type StatementImportRowSortBy = 'Date' | 'Description' | 'Category' | 'Amount'
-export type SuggestionSource = 'None' | 'Rule' | 'History' | 'Similar'
+export type SuggestionSource =
+  | 'None'
+  | 'Rule'
+  | 'History'
+  | 'Similar'
+  | 'InvestmentApplication'
+  | 'InvestmentRedemption'
+  | 'OwnTransfer'
 export type SuggestionConfidence = 'Low' | 'Medium' | 'High'
 
 // Espelha LifeManager.Application/StatementImports/DTOs

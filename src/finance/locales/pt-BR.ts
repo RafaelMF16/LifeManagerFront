@@ -820,6 +820,11 @@ export default {
         History: 'Pelo histórico',
         Similar: 'Parecida',
       },
+      detected: {
+        InvestmentApplication: 'Investimento',
+        InvestmentRedemption: 'Resgate',
+        OwnTransfer: 'Entre contas',
+      },
       confidence: {
         High: 'confiança alta',
         Medium: 'confiança média',

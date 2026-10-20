@@ -15,11 +15,19 @@ import type { ImportRowsStatus } from '../../hooks/useImportRows'
 import type { CategoryResponseDto } from '../../types/CategoryDtos'
 import type { StatementImportRowDto, StatementImportRowFilter, StatementImportRowSortBy } from '../../types/StatementImportDtos'
 import type { MoneyFlowType } from '../../types/TransactionDtos'
+import { showsExcludedBadge, suggestionBadge } from '../../utils/statementImport/rowBadges'
+import type { DetectionSource } from '../../utils/statementImport/rowBadges'
 import Amount from '../Amount/Amount'
 import './ImportRowList.css'
 
 const FILTERS: StatementImportRowFilter[] = ['All', 'Uncategorized', 'Suggested', 'Duplicates', 'Excluded']
 const SORT_OPTIONS: StatementImportRowSortBy[] = ['Date', 'Description', 'Category', 'Amount']
+
+const DETECTION_ICONS: Record<DetectionSource, IconName> = {
+  InvestmentApplication: 'piggy-bank',
+  InvestmentRedemption: 'coins',
+  OwnTransfer: 'wallet',
+}
 
 /** The category select's extra option that opens the new-category form instead of filing the row. */
 export const NEW_CATEGORY_OPTION = '__new'
@@ -131,30 +139,37 @@ function ImportRowList({
       )
     }
 
-    const suggested = row.suggestionSource !== 'None' && !row.editedByUser
-    if (suggested && !row.included && row.categoryId === null && row.duplicateOfTransactionId === null) {
+    const suggestion = suggestionBadge(row)
+    if (suggestion?.kind === 'detected') {
+      badges.push(
+        <span key="detected" className="lm-import-rows__badge lm-import-rows__badge--suggestion">
+          <Icon name={DETECTION_ICONS[suggestion.source]} size={12} aria-hidden="true" />
+          {translate(`finance:imports.rows.detected.${suggestion.source}`)}
+        </span>,
+      )
+    } else if (suggestion?.kind === 'ignoredBefore') {
       badges.push(
         <span key="ignored" className="lm-import-rows__badge lm-import-rows__badge--suggestion">
           <Icon name="sparkles" size={12} aria-hidden="true" />
           {translate('finance:imports.rows.ignoredBefore')}
         </span>,
       )
-    } else if (suggested && row.suggestionConfidence) {
+    } else if (suggestion?.kind === 'learned') {
       badges.push(
         <span
           key="suggestion"
-          className={`lm-import-rows__badge lm-import-rows__badge--suggestion lm-import-rows__badge--${row.suggestionConfidence.toLowerCase()}`}
+          className={`lm-import-rows__badge lm-import-rows__badge--suggestion lm-import-rows__badge--${suggestion.confidence.toLowerCase()}`}
         >
           <Icon name="sparkles" size={12} aria-hidden="true" />
-          {translate(`finance:imports.rows.suggestion.${row.suggestionSource}`)}
+          {translate(`finance:imports.rows.suggestion.${suggestion.source}`)}
           {' · '}
-          {translate(`finance:imports.rows.confidence.${row.suggestionConfidence}`)}
-          {row.suggestionUses > 0 ? ` · ${translate('finance:imports.rows.uses', { count: row.suggestionUses })}` : ''}
+          {translate(`finance:imports.rows.confidence.${suggestion.confidence}`)}
+          {suggestion.uses > 0 ? ` · ${translate('finance:imports.rows.uses', { count: suggestion.uses })}` : ''}
         </span>,
       )
     }
 
-    if (!row.included && row.duplicateOfTransactionId === null && !(suggested && row.categoryId === null)) {
+    if (showsExcludedBadge(row)) {
       badges.push(
         <span key="excluded" className="lm-import-rows__badge">
           {translate('finance:imports.rows.excludedBadge')}
