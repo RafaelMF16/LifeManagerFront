@@ -59,6 +59,19 @@
   accent-color: var(--accent);
 }
 
+.lm-import-row-form__shift {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* Lines up under the checkbox label (box width + gap). */
+.lm-import-row-form__hint {
+  padding-left: calc(16px + var(--space-2));
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
 .lm-import-row-form__error {
   margin: var(--space-3) 0 0;
   font-size: var(--text-xs);
@@ -69,5 +82,9 @@
   .lm-import-row-form__check input {
     width: 20px;
     height: 20px;
+  }
+
+  .lm-import-row-form__hint {
+    padding-left: calc(20px + var(--space-2));
   }
 }

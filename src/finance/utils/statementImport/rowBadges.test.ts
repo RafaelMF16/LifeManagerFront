@@ -19,6 +19,9 @@ function row(overrides: Partial<StatementImportRowDto> = {}): StatementImportRow
     suggestionConfidence: null,
     suggestionUses: 0,
     editedByUser: false,
+    effectiveDate: '2026-01-02',
+    shiftToNextMonth: false,
+    shiftLearned: false,
     ...overrides,
   }
 }

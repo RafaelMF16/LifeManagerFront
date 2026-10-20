@@ -862,6 +862,9 @@ export default {
       title: 'Editar lançamento',
       original: 'Texto do banco',
       included: 'Incluir na importação',
+      shiftToNextMonth: 'Conta no mês seguinte',
+      shiftHintOn: 'Conta em {{month}} (lançado no dia 1º).',
+      shiftHintOff: 'Para um salário ou uma conta do fim do mês que pertence ao mês seguinte.',
       save: 'Salvar',
       validation: {
         dateOutOfRange: 'Use uma data entre 01/01/2000 e hoje',

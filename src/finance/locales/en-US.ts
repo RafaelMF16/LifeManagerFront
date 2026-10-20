@@ -862,6 +862,9 @@ export default {
       title: 'Edit transaction',
       original: 'Bank text',
       included: 'Include in the import',
+      shiftToNextMonth: 'Count in the next month',
+      shiftHintOn: 'Counts in {{month}} (posted on the 1st).',
+      shiftHintOff: 'For a salary or bill at the end of the month that belongs to the next one.',
       save: 'Save',
       validation: {
         dateOutOfRange: 'Use a date between 01/01/2000 and today',

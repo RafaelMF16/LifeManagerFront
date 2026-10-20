@@ -26,6 +26,7 @@ export function createImportRowSchema(today: string) {
       }),
     categoryId: z.string(),
     included: z.boolean(),
+    shiftToNextMonth: z.boolean(),
   })
 }
 

@@ -74,6 +74,7 @@ export interface StatementImportDetailsDto extends StatementImportResponseDto {
 
 export interface StatementImportRowDto {
   id: number
+  /** The bank's date. */
   date: string
   description: string
   /** What the bank wrote. */
@@ -91,6 +92,12 @@ export interface StatementImportRowDto {
   suggestionUses: number
   /** The user changed this row directly: no suggestion badge, and "apply to similar" leaves it alone. */
   editedByUser: boolean
+  /** The date it is posted on: `date`, or the first day of the next month when `shiftToNextMonth`. Gives its month. */
+  effectiveDate: string
+  /** Counts in the month after its date (a salary paid on the last business day). */
+  shiftToNextMonth: boolean
+  /** The shift came from what the user decided for this merchant before. */
+  shiftLearned: boolean
 }
 
 export interface StatementImportRowRequestDto {
@@ -100,6 +107,8 @@ export interface StatementImportRowRequestDto {
   description: string
   date: string
   included: boolean
+  /** Left out, the row goes back to its date's month. */
+  shiftToNextMonth: boolean
 }
 
 export interface StatementImportRowUpdateResultDto {
@@ -113,6 +122,7 @@ export interface StatementImportBulkUpdateDto {
   type: MoneyFlowType | null
   categoryId: number | null
   included: boolean | null
+  shiftToNextMonth?: boolean | null
 }
 
 export interface StatementImportRowsChangedDto {

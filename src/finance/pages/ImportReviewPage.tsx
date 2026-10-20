@@ -42,6 +42,7 @@ function toRequest(row: StatementImportRowDto): StatementImportRowRequestDto {
     description: row.description,
     date: row.date,
     included: row.included,
+    shiftToNextMonth: row.shiftToNextMonth,
   }
 }
 
@@ -143,6 +144,7 @@ function ImportReviewPage() {
       description: values.description,
       date: values.date,
       included: values.included,
+      shiftToNextMonth: values.shiftToNextMonth,
     })
     showToast(translate('finance:imports.toasts.rowSaved'))
     setEditTarget(null)
