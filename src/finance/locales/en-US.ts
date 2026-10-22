@@ -51,7 +51,11 @@ export default {
       income: 'Income',
       expense: 'Expenses',
       investment: 'Invested',
-      balance: 'Balance',
+      saved: 'Saved',
+      savingsRate: 'Savings rate',
+      savedSplit: 'Saved, split',
+      savedInvested: 'invested',
+      savedInAccount: 'in account',
     },
     change: {
       up: 'Up {{value}} compared with {{range}}',

@@ -51,7 +51,11 @@ export default {
       income: 'Receitas',
       expense: 'Gastos',
       investment: 'Investido',
-      balance: 'Saldo',
+      saved: 'Poupado',
+      savingsRate: 'Taxa de poupança',
+      savedSplit: 'Divisão do poupado',
+      savedInvested: 'investido',
+      savedInAccount: 'em conta',
     },
     change: {
       up: 'Subiu {{value}} em relação a {{range}}',

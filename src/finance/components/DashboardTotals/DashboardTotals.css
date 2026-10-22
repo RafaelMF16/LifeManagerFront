@@ -9,7 +9,8 @@
 }
 
 /* The section is named for screen readers; the cards' labels already say what each figure is. */
-.lm-dashboard-totals__title {
+.lm-dashboard-totals__title,
+.lm-dashboard-totals__visually-hidden {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -41,6 +42,33 @@
   color: var(--text-secondary);
 }
 
+/* The savings rate rides on the label: a quiet pill, neutral like the change, since the figure already carries the color. */
+.lm-dashboard-totals__rate {
+  margin-left: var(--space-2);
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  color: var(--text-primary);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* Saved = invested + in account. Wraps to two lines when the amounts don't fit side by side. */
+.lm-dashboard-totals__split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-dashboard-totals__split li {
+  white-space: nowrap;
+}
+
 /* A standalone figure: proportional digits read tighter than tabular ones at this size. */
 .lm-dashboard-totals__value {
   font-size: var(--text-xl);
@@ -60,7 +88,8 @@
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       'label value'
-      'change value';
+      'change value'
+      'split split';
     align-items: center;
     column-gap: var(--space-3);
     row-gap: 2px;
@@ -83,5 +112,10 @@
 
   .lm-dashboard-totals__change {
     grid-area: change;
+  }
+
+  .lm-dashboard-totals__split {
+    grid-area: split;
+    margin-top: var(--space-1);
   }
 }
