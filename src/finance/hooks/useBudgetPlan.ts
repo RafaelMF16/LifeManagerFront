@@ -57,8 +57,8 @@ export function useBudgetPlan(month: string, refreshKey = 0) {
 
   // The previous month stays on screen while the next one loads, so the page doesn't flash.
   const data = result?.data
-  const isFetching = result?.key !== requestKey
   const current = result?.key === requestKey ? result : null
+  const isFetching = current === null
   const status: BudgetPlanStatus = current?.failed ? 'error' : data ? 'ready' : 'loading'
 
   const loadedKey = current?.data ? current.key : null
@@ -100,15 +100,13 @@ export function useBudgetPlan(month: string, refreshKey = 0) {
   /** Opens the editor on a month without a plan, with nothing filled in. */
   const start = useCallback(() => change((previous) => previous), [change])
 
-  /** Fills the draft with another month's plan, without saving. */
-  const copyFrom = useCallback((source: BudgetPlanResponseDto) => change(() => toDraft(source)), [change])
-
   /** Reads `source` (`yyyy-MM`) and fills the draft with its plan, without saving. */
   const copyFromMonth = useCallback(
     async (source: string) => {
-      copyFrom(await getBudgetPlan(source))
+      const plan = await getBudgetPlan(source)
+      change(() => toDraft(plan))
     },
-    [copyFrom],
+    [change],
   )
 
   const discard = useCallback(() => setEdit(null), [])
@@ -143,7 +141,6 @@ export function useBudgetPlan(month: string, refreshKey = 0) {
     addSlice,
     removeSlice,
     start,
-    copyFrom,
     copyFromMonth,
     discard,
     save,
