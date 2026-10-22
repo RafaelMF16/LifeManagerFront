@@ -23,6 +23,8 @@ export interface SliceRow {
   actual: number | null
   /** Actual / amount; null when there is nothing to compare with. */
   ratio: number | null
+  /** How far the slider may go: the slice's share plus what is free. */
+  max: number
 }
 
 interface BudgetSliceListProps {
@@ -30,13 +32,17 @@ interface BudgetSliceListProps {
   free: { percent: number; amount: number | null; actual: number }
   selectedKey: string | null
   onSelect: (key: string) => void
+  /** Omitted for a read-only list. */
+  onPercentChange?: (key: string, percent: number) => void
+  /** Sliders shown but locked (privacy mode). */
+  locked?: boolean
 }
 
 /**
  * The month's slices beside the donut: each with its share, its amount and how the month is going against it,
  * and the free part last, against what was spent outside the slices.
  */
-function BudgetSliceList({ rows, free, selectedKey, onSelect }: BudgetSliceListProps) {
+function BudgetSliceList({ rows, free, selectedKey, onSelect, onPercentChange, locked = false }: BudgetSliceListProps) {
   const { t: translate } = useTranslation('finance')
   const { money, sharePercent } = useFinanceFormat()
   const { hidden } = usePrivacyMode()
@@ -106,6 +112,28 @@ function BudgetSliceList({ rows, free, selectedKey, onSelect }: BudgetSliceListP
           className={`lm-budget-slice${row.key === selectedKey ? ' lm-budget-slice--selected' : ''}`}
         >
           {renderHead(row.key, row.name, row.percent, row.amount, row.color)}
+          {onPercentChange ? (
+            // Every slider spans 0–100%, so the same share sits at the same place on every row; the track shows
+            // how far this one may still go, and the value stops there.
+            <input
+              type="range"
+              className="lm-budget-slice__slider"
+              min={0}
+              max={100}
+              step={1}
+              value={row.percent}
+              disabled={locked}
+              aria-label={translate('finance:budgetPlan.slider.label', { name: row.name })}
+              aria-valuetext={translate('finance:budgetPlan.slider.valueText', {
+                name: row.name,
+                percent: sharePercent(row.percent),
+                amount: money(row.amount),
+              })}
+              style={{ '--lm-slice-color': row.color, '--lm-value': row.percent, '--lm-max': row.max } as CSSProperties}
+              onChange={(event) => onPercentChange(row.key, Number(event.target.value))}
+              onFocus={() => onSelect(row.key)}
+            />
+          ) : null}
           {renderProgress(
             row.type,
             row.actual === null

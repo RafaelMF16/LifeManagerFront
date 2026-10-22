@@ -82,6 +82,85 @@
   text-align: right;
 }
 
+/* The track: the slice's color up to its share, a tint of it up to how far it may go, then sunken (taken by
+   the other slices). */
+.lm-budget-slice__slider {
+  --lm-track-height: 8px;
+  --lm-thumb-size: 20px;
+
+  width: 100%;
+  height: var(--control-height-md);
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+}
+
+.lm-budget-slice__slider::-webkit-slider-runnable-track {
+  height: var(--lm-track-height);
+  border-radius: calc(var(--lm-track-height) / 2);
+  background: linear-gradient(
+    to right,
+    var(--lm-slice-color) 0 calc(var(--lm-value) * 1%),
+    color-mix(in oklch, var(--lm-slice-color) 22%, var(--surface-sunken)) 0 calc(var(--lm-max) * 1%),
+    var(--surface-sunken) 0
+  );
+}
+
+.lm-budget-slice__slider::-moz-range-track {
+  height: var(--lm-track-height);
+  border-radius: calc(var(--lm-track-height) / 2);
+  background: linear-gradient(
+    to right,
+    var(--lm-slice-color) 0 calc(var(--lm-value) * 1%),
+    color-mix(in oklch, var(--lm-slice-color) 22%, var(--surface-sunken)) 0 calc(var(--lm-max) * 1%),
+    var(--surface-sunken) 0
+  );
+}
+
+.lm-budget-slice__slider::-webkit-slider-thumb {
+  width: var(--lm-thumb-size);
+  height: var(--lm-thumb-size);
+  margin-top: calc((var(--lm-track-height) - var(--lm-thumb-size)) / 2);
+  border: 2px solid var(--lm-slice-color);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--elevation-1);
+  appearance: none;
+}
+
+.lm-budget-slice__slider::-moz-range-thumb {
+  width: var(--lm-thumb-size);
+  height: var(--lm-thumb-size);
+  border: 2px solid var(--lm-slice-color);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--elevation-1);
+}
+
+.lm-budget-slice__slider:focus-visible {
+  outline: none;
+}
+
+.lm-budget-slice__slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px var(--focus-ring);
+}
+
+.lm-budget-slice__slider:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px var(--focus-ring);
+}
+
+.lm-budget-slice__slider:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (pointer: coarse) {
+  .lm-budget-slice__slider {
+    --lm-thumb-size: 28px;
+  }
+}
+
 .lm-budget-slice__pending {
   margin: 0;
   font-size: var(--text-xs);
