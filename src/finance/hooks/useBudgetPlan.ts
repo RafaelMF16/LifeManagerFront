@@ -118,8 +118,10 @@ export function useBudgetPlan(month: string, refreshKey = 0) {
     if (!draft) return
 
     const saved = await saveBudgetPlan(month, toRequest(draft))
-    setResult({ key: requestKey, data: saved })
-    setEdit(null)
+    // Another month may have loaded meanwhile (the user left without waiting): the save must not replace it, nor
+    // drop an edit already started on it.
+    setResult((previous) => (previous && previous.key !== requestKey ? previous : { key: requestKey, data: saved }))
+    setEdit((previous) => (previous && previous.key !== requestKey ? previous : null))
   }, [draft, month, requestKey])
 
   const deletePlan = useCallback(async () => {
