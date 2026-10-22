@@ -151,7 +151,8 @@ function DashboardBudgets({ budgets }: DashboardBudgetsProps) {
 
       <div className="lm-dashboard-budgets__columns">
         {renderCategories('Expense', budgets.expenseCategories)}
-        {renderCategories('Investment', budgets.investmentCategories)}
+        {/* Budgets have one investment slice, not one per category, so the backend sends none: no empty column. */}
+        {budgets.investmentCategories.length > 0 ? renderCategories('Investment', budgets.investmentCategories) : null}
       </div>
     </section>
   )
