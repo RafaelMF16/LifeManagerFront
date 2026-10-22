@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import type { BudgetPlanResponseDto } from '../types/BudgetPlanDtos'
 import {
   addSlice,
+  assignColorSlots,
+  sliceRatio,
   freeAmount,
   freePercent,
   isDraftDirty,
@@ -174,6 +176,43 @@ describe('toRequest', () => {
         { type: 'Investment', categoryId: null, percent: 20 },
       ],
     })
+  })
+})
+
+describe('sliceRatio', () => {
+  it('is the actual over the unrounded slice, to 4 places', () => {
+    expect(sliceRatio(1250, 6000, 25)).toBe(0.8333)
+  })
+
+  it('follows a new percent before saving', () => {
+    expect(sliceRatio(1250, 6000, 20)).toBe(1.0417)
+  })
+
+  it('is null without a total or a share', () => {
+    expect(sliceRatio(100, null, 25)).toBeNull()
+    expect(sliceRatio(100, 6000, 0)).toBeNull()
+  })
+})
+
+describe('assignColorSlots', () => {
+  it('gives each key the next slot in order', () => {
+    expect(assignColorSlots(['a', 'b', 'c'], {}, 6)).toEqual({ a: 0, b: 1, c: 2 })
+  })
+
+  it('keeps the slot a key already had, so removing one repaints nothing', () => {
+    expect(assignColorSlots(['a', 'c'], { a: 0, b: 1, c: 2 }, 6)).toEqual({ a: 0, c: 2 })
+  })
+
+  it('gives a new key the lowest free slot', () => {
+    expect(assignColorSlots(['a', 'c', 'd'], { a: 0, c: 2 }, 6)).toEqual({ a: 0, c: 2, d: 1 })
+  })
+
+  it('marks keys past the last slot with -1', () => {
+    expect(assignColorSlots(['a', 'b', 'c'], {}, 2)).toEqual({ a: 0, b: 1, c: -1 })
+  })
+
+  it('lets a key past the last slot take one that freed up', () => {
+    expect(assignColorSlots(['b', 'c'], { a: 0, b: 1, c: -1 }, 2)).toEqual({ b: 1, c: 0 })
   })
 })
 

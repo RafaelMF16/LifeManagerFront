@@ -76,6 +76,45 @@ export function percentFromAmount(total: number | null, amount: number) {
   return Math.round((toCents(amount) * WHOLE) / toCents(total)) / HUNDREDTHS
 }
 
+/**
+ * Actual / slice (1 = exactly the slice), to 4 places, against the unrounded share like the backend; null while
+ * there is no total or the slice is at 0%. Lets a status follow the slider before saving.
+ */
+export function sliceRatio(actual: number, total: number | null, percent: number) {
+  if (total === null || toHundredths(percent) <= 0) return null
+
+  return Math.round((actual / ((total * percent) / 100)) * 10000) / 10000
+}
+
+/**
+ * The color slot (0-based) of each key, so a color follows its category rather than its place in the list: keys
+ * keep the slot they had and a new one takes the lowest free slot. Past `slotCount` a key gets -1 (the shared
+ * "extra" color) until a slot frees up.
+ */
+export function assignColorSlots(keys: string[], previous: Record<string, number>, slotCount: number) {
+  const slots: Record<string, number> = {}
+  const taken = new Set<number>()
+
+  for (const key of keys) {
+    const slot = previous[key]
+    if (slot !== undefined && slot >= 0 && slot < slotCount) {
+      slots[key] = slot
+      taken.add(slot)
+    }
+  }
+
+  for (const key of keys) {
+    if (key in slots) continue
+
+    let slot = 0
+    while (taken.has(slot)) slot++
+    slots[key] = slot < slotCount ? slot : -1
+    if (slot < slotCount) taken.add(slot)
+  }
+
+  return slots
+}
+
 /** Adds a slice: expenses go before the investment slice, which always comes last. */
 export function addSlice(slices: DraftSlice[], slice: DraftSlice): DraftSlice[] {
   const investmentIndex = slices.findIndex((existing) => existing.type === 'Investment')

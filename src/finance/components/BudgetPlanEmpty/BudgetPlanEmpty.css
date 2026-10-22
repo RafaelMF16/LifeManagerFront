@@ -1,0 +1,53 @@
+.lm-budget-plan-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-10) var(--space-5);
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  text-align: center;
+}
+
+.lm-budget-plan-empty__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-1);
+  border-radius: 50%;
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.lm-budget-plan-empty__title {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-budget-plan-empty__text {
+  max-width: 42ch;
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.lm-budget-plan-empty__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 768px) {
+  .lm-budget-plan-empty__actions {
+    flex-direction: column;
+    align-self: stretch;
+  }
+}

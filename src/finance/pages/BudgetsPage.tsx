@@ -2,111 +2,125 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
-import { useErrorModal } from '../../shared/hooks/useErrorModal'
-import { useToast } from '../../shared/hooks/useToast'
-import { isSessionExpiredError } from '../../shared/services/httpClient'
-import { isApiError } from '../../shared/types/ApiError'
-import BudgetFormModal from '../components/BudgetFormModal/BudgetFormModal'
-import BudgetMonthView from '../components/BudgetMonthView/BudgetMonthView'
+import BudgetDonut from '../components/BudgetDonut/BudgetDonut'
+import type { DonutSlice } from '../components/BudgetDonut/BudgetDonut'
+import BudgetPlanEmpty from '../components/BudgetPlanEmpty/BudgetPlanEmpty'
+import BudgetSliceList from '../components/BudgetSliceList/BudgetSliceList'
+import type { SliceRow } from '../components/BudgetSliceList/BudgetSliceList'
 import MonthNavigator from '../components/MonthNavigator/MonthNavigator'
-import RemoveBudgetModal from '../components/RemoveBudgetModal/RemoveBudgetModal'
-import { useBudgetMonth } from '../hooks/useBudgetMonth'
-import { useCategoryOptions } from '../hooks/useCategoryOptions'
+import { useBudgetPlan } from '../hooks/useBudgetPlan'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
-import type { BudgetProgressDto, BudgetType } from '../types/BudgetDtos'
+import { assignColorSlots, freeAmount, freePercent, sliceAmount, sliceKey, sliceRatio } from '../utils/budgetPlan'
 import { parseYearMonth, toYearMonth } from '../utils/yearMonth'
-import { BUDGET_NOT_FOUND_CODE } from '../validation/budgetErrorMap'
-import type { BudgetFormValues } from '../validation/budgetSchema'
 import './BudgetsPage.css'
 
-interface FormTarget {
-  type: BudgetType
-  /** The goal being changed; null when creating one. */
-  budget: BudgetProgressDto | null
-}
+/** How many `--chart-slice-N` colors there are; later expense slices share `--chart-slice-extra`. */
+const SLICE_COLOR_COUNT = 6
 
-interface RemoveTarget {
-  type: BudgetType
-  budget: BudgetProgressDto
+function sliceColor(slot: number | undefined) {
+  return slot !== undefined && slot >= 0 ? `var(--chart-slice-${slot + 1})` : 'var(--chart-slice-extra)'
 }
 
 /**
- * The goals of one month (`?month=yyyy-MM`, the current month by default), so the month details page can link to
- * a given month. Setting or removing a goal applies from the month on screen onwards.
+ * The budget of one month (`?month=yyyy-MM`, the current month by default): a total divided into slices, drawn as
+ * a donut beside the list of slices. Each month has its own plan.
  */
 function BudgetsPage() {
   const { t: translate } = useTranslation(['finance', 'common'])
-  const { show: showToast } = useToast()
-  const { show: showErrorModal } = useErrorModal()
-  const { periodLabel } = useFinanceFormat()
+  const { money } = useFinanceFormat()
   const [searchParams, setSearchParams] = useSearchParams()
   const monthParam = searchParams.get('month')
   const month = parseYearMonth(monthParam) && monthParam ? monthParam : toYearMonth(new Date())
-  const budgets = useBudgetMonth(month)
-  const categoryOptions = useCategoryOptions()
-  const [formTarget, setFormTarget] = useState<FormTarget | null>(null)
-  const [removeTarget, setRemoveTarget] = useState<RemoveTarget | null>(null)
+  const plan = useBudgetPlan(month)
+  const [selection, setSelection] = useState<{ month: string; key: string } | null>(null)
+  const selectedKey = selection?.month === month ? selection.key : null
 
-  const { setBudget, removeBudget, reload } = budgets
-  const parsedMonth = parseYearMonth(month)
-  const period = parsedMonth ? periodLabel(parsedMonth.month, parsedMonth.year) : month
+  // A color follows its category while slices come and go (adjusted during render, not in an effect, so the
+  // first paint already has it).
+  const expenseKeys = (plan.draft?.slices ?? []).filter((slice) => slice.type === 'Expense').map(sliceKey)
+  const keysSignature = expenseKeys.join('|')
+  const [colors, setColors] = useState({ signature: '', slots: {} as Record<string, number> })
+  let colorSlots = colors.slots
+  if (colors.signature !== keysSignature) {
+    colorSlots = assignColorSlots(expenseKeys, colors.slots, SLICE_COLOR_COUNT)
+    setColors({ signature: keysSignature, slots: colorSlots })
+  }
 
   function changeMonth(next: string) {
     setSearchParams({ month: next }, { replace: true })
   }
 
-  function nameOf(budget: BudgetProgressDto) {
-    return budget.categoryName ?? translate('finance:budgets.total')
+  function select(key: string) {
+    setSelection({ month, key })
   }
 
-  async function handleSubmitForm(values: BudgetFormValues) {
-    await setBudget(values)
-    showToast(translate('finance:budgets.toasts.saved'))
-    setFormTarget(null)
-  }
+  function renderEditor() {
+    const draft = plan.draft
+    const data = plan.data
+    if (!draft || !data) return null
 
-  async function handleConfirmRemove(target: RemoveTarget) {
-    try {
-      await removeBudget(target.budget.id, month)
-      showToast(translate('finance:budgets.toasts.removed'))
-    } catch (err) {
-      if (isSessionExpiredError(err)) return
-      if (!isApiError(err)) {
-        showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
-      } else if (err.code === BUDGET_NOT_FOUND_CODE) {
-        showErrorModal(translate('finance:budgets.removeDialog.errorTitle'), translate('finance:budgets.validation.notFound'))
-        reload()
-      } else {
-        showErrorModal(translate('finance:budgets.removeDialog.errorTitle'), translate('common:errors.generic'))
+    const savedActuals = new Map(data.slices.map((slice) => [sliceKey(slice), slice.actual]))
+
+    const rows: SliceRow[] = draft.slices.map((slice) => {
+      const key = sliceKey(slice)
+      const actual = savedActuals.get(key) ?? null
+
+      return {
+        key,
+        type: slice.type,
+        name: slice.type === 'Investment' ? translate('finance:budgetPlan.investment') : (slice.categoryName ?? ''),
+        percent: slice.percent,
+        amount: sliceAmount(draft.total, slice.percent),
+        color: slice.type === 'Investment' ? 'var(--chart-investment)' : sliceColor(colorSlots[key]),
+        actual,
+        ratio: actual === null ? null : sliceRatio(actual, draft.total, slice.percent),
       }
-    }
-    setRemoveTarget(null)
+    })
+    const donutSlices: DonutSlice[] = rows.map(({ key, name, percent, amount, color }) => ({ key, label: name, percent, amount, color }))
+    const free = { percent: freePercent(draft.slices), amount: freeAmount(draft.total, draft.slices), actual: data.freeActual }
+
+    return (
+      <div className="lm-budget-plan">
+        <section className="lm-budget-plan__overview" aria-label={translate('finance:budgetPlan.overviewLabel')}>
+          <div className="lm-budget-plan__total">
+            <span className="lm-budget-plan__total-label">{translate('finance:budgetPlan.total')}</span>
+            <span className="lm-budget-plan__total-value lm-numeric">{draft.total === null ? '—' : money(draft.total)}</span>
+          </div>
+          <BudgetDonut
+            slices={donutSlices}
+            freePercent={free.percent}
+            freeAmount={free.amount}
+            selectedKey={selectedKey}
+            onSelect={select}
+          />
+        </section>
+
+        <section className="lm-budget-plan__slices" aria-label={translate('finance:budgetPlan.slicesLabel')}>
+          <BudgetSliceList rows={rows} free={free} selectedKey={selectedKey} onSelect={select} />
+        </section>
+      </div>
+    )
   }
 
   function renderContent() {
-    if (budgets.status === 'error') {
+    if (plan.status === 'error') {
       return (
         <div className="lm-budgets-page__state">
-          <span>{translate('finance:budgets.loadError')}</span>
-          <Button variant="secondary" size="sm" onClick={reload}>
-            {translate('finance:budgets.retry')}
+          <span>{translate('finance:budgetPlan.loadError')}</span>
+          <Button variant="secondary" size="sm" onClick={plan.reload}>
+            {translate('finance:budgetPlan.retry')}
           </Button>
         </div>
       )
     }
 
-    if (!budgets.data) {
-      return <div className="lm-budgets-page__state">{translate('finance:budgets.loading')}</div>
+    if (!plan.data) {
+      return <div className="lm-budgets-page__state">{translate('finance:budgetPlan.loading')}</div>
     }
 
     return (
-      <div className={`lm-budgets-page__content${budgets.isFetching ? ' lm-budgets-page__content--fetching' : ''}`} aria-busy={budgets.isFetching}>
-        <BudgetMonthView
-          data={budgets.data}
-          onCreate={(type) => setFormTarget({ type, budget: null })}
-          onEdit={(type, budget) => setFormTarget({ type, budget })}
-          onRemove={(type, budget) => setRemoveTarget({ type, budget })}
-        />
+      <div className={`lm-budgets-page__content${plan.isFetching ? ' lm-budgets-page__content--fetching' : ''}`} aria-busy={plan.isFetching}>
+        {plan.isStarted ? renderEditor() : <BudgetPlanEmpty />}
       </div>
     )
   }
@@ -115,35 +129,11 @@ function BudgetsPage() {
     <div className="lm-budgets-page">
       <div className="lm-budgets-page__header">
         <MonthNavigator month={month} onChange={changeMonth} />
-        <Button variant="primary" icon="plus" onClick={() => setFormTarget({ type: 'Expense', budget: null })}>
-          {translate('finance:budgets.newButton')}
-        </Button>
       </div>
 
-      <p className="lm-budgets-page__intro">{translate('finance:budgets.intro')}</p>
+      <p className="lm-budgets-page__intro">{translate('finance:budgetPlan.intro')}</p>
 
       {renderContent()}
-
-      {formTarget ? (
-        <BudgetFormModal
-          type={formTarget.type}
-          budget={formTarget.budget ?? undefined}
-          month={month}
-          categories={categoryOptions.categories}
-          categoriesStatus={categoryOptions.status}
-          onClose={() => setFormTarget(null)}
-          onSubmit={handleSubmitForm}
-        />
-      ) : null}
-
-      {removeTarget ? (
-        <RemoveBudgetModal
-          name={nameOf(removeTarget.budget)}
-          period={period}
-          onClose={() => setRemoveTarget(null)}
-          onConfirm={() => handleConfirmRemove(removeTarget)}
-        />
-      ) : null}
     </div>
   )
 }
