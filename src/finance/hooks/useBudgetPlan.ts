@@ -28,19 +28,20 @@ interface Edit {
 
 /**
  * The plan of `month` (`yyyy-MM`) and the editor's draft of it. Nothing is saved until `save()`: the draft lives
- * here, starts as the stored plan and goes back to it on `discard()` or when another month loads.
+ * here, starts as the stored plan and goes back to it on `discard()` or when another month loads. `refreshKey`
+ * refetches it when something else moved its actual amounts (e.g. a transaction saved on the month details page).
  */
-export function useBudgetPlan(month: string) {
+export function useBudgetPlan(month: string, refreshKey = 0) {
   const [reloadKey, setReloadKey] = useState(0)
   const [result, setResult] = useState<FetchResult | null>(null)
   const [edit, setEdit] = useState<Edit | null>(null)
 
-  const requestKey = JSON.stringify([month, reloadKey])
+  const requestKey = JSON.stringify([month, reloadKey, refreshKey])
 
   useEffect(() => {
     // Aborted when the month changes or on unmount, which also fires the backend's CancellationToken.
     const controller = new AbortController()
-    const key = JSON.stringify([month, reloadKey])
+    const key = JSON.stringify([month, reloadKey, refreshKey])
 
     getBudgetPlan(month, controller.signal).then(
       (data) => {
@@ -52,7 +53,7 @@ export function useBudgetPlan(month: string) {
     )
 
     return () => controller.abort()
-  }, [month, reloadKey])
+  }, [month, reloadKey, refreshKey])
 
   // The previous month stays on screen while the next one loads, so the page doesn't flash.
   const data = result?.data

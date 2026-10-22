@@ -564,6 +564,15 @@ export default {
       deleted: 'Budget deleted',
       copied: 'Budget from {{month}} copied. Adjust it and save.',
     },
+    summary: {
+      title: 'Month budget',
+      none: "This month doesn't have a budget.",
+      define: 'Create budget',
+      free: 'Free (spent outside slices)',
+      onTrack_one: '{{achieved}} of {{count}} slice on track',
+      onTrack_other: '{{achieved}} of {{count}} slices on track',
+      seeAll: 'See budget',
+    },
     errors: {
       saveTitle: "Couldn't save",
       copyTitle: "Couldn't copy",

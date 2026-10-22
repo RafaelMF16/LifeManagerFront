@@ -564,6 +564,15 @@ export default {
       deleted: 'Orçamento excluído',
       copied: 'Orçamento de {{month}} copiado. Ajuste e salve.',
     },
+    summary: {
+      title: 'Orçamento do mês',
+      none: 'Este mês não tem orçamento.',
+      define: 'Criar orçamento',
+      free: 'Livre (gastos sem fatia)',
+      onTrack_one: '{{achieved}} de {{count}} fatia em dia',
+      onTrack_other: '{{achieved}} de {{count}} fatias em dia',
+      seeAll: 'Ver orçamento',
+    },
     errors: {
       saveTitle: 'Não foi possível salvar',
       copyTitle: 'Não foi possível copiar',
