@@ -42,6 +42,12 @@ interface BudgetSliceListProps {
   locked?: boolean
 }
 
+/** Spending outside the slices against the free part; any spending at all passes a free part of nothing. */
+function freeRatio(actual: number, amount: number) {
+  if (amount > 0) return actual / amount
+  return actual > 0 ? Infinity : 0
+}
+
 /**
  * The month's slices beside the donut: each with its share, its amount and how the month is going against it,
  * and the free part last, against what was spent outside the slices.
@@ -129,8 +135,6 @@ function BudgetSliceList({ rows, free, selectedKey, onSelect, onPercentChange, o
     )
   }
 
-  const freeRatio = free.amount === null ? null : free.amount > 0 ? free.actual / free.amount : free.actual > 0 ? Infinity : 0
-
   return (
     <ul className="lm-budget-slices" aria-label={translate('finance:budgetPlan.slicesLabel')}>
       {rows.map((row) => (
@@ -178,7 +182,7 @@ function BudgetSliceList({ rows, free, selectedKey, onSelect, onPercentChange, o
           ? renderProgress(
               'Expense',
               translate('finance:budgetPlan.progress.unsliced', { actual: money(free.actual), amount: money(free.amount) }),
-              freeRatio,
+              freeRatio(free.actual, free.amount),
             )
           : null}
       </li>
