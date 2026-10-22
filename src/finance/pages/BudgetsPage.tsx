@@ -298,10 +298,13 @@ function BudgetsPage() {
   const hasChanges = plan.isDirty || (plan.isStarted && plan.data?.exists === false)
 
   // Any navigation away with changes asks first: another screen, and another month too (it changes `?month=`).
-  // Closing or reloading the tab can only get the browser's own prompt.
+  // Except to the sign-in screen: logout and an expired session get there with the session already gone, so the
+  // changes couldn't be saved anyway. Closing or reloading the tab can only get the browser's own prompt.
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
-      hasChanges && (currentLocation.pathname !== nextLocation.pathname || currentLocation.search !== nextLocation.search),
+      hasChanges &&
+      nextLocation.pathname !== '/auth' &&
+      (currentLocation.pathname !== nextLocation.pathname || currentLocation.search !== nextLocation.search),
   )
 
   useEffect(() => {
