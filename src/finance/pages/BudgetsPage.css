@@ -90,6 +90,17 @@
   color: var(--text-primary);
 }
 
+.lm-budget-plan__add {
+  padding: var(--space-3) var(--space-4);
+  border-top: var(--border-width) solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .lm-budget-plan__add > .lm-button {
+    width: 100%;
+  }
+}
+
 .lm-budget-plan__privacy {
   margin: 0;
   padding: var(--space-3) var(--space-4);

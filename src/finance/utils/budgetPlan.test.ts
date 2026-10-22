@@ -3,6 +3,7 @@ import type { BudgetPlanResponseDto } from '../types/BudgetPlanDtos'
 import {
   addSlice,
   assignColorSlots,
+  sliceOptions,
   sliceRatio,
   freeAmount,
   freePercent,
@@ -213,6 +214,37 @@ describe('assignColorSlots', () => {
 
   it('lets a key past the last slot take one that freed up', () => {
     expect(assignColorSlots(['b', 'c'], { a: 0, b: 1, c: -1 }, 2)).toEqual({ b: 1, c: 0 })
+  })
+})
+
+describe('sliceOptions', () => {
+  const categories = [
+    { id: 1, name: 'Mercado' },
+    { id: 2, name: 'Farmácia' },
+    { id: 3, name: 'Lazer' },
+  ]
+
+  it('offers investments first and the categories without a slice', () => {
+    expect(sliceOptions(categories, [expense(1, 25)], '')).toEqual({
+      investment: true,
+      categories: [
+        { id: 2, name: 'Farmácia' },
+        { id: 3, name: 'Lazer' },
+      ],
+    })
+  })
+
+  it('stops offering investments once the plan has that slice', () => {
+    expect(sliceOptions(categories, [investment(20)], '').investment).toBe(false)
+  })
+
+  it('searches ignoring accents and case', () => {
+    expect(sliceOptions(categories, [], 'FARMA').categories).toEqual([{ id: 2, name: 'Farmácia' }])
+  })
+
+  it('matches investments by its own label when searching', () => {
+    expect(sliceOptions(categories, [], 'inves', 'Investimentos').investment).toBe(true)
+    expect(sliceOptions(categories, [], 'merc', 'Investimentos').investment).toBe(false)
   })
 })
 

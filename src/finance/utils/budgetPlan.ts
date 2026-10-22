@@ -115,6 +115,30 @@ export function assignColorSlots(keys: string[], previous: Record<string, number
   return slots
 }
 
+function normalize(text: string) {
+  return text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLocaleLowerCase().trim()
+}
+
+/**
+ * What can still be added to the plan: the investment slice while there is none, and the categories without a
+ * slice, filtered by `search` (ignoring accents and case; `investmentLabel` is what the search matches it by).
+ */
+export function sliceOptions<TCategory extends { id: number; name: string }>(
+  categories: TCategory[],
+  slices: DraftSlice[],
+  search: string,
+  investmentLabel = '',
+) {
+  const term = normalize(search)
+  const sliced = new Set(slices.map(sliceKey))
+  const matches = (name: string) => term === '' || normalize(name).includes(term)
+
+  return {
+    investment: !sliced.has('investment') && matches(investmentLabel),
+    categories: categories.filter((category) => !sliced.has(`category-${category.id}`) && matches(category.name)),
+  }
+}
+
 /** Adds a slice: expenses go before the investment slice, which always comes last. */
 export function addSlice(slices: DraftSlice[], slice: DraftSlice): DraftSlice[] {
   const investmentIndex = slices.findIndex((existing) => existing.type === 'Investment')

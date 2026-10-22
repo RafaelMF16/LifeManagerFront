@@ -7,17 +7,21 @@ import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
+import AddSliceDialog from '../components/AddSliceDialog/AddSliceDialog'
 import BudgetDonut from '../components/BudgetDonut/BudgetDonut'
 import type { DonutSlice } from '../components/BudgetDonut/BudgetDonut'
 import BudgetPlanEmpty from '../components/BudgetPlanEmpty/BudgetPlanEmpty'
 import BudgetSliceList from '../components/BudgetSliceList/BudgetSliceList'
 import type { SliceRow } from '../components/BudgetSliceList/BudgetSliceList'
+import ExactValueDialog from '../components/ExactValueDialog/ExactValueDialog'
 import MonthNavigator from '../components/MonthNavigator/MonthNavigator'
 import UnsavedChangesBar from '../components/UnsavedChangesBar/UnsavedChangesBar'
 import { useBudgetPlan } from '../hooks/useBudgetPlan'
+import { useCategoryOptions } from '../hooks/useCategoryOptions'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
 import { usePrivacyMode } from '../hooks/usePrivacyMode'
 import { assignColorSlots, freeAmount, freePercent, maxPercentFor, sliceAmount, sliceKey, sliceRatio } from '../utils/budgetPlan'
+import type { DraftSlice } from '../utils/budgetPlan'
 import { parseYearMonth, toYearMonth } from '../utils/yearMonth'
 import { toFormAmount } from '../validation/amountSchema'
 import { budgetPlanSaveErrors, budgetPlanTotalErrors } from '../validation/budgetPlanErrorMap'
@@ -48,6 +52,9 @@ function BudgetsPage() {
   const [selection, setSelection] = useState<{ month: string; key: string } | null>(null)
   const selectedKey = selection?.month === month ? selection.key : null
   const [isSaving, setIsSaving] = useState(false)
+  const [isAdding, setIsAdding] = useState(false)
+  const [exactKey, setExactKey] = useState<string | null>(null)
+  const categoryOptions = useCategoryOptions()
 
   // The total is typed as text. It follows the draft whenever the draft changes from outside the field (a month
   // loads, a discard, a copy): adjusted during render, like the colors below.
@@ -88,10 +95,24 @@ function BudgetsPage() {
     plan.setTotal(readTotal(text))
   }
 
+  function indexOf(key: string) {
+    return plan.draft?.slices.findIndex((slice) => sliceKey(slice) === key) ?? -1
+  }
+
   function changePercent(key: string, percent: number) {
-    const index = plan.draft?.slices.findIndex((slice) => sliceKey(slice) === key) ?? -1
+    const index = indexOf(key)
     if (index >= 0) plan.setPercent(index, percent)
     select(key)
+  }
+
+  function removeSlice(key: string) {
+    const index = indexOf(key)
+    if (index >= 0) plan.removeSlice(index)
+  }
+
+  function addSlice(slice: DraftSlice) {
+    plan.addSlice(slice)
+    select(sliceKey(slice))
   }
 
   function discard() {
@@ -149,6 +170,7 @@ function BudgetsPage() {
         max: maxPercentFor(draft.slices, index),
       }
     })
+    const exactRow = exactKey ? rows.find((row) => row.key === exactKey) : undefined
     const donutSlices: DonutSlice[] = rows.map(({ key, name, percent, amount, color }) => ({ key, label: name, percent, amount, color }))
     const free = { percent: freePercent(draft.slices), amount: freeAmount(draft.total, draft.slices), actual: data.freeActual }
 
@@ -187,14 +209,45 @@ function BudgetsPage() {
         <section className="lm-budget-plan__slices" aria-label={translate('finance:budgetPlan.slicesLabel')}>
           {hidden ? <p className="lm-budget-plan__privacy">{translate('finance:budgetPlan.slider.privacyHint')}</p> : null}
           <BudgetSliceList
+            key={month}
             rows={rows}
             free={free}
             selectedKey={selectedKey}
             onSelect={select}
             onPercentChange={changePercent}
+            onExactValue={setExactKey}
+            onRemove={removeSlice}
             locked={hidden}
           />
+          {hidden ? null : (
+            <div className="lm-budget-plan__add">
+              <Button variant="secondary" icon="plus" onClick={() => setIsAdding(true)}>
+                {translate('finance:budgetPlan.add.button')}
+              </Button>
+            </div>
+          )}
         </section>
+
+        {isAdding ? (
+          <AddSliceDialog
+            categories={categoryOptions.categories}
+            categoriesStatus={categoryOptions.status}
+            slices={draft.slices}
+            onAdd={addSlice}
+            onClose={() => setIsAdding(false)}
+          />
+        ) : null}
+
+        {exactRow ? (
+          <ExactValueDialog
+            name={exactRow.name}
+            percent={exactRow.percent}
+            max={exactRow.max}
+            total={draft.total}
+            onApply={(percent) => changePercent(exactRow.key, percent)}
+            onClose={() => setExactKey(null)}
+          />
+        ) : null}
       </div>
     )
   }
