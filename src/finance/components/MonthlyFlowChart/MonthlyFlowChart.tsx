@@ -65,7 +65,7 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
     ),
   )
   const labelEvery = Math.ceil(months.length / MAX_LABELLED_MONTHS)
-  const showsBalanceRow = months.length <= MAX_LABELLED_MONTHS
+  const showsSavedRow = months.length <= MAX_LABELLED_MONTHS
 
   function barStyle(value: number): CSSProperties {
     const ratio = hidden ? HIDDEN_BAR_RATIO : barRatio(value, scaleMax)
@@ -123,9 +123,15 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
               </div>
             ))}
             <div className="lm-flow-chart__detail-figure">
-              <dt>{translate('finance:dashboard.evolution.balance')}</dt>
+              <dt>{translate('finance:dashboard.evolution.saved')}</dt>
               <dd>
-                <Amount value={selected.balance} tone="signed" emphasis />
+                <Amount value={selected.saved} tone="signed" emphasis />
+              </dd>
+            </div>
+            <div className="lm-flow-chart__detail-figure">
+              <dt>{translate('finance:dashboard.evolution.inAccount')}</dt>
+              <dd>
+                <Amount value={selected.balance} tone="signed" />
               </dd>
             </div>
             {selectedGoals?.expenseGoal != null ? (
@@ -200,9 +206,9 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
                 >
                   {shortMonthName(month.month)}
                 </span>
-                {showsBalanceRow ? (
-                  <span className="lm-flow-chart__balance" aria-hidden="true">
-                    <Amount value={month.balance} tone="signed" notation="compact" />
+                {showsSavedRow ? (
+                  <span className="lm-flow-chart__saved" aria-hidden="true">
+                    <Amount value={month.saved} tone="signed" notation="compact" />
                   </span>
                 ) : null}
               </button>
@@ -224,7 +230,8 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
                   {translate(`finance:dashboard.totals.${series.id}`)}
                 </th>
               ))}
-              <th scope="col">{translate('finance:dashboard.evolution.balance')}</th>
+              <th scope="col">{translate('finance:dashboard.evolution.saved')}</th>
+              <th scope="col">{translate('finance:dashboard.evolution.inAccount')}</th>
               {hasGoals ? (
                 <>
                   <th scope="col">{translate('finance:dashboard.evolution.expenseGoal')}</th>
@@ -242,6 +249,9 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
                     <Amount value={month[series.id]} tone={series.tone} />
                   </td>
                 ))}
+                <td>
+                  <Amount value={month.saved} tone="signed" />
+                </td>
                 <td>
                   <Amount value={month.balance} tone="signed" />
                 </td>

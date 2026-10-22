@@ -47,7 +47,10 @@ export interface DashboardMonthDto {
   income: number
   expense: number
   investment: number
+  /** Income − expenses − investment: what was left in the account. */
   balance: number
+  /** Income − expenses: investment counts as saved. */
+  saved: number
 }
 
 export interface DashboardCategoryDto {

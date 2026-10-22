@@ -68,8 +68,9 @@ export default {
     evolution: {
       title: 'Evolução mensal',
       legendLabel: 'Legenda',
-      balance: 'Saldo',
-      tableCaption: 'Receitas, investimentos, gastos e saldo por mês',
+      saved: 'Poupado',
+      inAccount: 'Em conta',
+      tableCaption: 'Receitas, investimentos, gastos, poupado e o que ficou em conta por mês',
       month: 'Mês',
       selectHint: 'Selecione um mês para ver os valores.',
       goal: 'Meta do mês',

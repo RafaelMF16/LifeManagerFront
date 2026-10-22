@@ -158,7 +158,7 @@ A escolha fica salva neste dispositivo e vale para todas as abas abertas.
 
 - **Período:** Este mês, Últimos 3 meses, **Últimos 6 meses** (padrão), Últimos 12 meses, Este ano e cada ano anterior em que você tem meses. Ao lado aparece "Comparado com …", o período usado na comparação.
 - **Totais do período:** Receitas, Gastos, Investido e **Poupado**, cada um com a variação ("Subiu 12% em relação a …"). Poupado é o que sobrou das receitas depois dos gastos: investir conta como guardar, não como gastar. Ao lado do nome vem a **taxa de poupança** (a parte das receitas que foi poupada; não aparece sem receitas) e embaixo a divisão: quanto foi **investido** e quanto ficou **em conta** (o mesmo Saldo da tela do mês, que pode ser negativo quando você investiu dinheiro de meses anteriores).
-- **Evolução mensal:** gráfico com receitas, investimentos, gastos e saldo por mês, e as metas do total do mês como marcadores. **Selecione um mês** para ver os valores dele.
+- **Evolução mensal:** gráfico com receitas, investimentos e gastos por mês, o **Poupado** de cada mês embaixo das barras e as metas do total do mês como marcadores. **Selecione um mês** para ver os valores dele, incluindo o Poupado e o que ficou **Em conta**.
 - **Gastos por categoria** e **Investimentos por categoria:** as 8 maiores categorias e "Outras". Clicar numa categoria abre o detalhe **Por mês**.
 - **Metas do período:**
   - Limite de gastos e alvo de investimento do mês, com "Dentro do limite em X de N meses fechados". O mês atual fica fora da contagem.

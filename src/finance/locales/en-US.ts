@@ -68,8 +68,9 @@ export default {
     evolution: {
       title: 'Monthly overview',
       legendLabel: 'Legend',
-      balance: 'Balance',
-      tableCaption: 'Income, investments, expenses and balance per month',
+      saved: 'Saved',
+      inAccount: 'In account',
+      tableCaption: 'Income, investments, expenses, saved and what was left in the account per month',
       month: 'Month',
       selectHint: 'Select a month to see its figures.',
       goal: 'Monthly goal',

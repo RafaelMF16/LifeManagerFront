@@ -259,14 +259,14 @@
   visibility: hidden;
 }
 
-.lm-flow-chart__balance {
+.lm-flow-chart__saved {
   display: flex;
   justify-content: center;
   min-width: 0;
   overflow: hidden;
 }
 
-.lm-flow-chart__balance .lm-amount {
+.lm-flow-chart__saved .lm-amount {
   font-size: var(--text-2xs);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -308,7 +308,7 @@
     display: none;
   }
 
-  /* One row per month: name, three horizontal bars, balance. */
+  /* One row per month: name, three horizontal bars, what was saved. */
   .lm-flow-chart__groups {
     flex-direction: column;
     gap: 2px;
@@ -317,7 +317,7 @@
   .lm-flow-chart__group {
     display: grid;
     grid-template-columns: 36px minmax(0, 1fr) auto;
-    grid-template-areas: 'month bars balance';
+    grid-template-areas: 'month bars saved';
     align-items: center;
     column-gap: var(--space-3);
     min-height: 44px;
@@ -367,12 +367,12 @@
     visibility: visible;
   }
 
-  .lm-flow-chart__balance {
-    grid-area: balance;
+  .lm-flow-chart__saved {
+    grid-area: saved;
     justify-content: flex-end;
   }
 
-  .lm-flow-chart__balance .lm-amount {
+  .lm-flow-chart__saved .lm-amount {
     font-size: var(--text-xs);
   }
 }
