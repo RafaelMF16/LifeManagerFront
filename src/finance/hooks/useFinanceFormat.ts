@@ -92,8 +92,8 @@ export function createFinanceFormat(language: string, hidden: boolean) {
     /** The part of the income saved, e.g. 0.3 → "30%", −0.5 → "−50%"; below −100% it shows "<−100%". */
     savingsRate: (ratio: number) => {
       if (hidden) return maskedPercent
-      const capped = ratio < SAVINGS_RATE_FLOOR
-      return `${capped ? '<' : ''}${ratio < 0 ? MINUS_SIGN : ''}${percentFormatter.format(Math.abs(Math.max(ratio, SAVINGS_RATE_FLOOR)))}`
+      if (ratio < SAVINGS_RATE_FLOOR) return `<${MINUS_SIGN}${percentFormatter.format(-SAVINGS_RATE_FLOOR)}`
+      return `${ratio < 0 ? MINUS_SIGN : ''}${percentFormatter.format(Math.abs(ratio))}`
     },
     /** "Set" / "Sep". */
     shortMonthName,

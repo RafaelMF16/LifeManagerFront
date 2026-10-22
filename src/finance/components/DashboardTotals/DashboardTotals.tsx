@@ -88,7 +88,8 @@ function DashboardTotals({ totals, comparisonRange }: DashboardTotalsProps) {
         {translate('finance:dashboard.totals.savedInvested')}
       </li>
       <li>
-        <Amount value={totals.balance.current} tone="signed" /> {translate('finance:dashboard.totals.savedInAccount')}
+        <Amount value={totals.balance.current} tone="signed" />{' '}
+        {translate('finance:dashboard.totals.savedInAccount')}
       </li>
     </ul>
   )
