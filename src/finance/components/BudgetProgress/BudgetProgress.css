@@ -98,14 +98,3 @@
   border-radius: 50%;
   background: var(--lm-budget-color);
 }
-
-.lm-budget-progress__since {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-}
-
-.lm-budget-progress__actions {
-  display: flex;
-  gap: 2px;
-  margin-left: auto;
-}

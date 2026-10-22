@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import Icon from '../../../shared/components/Icon/Icon'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
-import type { BudgetType } from '../../types/BudgetDtos'
+import type { BudgetSliceType } from '../../types/BudgetPlanDtos'
 import type { DashboardBudgetCategoryDto, DashboardBudgetSummaryDto, DashboardBudgetsDto } from '../../types/DashboardDtos'
 import { closedMonthsScore, isMonthOpen } from '../../utils/budgetStatus'
 import BudgetProgress from '../BudgetProgress/BudgetProgress'
@@ -43,7 +43,7 @@ function DashboardBudgets({ budgets }: DashboardBudgetsProps) {
     )
   }
 
-  function renderSummary(type: BudgetType, summary: DashboardBudgetSummaryDto) {
+  function renderSummary(type: BudgetSliceType, summary: DashboardBudgetSummaryDto) {
     const isExpense = type === 'Expense'
     const title = translate(isExpense ? 'finance:dashboard.budgets.expenseTitle' : 'finance:dashboard.budgets.investmentTitle')
 
@@ -86,7 +86,7 @@ function DashboardBudgets({ budgets }: DashboardBudgetsProps) {
     )
   }
 
-  function renderCategories(type: BudgetType, categories: DashboardBudgetCategoryDto[]) {
+  function renderCategories(type: BudgetSliceType, categories: DashboardBudgetCategoryDto[]) {
     const isExpense = type === 'Expense'
 
     return (

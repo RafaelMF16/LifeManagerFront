@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-// Espelha TransactionAmount.Create e BudgetAmount.Create (LifeManager.Domain): positive, at most 2 decimals,
+// Espelha TransactionAmount.Create e BudgetTotal.Create (LifeManager.Domain): positive, at most 2 decimals,
 // fits numeric(14, 2). Every money field of the Finance forms is typed as text and read by `parseAmount`.
 export const AMOUNT_MAX_DECIMALS = 2
 export const AMOUNT_MAX_VALUE = 999_999_999_999.99
