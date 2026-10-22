@@ -1,4 +1,5 @@
-// Espelha os códigos de LifeManager.Domain/BudgetPlans/Errors/BudgetPlanErrors.cs que um save pode devolver.
+// Espelha os códigos de LifeManager.Domain/BudgetPlans/Errors/BudgetPlanErrors.cs que a tela trata.
+export const BUDGET_PLAN_NOT_FOUND_CODE = 'BudgetPlan.NotFound'
 
 /** Errors on the total, shown under the field. */
 export const budgetPlanTotalErrors: Record<string, string> = {

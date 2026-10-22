@@ -566,6 +566,7 @@ export default {
     },
     errors: {
       saveTitle: 'Não foi possível salvar',
+      copyTitle: 'Não foi possível copiar',
       overAllocated: 'As fatias passam de 100%. Diminua alguma antes de salvar.',
       categoryNotFound: 'Uma das categorias não existe mais. Recarregue a página.',
       invalid: 'Confira o total e as fatias e tente de novo.',

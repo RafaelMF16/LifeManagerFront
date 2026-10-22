@@ -566,6 +566,7 @@ export default {
     },
     errors: {
       saveTitle: "Couldn't save",
+      copyTitle: "Couldn't copy",
       overAllocated: 'The slices add up to more than 100%. Lower one before saving.',
       categoryNotFound: 'One of the categories no longer exists. Reload the page.',
       invalid: 'Check the total and the slices and try again.',

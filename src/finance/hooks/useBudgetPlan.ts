@@ -102,6 +102,14 @@ export function useBudgetPlan(month: string) {
   /** Fills the draft with another month's plan, without saving. */
   const copyFrom = useCallback((source: BudgetPlanResponseDto) => change(() => toDraft(source)), [change])
 
+  /** Reads `source` (`yyyy-MM`) and fills the draft with its plan, without saving. */
+  const copyFromMonth = useCallback(
+    async (source: string) => {
+      copyFrom(await getBudgetPlan(source))
+    },
+    [copyFrom],
+  )
+
   const discard = useCallback(() => setEdit(null), [])
 
   /** Saves the draft as the month's whole plan; the response becomes the loaded plan. Needs a total. */
@@ -133,6 +141,7 @@ export function useBudgetPlan(month: string) {
     removeSlice,
     start,
     copyFrom,
+    copyFromMonth,
     discard,
     save,
     deletePlan,
