@@ -16,7 +16,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   - [Painel](#painel)
   - [Meses](#meses)
   - [Detalhe do mês](#detalhe-do-mês)
-  - [Planejamento: Metas](#planejamento-metas)
+  - [Planejamento: Orçamento](#planejamento-orçamento)
   - [Planejamento: Recorrentes](#planejamento-recorrentes)
   - [Importar extrato](#importar-extrato)
   - [Revisar importação](#revisar-importação)
@@ -39,8 +39,8 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   /finance/dashboard        Painel
   /finance/months           Meses
   /finance/months/:id       Detalhe do mês
-  /finance/planning         → Metas
-    /finance/planning/goals      Metas (?month=aaaa-mm)
+  /finance/planning         → Orçamento
+    /finance/planning/goals      Orçamento (?month=aaaa-mm)
     /finance/planning/recurring  Recorrentes
   /finance/imports          Importar extrato
   /finance/imports/:id      Revisar importação
@@ -148,7 +148,7 @@ Menu: **Painel**, **Meses**, **Planejamento**, **Importar**, **Categorias**.
 
 ### Modo privacidade
 
-O botão **Ocultar valores** no cabeçalho esconde todos os valores em dinheiro e porcentagens do Financeiro (aparecem como `R$ ••••••` e `••%`). As barras de metas ficam neutras e com o mesmo tamanho, e os marcadores de meta do gráfico somem. **Mostrar valores** desfaz.
+O botão **Ocultar valores** no cabeçalho esconde todos os valores em dinheiro e porcentagens do Financeiro (aparecem como `R$ ••••••` e `••%`). As barras do orçamento ficam neutras e com o mesmo tamanho, o gráfico circular do orçamento fica com fatias iguais e neutras, os sliders travam e os marcadores de meta do gráfico do painel somem. **Mostrar valores** desfaz.
 
 A escolha fica salva neste dispositivo e vale para todas as abas abertas.
 
@@ -158,12 +158,12 @@ A escolha fica salva neste dispositivo e vale para todas as abas abertas.
 
 - **Período:** Este mês, Últimos 3 meses, **Últimos 6 meses** (padrão), Últimos 12 meses, Este ano e cada ano anterior em que você tem meses. Ao lado aparece "Comparado com …", o período usado na comparação.
 - **Totais do período:** Receitas, Gastos, Investido e **Poupado**, cada um com a variação ("Subiu 12% em relação a …"). Poupado é o que sobrou das receitas depois dos gastos: investir conta como guardar, não como gastar. Ao lado do nome vem a **taxa de poupança** (a parte das receitas que foi poupada; não aparece sem receitas, e abaixo de −100% aparece como "<−100%") e embaixo a divisão: quanto foi **investido** e quanto ficou **em conta** (o mesmo Saldo da tela do mês, que pode ser negativo quando você investiu dinheiro de meses anteriores).
-- **Evolução mensal:** gráfico com receitas, investimentos e gastos por mês, o **Poupado** de cada mês embaixo das barras e as metas do total do mês como marcadores. **Selecione um mês** para ver os valores dele, incluindo o Poupado e o que ficou **Em conta**.
+- **Evolução mensal:** gráfico com receitas, investimentos e gastos por mês, o **Poupado** de cada mês embaixo das barras e os limites do orçamento de cada mês como marcadores. **Selecione um mês** para ver os valores dele, incluindo o Poupado e o que ficou **Em conta**.
 - **Gastos por categoria** e **Investimentos por categoria:** as 8 maiores categorias e "Outras". Clicar numa categoria abre o detalhe **Por mês**.
-- **Metas do período:**
-  - Limite de gastos e alvo de investimento do mês, com "Dentro do limite em X de N meses fechados". O mês atual fica fora da contagem.
-  - **Categorias que mais estouraram** e **Investimentos por meta**.
-  - **Definir metas** (sem metas) ou **Gerenciar metas** abrem a tela de Metas.
+- **Orçamento do período:**
+  - Limite de gastos e alvo de investimento do mês, com "Dentro do limite em X de N meses fechados". O mês atual fica fora da contagem. O limite de gastos de um mês é o total do orçamento menos a fatia de Investimentos; o alvo de investimento é essa fatia.
+  - **Categorias que mais estouraram**.
+  - **Criar orçamento** (sem orçamento no período) ou **Ver orçamento** abrem a tela de Orçamento.
 - Se o painel não carregar: **Tentar de novo**.
 
 ### Meses
@@ -195,9 +195,9 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
 **Totais**
 - Receitas, Gastos, Investido e Saldo, com a quantidade de lançamentos de cada tipo e "X% das receitas gastos".
 
-**Metas do mês**
-- Mostra até 3 metas, as mais perto ou já além da meta, com "X de N metas em dia".
-- **Ver metas** abre a tela de Metas já neste mês. Sem metas, aparece **Definir metas**.
+**Orçamento do mês**
+- Mostra até 3 fatias, as mais perto ou já além do valor, com "X de N fatias em dia". O Livre entra como "Livre (gastos sem fatia)".
+- **Ver orçamento** abre a tela de Orçamento já neste mês. Sem orçamento, aparece "Este mês não tem orçamento." e **Criar orçamento**.
 
 **Lançamentos**
 - Lista com Data, Descrição, Categoria e Valor. Os lançamentos feitos por uma recorrência têm um ícone de repetição ("Lançado por uma recorrência").
@@ -206,7 +206,7 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
 - **Novo lançamento:** abre o formulário.
 - **Editar** (em cada linha): abre o mesmo formulário preenchido. **Salvar** mostra "Lançamento atualizado".
 - **Excluir** (em cada linha): pede confirmação ("Excluir "Mercado" de R$ 250,00? Essa ação não pode ser desfeita.") e mostra "Lançamento excluído".
-- Toda mudança atualiza os totais e as metas do mês na hora.
+- Toda mudança atualiza os totais e o orçamento do mês na hora.
 
 **Formulário de lançamento**
 
@@ -222,25 +222,30 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
 
 Se o mês não existir (ou for de outro usuário): "Esse mês não existe ou não é seu." e o botão **Voltar para meses**.
 
-### Planejamento: Metas
+### Planejamento: Orçamento
 
-**Rota:** `/finance/planning/goals` (aba **Metas** dentro de **Planejamento**). Também abre por **Ver metas**, **Definir metas** ou **Gerenciar metas**.
+**Rota:** `/finance/planning/goals` (aba **Orçamento** dentro de **Planejamento**). Também abre por **Ver orçamento** ou **Criar orçamento** no painel e no detalhe do mês.
+
+Cada mês tem o seu orçamento: um **Total do mês** dividido em fatias de %, uma por categoria e uma de **Investimentos**. O que não foi dividido fica **Livre**.
 
 - **Navegação de mês:** **Mês anterior**, **Próximo mês** e **Ir para o mês atual**. O mês escolhido fica no endereço (`?month=2026-10`).
-- As metas aparecem em dois grupos, **Gastos** e **Investimentos**, com o **Total do mês** primeiro. Cada grupo mostra quanto houve no mês ("No mês: …").
-- Cada meta mostra:
-  - uma barra de progresso e "R$ X de R$ Y";
-  - "Restam …", "Passou …" ou "Faltam …";
-  - a situação: Dentro do limite, Perto do limite (80% ou mais), Limite estourado, Alvo atingido ou Abaixo do alvo;
-  - "Desde …" (o mês em que a meta começou a valer).
-- **Nova meta** (topo) ou **Adicionar** (em cada grupo): abre o formulário.
-  - **Tipo:** Limite de gastos ("O máximo que você quer gastar no mês") ou Alvo de investimento ("O mínimo que você quer investir no mês").
-  - **Categoria:** uma categoria ou "Total do mês (todas as categorias)".
-  - **Valor.**
-  - **A partir de:** o mês em que a meta começa a valer. Ela vale desse mês em diante, e os meses anteriores continuam com a meta que tinham.
-  - **Salvar meta** mostra "Meta salva".
-- **Alterar meta:** muda o valor a partir de um mês. Tipo e categoria ficam fixos.
-- **Remover meta:** pede confirmação ("Remover a meta … a partir de …? Os meses anteriores continuam com ela.") e mostra "Meta removida".
+- **Mês sem orçamento:** "Este mês ainda não tem orçamento", com:
+  - **Copiar de ‹mês›** (quando algum mês anterior tem orçamento): preenche a tela com o orçamento do último mês anterior que tem um, **sem salvar**, e mostra "Orçamento de ‹mês› copiado. Ajuste e salve.";
+  - **Criar orçamento:** abre a tela vazia, com tudo livre.
+- **Gráfico circular:** uma fatia por categoria, Investimentos em violeta e o Livre hachurado. No centro, "% alocado" e quanto está livre. Passar o mouse ou tocar numa fatia mostra o nome, o % e o valor dela no centro, e tocar também destaca a linha dela na lista. No celular o gráfico fica em cima; no computador, à esquerda, parado enquanto a lista rola.
+- **Total do mês:** campo em R$. Mudar o total mantém os % e recalcula os valores.
+- **Cada fatia mostra:**
+  - cor, nome, % e valor;
+  - um **slider** de 0 a 100%. Ele para no que ainda está livre (a parte clara do trilho mostra até onde dá para ir);
+  - "R$ X de R$ Y gastos" (ou "investidos"), com uma barra e a situação: Dentro do limite, Perto do limite (80% ou mais), Limite estourado, Alvo atingido ou Abaixo do alvo. Uma fatia ainda não salva mostra "Salve para acompanhar o que já foi gasto.";
+  - **tocar no %** abre **Valor exato**, para digitar a **Porcentagem** ou o **Valor** em R$ ("Até … (R$ …)");
+  - **Remover** (lixeira): tira a fatia; o % dela volta para o Livre.
+- **Livre:** o % e o valor que sobram, com "Gastos sem fatia: R$ X de R$ Y" (o que foi gasto em categorias sem fatia).
+- **Adicionar categoria:** abre "Adicionar ao orçamento", com **Investimentos** primeiro (enquanto não estiver no orçamento) e as categorias que ainda não têm fatia, com busca. A fatia entra com 0% e o slider já selecionado.
+- **Alterações não salvas:** aparece uma barra no fim da tela com **Descartar** e **Salvar**. Sem o total, ela avisa "Informe o total do mês para salvar.". **Salvar** grava o mês inteiro e mostra "Orçamento salvo". Se as fatias passarem de 100%: "As fatias passam de 100%. Diminua alguma antes de salvar.".
+- **Sair sem salvar:** trocar de mês ou ir para outra tela com alterações não salvas pergunta "Sair sem salvar?" ("Você tem alterações não salvas no orçamento de ‹mês›. Se sair agora, elas serão perdidas."), com **Continuar editando** e **Sair sem salvar**. Fechar ou recarregar a aba mostra o aviso do próprio navegador.
+- **Excluir orçamento** (no topo, quando o mês tem um): pede confirmação ("Excluir o orçamento de ‹mês›? Os outros meses não mudam.") e mostra "Orçamento excluído".
+- **Modo privacidade:** valores e % ocultos, o gráfico fica com fatias neutras do mesmo tamanho e os sliders ficam travados ("Mostre os valores para editar o orçamento.").
 
 ### Planejamento: Recorrentes
 
@@ -341,7 +346,7 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
 - Lista de **Todas as categorias**, com **Buscar categoria**.
 - **Nova categoria:** pede só o **Nome** (até 50 caracteres). **Criar categoria** mostra "Categoria criada". Um nome repetido, mesmo com outros acentos ou maiúsculas, mostra "Já existe uma categoria com esse nome".
 - **Editar:** renomeia a categoria.
-- **Excluir:** pede confirmação. Se a categoria tem lançamentos ou recorrências, a exclusão é recusada com uma janela de erro explicando que é preciso trocar a categoria deles antes. Se tem metas, elas são apagadas junto.
+- **Excluir:** pede confirmação. Se a categoria tem lançamentos ou recorrências, a exclusão é recusada com uma janela de erro explicando que é preciso trocar a categoria deles antes. Se tem fatias de orçamento, elas são apagadas junto (em todos os meses).
 
 ## Hábitos
 
