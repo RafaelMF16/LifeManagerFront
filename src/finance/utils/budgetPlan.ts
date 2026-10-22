@@ -108,8 +108,13 @@ export function assignColorSlots(keys: string[], previous: Record<string, number
 
     let slot = 0
     while (taken.has(slot)) slot++
-    slots[key] = slot < slotCount ? slot : -1
-    if (slot < slotCount) taken.add(slot)
+    if (slot >= slotCount) {
+      slots[key] = -1
+      continue
+    }
+
+    slots[key] = slot
+    taken.add(slot)
   }
 
   return slots
@@ -161,19 +166,22 @@ export function toDraft(plan: BudgetPlanResponseDto): BudgetDraft {
   }
 }
 
+/** Whether the slice is saved: one left at 0% takes nothing and is dropped. */
+function isAllocated(slice: DraftSlice) {
+  return toHundredths(slice.percent) > 0
+}
+
 /** The body of the save; slices left at 0% are dropped. Only call it with a total. */
 export function toRequest(draft: BudgetDraft): BudgetPlanRequestDto {
   return {
     total: draft.total ?? 0,
-    slices: draft.slices
-      .filter((slice) => toHundredths(slice.percent) > 0)
-      .map(({ type, categoryId, percent }) => ({ type, categoryId, percent })),
+    slices: draft.slices.filter(isAllocated).map(({ type, categoryId, percent }) => ({ type, categoryId, percent })),
   }
 }
 
 function signature(draft: BudgetDraft) {
   const slices = draft.slices
-    .filter((slice) => toHundredths(slice.percent) > 0)
+    .filter(isAllocated)
     .map((slice) => `${sliceKey(slice)}:${toHundredths(slice.percent)}`)
     .sort()
 
