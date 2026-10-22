@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
+import { useBlocker, useSearchParams } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
 import Input from '../../shared/components/Input/Input'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
@@ -15,6 +15,7 @@ import BudgetSliceList from '../components/BudgetSliceList/BudgetSliceList'
 import type { SliceRow } from '../components/BudgetSliceList/BudgetSliceList'
 import DeleteBudgetPlanModal from '../components/DeleteBudgetPlanModal/DeleteBudgetPlanModal'
 import ExactValueDialog from '../components/ExactValueDialog/ExactValueDialog'
+import LeaveBudgetDialog from '../components/LeaveBudgetDialog/LeaveBudgetDialog'
 import MonthNavigator from '../components/MonthNavigator/MonthNavigator'
 import UnsavedChangesBar from '../components/UnsavedChangesBar/UnsavedChangesBar'
 import { useBudgetPlan } from '../hooks/useBudgetPlan'
@@ -296,6 +297,29 @@ function BudgetsPage() {
   // A month without a plan the user just opened counts as a change too, so it can be saved or dropped.
   const hasChanges = plan.isDirty || (plan.isStarted && plan.data?.exists === false)
 
+  // Any navigation away with changes asks first: another screen, and another month too (it changes `?month=`).
+  // Closing or reloading the tab can only get the browser's own prompt.
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      hasChanges && (currentLocation.pathname !== nextLocation.pathname || currentLocation.search !== nextLocation.search),
+  )
+
+  useEffect(() => {
+    if (!hasChanges) return
+
+    function warn(event: BeforeUnloadEvent) {
+      event.preventDefault()
+    }
+
+    window.addEventListener('beforeunload', warn)
+    return () => window.removeEventListener('beforeunload', warn)
+  }, [hasChanges])
+
+  function leaveWithoutSaving() {
+    plan.discard()
+    blocker.proceed?.()
+  }
+
   function renderContent() {
     if (plan.status === 'error') {
       return (
@@ -354,6 +378,10 @@ function BudgetsPage() {
           onDiscard={discard}
           onSave={handleSave}
         />
+      ) : null}
+
+      {blocker.state === 'blocked' ? (
+        <LeaveBudgetDialog period={periodOf(month)} onStay={() => blocker.reset?.()} onLeave={leaveWithoutSaving} />
       ) : null}
 
       {isDeleting ? (

@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import AuthPage from './auth/pages/AuthPage'
 import FinanceLayout from './finance/components/FinanceLayout/FinanceLayout'
 import BudgetsPage from './finance/pages/BudgetsPage'
@@ -25,55 +25,59 @@ import PublicOnlyRoute from './shared/components/PublicOnlyRoute/PublicOnlyRoute
 import { ToastProvider } from './shared/components/Toast/ToastProvider'
 import { useSessionExpiredRedirect } from './shared/hooks/useSessionExpiredRedirect'
 
-// Renders nothing: it only hosts the hook, which needs the router context.
-function SessionExpiredListener() {
+// The root route: hosts the session-expired redirect, which needs the router context, around every screen.
+function RootLayout() {
   useSessionExpiredRedirect()
-  return null
+  return <Outlet />
 }
+
+// A data router (rather than <BrowserRouter>) so screens can use useBlocker, e.g. the budget's "leave without saving?".
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route element={<RootLayout />}>
+      <Route element={<PublicOnlyRoute />}>
+        <Route path="/auth" element={<AuthPage />} />
+      </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/finance" element={<FinanceLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="months" element={<MonthsPage />} />
+          <Route path="months/:monthlySummaryId" element={<MonthDetailsPage />} />
+          <Route path="imports" element={<ImportsPage />} />
+          <Route path="imports/:importId" element={<ImportReviewPage />} />
+          <Route path="categories" element={<CategoriesPage />} />
+          <Route path="planning" element={<PlanningPage />}>
+            <Route index element={<Navigate to="goals" replace />} />
+            <Route path="goals" element={<BudgetsPage />} />
+            <Route path="recurring" element={<RecurringTransactionsPage />} />
+          </Route>
+        </Route>
+        <Route path="/habits" element={<HabitsLayout />}>
+          <Route index element={<Navigate to="today" replace />} />
+          <Route path="today" element={<TodayPage />} />
+          <Route path="list" element={<HabitsPage />} />
+          <Route path="list/:habitId" element={<HabitDetailsPage />} />
+          <Route path="history" element={<HistoryPage />} />
+          <Route path="shop" element={<ShopPage />}>
+            <Route index element={<Navigate to="rewards" replace />} />
+            <Route path="rewards" element={<RewardsPage />} />
+            <Route path="redemptions" element={<RedemptionsPage />} />
+          </Route>
+        </Route>
+      </Route>
+      {/* Signed-out users are sent on to /auth by ProtectedRoute. */}
+      <Route path="*" element={<Navigate to="/home" replace />} />
+    </Route>,
+  ),
+)
 
 function App() {
   return (
     <ToastProvider>
       <ErrorModalProvider>
-        <BrowserRouter>
-          <SessionExpiredListener />
-          <Routes>
-            <Route element={<PublicOnlyRoute />}>
-              <Route path="/auth" element={<AuthPage />} />
-            </Route>
-            <Route element={<ProtectedRoute />}>
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/finance" element={<FinanceLayout />}>
-                <Route index element={<Navigate to="dashboard" replace />} />
-                <Route path="dashboard" element={<DashboardPage />} />
-                <Route path="months" element={<MonthsPage />} />
-                <Route path="months/:monthlySummaryId" element={<MonthDetailsPage />} />
-                <Route path="imports" element={<ImportsPage />} />
-                <Route path="imports/:importId" element={<ImportReviewPage />} />
-                <Route path="categories" element={<CategoriesPage />} />
-                <Route path="planning" element={<PlanningPage />}>
-                  <Route index element={<Navigate to="goals" replace />} />
-                  <Route path="goals" element={<BudgetsPage />} />
-                  <Route path="recurring" element={<RecurringTransactionsPage />} />
-                </Route>
-              </Route>
-              <Route path="/habits" element={<HabitsLayout />}>
-                <Route index element={<Navigate to="today" replace />} />
-                <Route path="today" element={<TodayPage />} />
-                <Route path="list" element={<HabitsPage />} />
-                <Route path="list/:habitId" element={<HabitDetailsPage />} />
-                <Route path="history" element={<HistoryPage />} />
-                <Route path="shop" element={<ShopPage />}>
-                  <Route index element={<Navigate to="rewards" replace />} />
-                  <Route path="rewards" element={<RewardsPage />} />
-                  <Route path="redemptions" element={<RedemptionsPage />} />
-                </Route>
-              </Route>
-            </Route>
-            {/* Signed-out users are sent on to /auth by ProtectedRoute. */}
-            <Route path="*" element={<Navigate to="/home" replace />} />
-          </Routes>
-        </BrowserRouter>
+        <RouterProvider router={router} />
       </ErrorModalProvider>
     </ToastProvider>
   )
