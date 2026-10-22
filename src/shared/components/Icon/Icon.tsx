@@ -17,6 +17,7 @@ import {
   ChevronUp,
   Coffee,
   Coins,
+  Copy,
   Eye,
   EyeOff,
   Flame,
@@ -55,6 +56,7 @@ import {
   TrendingUp,
   Tv,
   Undo2,
+  Upload,
   User,
   Wallet,
   X,
@@ -105,6 +107,7 @@ const ICONS = {
   heart: Heart,
   sparkles: Sparkles,
   coins: Coins,
+  copy: Copy,
   snowflake: Snowflake,
   flame: Flame,
   archive: Archive,
@@ -121,6 +124,7 @@ const ICONS = {
   'glass-water': GlassWater,
   'book-open': BookOpen,
   footprints: Footprints,
+  upload: Upload,
 } as const
 
 export type IconName = keyof typeof ICONS

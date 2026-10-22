@@ -1,0 +1,145 @@
+.lm-import-list {
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+}
+
+.lm-import-list__header {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-import-list__title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-import-list__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-import-list__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-import-list__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.lm-import-list__name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.lm-import-list__status-icon {
+  flex: none;
+  color: var(--text-secondary);
+}
+
+.lm-import-list__file {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lm-import-list__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  padding-left: calc(14px + var(--space-2));
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-import-list__badge {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+
+.lm-import-list__badge--draft {
+  background: var(--warning-tint);
+  color: var(--text-primary);
+}
+
+.lm-import-list__badge--committed {
+  background: var(--positive-tint);
+  color: var(--text-primary);
+}
+
+.lm-import-list__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.lm-import-list__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.lm-import-list__state-title {
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.lm-import-list__body {
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.lm-import-list--fetching .lm-import-list__body {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .lm-import-list__header {
+    padding: var(--space-4);
+  }
+
+  /* Each import becomes a block: name and details on top, actions below. */
+  .lm-import-list__item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .lm-import-list__actions {
+    justify-content: space-between;
+  }
+
+  .lm-import-list__continue {
+    flex: 1;
+  }
+}

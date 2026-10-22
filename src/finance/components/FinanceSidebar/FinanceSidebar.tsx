@@ -8,6 +8,7 @@ const NAV_ITEMS: { id: string; icon: IconName; path: string | null }[] = [
   { id: 'dashboard', icon: 'chart-column', path: '/finance/dashboard' },
   { id: 'months', icon: 'calendar', path: '/finance/months' },
   { id: 'planning', icon: 'target', path: '/finance/planning' },
+  { id: 'imports', icon: 'upload', path: '/finance/imports' },
   { id: 'categories', icon: 'tags', path: '/finance/categories' },
 ]
 
