@@ -19,15 +19,14 @@ import LeaveBudgetDialog from '../components/LeaveBudgetDialog/LeaveBudgetDialog
 import MonthNavigator from '../components/MonthNavigator/MonthNavigator'
 import UnsavedChangesBar from '../components/UnsavedChangesBar/UnsavedChangesBar'
 import { useBudgetPlan } from '../hooks/useBudgetPlan'
+import { useBudgetTotalField } from '../hooks/useBudgetTotalField'
 import { useCategoryOptions } from '../hooks/useCategoryOptions'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
 import { usePrivacyMode } from '../hooks/usePrivacyMode'
 import { assignColorSlots, freeAmount, freePercent, maxPercentFor, sliceAmount, sliceKey, sliceRatio } from '../utils/budgetPlan'
 import type { DraftSlice } from '../utils/budgetPlan'
 import { parseYearMonth, toYearMonth } from '../utils/yearMonth'
-import { toFormAmount } from '../validation/amountSchema'
 import { BUDGET_PLAN_NOT_FOUND_CODE, budgetPlanSaveErrors, budgetPlanTotalErrors } from '../validation/budgetPlanErrorMap'
-import { budgetPlanSchema, readTotal } from '../validation/budgetPlanSchema'
 import './BudgetsPage.css'
 
 /** How many `--chart-slice-N` colors there are; later expense slices share `--chart-slice-extra`. */
@@ -42,7 +41,7 @@ function sliceColor(slot: number | undefined) {
  * a donut beside the list of slices. Each month has its own plan.
  */
 function BudgetsPage() {
-  const { t: translate, i18n } = useTranslation(['finance', 'common'])
+  const { t: translate } = useTranslation(['finance', 'common'])
   const { money, periodLabel } = useFinanceFormat()
   const { hidden } = usePrivacyMode()
   const { show: showToast } = useToast()
@@ -60,20 +59,8 @@ function BudgetsPage() {
   const [isDeleting, setIsDeleting] = useState(false)
   const categoryOptions = useCategoryOptions()
 
-  // The total is typed as text. It follows the draft whenever the draft changes from outside the field (a month
-  // loads, a discard, a copy): adjusted during render, like the colors below.
   const draftTotal = plan.draft?.total ?? null
-  const [totalField, setTotalField] = useState({ month, text: '', touched: false, serverError: null as string | null })
-  let total = totalField
-  const typedTotal = readTotal(total.text)
-  // Another month, a total that came from outside, or a total taken away from outside (a discard). Text that
-  // isn't a valid total yet (the user is typing) matches a draft without one, so it stays.
-  if (total.month !== month || (draftTotal !== null && typedTotal !== draftTotal) || (draftTotal === null && typedTotal !== null)) {
-    total = { month, text: draftTotal === null ? '' : toFormAmount(draftTotal, i18n.language), touched: false, serverError: null }
-    setTotalField(total)
-  }
-  const totalCheck = budgetPlanSchema.safeParse({ total: total.text })
-  const totalError = total.serverError ?? (total.touched && !totalCheck.success ? totalCheck.error.issues[0].message : null)
+  const totalField = useBudgetTotalField(month, draftTotal, plan.setTotal)
 
   // A color follows its category while slices come and go (adjusted during render, not in an effect, so the
   // first paint already has it).
@@ -132,11 +119,6 @@ function BudgetsPage() {
     setSelection({ month, key })
   }
 
-  function changeTotal(text: string) {
-    setTotalField({ month, text, touched: total.touched, serverError: null })
-    plan.setTotal(readTotal(text))
-  }
-
   function indexOf(key: string) {
     return plan.draft?.slices.findIndex((slice) => sliceKey(slice) === key) ?? -1
   }
@@ -159,12 +141,12 @@ function BudgetsPage() {
 
   function discard() {
     plan.discard()
-    setTotalField({ ...total, touched: false, serverError: null })
+    totalField.reset()
   }
 
   async function handleSave() {
     if (draftTotal === null) {
-      setTotalField({ ...total, touched: true })
+      totalField.touch()
       return
     }
 
@@ -177,7 +159,7 @@ function BudgetsPage() {
       if (!isApiError(err)) {
         showConnectionError()
       } else if (budgetPlanTotalErrors[err.code]) {
-        setTotalField({ ...total, serverError: budgetPlanTotalErrors[err.code] })
+        totalField.showServerError(budgetPlanTotalErrors[err.code])
       } else {
         showErrorModal(
           translate('finance:budgetPlan.errors.saveTitle'),
@@ -233,10 +215,10 @@ function BudgetsPage() {
               inputMode="decimal"
               autoComplete="off"
               numeric
-              value={total.text}
-              error={totalError ? translate(totalError) : undefined}
-              onChange={(event) => changeTotal(event.target.value)}
-              onBlur={() => setTotalField({ ...total, touched: true })}
+              value={totalField.text}
+              error={totalField.error ? translate(totalField.error) : undefined}
+              onChange={(event) => totalField.change(event.target.value)}
+              onBlur={totalField.touch}
             />
           )}
           <BudgetDonut
