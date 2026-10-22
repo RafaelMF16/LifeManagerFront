@@ -213,47 +213,49 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
 
       <p className="lm-flow-chart__hint">{translate('finance:dashboard.evolution.selectHint')}</p>
 
-      <table className="lm-flow-chart__table">
-        <caption>{translate('finance:dashboard.evolution.tableCaption')}</caption>
-        <thead>
-          <tr>
-            <th scope="col">{translate('finance:dashboard.evolution.month')}</th>
-            {SERIES.map((series) => (
-              <th key={series.id} scope="col">
-                {translate(`finance:dashboard.totals.${series.id}`)}
-              </th>
-            ))}
-            <th scope="col">{translate('finance:dashboard.evolution.balance')}</th>
-            {hasGoals ? (
-              <>
-                <th scope="col">{translate('finance:dashboard.evolution.expenseGoal')}</th>
-                <th scope="col">{translate('finance:dashboard.evolution.investmentGoal')}</th>
-              </>
-            ) : null}
-          </tr>
-        </thead>
-        <tbody>
-          {months.map((month, index) => (
-            <tr key={`${month.year}-${month.month}`}>
-              <th scope="row">{periodLabel(month.month, month.year)}</th>
+      <div className="lm-flow-chart__table">
+        <table>
+          <caption>{translate('finance:dashboard.evolution.tableCaption')}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{translate('finance:dashboard.evolution.month')}</th>
               {SERIES.map((series) => (
-                <td key={series.id}>
-                  <Amount value={month[series.id]} tone={series.tone} />
-                </td>
+                <th key={series.id} scope="col">
+                  {translate(`finance:dashboard.totals.${series.id}`)}
+                </th>
               ))}
-              <td>
-                <Amount value={month.balance} tone="signed" />
-              </td>
+              <th scope="col">{translate('finance:dashboard.evolution.balance')}</th>
               {hasGoals ? (
                 <>
-                  <td>{renderGoalCell(goals[index]?.expenseGoal ?? null, 'negative')}</td>
-                  <td>{renderGoalCell(goals[index]?.investmentGoal ?? null, 'investment')}</td>
+                  <th scope="col">{translate('finance:dashboard.evolution.expenseGoal')}</th>
+                  <th scope="col">{translate('finance:dashboard.evolution.investmentGoal')}</th>
                 </>
               ) : null}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {months.map((month, index) => (
+              <tr key={`${month.year}-${month.month}`}>
+                <th scope="row">{periodLabel(month.month, month.year)}</th>
+                {SERIES.map((series) => (
+                  <td key={series.id}>
+                    <Amount value={month[series.id]} tone={series.tone} />
+                  </td>
+                ))}
+                <td>
+                  <Amount value={month.balance} tone="signed" />
+                </td>
+                {hasGoals ? (
+                  <>
+                    <td>{renderGoalCell(goals[index]?.expenseGoal ?? null, 'negative')}</td>
+                    <td>{renderGoalCell(goals[index]?.investmentGoal ?? null, 'investment')}</td>
+                  </>
+                ) : null}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   )
 }

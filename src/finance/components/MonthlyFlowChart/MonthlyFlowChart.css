@@ -278,7 +278,10 @@
   color: var(--text-tertiary);
 }
 
-/* The screen-reader alternative to the bars: every figure, in a real table. */
+/*
+ * The screen-reader alternative to the bars: every figure, in a real table. Hidden through a wrapper div because a
+ * table ignores width and overflow and grows to its content, which widened the page on phones.
+ */
 .lm-flow-chart__table {
   position: absolute;
   width: 1px;
