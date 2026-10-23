@@ -259,14 +259,14 @@
   visibility: hidden;
 }
 
-.lm-flow-chart__balance {
+.lm-flow-chart__saved {
   display: flex;
   justify-content: center;
   min-width: 0;
   overflow: hidden;
 }
 
-.lm-flow-chart__balance .lm-amount {
+.lm-flow-chart__saved .lm-amount {
   font-size: var(--text-2xs);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -278,7 +278,10 @@
   color: var(--text-tertiary);
 }
 
-/* The screen-reader alternative to the bars: every figure, in a real table. */
+/*
+ * The screen-reader alternative to the bars: every figure, in a real table. Hidden through a wrapper div because a
+ * table ignores width and overflow and grows to its content, which widened the page on phones.
+ */
 .lm-flow-chart__table {
   position: absolute;
   width: 1px;
@@ -305,7 +308,7 @@
     display: none;
   }
 
-  /* One row per month: name, three horizontal bars, balance. */
+  /* One row per month: name, three horizontal bars, what was saved. */
   .lm-flow-chart__groups {
     flex-direction: column;
     gap: 2px;
@@ -314,7 +317,7 @@
   .lm-flow-chart__group {
     display: grid;
     grid-template-columns: 36px minmax(0, 1fr) auto;
-    grid-template-areas: 'month bars balance';
+    grid-template-areas: 'month bars saved';
     align-items: center;
     column-gap: var(--space-3);
     min-height: 44px;
@@ -364,12 +367,12 @@
     visibility: visible;
   }
 
-  .lm-flow-chart__balance {
-    grid-area: balance;
+  .lm-flow-chart__saved {
+    grid-area: saved;
     justify-content: flex-end;
   }
 
-  .lm-flow-chart__balance .lm-amount {
+  .lm-flow-chart__saved .lm-amount {
     font-size: var(--text-xs);
   }
 }

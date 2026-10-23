@@ -44,6 +44,17 @@ describe('createFinanceFormat', () => {
     expect(format.compactMoney(1234)).toBe('R$ ••••••')
     expect(format.signedCompactMoney(-1234)).toBe('R$ ••••••')
     expect(format.signedPercent(-0.05)).toBe('••%')
+    expect(format.savingsRate(-74)).toBe('••%')
+  })
+
+  it('formats the savings rate with a true minus, capped below −100%', () => {
+    const format = createFinanceFormat('en-US', false)
+
+    expect(format.savingsRate(0.3)).toBe('30%')
+    expect(format.savingsRate(0)).toBe('0%')
+    expect(format.savingsRate(-0.5)).toBe('−50%')
+    expect(format.savingsRate(-1)).toBe('−100%')
+    expect(format.savingsRate(-74)).toBe('<−100%')
   })
 
   it('labels month ranges without masking them', () => {

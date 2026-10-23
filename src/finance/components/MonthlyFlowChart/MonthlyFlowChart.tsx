@@ -65,7 +65,7 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
     ),
   )
   const labelEvery = Math.ceil(months.length / MAX_LABELLED_MONTHS)
-  const showsBalanceRow = months.length <= MAX_LABELLED_MONTHS
+  const showsSavedRow = months.length <= MAX_LABELLED_MONTHS
 
   function barStyle(value: number): CSSProperties {
     const ratio = hidden ? HIDDEN_BAR_RATIO : barRatio(value, scaleMax)
@@ -123,9 +123,15 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
               </div>
             ))}
             <div className="lm-flow-chart__detail-figure">
-              <dt>{translate('finance:dashboard.evolution.balance')}</dt>
+              <dt>{translate('finance:dashboard.evolution.saved')}</dt>
               <dd>
-                <Amount value={selected.balance} tone="signed" emphasis />
+                <Amount value={selected.saved} tone="signed" emphasis />
+              </dd>
+            </div>
+            <div className="lm-flow-chart__detail-figure">
+              <dt>{translate('finance:dashboard.evolution.inAccount')}</dt>
+              <dd>
+                <Amount value={selected.balance} tone="signed" />
               </dd>
             </div>
             {selectedGoals?.expenseGoal != null ? (
@@ -200,9 +206,9 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
                 >
                   {shortMonthName(month.month)}
                 </span>
-                {showsBalanceRow ? (
-                  <span className="lm-flow-chart__balance" aria-hidden="true">
-                    <Amount value={month.balance} tone="signed" notation="compact" />
+                {showsSavedRow ? (
+                  <span className="lm-flow-chart__saved" aria-hidden="true">
+                    <Amount value={month.saved} tone="signed" notation="compact" />
                   </span>
                 ) : null}
               </button>
@@ -213,47 +219,53 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
 
       <p className="lm-flow-chart__hint">{translate('finance:dashboard.evolution.selectHint')}</p>
 
-      <table className="lm-flow-chart__table">
-        <caption>{translate('finance:dashboard.evolution.tableCaption')}</caption>
-        <thead>
-          <tr>
-            <th scope="col">{translate('finance:dashboard.evolution.month')}</th>
-            {SERIES.map((series) => (
-              <th key={series.id} scope="col">
-                {translate(`finance:dashboard.totals.${series.id}`)}
-              </th>
-            ))}
-            <th scope="col">{translate('finance:dashboard.evolution.balance')}</th>
-            {hasGoals ? (
-              <>
-                <th scope="col">{translate('finance:dashboard.evolution.expenseGoal')}</th>
-                <th scope="col">{translate('finance:dashboard.evolution.investmentGoal')}</th>
-              </>
-            ) : null}
-          </tr>
-        </thead>
-        <tbody>
-          {months.map((month, index) => (
-            <tr key={`${month.year}-${month.month}`}>
-              <th scope="row">{periodLabel(month.month, month.year)}</th>
+      <div className="lm-flow-chart__table">
+        <table>
+          <caption>{translate('finance:dashboard.evolution.tableCaption')}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{translate('finance:dashboard.evolution.month')}</th>
               {SERIES.map((series) => (
-                <td key={series.id}>
-                  <Amount value={month[series.id]} tone={series.tone} />
-                </td>
+                <th key={series.id} scope="col">
+                  {translate(`finance:dashboard.totals.${series.id}`)}
+                </th>
               ))}
-              <td>
-                <Amount value={month.balance} tone="signed" />
-              </td>
+              <th scope="col">{translate('finance:dashboard.evolution.saved')}</th>
+              <th scope="col">{translate('finance:dashboard.evolution.inAccount')}</th>
               {hasGoals ? (
                 <>
-                  <td>{renderGoalCell(goals[index]?.expenseGoal ?? null, 'negative')}</td>
-                  <td>{renderGoalCell(goals[index]?.investmentGoal ?? null, 'investment')}</td>
+                  <th scope="col">{translate('finance:dashboard.evolution.expenseGoal')}</th>
+                  <th scope="col">{translate('finance:dashboard.evolution.investmentGoal')}</th>
                 </>
               ) : null}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {months.map((month, index) => (
+              <tr key={`${month.year}-${month.month}`}>
+                <th scope="row">{periodLabel(month.month, month.year)}</th>
+                {SERIES.map((series) => (
+                  <td key={series.id}>
+                    <Amount value={month[series.id]} tone={series.tone} />
+                  </td>
+                ))}
+                <td>
+                  <Amount value={month.saved} tone="signed" />
+                </td>
+                <td>
+                  <Amount value={month.balance} tone="signed" />
+                </td>
+                {hasGoals ? (
+                  <>
+                    <td>{renderGoalCell(goals[index]?.expenseGoal ?? null, 'negative')}</td>
+                    <td>{renderGoalCell(goals[index]?.investmentGoal ?? null, 'investment')}</td>
+                  </>
+                ) : null}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   )
 }

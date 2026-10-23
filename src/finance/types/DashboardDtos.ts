@@ -32,8 +32,12 @@ export interface DashboardTotalsDto {
   income: DashboardAmountDto
   expense: DashboardAmountDto
   investment: DashboardAmountDto
-  /** Income − expenses − investment; can be negative. */
+  /** Income − expenses − investment: what was left in the account; can be negative. */
   balance: DashboardAmountDto
+  /** Income − expenses: investment counts as saved, not spent. Always investment + balance; can be negative. */
+  saved: DashboardAmountDto
+  /** `saved` ÷ income of the period (0.3 = 30%), can be negative; null when there was no income. */
+  savingsRate: number | null
 }
 
 /** One month of the period; months with no transactions come with zeros. */
@@ -43,7 +47,10 @@ export interface DashboardMonthDto {
   income: number
   expense: number
   investment: number
+  /** Income − expenses − investment: what was left in the account. */
   balance: number
+  /** Income − expenses: investment counts as saved. */
+  saved: number
 }
 
 export interface DashboardCategoryDto {

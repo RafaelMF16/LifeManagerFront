@@ -8,6 +8,8 @@ const MONEY_MASK = '••••••'
 const PERCENT_MASK = '••'
 /** Changes beyond ±999% read as noise; they show capped (">+999%"). */
 const CHANGE_RATIO_CAP = 9.99
+/** A tiny income (a cashback before the salary) sends the savings rate to thousands of percent; below this it shows capped ("<−100%"). */
+const SAVINGS_RATE_FLOOR = -1
 
 function capitalize(value: string) {
   return value.charAt(0).toLocaleUpperCase() + value.slice(1)
@@ -86,6 +88,12 @@ export function createFinanceFormat(language: string, hidden: boolean) {
       const sign = ratio > 0 ? '+' : ratio < 0 ? MINUS_SIGN : ''
       const capped = Math.abs(ratio) > CHANGE_RATIO_CAP
       return `${capped ? '>' : ''}${sign}${percentFormatter.format(Math.min(Math.abs(ratio), CHANGE_RATIO_CAP))}`
+    },
+    /** The part of the income saved, e.g. 0.3 → "30%", −0.5 → "−50%"; below −100% it shows "<−100%". */
+    savingsRate: (ratio: number) => {
+      if (hidden) return maskedPercent
+      if (ratio < SAVINGS_RATE_FLOOR) return `<${MINUS_SIGN}${percentFormatter.format(-SAVINGS_RATE_FLOOR)}`
+      return `${ratio < 0 ? MINUS_SIGN : ''}${percentFormatter.format(Math.abs(ratio))}`
     },
     /** "Set" / "Sep". */
     shortMonthName,
