@@ -1,0 +1,54 @@
+# Every merge on main lints and tests the front and, only if that passes, builds it and publishes it to Firebase Hosting.
+# Setup and rollback: ../LifeManager/docs/deploy.md, "Deploy automático (GitHub Actions)".
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# On the whole run, not only the deploy job, so deploys keep merge order.
+concurrency:
+  group: deploy-front
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    permissions:
+      contents: read
+      id-token: write   # OIDC for the Workload Identity Federation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # After the install and the build, so no dependency script runs with the credentials on disk.
+      # firebase-tools reads them through GOOGLE_APPLICATION_CREDENTIALS (no FIREBASE_TOKEN).
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOYER_SA }}
+      - run: npx --yes firebase-tools@15 deploy --only hosting --project ${{ vars.GCP_PROJECT_ID }} --non-interactive
