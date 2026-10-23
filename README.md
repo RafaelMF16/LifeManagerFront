@@ -74,6 +74,25 @@ Na tela inicial, escolha **Criar conta**, cadastre-se e entre. Depois escolha um
 
 O front é publicado no Firebase Hosting, que também repassa `/api/**` para a API no Cloud Run. Assim o navegador fala com uma origem só e o build de produção chama `/api/...` sem URL fixa (`.env.production`). A API precisa estar publicada antes; veja `docs/deploy.md` no repositório da API.
 
+### Automático (merge na `main`)
+
+Cada merge na `main` publica sozinho pelo GitHub Actions (`.github/workflows/deploy.yml`):
+1. roda `npm ci`, `npm run lint` e `npm test`;
+2. só se passarem, roda `npm run build` (o `tsc -b` também barra o deploy);
+3. publica com `firebase deploy --only hosting`.
+
+O Actions autentica no Google Cloud por Workload Identity Federation, sem chave nem `FIREBASE_TOKEN` guardados no GitHub. O setup único (service account, variáveis do repositório e Environment `production`) e o rollback estão em `docs/deploy.md` no repositório da API, na seção "Deploy automático (GitHub Actions)". Para republicar sem um merge novo: **Actions → Deploy → Run workflow**.
+
+Se o front depende de um endpoint novo, mergeie a API primeiro e espere o deploy dela terminar.
+
+O CI usa o Node do `.nvmrc`. Rode os mesmos passos antes de abrir o PR:
+
+```bash
+npm ci && npm run lint && npm test && npm run build
+```
+
+### Manual (alternativa)
+
 Primeira vez:
 
 ```bash
