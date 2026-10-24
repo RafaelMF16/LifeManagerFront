@@ -57,6 +57,13 @@ describe('createFinanceFormat', () => {
     expect(format.savingsRate(-74)).toBe('<−100%')
   })
 
+  it('formats a budget share (0–100) with up to two places, masked in privacy mode', () => {
+    expect(createFinanceFormat('pt-BR', false).sharePercent(33.33)).toBe('33,33%')
+    expect(createFinanceFormat('pt-BR', false).sharePercent(25)).toBe('25%')
+    expect(createFinanceFormat('en-US', false).sharePercent(12.5)).toBe('12.5%')
+    expect(createFinanceFormat('pt-BR', true).sharePercent(25)).toBe('••%')
+  })
+
   it('labels month ranges without masking them', () => {
     const format = createFinanceFormat('pt-BR', true)
 

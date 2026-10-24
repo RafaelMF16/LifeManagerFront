@@ -1,4 +1,4 @@
-import type { BudgetType } from '../types/BudgetDtos'
+import type { BudgetSliceType } from '../types/BudgetPlanDtos'
 
 /**
  * How a goal is going: a spending limit is on track, close to it (from `NEAR_LIMIT_RATIO`) or passed; an
@@ -10,7 +10,7 @@ export type BudgetStatus = 'onTrack' | 'nearLimit' | 'overLimit' | 'reached' | '
 export const NEAR_LIMIT_RATIO = 0.8
 
 /** `ratio` is actual / goal, as the backend sends it (1 = exactly the goal). */
-export function budgetStatus(type: BudgetType, ratio: number): BudgetStatus {
+export function budgetStatus(type: BudgetSliceType, ratio: number): BudgetStatus {
   if (type === 'Investment') return ratio >= 1 ? 'reached' : 'belowTarget'
   if (ratio > 1) return 'overLimit'
   return ratio >= NEAR_LIMIT_RATIO ? 'nearLimit' : 'onTrack'

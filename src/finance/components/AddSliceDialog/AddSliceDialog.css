@@ -1,0 +1,85 @@
+.lm-add-slice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.lm-add-slice__options {
+  display: flex;
+  flex-direction: column;
+  max-height: min(50vh, 360px);
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.lm-add-slice__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--control-height-lg);
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  border-radius: var(--radius-md);
+  background: none;
+  font: inherit;
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .lm-add-slice__option:hover {
+    background: var(--surface-hover);
+  }
+}
+
+.lm-add-slice__option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.lm-add-slice__swatch {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--lm-slice-color);
+}
+
+/* A category gets its color once it joins the plan; until then it's an outline. */
+.lm-add-slice__swatch--category {
+  background: none;
+  box-shadow: inset 0 0 0 1.5px var(--border-strong);
+}
+
+.lm-add-slice__option-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lm-add-slice__option-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.lm-add-slice__option-hint {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-add-slice__state {
+  margin: 0;
+  padding: var(--space-4) 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}

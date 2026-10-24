@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import Icon from '../../../shared/components/Icon/Icon'
-import { useBudgetMonth } from '../../hooks/useBudgetMonth'
-import type { BudgetProgressDto, BudgetType } from '../../types/BudgetDtos'
+import { useBudgetPlan } from '../../hooks/useBudgetPlan'
+import type { BudgetSliceType } from '../../types/BudgetPlanDtos'
+import { sliceKey } from '../../utils/budgetPlan'
 import { formatYearMonth } from '../../utils/yearMonth'
 import BudgetProgress from '../BudgetProgress/BudgetProgress'
 import './MonthBudgetsSummary.css'
@@ -17,69 +18,94 @@ interface MonthBudgetsSummaryProps {
   refreshKey: number
 }
 
+interface Goal {
+  key: string
+  type: BudgetSliceType
+  name: string
+  goal: number
+  actual: number
+  ratio: number
+  achieved: boolean
+}
+
 /**
- * The month's goals at a glance, on the month details page: how many are on track and the ones closest to (or past)
- * their goal. Read-only; changing goals happens on the Planning screen.
+ * The month's budget at a glance, on the month details page: how many slices are on track and the ones closest to
+ * (or past) their amount, the free part included. Read-only; the budget is changed on the Planning screen.
  */
 function MonthBudgetsSummary({ year, month, refreshKey }: MonthBudgetsSummaryProps) {
   const { t: translate } = useTranslation('finance')
   const yearMonth = formatYearMonth(year, month)
-  const { data, status } = useBudgetMonth(yearMonth, refreshKey)
+  const { data, status } = useBudgetPlan(yearMonth, refreshKey)
 
   // A side card: it stays out of the way while loading and if it fails, the page works without it.
   if (status !== 'ready' || !data) return null
 
-  const goals: { type: BudgetType; item: BudgetProgressDto }[] = [
-    ...[data.expenses.total, ...data.expenses.categories].flatMap((item) => (item ? [{ type: 'Expense' as const, item }] : [])),
-    ...[data.investments.total, ...data.investments.categories].flatMap((item) => (item ? [{ type: 'Investment' as const, item }] : [])),
-  ]
   const link = `/finance/planning/goals?month=${yearMonth}`
 
-  if (goals.length === 0) {
+  if (!data.exists) {
     return (
-      <section className="lm-month-budgets lm-month-budgets--empty" aria-label={translate('finance:budgets.summary.title')}>
+      <section className="lm-month-budgets lm-month-budgets--empty" aria-label={translate('finance:budgetPlan.summary.title')}>
         <span className="lm-month-budgets__empty-text">
           <Icon name="target" size={16} aria-hidden="true" />
-          {translate('finance:budgets.summary.none')}
+          {translate('finance:budgetPlan.summary.none')}
         </span>
         <Link to={link} className="lm-month-budgets__link">
-          {translate('finance:budgets.summary.define')}
+          {translate('finance:budgetPlan.summary.define')}
         </Link>
       </section>
     )
   }
 
-  const onTrack = goals.filter((goal) => goal.item.achieved).length
+  const goals: Goal[] = data.slices.map((slice) => ({
+    key: sliceKey(slice),
+    type: slice.type,
+    name: slice.type === 'Investment' ? translate('finance:budgetPlan.investment') : (slice.categoryName ?? ''),
+    goal: slice.amount,
+    actual: slice.actual,
+    ratio: slice.ratio,
+    achieved: slice.achieved,
+  }))
+
+  // The free part is a limit too: what was spent outside the slices.
+  if (data.freeAmount !== null && data.freeAmount > 0) {
+    goals.push({
+      key: 'free',
+      type: 'Expense',
+      name: translate('finance:budgetPlan.summary.free'),
+      goal: data.freeAmount,
+      actual: data.freeActual,
+      ratio: data.freeActual / data.freeAmount,
+      achieved: data.freeActual <= data.freeAmount,
+    })
+  }
+
+  const onTrack = goals.filter((goal) => goal.achieved).length
   // Furthest along first: a limit about to be passed (or passed) matters more than one barely touched.
-  const shown = [...goals].sort((first, second) => second.item.ratio - first.item.ratio).slice(0, MAX_SHOWN)
+  const shown = [...goals].sort((first, second) => second.ratio - first.ratio).slice(0, MAX_SHOWN)
 
   return (
     <section className="lm-month-budgets" aria-labelledby="lm-month-budgets-title">
       <div className="lm-month-budgets__header">
         <div className="lm-month-budgets__heading">
           <h2 id="lm-month-budgets-title" className="lm-month-budgets__title">
-            {translate('finance:budgets.summary.title')}
+            {translate('finance:budgetPlan.summary.title')}
           </h2>
-          <span className="lm-month-budgets__count">
-            {translate('finance:budgets.summary.onTrack', { count: goals.length, achieved: onTrack })}
-          </span>
+          {goals.length > 0 ? (
+            <span className="lm-month-budgets__count">
+              {translate('finance:budgetPlan.summary.onTrack', { count: goals.length, achieved: onTrack })}
+            </span>
+          ) : null}
         </div>
         <Link to={link} className="lm-month-budgets__link">
-          {translate('finance:budgets.summary.seeAll')}
+          {translate('finance:budgetPlan.summary.seeAll')}
           <Icon name="chevron-right" size={12} aria-hidden="true" />
         </Link>
       </div>
 
       <ul className="lm-month-budgets__list">
         {shown.map((goal) => (
-          <li key={goal.item.id}>
-            <BudgetProgress
-              type={goal.type}
-              name={goal.item.categoryName ?? translate('finance:budgets.total')}
-              goal={goal.item.goal}
-              actual={goal.item.actual}
-              ratio={goal.item.ratio}
-            />
+          <li key={goal.key}>
+            <BudgetProgress type={goal.type} name={goal.name} goal={goal.goal} actual={goal.actual} ratio={goal.ratio} />
           </li>
         ))}
       </ul>

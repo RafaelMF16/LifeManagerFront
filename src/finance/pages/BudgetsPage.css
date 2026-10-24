@@ -43,6 +43,88 @@
   text-align: center;
 }
 
+/* Phones: the donut on top, the slices under it. From 900px the donut stays beside the list while it scrolls. */
+.lm-budget-plan {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.lm-budget-plan__overview,
+.lm-budget-plan__slices {
+  min-width: 0;
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+}
+
+.lm-budget-plan__overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+
+.lm-budget-plan__slices {
+  overflow: hidden;
+}
+
+.lm-budget-plan__total {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+}
+
+.lm-budget-plan__total-label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+.lm-budget-plan__total-value {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-budget-plan__add {
+  padding: var(--space-3) var(--space-4);
+  border-top: var(--border-width) solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .lm-budget-plan__add > .lm-button {
+    width: 100%;
+  }
+}
+
+.lm-budget-plan__privacy {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-width) solid var(--border);
+  background: var(--surface-sunken);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+@media (min-width: 900px) {
+  .lm-budget-plan {
+    display: grid;
+    grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-5);
+  }
+
+  .lm-budget-plan__overview {
+    position: sticky;
+    top: var(--space-4);
+    padding: var(--space-5);
+  }
+}
+
 @media (max-width: 768px) {
   .lm-budgets-page__header {
     flex-direction: column;

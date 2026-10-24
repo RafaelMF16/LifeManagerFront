@@ -1,0 +1,58 @@
+.lm-unsaved-bar {
+  position: sticky;
+  bottom: calc(var(--space-3) + var(--app-bottom-inset, 0px) + env(safe-area-inset-bottom));
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-raised);
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-2);
+}
+
+.lm-unsaved-bar__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lm-unsaved-bar__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-unsaved-bar__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--warning);
+}
+
+.lm-unsaved-bar__hint {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-unsaved-bar__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+@media (max-width: 768px) {
+  .lm-unsaved-bar__actions {
+    flex: 1 1 100%;
+  }
+
+  .lm-unsaved-bar__actions > .lm-button {
+    flex: 1;
+  }
+}

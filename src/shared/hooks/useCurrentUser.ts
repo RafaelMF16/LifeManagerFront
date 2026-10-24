@@ -14,7 +14,7 @@ export function useCurrentUser() {
         if (!controller.signal.aborted) setName(user.name)
       },
       () => {
-        // Nothing to show: an expired session is already redirected by SessionExpiredListener.
+        // Nothing to show: an expired session is already redirected by the root route (RootLayout in App.tsx).
       },
     )
 

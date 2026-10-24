@@ -42,6 +42,7 @@ export function createFinanceFormat(language: string, hidden: boolean) {
 
   const dayMonthFormatter = new Intl.DateTimeFormat(language, { day: 'numeric', month: 'short', timeZone: 'UTC' })
   const percentFormatter = new Intl.NumberFormat(language, { style: 'percent', maximumFractionDigits: 1 })
+  const sharePercentFormatter = new Intl.NumberFormat(language, { style: 'percent', maximumFractionDigits: 2 })
   const compactMoneyFormatter = new Intl.NumberFormat(language, {
     style: 'currency',
     currency: CURRENCY,
@@ -71,6 +72,8 @@ export function createFinanceFormat(language: string, hidden: boolean) {
     },
     /** A 0–1 ratio as a percentage, e.g. 0.623 → "62,3%". */
     percent: (ratio: number) => (hidden ? maskedPercent : percentFormatter.format(ratio)),
+    /** A budget share already in percent (0–100, 2 places), e.g. 33.33 → "33,33%". */
+    sharePercent: (percent: number) => (hidden ? maskedPercent : sharePercentFormatter.format(percent / 100)),
     /** "Setembro 2026" / "September 2026". */
     periodLabel: (month: number, year: number) => `${monthName(month)} ${year}`,
     /** Unsigned amount, e.g. "R$ 1.200,00". */
