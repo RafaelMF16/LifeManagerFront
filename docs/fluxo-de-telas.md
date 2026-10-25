@@ -77,7 +77,9 @@ Financeiro e Hábitos têm um menu com as telas do módulo.
 
 - **Todos os módulos:** volta para a Home.
 - **Recolher menu / Expandir menu:** deixa só os ícones. A escolha fica salva neste navegador.
-- **No celular** (até 768px), o menu vira uma **barra fixa na parte de baixo da tela**.
+- **No celular** (até 768px), o menu vira uma **barra fixa na parte de baixo da tela** com as três primeiras telas e o botão **Mais**. **Mais** abre um painel com as outras telas do módulo e **Todos os módulos**; ele fica destacado quando a tela aberta é uma delas. Escolher uma tela, tocar fora ou no **X** fecha o painel.
+  - Financeiro: **Painel**, **Meses** e **Planejamento** na barra; **Importar** e **Categorias** em **Mais**.
+  - Hábitos: **Hoje**, **Hábitos** e **Loja** na barra; **Histórico** em **Mais**.
 
 ### Padrões de listas
 

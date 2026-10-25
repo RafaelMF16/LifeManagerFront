@@ -55,7 +55,7 @@ AuthPage.css (independente de tudo acima)
 - [ ] AC1–AC6 conferidos no navegador (Finanças e Hábitos, claro/escuro, pt-BR/en-US); revisão com você
 
 ### Phase 3: Documentação
-- [ ] Task 4: `docs/fluxo-de-telas.md`, CLAUDE.md e SPEC.md atualizados (XS)
+- [x] Task 4: `docs/fluxo-de-telas.md`, CLAUDE.md e SPEC.md atualizados (XS)
 
 ### Checkpoint C: Completo
 - [ ] AC1–AC8 atendidos; lint, testes e build verdes; pronto para você revisar e commitar

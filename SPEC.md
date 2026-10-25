@@ -127,7 +127,6 @@ AC1 a AC8 verificados como descrito acima, com lint, testes e build verdes.
 
 ## Open Questions
 
-1. **Hábitos tem 4 telas.** Pela regra "3 + Mais", Histórico vai para "Mais". A alternativa é deixar 5 abas em Hábitos
-   (as 4 telas + "Mais" só com "Todos os módulos"). Recomendo 3 + Mais nos dois módulos, por consistência.
-2. **Ordem das principais em Finanças:** Painel, Meses, Planejamento ficam na barra, e Importar e Categorias vão para
-   "Mais". Está ok, ou prefere outra combinação (ex. Importar no lugar de Planejamento)?
+Resolvidas pelas recomendações (`tasks/plan.md`): "3 + Mais" nos dois módulos (o Histórico de Hábitos vai para "Mais"),
+e Painel, Meses e Planejamento na barra de Finanças. O título da folha é o nome do módulo, então os textos novos são só
+"Mais" e o rótulo de fechar.
