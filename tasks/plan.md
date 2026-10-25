@@ -46,7 +46,7 @@ radialLayout.ts (pura, testada)
 ## Task List
 
 ### Phase 1: Base
-- [ ] Task 1: Geometria do arco, com testes (S)
+- [x] Task 1: Geometria do arco, com testes (S)
 
 ### Phase 2: O menu
 - [ ] Task 2: Botão flutuante e arco no lugar da barra (M)

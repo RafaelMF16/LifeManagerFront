@@ -9,11 +9,11 @@ posição `{ x, y }` por bolha (px a partir do centro do botão, `y` para cima),
 200° com o menor raio em que bolhas de 48px (+4px de folga) não colidem e ficam a 8px das bordas.
 
 **Acceptance criteria:**
-- [ ] Para 5 e 6 itens em 320, 360, 390 e 430px: nenhuma colisão, tudo dentro da tela, ordem da esquerda para a direita
-- [ ] O arco é simétrico (o primeiro e o último item espelhados) e o raio não passa de ~110px para 6 itens
+- [x] Para 5 e 6 itens em 320, 360, 390 e 430px: nenhuma colisão, tudo dentro da tela, ordem da esquerda para a direita
+- [x] O arco é simétrico (o primeiro e o último item espelhados) e o raio não passa de ~110px para 6 itens
 
 **Verification:**
-- [ ] `npm test` com os novos casos; `npm run lint`
+- [x] `npm test` com os novos casos; `npm run lint`
 
 **Dependencies:** None
 
