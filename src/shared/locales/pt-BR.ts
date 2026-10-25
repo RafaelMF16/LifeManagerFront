@@ -28,6 +28,8 @@ export default {
     allModules: 'Todos os módulos',
     collapse: 'Recolher menu',
     expand: 'Expandir menu',
+    more: 'Mais',
+    close: 'Fechar menu',
   },
   errors: {
     connection: {

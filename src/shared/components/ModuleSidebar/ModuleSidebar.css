@@ -106,6 +106,16 @@
   text-align: left;
 }
 
+/* The "More" tab only exists in the compact tab bar. */
+.lm-module-sidebar__more {
+  appearance: none;
+  display: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+
 .lm-module-sidebar__badge {
   margin-left: auto;
   padding: 2px var(--space-2);
@@ -146,8 +156,9 @@
   display: none;
 }
 
-/* Compact: a fixed bottom tab bar (thumb reach). The nav wrapper is flattened with `display: contents`
-   so the module links and "All modules" become equal-width sibling tabs; the collapsed state doesn't apply. */
+/* Compact: a fixed bottom tab bar (thumb reach). The nav wrapper is flattened with `display: contents` so the first
+   module links and "More" become equal-width sibling tabs; the other links and "All modules" move to the "More" sheet.
+   The collapsed state doesn't apply. */
 @media (max-width: 768px) {
   :root:has(.lm-module-sidebar) {
     --app-bottom-inset: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
@@ -199,6 +210,14 @@
     background: transparent;
   }
 
+  .lm-module-sidebar .lm-module-sidebar__link--overflow {
+    display: none;
+  }
+
+  .lm-module-sidebar .lm-module-sidebar__more {
+    display: flex;
+  }
+
   .lm-module-sidebar .lm-module-sidebar__label {
     position: static;
     width: auto;
@@ -209,4 +228,62 @@
     clip: auto;
     text-overflow: ellipsis;
   }
+}
+
+/* "More" sheet (compact only, opened from the tab bar): the screens left out of the bar, then "All modules". */
+.lm-module-sheet__body {
+  gap: 2px;
+  padding-bottom: calc(var(--space-5) + env(safe-area-inset-bottom));
+}
+
+.lm-module-sheet__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-height-lg);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-button);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: var(--transition-control);
+}
+
+.lm-module-sheet__link svg {
+  flex: none;
+}
+
+.lm-module-sheet__link:hover {
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .lm-module-sheet__link:hover {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+  }
+}
+
+.lm-module-sheet__link--active,
+.lm-module-sheet__link--active:hover {
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.lm-module-sheet__link--muted {
+  font-weight: var(--weight-regular);
+}
+
+.lm-module-sheet__link--disabled,
+.lm-module-sheet__link--disabled:hover {
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.lm-module-sheet__divider {
+  height: var(--border-width);
+  margin: var(--space-2) 0;
+  background: var(--border);
 }

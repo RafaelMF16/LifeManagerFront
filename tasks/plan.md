@@ -49,7 +49,7 @@ AuthPage.css (independente de tudo acima)
 - [ ] `npm test`, `npm run lint`, `npm run build` verdes; login conferido em 320/360/390px
 
 ### Phase 2: Barra com "Mais"
-- [ ] Task 3: Aba "Mais" e folha inferior no `ModuleSidebar` (M)
+- [x] Task 3: Aba "Mais" e folha inferior no `ModuleSidebar` (M)
 
 ### Checkpoint B
 - [ ] AC1–AC6 conferidos no navegador (Finanças e Hábitos, claro/escuro, pt-BR/en-US); revisão com você
