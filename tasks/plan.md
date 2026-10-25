@@ -50,7 +50,7 @@ radialLayout.ts (pura, testada)
 
 ### Phase 2: O menu
 - [x] Task 2: Botão flutuante e arco no lugar da barra (M)
-- [ ] Task 3: Nome das telas: tooltip, foco e segurar (S)
+- [x] Task 3: Nome das telas: tooltip, foco e segurar (S)
 
 ### Checkpoint A
 - [ ] AC1–AC9 no Safari em 320/360/390/430px, claro/escuro, PT/EN, com e sem "Reduzir movimento"; revisão com você

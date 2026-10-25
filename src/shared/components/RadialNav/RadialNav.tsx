@@ -1,11 +1,11 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
-import type { CSSProperties, KeyboardEvent } from 'react'
+import type { CSSProperties, FocusEvent, KeyboardEvent, MouseEvent, PointerEvent } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Icon from '../Icon/Icon'
 import type { IconName } from '../Icon/Icon'
 import type { ModuleNavItem } from '../ModuleSidebar/ModuleSidebar'
-import { radialLayout } from '../../utils/radialLayout'
+import { RADIAL_BUBBLE_SIZE, radialLayout } from '../../utils/radialLayout'
 import './RadialNav.css'
 
 interface RadialNavProps {
@@ -20,14 +20,17 @@ function bubbleStyle(x: number, y: number, index: number) {
   return { '--x': `${x}px`, '--y': `${-y}px`, '--i': index } as CSSProperties
 }
 
-function bubbleClassName({ isActive }: { isActive: boolean }) {
-  return `lm-radial-nav__bubble${isActive ? ' lm-radial-nav__bubble--active' : ''}`
-}
+/** How long a finger rests on a bubble before its name shows (a shorter tap just navigates). */
+const LONG_PRESS_MS = 300
+/** Space between the top of the arc and the name shown above it. */
+const NAME_GAP = 12
 
 /**
  * A module's navigation on compact screens: a floating button that opens every screen of the module (and "All
  * modules") as icon bubbles in an arc around it. Opening focuses the first bubble and Tab stays within the menu;
  * Escape, the scrim and the button close it, handing focus back to the button. Navigating closes it too.
+ * Bubbles show only an icon; the name of the one under the mouse, with keyboard focus or held down by a finger shows
+ * above the arc.
  */
 function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
   const { t: translate } = useTranslation('common')
@@ -39,6 +42,9 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const menuId = useId()
+  const [namedId, setNamedId] = useState<string | null>(null)
+  const [pressedId, setPressedId] = useState<string | null>(null)
+  const longPressRef = useRef<number | null>(null)
 
   const comingSoonLabel = translate('common:moduleSidebar.comingSoon')
   const menuLabel = translate('common:moduleSidebar.menu', { module: moduleName })
@@ -55,6 +61,46 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
     [items, translate],
   )
   const slots = useMemo(() => radialLayout(allItems.length, viewportWidth), [allItems.length, viewportWidth])
+  const nameY = Math.max(...slots.map((slot) => slot.y)) + RADIAL_BUBBLE_SIZE / 2 + NAME_GAP
+  const shownId = open ? (pressedId ?? namedId) : null
+  const shownName = allItems.find((item) => item.id === shownId)?.label
+
+  function cancelLongPress() {
+    if (longPressRef.current !== null) window.clearTimeout(longPressRef.current)
+    longPressRef.current = null
+    setPressedId(null)
+  }
+
+  /** Name handlers shared by enabled and disabled bubbles. */
+  function nameProps(id: string) {
+    return {
+      onPointerEnter: (event: PointerEvent) => {
+        if (event.pointerType === 'mouse') setNamedId(id)
+      },
+      onPointerLeave: (event: PointerEvent) => {
+        if (event.pointerType === 'mouse') setNamedId((current) => (current === id ? null : current))
+        else cancelLongPress()
+      },
+      onPointerDown: (event: PointerEvent<HTMLElement>) => {
+        if (event.pointerType !== 'touch') return
+        // A touch captures the pointer to the bubble; releasing it lets `pointerleave` fire when the finger slides off.
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId)
+        }
+        cancelLongPress()
+        longPressRef.current = window.setTimeout(() => setPressedId(id), LONG_PRESS_MS)
+      },
+      onPointerUp: cancelLongPress,
+      onPointerCancel: cancelLongPress,
+      // Holding a link would open the browser's link menu instead of showing the name.
+      onContextMenu: (event: MouseEvent) => event.preventDefault(),
+      onFocus: (event: FocusEvent<HTMLElement>) => {
+        // Only keyboard focus names the bubble; a tap focuses it too, right before navigating.
+        if (event.currentTarget.matches(':focus-visible')) setNamedId(id)
+      },
+      onBlur: () => setNamedId((current) => (current === id ? null : current)),
+    }
+  }
 
   function focusables() {
     const bubbles = menuRef.current?.querySelectorAll<HTMLElement>('a.lm-radial-nav__bubble') ?? []
@@ -104,12 +150,14 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
         {allItems.map((item, index) => {
           const { x, y } = slots[index]
           const style = bubbleStyle(x, y, index)
+          const pressedClass = pressedId === item.id ? ' lm-radial-nav__bubble--pressed' : ''
           if (!item.path) {
             return (
               <span
                 key={item.id}
-                className="lm-radial-nav__bubble lm-radial-nav__bubble--disabled"
+                className={`lm-radial-nav__bubble lm-radial-nav__bubble--disabled${pressedClass}`}
                 style={style}
+                {...nameProps(item.id)}
                 aria-disabled="true"
                 aria-label={`${item.label} (${comingSoonLabel})`}
               >
@@ -121,9 +169,12 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
             <NavLink
               key={item.id}
               to={item.path}
-              className={bubbleClassName}
+              className={({ isActive }) =>
+                `lm-radial-nav__bubble${isActive ? ' lm-radial-nav__bubble--active' : ''}${pressedClass}`
+              }
               style={style}
               aria-label={item.label}
+              {...nameProps(item.id)}
               // Choosing the screen already open doesn't change the path, so close explicitly.
               onClick={() => setOpenedOn(null)}
             >
@@ -131,6 +182,15 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
             </NavLink>
           )
         })}
+
+        {/* Each bubble already has its name as `aria-label`, so this visual copy is hidden from screen readers. */}
+        <span
+          className={`lm-radial-nav__name${shownName ? ' lm-radial-nav__name--shown' : ''}`}
+          style={{ '--name-y': `${-nameY}px` } as CSSProperties}
+          aria-hidden="true"
+        >
+          {shownName}
+        </span>
       </div>
 
       <button
@@ -145,6 +205,7 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
             close()
           } else {
             setViewportWidth(window.innerWidth)
+            setNamedId(null)
             setOpenedOn(pathname)
           }
         }}

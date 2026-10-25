@@ -143,3 +143,39 @@
     transform: rotate(90deg);
   }
 }
+
+/* Holding a bubble shows its name instead of the browser's link menu or a text selection. */
+.lm-radial-nav__bubble {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.lm-radial-nav--open .lm-radial-nav__bubble--pressed {
+  transform: translate(var(--x), var(--y)) scale(1.15);
+}
+
+/* The name of the bubble under the mouse, with keyboard focus or held down, centered above the arc. */
+.lm-radial-nav__name {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: calc(100vw - 2 * var(--page-gutter));
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--text-primary);
+  color: var(--surface);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, calc(var(--name-y) - 100%));
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.lm-radial-nav__name--shown {
+  opacity: 1;
+}
