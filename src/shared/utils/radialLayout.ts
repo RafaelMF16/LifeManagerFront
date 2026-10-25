@@ -27,8 +27,13 @@ function arc(count: number, span: number, radius: number): RadialSlot[] {
   })
 }
 
+/** The farthest a bubble's center may sit from the button sideways and still clear the screen's edge. */
+function maxOffsetX(viewportWidth: number) {
+  return viewportWidth / 2 - EDGE_MARGIN - RADIAL_BUBBLE_SIZE / 2
+}
+
 function fits(slots: RadialSlot[], viewportWidth: number) {
-  const maxX = viewportWidth / 2 - EDGE_MARGIN - RADIAL_BUBBLE_SIZE / 2
+  const maxX = maxOffsetX(viewportWidth)
   if (slots.some((slot) => Math.abs(slot.x) > maxX || slot.y < LOWEST_Y)) return false
   // Neighbors are the closest pair on an even arc, so checking them is enough.
   return slots.every(
@@ -40,8 +45,8 @@ function fits(slots: RadialSlot[], viewportWidth: number) {
 
 /**
  * Lays a module's menu items out as an arc above the menu button, left to right: the smallest radius (then the
- * narrowest opening) where the bubbles keep a finger-sized gap and stay on screen. Past what fits, it returns the
- * widest arc tried.
+ * narrowest opening) where the bubbles keep a finger-sized gap and stay on screen. When no arc keeps that gap (a
+ * very narrow screen or many items), the screen wins: a half circle as wide as it allows, with the bubbles closer.
  */
 export function radialLayout(count: number, viewportWidth: number): RadialSlot[] {
   for (let radius = MIN_RADIUS; radius <= MAX_RADIUS; radius++) {
@@ -50,5 +55,5 @@ export function radialLayout(count: number, viewportWidth: number): RadialSlot[]
       if (fits(slots, viewportWidth)) return slots
     }
   }
-  return arc(count, MAX_SPAN, MAX_RADIUS)
+  return arc(count, 180, maxOffsetX(viewportWidth))
 }
