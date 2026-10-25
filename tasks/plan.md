@@ -42,7 +42,7 @@ AuthPage.css (independente de tudo acima)
 ## Task List
 
 ### Phase 1: Ganho rápido e base
-- [ ] Task 1: Cabeçalho do login sem sobreposição no celular (XS)
+- [x] Task 1: Cabeçalho do login sem sobreposição no celular (XS)
 - [ ] Task 2: Lógica pura da navegação mobile, com testes (S)
 
 ### Checkpoint A

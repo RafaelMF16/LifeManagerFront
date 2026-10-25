@@ -40,8 +40,19 @@
   gap: var(--space-2);
 }
 
+/* Compact: the centered brand's side columns are narrower than the language + theme group, so the header becomes
+   brand on the left, controls on the right. */
 @media (max-width: 768px) {
   .lm-auth-page {
     padding: var(--space-6) var(--page-gutter);
+  }
+
+  .lm-auth-page__header {
+    grid-template-columns: 1fr auto;
+    gap: var(--space-3);
+  }
+
+  .lm-auth-page__header-spacer {
+    display: none;
   }
 }
