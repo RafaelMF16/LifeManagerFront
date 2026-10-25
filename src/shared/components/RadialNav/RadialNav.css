@@ -1,0 +1,145 @@
+/* Compact only: wide screens use the module sidebar. */
+.lm-radial-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .lm-radial-nav {
+    display: block;
+  }
+}
+
+.lm-radial-nav__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: color-mix(in oklch, var(--slate-900) 45%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+.lm-radial-nav--open .lm-radial-nav__scrim {
+  opacity: 1;
+  pointer-events: auto;
+  transition-duration: var(--duration-slow);
+}
+
+/* A zero-size anchor on the button's center: each bubble is translated from it to its slot in the arc. */
+.lm-radial-nav__menu {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--radial-nav-offset) + var(--radial-nav-button-size) / 2 + env(safe-area-inset-bottom));
+  z-index: 71;
+  width: 0;
+  height: 0;
+}
+
+.lm-radial-nav__bubble {
+  position: absolute;
+  left: -24px;
+  top: -24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  box-shadow: var(--elevation-2);
+  color: var(--text-secondary);
+  text-decoration: none;
+  opacity: 0;
+  transform: translate(0, 0) scale(0.4);
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+.lm-radial-nav--open .lm-radial-nav__bubble {
+  opacity: 1;
+  transform: translate(var(--x), var(--y)) scale(1);
+}
+
+.lm-radial-nav__bubble:hover {
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .lm-radial-nav__bubble:hover {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+  }
+}
+
+.lm-radial-nav__bubble--active,
+.lm-radial-nav__bubble--active:hover {
+  background: var(--accent-tint);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.lm-radial-nav__bubble--disabled {
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.lm-radial-nav__button {
+  appearance: none;
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--radial-nav-offset) + env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--radial-nav-button-size);
+  height: var(--radial-nav-button-size);
+  margin-left: calc(var(--radial-nav-button-size) / -2);
+  border: none;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--text-inverse);
+  box-shadow: var(--elevation-3);
+  cursor: pointer;
+  transition: var(--transition-control);
+}
+
+@media (hover: hover) {
+  .lm-radial-nav__button:hover {
+    background: var(--accent-hover);
+  }
+}
+
+.lm-radial-nav__button:active {
+  background: var(--accent-active);
+}
+
+/* Above the scrim while open, so it becomes the menu's close button. */
+.lm-radial-nav--open .lm-radial-nav__button {
+  z-index: 72;
+}
+
+/* The bubbles fly out of the button one after the other and fly back together, faster. With reduced motion they
+   only fade. */
+@media (prefers-reduced-motion: no-preference) {
+  .lm-radial-nav__bubble {
+    transition:
+      opacity var(--duration-base) var(--ease-standard),
+      transform var(--duration-base) var(--ease-standard);
+  }
+
+  .lm-radial-nav--open .lm-radial-nav__bubble {
+    transition:
+      opacity var(--duration-slow) var(--ease-out),
+      transform var(--duration-slow) var(--ease-out);
+    transition-delay: calc(var(--i) * 20ms);
+  }
+
+  .lm-radial-nav__button svg {
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .lm-radial-nav--open .lm-radial-nav__button svg {
+    transform: rotate(90deg);
+  }
+}

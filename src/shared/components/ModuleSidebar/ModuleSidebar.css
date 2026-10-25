@@ -106,16 +106,6 @@
   text-align: left;
 }
 
-/* The "More" tab only exists in the compact tab bar. */
-.lm-module-sidebar__more {
-  appearance: none;
-  display: none;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--font-sans);
-}
-
 .lm-module-sidebar__badge {
   margin-left: auto;
   padding: 2px var(--space-2);
@@ -156,134 +146,15 @@
   display: none;
 }
 
-/* Compact: a fixed bottom tab bar (thumb reach). The nav wrapper is flattened with `display: contents` so the first
-   module links and "More" become equal-width sibling tabs; the other links and "All modules" move to the "More" sheet.
-   The collapsed state doesn't apply. */
+/* Compact: the sidebar gives way to the floating radial menu (`RadialNav`), and the space its button takes at the
+   bottom is reserved so content, toasts and sticky bars stay clear of it. */
 @media (max-width: 768px) {
   :root:has(.lm-module-sidebar) {
-    --app-bottom-inset: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+    --app-bottom-inset: calc(var(--radial-nav-button-size) + 2 * var(--radial-nav-offset) + env(safe-area-inset-bottom));
   }
 
   .lm-module-sidebar,
   .lm-module-sidebar--collapsed {
-    position: fixed;
-    top: auto;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 50;
-    width: auto;
-    height: auto;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 1fr);
-    gap: 0;
-    padding: 0 0 env(safe-area-inset-bottom);
-    border-right: none;
-    border-top: var(--border-width) solid var(--border);
-    transition: none;
-  }
-
-  .lm-module-sidebar__nav {
-    display: contents;
-  }
-
-  .lm-module-sidebar__module,
-  .lm-module-sidebar__spacer,
-  .lm-module-sidebar__toggle,
-  .lm-module-sidebar .lm-module-sidebar__badge {
     display: none;
   }
-
-  .lm-module-sidebar .lm-module-sidebar__link {
-    flex-direction: column;
-    justify-content: center;
-    gap: 2px;
-    min-width: 0;
-    height: var(--bottom-nav-height);
-    padding: 0 var(--space-1);
-    border-radius: 0;
-    font-size: var(--text-2xs);
-  }
-
-  .lm-module-sidebar .lm-module-sidebar__link--active {
-    background: transparent;
-  }
-
-  .lm-module-sidebar .lm-module-sidebar__link--overflow {
-    display: none;
-  }
-
-  .lm-module-sidebar .lm-module-sidebar__more {
-    display: flex;
-  }
-
-  .lm-module-sidebar .lm-module-sidebar__label {
-    position: static;
-    width: auto;
-    max-width: 100%;
-    height: auto;
-    margin: 0;
-    overflow: hidden;
-    clip: auto;
-    text-overflow: ellipsis;
-  }
-}
-
-/* "More" sheet (compact only, opened from the tab bar): the screens left out of the bar, then "All modules". */
-.lm-module-sheet__body {
-  gap: 2px;
-  padding-bottom: calc(var(--space-5) + env(safe-area-inset-bottom));
-}
-
-.lm-module-sheet__link {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  min-height: var(--control-height-lg);
-  padding: 0 var(--space-3);
-  border-radius: var(--radius-button);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: var(--transition-control);
-}
-
-.lm-module-sheet__link svg {
-  flex: none;
-}
-
-.lm-module-sheet__link:hover {
-  text-decoration: none;
-}
-
-@media (hover: hover) {
-  .lm-module-sheet__link:hover {
-    background: var(--surface-hover);
-    color: var(--text-primary);
-  }
-}
-
-.lm-module-sheet__link--active,
-.lm-module-sheet__link--active:hover {
-  background: var(--accent-tint);
-  color: var(--accent-text);
-}
-
-.lm-module-sheet__link--muted {
-  font-weight: var(--weight-regular);
-}
-
-.lm-module-sheet__link--disabled,
-.lm-module-sheet__link--disabled:hover {
-  background: transparent;
-  color: var(--text-tertiary);
-  cursor: not-allowed;
-}
-
-.lm-module-sheet__divider {
-  height: var(--border-width);
-  margin: var(--space-2) 0;
-  background: var(--border);
 }

@@ -49,7 +49,7 @@ radialLayout.ts (pura, testada)
 - [x] Task 1: Geometria do arco, com testes (S)
 
 ### Phase 2: O menu
-- [ ] Task 2: Botão flutuante e arco no lugar da barra (M)
+- [x] Task 2: Botão flutuante e arco no lugar da barra (M)
 - [ ] Task 3: Nome das telas: tooltip, foco e segurar (S)
 
 ### Checkpoint A

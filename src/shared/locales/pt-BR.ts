@@ -26,6 +26,7 @@ export default {
   moduleSidebar: {
     comingSoon: 'Em breve',
     allModules: 'Todos os módulos',
+    menu: 'Menu de {{module}}',
     collapse: 'Recolher menu',
     expand: 'Expandir menu',
     more: 'Mais',
