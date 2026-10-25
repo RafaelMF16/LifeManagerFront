@@ -5,16 +5,8 @@ import Icon from '../Icon/Icon'
 import type { IconName } from '../Icon/Icon'
 import RadialNav from '../RadialNav/RadialNav'
 import { useSidebarCollapsed } from '../../hooks/useSidebarCollapsed'
+import type { ModuleNavItem } from '../../types/ModuleNavItem'
 import './ModuleSidebar.css'
-
-export interface ModuleNavItem {
-  id: string
-  icon: IconName
-  /** Already translated by the module. */
-  label: string
-  /** `null` marks a screen that isn't built yet: rendered disabled with a "coming soon" badge. */
-  path: string | null
-}
 
 interface ModuleSidebarProps {
   /** Already translated, e.g. "Module" / "Finance". */

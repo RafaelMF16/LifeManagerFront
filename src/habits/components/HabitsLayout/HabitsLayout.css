@@ -31,7 +31,7 @@
   display: none;
 }
 
-/* Compact: the sidebar is a fixed bottom tab bar, so keep the content (footer included) clear of it. */
+/* Compact: the module menu's button floats at the bottom, so keep the content (footer included) clear of it. */
 @media (max-width: 768px) {
   .lm-habits-layout__content {
     padding-bottom: var(--app-bottom-inset);

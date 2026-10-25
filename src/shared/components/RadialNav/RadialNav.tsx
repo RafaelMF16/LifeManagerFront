@@ -4,7 +4,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Icon from '../Icon/Icon'
 import type { IconName } from '../Icon/Icon'
-import type { ModuleNavItem } from '../ModuleSidebar/ModuleSidebar'
+import type { ModuleNavItem } from '../../types/ModuleNavItem'
 import { RADIAL_BUBBLE_SIZE, radialLayout } from '../../utils/radialLayout'
 import './RadialNav.css'
 
@@ -50,18 +50,10 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
 
   const comingSoonLabel = translate('common:moduleSidebar.comingSoon')
   const menuLabel = translate('common:moduleSidebar.menu', { module: moduleName })
-  const allItems = useMemo<ModuleNavItem[]>(
-    () => [
-      ...items,
-      {
-        id: 'all-modules',
-        icon: 'layout-dashboard',
-        label: translate('common:moduleSidebar.allModules'),
-        path: '/home',
-      },
-    ],
-    [items, translate],
-  )
+  const allItems: ModuleNavItem[] = [
+    ...items,
+    { id: 'all-modules', icon: 'layout-dashboard', label: translate('common:moduleSidebar.allModules'), path: '/home' },
+  ]
   const slots = useMemo(() => radialLayout(allItems.length, viewportWidth), [allItems.length, viewportWidth])
   const nameY = Math.max(...slots.map((slot) => slot.y)) + RADIAL_BUBBLE_SIZE / 2 + NAME_GAP
   const shownId = open ? (pressedId ?? namedId) : null
