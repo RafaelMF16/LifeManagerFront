@@ -59,10 +59,19 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
   const shownId = open ? (pressedId ?? namedId) : null
   const shownName = allItems.find((item) => item.id === shownId)?.label
 
-  function cancelLongPress() {
+  function clearLongPressTimer() {
     if (longPressRef.current !== null) window.clearTimeout(longPressRef.current)
     longPressRef.current = null
+  }
+
+  function cancelLongPress() {
+    clearLongPressTimer()
     setPressedId(null)
+  }
+
+  /** Clears the name only if it's still this bubble's: another one may have taken over already. */
+  function forgetName(id: string) {
+    setNamedId((current) => (current === id ? null : current))
   }
 
   /** Name handlers shared by enabled and disabled bubbles. */
@@ -72,7 +81,7 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
         if (event.pointerType === 'mouse') setNamedId(id)
       },
       onPointerLeave: (event: PointerEvent) => {
-        if (event.pointerType === 'mouse') setNamedId((current) => (current === id ? null : current))
+        if (event.pointerType === 'mouse') forgetName(id)
         else cancelLongPress()
       },
       onPointerDown: (event: PointerEvent<HTMLElement>) => {
@@ -92,7 +101,7 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
         // Only keyboard focus names the bubble; a tap focuses it too, right before navigating.
         if (event.currentTarget.matches(':focus-visible')) setNamedId(id)
       },
-      onBlur: () => setNamedId((current) => (current === id ? null : current)),
+      onBlur: () => forgetName(id),
     }
   }
 
@@ -106,15 +115,23 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
     buttonRef.current?.focus()
   }
 
+  function toggle() {
+    if (open) {
+      close()
+      return
+    }
+    // Measured on each opening, so turning the phone between openings lays the arc out for the new width.
+    setViewportWidth(window.innerWidth)
+    setNamedId(null)
+    setOpenedOn(pathname)
+  }
+
   useEffect(() => {
     if (!open) return
     focusables()[0]?.focus()
 
     function onKeyDown(event: globalThis.KeyboardEvent) {
-      if (event.key === 'Escape') {
-        setOpenedOn(null)
-        buttonRef.current?.focus()
-      }
+      if (event.key === 'Escape') close()
     }
 
     window.addEventListener('keydown', onKeyDown)
@@ -133,8 +150,8 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
   }, [open])
 
   // A long press still pending when the menu goes away (e.g. the module layout unmounts) must not fire later.
-  useEffect(() => () => {
-    if (longPressRef.current !== null) window.clearTimeout(longPressRef.current)
+  useEffect(() => {
+    return clearLongPressTimer
   }, [])
 
   // Keeps Tab within the bubbles and the close button while the menu is open.
@@ -210,15 +227,7 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
         aria-label={open ? translate('common:moduleSidebar.close') : menuLabel}
         aria-expanded={open}
         aria-controls={menuId}
-        onClick={() => {
-          if (open) {
-            close()
-          } else {
-            setViewportWidth(window.innerWidth)
-            setNamedId(null)
-            setOpenedOn(pathname)
-          }
-        }}
+        onClick={toggle}
       >
         <Icon name={open ? 'x' : moduleIcon} size={22} />
       </button>
