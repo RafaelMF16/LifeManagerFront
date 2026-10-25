@@ -153,6 +153,8 @@
 
 .lm-radial-nav--open .lm-radial-nav__bubble--pressed {
   transform: translate(var(--x), var(--y)) scale(1.15);
+  /* The opening stagger would delay the held bubble's growth by up to ~140ms. */
+  transition-delay: 0s;
 }
 
 /* The name of the bubble under the mouse, with keyboard focus or held down, centered above the arc. */

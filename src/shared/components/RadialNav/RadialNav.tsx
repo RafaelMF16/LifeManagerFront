@@ -15,15 +15,17 @@ interface RadialNavProps {
   items: ModuleNavItem[]
 }
 
-/** Passes a bubble's arc position and stagger order to the CSS transition. */
-function bubbleStyle(x: number, y: number, index: number) {
-  return { '--x': `${x}px`, '--y': `${-y}px`, '--i': index } as CSSProperties
-}
-
 /** How long a finger rests on a bubble before its name shows (a shorter tap just navigates). */
 const LONG_PRESS_MS = 300
 /** Space between the top of the arc and the name shown above it. */
 const NAME_GAP = 12
+/** The menu only exists below the compact breakpoint (see `RadialNav.css`). */
+const COMPACT_QUERY = '(max-width: 768px)'
+
+/** Passes a bubble's arc position and stagger order to the CSS transition. */
+function bubbleStyle(x: number, y: number, index: number) {
+  return { '--x': `${x}px`, '--y': `${-y}px`, '--i': index } as CSSProperties
+}
 
 /**
  * A module's navigation on compact screens: a floating button that opens every screen of the module (and "All
@@ -126,6 +128,22 @@ function RadialNav({ moduleName, moduleIcon, items }: RadialNavProps) {
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [open])
+
+  // Widening past the compact breakpoint hides the menu, so close it rather than leave it open for the way back.
+  useEffect(() => {
+    if (!open) return
+    const compact = window.matchMedia(COMPACT_QUERY)
+    function onChange() {
+      if (!compact.matches) setOpenedOn(null)
+    }
+    compact.addEventListener('change', onChange)
+    return () => compact.removeEventListener('change', onChange)
+  }, [open])
+
+  // A long press still pending when the menu goes away (e.g. the module layout unmounts) must not fire later.
+  useEffect(() => () => {
+    if (longPressRef.current !== null) window.clearTimeout(longPressRef.current)
+  }, [])
 
   // Keeps Tab within the bubbles and the close button while the menu is open.
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
