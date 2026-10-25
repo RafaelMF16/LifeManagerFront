@@ -43,7 +43,7 @@ AuthPage.css (independente de tudo acima)
 
 ### Phase 1: Ganho rápido e base
 - [x] Task 1: Cabeçalho do login sem sobreposição no celular (XS)
-- [ ] Task 2: Lógica pura da navegação mobile, com testes (S)
+- [x] Task 2: Lógica pura da navegação mobile, com testes (S)
 
 ### Checkpoint A
 - [ ] `npm test`, `npm run lint`, `npm run build` verdes; login conferido em 320/360/390px
