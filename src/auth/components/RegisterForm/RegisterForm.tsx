@@ -6,16 +6,19 @@ import { useToast } from '../../../shared/hooks/useToast'
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
 import { isApiError } from '../../../shared/types/ApiError'
+import type { UserPreferences } from '../../../shared/types/UserPreferences'
 import { register as registerUser } from '../../services/authService'
 import { registerErrorFieldMap } from '../../validation/userErrorMap'
 import { registerSchema } from '../../validation/userSchemas'
 import '../AuthForm.css'
 
 interface RegisterFormProps {
+  // Tema e idioma da tela no momento do envio: viram as preferências do usuário e o idioma das categorias padrão
+  preferences: UserPreferences
   onSwitchToLogin: () => void
 }
 
-function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
+function RegisterForm({ preferences, onSwitchToLogin }: RegisterFormProps) {
   const { t: translate } = useTranslation(['auth', 'common'])
   const {
     register,
@@ -28,7 +31,7 @@ function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await registerUser(data)
+      await registerUser(data, preferences)
       showToast(translate('auth:register.successToast'))
       onSwitchToLogin()
     } catch (err) {

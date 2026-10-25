@@ -132,7 +132,7 @@ A tela tem duas abas: **Entrar** e **Criar conta**.
 | Senha | De 8 a 50 caracteres |
 | Confirmar senha | Igual à senha ("As senhas não coincidem") |
 
-- **Criar conta:** cria a conta, mostra "Conta criada com sucesso" e volta para a aba **Entrar**. O cadastro não faz login automático.
+- **Criar conta:** cria a conta, mostra "Conta criada com sucesso" e volta para a aba **Entrar**. O cadastro não faz login automático. O tema e o idioma escolhidos no topo da tela no momento de criar a conta ficam salvos como os da conta, e ela já vem com 12 categorias prontas nesse idioma (Moradia, Mercado, Restaurantes etc.), que podem ser renomeadas ou excluídas em **Categorias**.
 - **Já tem conta? Entrar:** volta para a aba de login.
 
 ## Home

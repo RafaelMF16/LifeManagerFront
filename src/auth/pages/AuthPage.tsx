@@ -50,7 +50,7 @@ function AuthPage() {
           active={mode}
           onChange={setMode}
           loginPanel={<LoginForm onSwitchToSignup={() => setMode('signup')} />}
-          signupPanel={<RegisterForm onSwitchToLogin={() => setMode('login')} />}
+          signupPanel={<RegisterForm preferences={{ theme, language }} onSwitchToLogin={() => setMode('login')} />}
         />
       </div>
     </div>
