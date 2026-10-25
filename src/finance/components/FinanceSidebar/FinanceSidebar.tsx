@@ -19,6 +19,7 @@ function FinanceSidebar() {
     <ModuleSidebar
       moduleLabel={translate('finance:module.label')}
       moduleName={translate('finance:module.name')}
+      moduleIcon="wallet"
       navAriaLabel={translate('finance:sidebar.navAria')}
       items={NAV_ITEMS.map((item) => ({ ...item, label: translate(`finance:sidebar.items.${item.id}`) }))}
       collapsedStorageKey="lm-finance-sidebar-collapsed"

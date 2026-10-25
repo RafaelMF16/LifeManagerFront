@@ -26,8 +26,10 @@ export default {
   moduleSidebar: {
     comingSoon: 'Soon',
     allModules: 'All modules',
+    menu: '{{module}} menu',
     collapse: 'Collapse menu',
     expand: 'Expand menu',
+    close: 'Close menu',
   },
   errors: {
     connection: {

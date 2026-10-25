@@ -18,6 +18,7 @@ function HabitsSidebar() {
     <ModuleSidebar
       moduleLabel={translate('habits:module.label')}
       moduleName={translate('habits:module.name')}
+      moduleIcon="check"
       navAriaLabel={translate('habits:sidebar.navAria')}
       items={NAV_ITEMS.map((item) => ({ ...item, label: translate(`habits:sidebar.items.${item.id}`) }))}
       collapsedStorageKey="lm-habits-sidebar-collapsed"

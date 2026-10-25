@@ -77,7 +77,9 @@ Financeiro e Hábitos têm um menu com as telas do módulo.
 
 - **Todos os módulos:** volta para a Home.
 - **Recolher menu / Expandir menu:** deixa só os ícones. A escolha fica salva neste navegador.
-- **No celular** (até 768px), o menu vira uma **barra fixa na parte de baixo da tela**.
+- **No celular** (até 768px), o menu some e no lugar fica um **botão redondo flutuando no centro, embaixo da tela**, com o ícone do módulo. Tocar nele abre, em arco em volta do botão, uma bolha com o ícone de cada tela do módulo e de **Todos os módulos**. A bolha da tela aberta fica destacada.
+  - **Ver o nome:** **segure** a bolha por um instante e o nome aparece acima do arco. Soltar em cima dela abre a tela, e arrastar o dedo para fora cancela. Com mouse, basta passar por cima.
+  - **Fechar:** tocar numa bolha abre a tela e fecha o menu. Tocar fora, no botão (que vira um **X**) ou apertar Esc fecha sem trocar de tela.
 
 ### Padrões de listas
 

@@ -22,7 +22,7 @@ function AuthPage() {
     <div className="lm-auth-page">
       <div className="lm-auth-page__content">
         <div className="lm-auth-page__header">
-          <span />
+          <span className="lm-auth-page__header-spacer" />
           <div className="lm-auth-page__brand">
             <Icon name="wallet" size={20} />
             <span>LifeManager</span>

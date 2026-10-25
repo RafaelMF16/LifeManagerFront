@@ -27,8 +27,10 @@
 
   /* Responsive layout. The compact breakpoint is 768px (custom properties can't be used inside media queries). */
   --page-gutter: var(--space-8);
-  --bottom-nav-height: 64px;
-  /* Space reserved at the bottom of the viewport by fixed chrome (e.g. the Finance bottom tab bar). */
+  /* The compact module menu's floating button and its distance from the bottom of the screen. */
+  --radial-nav-button-size: 56px;
+  --radial-nav-offset: var(--space-3);
+  /* Space reserved at the bottom of the viewport by fixed chrome (e.g. the module menu's floating button). */
   --app-bottom-inset: 0px;
 }
 

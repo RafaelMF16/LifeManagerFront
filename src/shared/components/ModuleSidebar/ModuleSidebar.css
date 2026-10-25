@@ -146,67 +146,15 @@
   display: none;
 }
 
-/* Compact: a fixed bottom tab bar (thumb reach). The nav wrapper is flattened with `display: contents`
-   so the module links and "All modules" become equal-width sibling tabs; the collapsed state doesn't apply. */
+/* Compact: the sidebar gives way to the floating radial menu (`RadialNav`), and the space its button takes at the
+   bottom is reserved so content, toasts and sticky bars stay clear of it. */
 @media (max-width: 768px) {
   :root:has(.lm-module-sidebar) {
-    --app-bottom-inset: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+    --app-bottom-inset: calc(var(--radial-nav-button-size) + 2 * var(--radial-nav-offset) + env(safe-area-inset-bottom));
   }
 
   .lm-module-sidebar,
   .lm-module-sidebar--collapsed {
-    position: fixed;
-    top: auto;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 50;
-    width: auto;
-    height: auto;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 1fr);
-    gap: 0;
-    padding: 0 0 env(safe-area-inset-bottom);
-    border-right: none;
-    border-top: var(--border-width) solid var(--border);
-    transition: none;
-  }
-
-  .lm-module-sidebar__nav {
-    display: contents;
-  }
-
-  .lm-module-sidebar__module,
-  .lm-module-sidebar__spacer,
-  .lm-module-sidebar__toggle,
-  .lm-module-sidebar .lm-module-sidebar__badge {
     display: none;
-  }
-
-  .lm-module-sidebar .lm-module-sidebar__link {
-    flex-direction: column;
-    justify-content: center;
-    gap: 2px;
-    min-width: 0;
-    height: var(--bottom-nav-height);
-    padding: 0 var(--space-1);
-    border-radius: 0;
-    font-size: var(--text-2xs);
-  }
-
-  .lm-module-sidebar .lm-module-sidebar__link--active {
-    background: transparent;
-  }
-
-  .lm-module-sidebar .lm-module-sidebar__label {
-    position: static;
-    width: auto;
-    max-width: 100%;
-    height: auto;
-    margin: 0;
-    overflow: hidden;
-    clip: auto;
-    text-overflow: ellipsis;
   }
 }
