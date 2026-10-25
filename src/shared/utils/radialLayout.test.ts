@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { RADIAL_BUBBLE_SIZE, radialLayout } from './radialLayout'
 
 const WIDTHS = [320, 360, 390, 430]
-const COUNTS = [2, 3, 4, 5, 6]
+const COUNTS = [2, 3, 4, 5, 6, 7]
 
 describe('radialLayout', () => {
   it('returns one slot per item', () => {

@@ -90,8 +90,7 @@ src/shared/components/ModuleSidebar/ModuleSidebar.tsx   → no compacto, renderi
                                                           remove a aba "Mais" e a folha
 src/shared/components/ModuleSidebar/ModuleSidebar.css   → no compacto, a sidebar some e fica só o botão flutuante;
                                                           `--app-bottom-inset` passa à altura do botão
-src/shared/utils/moduleNav.ts (+ .test.ts)              → `splitNavItems` sai (deixa de ser usado); `isAnyItemActive`
-                                                          fica para destacar a tela atual
+src/shared/utils/moduleNav.ts (+ .test.ts)              → removido (o `NavLink` já marca a tela atual)
 src/shared/locales/{en-US,pt-BR}.ts                     → moduleSidebar.menu ("Menu de {{module}}"), moduleSidebar.close
 src/shared/components/ModuleSidebar/ModuleSidebar.tsx   → nova prop `moduleIcon` (o ícone do botão)
 src/finance/components/FinanceSidebar/, src/habits/components/HabitsSidebar/ → passam `moduleIcon`
@@ -107,9 +106,8 @@ docs/fluxo-de-telas.md, CLAUDE.md                       → menu radial
   `translate(var(--x), var(--y)) scale(1)`. Fechado, as bolhas ficam no centro com `opacity: 0` e `pointer-events: none`.
 - **Largura da tela:** o raio depende da quantidade de itens e da largura, que o componente lê
   (`window.innerWidth`) ao abrir. Girar a tela com o menu aberto o reposiciona na próxima abertura.
-- **Tooltip:** um rótulo posicionado acima de cada bolha, visível em `:hover` dentro de `@media (hover: hover)` e,
-  perto das bordas, deslocado para dentro da tela. O nome no meio do arco é um elemento só, preenchido com o item em
-  foco.
+- **Nome:** um rótulo só, acima do arco, preenchido pelo item sob o mouse, com foco de teclado ou segurado (ver
+  "Ajustes na implementação").
 - **Dialog próprio, não o `Dialog` compartilhado:** o `Dialog` vira bottom sheet no compacto e não posiciona itens em
   volta de um ponto. O `RadialNav` usa o mesmo scrim (cor e z-index) e o mesmo Esc, mas tem layout próprio. É a exceção à
   regra "modais passam pelo `Dialog`", e precisa ficar anotada no CLAUDE.md.
@@ -133,8 +131,8 @@ export function radialLayout(count: number, viewportWidth: number): RadialSlot[]
 
 ## Testing Strategy
 
-- **Vitest:** `radialLayout` para 5 e 6 itens em 320, 360, 390 e 430px. Nenhuma bolha se sobrepõe (a mesma checagem
-  do script da análise), todas ficam dentro da tela, e a ordem vai da esquerda para a direita. `isAnyItemActive` mantém os testes atuais.
+- **Vitest:** `radialLayout` para 2 a 7 itens em 320, 360, 390 e 430px. Nenhuma bolha se sobrepõe (a mesma checagem
+  do script da análise), todas ficam dentro da tela, e a ordem vai da esquerda para a direita. 
 - **Manual no Safari** (Modo de Design Responsivo, 320/360/390/430px; claro/escuro; PT/EN): abrir e fechar por bolha,
   scrim, X e Esc; a tela atual destacada; Tab preso no menu; o foco volta ao botão. Movimento reduzido ativado nos Ajustes
   do macOS (Acessibilidade → Tela → Reduzir movimento).
@@ -146,7 +144,7 @@ export function radialLayout(count: number, viewportWidth: number): RadialSlot[]
 - **Always:** i18n em todo texto novo; tokens de movimento e cor; animação só dentro de
   `prefers-reduced-motion: no-preference`; alvos de 48px; atualizar docs e CLAUDE.md no mesmo change; testar em 360px
   antes de dar como pronto.
-- **Ask first:** mudar o desktop; adicionar biblioteca de animação; um módulo com mais de 6 itens; mudar o `Dialog`
+- **Ask first:** mudar o desktop; adicionar biblioteca de animação; um módulo com mais de 7 itens; mudar o `Dialog`
   compartilhado.
 - **Never:** importar ícones direto do `lucide-react`; ação ou informação essencial só por hover; commitar sem você
   pedir.
@@ -154,6 +152,17 @@ export function radialLayout(count: number, viewportWidth: number): RadialSlot[]
 ## Success Criteria
 
 AC1 a AC10 conferidos como descrito acima, com lint, testes e build verdes.
+
+## Ajustes na implementação
+
+O que mudou em relação ao texto acima depois de construir:
+
+- **Cabe mais.** Com bolhas redondas (a análise usou caixas), 6 itens ficam num raio de 95px e 7 em 113px, a partir de
+  320px. O limite de escala passa de 6 para **7 itens**.
+- **O nome aparece acima do arco**, não no meio: com esse raio, o meio é o próprio botão. Também não há um tooltip por
+  bolha: o mesmo rótulo acima do arco atende mouse, teclado e toque, e nunca sai pela borda.
+- **Sem `aria-modal`:** o botão fica fora do `dialog` e é o controle de fechar. Com `aria-modal`, o leitor de tela o
+  esconderia. O Tab continua preso entre as bolhas e o botão.
 
 ## Decisões
 

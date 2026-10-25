@@ -29,7 +29,6 @@ export default {
     menu: '{{module}} menu',
     collapse: 'Collapse menu',
     expand: 'Expand menu',
-    more: 'More',
     close: 'Close menu',
   },
   errors: {

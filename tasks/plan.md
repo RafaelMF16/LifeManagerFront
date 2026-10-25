@@ -56,7 +56,7 @@ radialLayout.ts (pura, testada)
 - [ ] AC1–AC9 no Safari em 320/360/390/430px, claro/escuro, PT/EN, com e sem "Reduzir movimento"; revisão com você
 
 ### Phase 3: Limpeza e documentação
-- [ ] Task 4: Docs, CLAUDE.md e remoção do que sobrou da aba "Mais" (XS)
+- [x] Task 4: Docs, CLAUDE.md e remoção do que sobrou da aba "Mais" (XS)
 
 ### Checkpoint B: Completo
 - [ ] AC1–AC10; lint, testes e build verdes

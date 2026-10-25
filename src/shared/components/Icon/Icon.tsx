@@ -18,7 +18,6 @@ import {
   Coffee,
   Coins,
   Copy,
-  Ellipsis,
   Eye,
   EyeOff,
   Flame,
@@ -126,7 +125,6 @@ const ICONS = {
   'book-open': BookOpen,
   footprints: Footprints,
   upload: Upload,
-  ellipsis: Ellipsis,
 } as const
 
 export type IconName = keyof typeof ICONS
