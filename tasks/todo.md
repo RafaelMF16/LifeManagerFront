@@ -1,116 +1,112 @@
-# Tasks: Navegação mobile enxuta + cabeçalho do login
+# Tasks: Menu radial no celular
 
 Spec: `SPEC.md` · Plano: `tasks/plan.md`
 
-## Task 1: Cabeçalho do login sem sobreposição no celular
+## Task 1: Geometria do arco
 
-**Description:** No `@media (max-width: 768px)`, o `.lm-auth-page__header` passa de `1fr auto 1fr` para `1fr auto`: o
-`<span />` vazio é escondido, a marca fica à esquerda e idioma + tema à direita, com gap ≥ `--space-2`. O desktop fica
-como está.
+**Description:** `src/shared/utils/radialLayout.ts` exporta `radialLayout(count, viewportWidth)`, que devolve uma
+posição `{ x, y }` por bolha (px a partir do centro do botão, `y` para cima), da esquerda para a direita, num arco de até
+200° com o menor raio em que bolhas de 48px (+4px de folga) não colidem e ficam a 8px das bordas.
 
 **Acceptance criteria:**
-- [ ] Em 320, 360 e 390px a marca e os controles não se sobrepõem nem encostam (AC7)
-- [ ] Acima de 768px o cabeçalho continua centralizado como hoje
+- [ ] Para 5 e 6 itens em 320, 360, 390 e 430px: nenhuma colisão, tudo dentro da tela, ordem da esquerda para a direita
+- [ ] O arco é simétrico (o primeiro e o último item espelhados) e o raio não passa de ~110px para 6 itens
 
 **Verification:**
-- [ ] `npm run lint` e `npm run build` verdes
-- [ ] Manual: `/auth` no DevTools em 320/360/390/1024px, claro e escuro, PT e EN
+- [ ] `npm test` com os novos casos; `npm run lint`
 
 **Dependencies:** None
 
 **Files likely touched:**
-- `src/auth/pages/AuthPage.css`
-- `src/auth/pages/AuthPage.tsx` (só se precisar de uma classe no `<span />`)
-
-**Estimated scope:** XS
-
-## Task 2: Lógica pura da navegação mobile
-
-**Description:** Criar `src/shared/utils/moduleNav.ts` com `splitNavItems(items, primaryCount)` → `{ primary, overflow }`
-e `isAnyItemActive(items, pathname)`, que é verdadeira quando algum item com `path` casa com o pathname
-(`matchPath`, `end: false`). Testes ao lado.
-
-**Acceptance criteria:**
-- [ ] `splitNavItems` cobre: menos itens que o limite, exatamente o limite, mais que o limite
-- [ ] `isAnyItemActive` cobre: rota exata, sub-rota (`/finance/imports/abc`), rota de outro item, item `path: null`,
-      prefixo enganoso (`/finance/categoriesX` não casa)
-
-**Verification:**
-- [ ] `npm test` verde, com os novos casos
-- [ ] `npm run lint` verde
-
-**Dependencies:** None
-
-**Files likely touched:**
-- `src/shared/utils/moduleNav.ts`
-- `src/shared/utils/moduleNav.test.ts`
+- `src/shared/utils/radialLayout.ts`
+- `src/shared/utils/radialLayout.test.ts`
 
 **Estimated scope:** S
 
-## Checkpoint A
-- [ ] `npm test`, `npm run lint`, `npm run build` verdes
-- [ ] Login conferido em 320/360/390px
+## Task 2: Botão flutuante e arco no lugar da barra
 
-## Task 3: Aba "Mais" e folha inferior no ModuleSidebar
-
-**Description:** Com `MOBILE_PRIMARY_COUNT = 3`, os links a partir do 4º e "Todos os módulos" ganham
-`lm-module-sidebar__link--overflow` (`display: none` só no compacto). Um `<button>` "Mais" (`ellipsis`,
-`aria-haspopup="dialog"`, `aria-expanded`) entra como 4ª coluna da barra, com estado ativo via `isAnyItemActive`
-sobre os excedentes, e fica escondido acima de 768px. Ao tocar, ele abre um `Dialog` com título, os itens excedentes
-(o ativo destacado, `path: null` desabilitado com "Em breve"), um divisor e "Todos os módulos". A folha fecha ao
-navegar (efeito no `pathname` + `onClick` no link) e devolve o foco ao botão quando fecha sem navegar. Textos novos em
-`common` (pt-BR e en-US).
+**Description:** Criar `shared/components/RadialNav/` com o botão redondo de 56px (ícone do módulo, que vira X quando
+aberto, `aria-expanded`/`aria-controls`), o scrim e o arco (`role="dialog"`, `aria-modal`), as bolhas posicionadas por
+`--x`/`--y`/`--i` de `radialLayout` e animadas por CSS (abrir ~260ms em cascata, fechar `--duration-base`; só fade com
+movimento reduzido). Fecha por bolha (navegação), scrim, X e Esc, com o foco como no plano. O `ModuleSidebar` ganha
+`moduleIcon`, renderiza o `RadialNav` e some no compacto; a aba "Mais" e a folha saem. `--app-bottom-inset` passa a ser
+o botão + margens. `FinanceSidebar` (`wallet`) e `HabitsSidebar` (`check`) passam o ícone.
 
 **Acceptance criteria:**
-- [ ] No compacto: 4 abas iguais em Finanças e Hábitos, sem rótulo truncado em 360px (pt-BR e en-US); folha abre, lista
-      os itens certos e fecha por item/Escape/fundo/fechar (AC1–AC3)
-- [ ] "Mais" ativo em rotas excedentes (inclusive sub-rotas) e o item atual destacado na folha; foco volta ao botão
-      (AC4, AC5)
-- [ ] Desktop igual ao de hoje: todos os itens, "Todos os módulos", colapsar, sem "Mais" (AC6)
+- [ ] No compacto: só o botão flutuante; abre e fecha com animação; todas as telas + "Todos os módulos" no arco, a atual
+      destacada, `path: null` apagado (AC1–AC4, AC7)
+- [ ] Foco vai para a primeira bolha, circula no menu e volta ao botão ao fechar sem navegar (AC6)
+- [ ] Desktop igual ao de hoje; conteúdo e Toast livres do botão (AC8, AC9)
 
 **Verification:**
-- [ ] `npm test`, `npm run lint`, `npm run build` verdes
-- [ ] Manual no DevTools em 320/360/390/768/1024px, claro/escuro, PT/EN: `/finance/dashboard`, `/finance/categories`,
-      `/finance/imports/<id>`, `/habits/today`, `/habits/history`; teclado (Tab até "Mais", Enter, Escape → foco volta)
+- [ ] `npm test`, `npm run lint`, `npm run build`
+- [ ] Manual no Safari (Modo de Design Responsivo) em 320/360/430/1024px: Finanças e Hábitos, abrir/fechar pelos 4
+      caminhos, Tab, um toast, o orçamento com alterações não salvas
+
+**Dependencies:** Task 1
+
+**Files likely touched:**
+- `src/shared/components/RadialNav/RadialNav.tsx`
+- `src/shared/components/RadialNav/RadialNav.css`
+- `src/shared/components/ModuleSidebar/ModuleSidebar.tsx`
+- `src/shared/components/ModuleSidebar/ModuleSidebar.css`
+- `src/shared/locales/{pt-BR,en-US}.ts`
+- `src/finance/components/FinanceSidebar/FinanceSidebar.tsx`, `src/habits/components/HabitsSidebar/HabitsSidebar.tsx`
+
+**Estimated scope:** M (no limite: se crescer, separar o `moduleIcon` numa tarefa)
+
+## Task 3: Nome das telas
+
+**Description:** No `RadialNav`: tooltip acima de cada bolha em `:hover` (dentro de `@media (hover: hover)`, deslocado
+para dentro perto das bordas); um rótulo no meio do arco (`aria-hidden`) com o nome do item em foco; e, no toque,
+segurar ~300ms mostra o nome ali e aumenta a bolha, enquanto soltar navega e arrastar cancela. As bolhas levam
+`-webkit-touch-callout: none`, `user-select: none` e bloqueiam o `contextmenu`.
+
+**Acceptance criteria:**
+- [ ] Mouse: tooltip com o nome, sem sair da tela (AC3b, AC5)
+- [ ] Teclado: o nome do item em foco aparece no meio do arco
+- [ ] Toque: toque rápido navega; segurar mostra o nome; soltar navega; arrastar para fora cancela; sem pré-visualização
+      de link no iOS
+
+**Verification:**
+- [ ] `npm run lint`, `npm run build`
+- [ ] Manual: Safari no Mac (mouse e teclado); Simulador do iOS para segurar e soltar, se disponível (senão fica
+      registrado como não verificado)
 
 **Dependencies:** Task 2
 
 **Files likely touched:**
-- `src/shared/components/ModuleSidebar/ModuleSidebar.tsx`
-- `src/shared/components/ModuleSidebar/ModuleSidebar.css`
-- `src/shared/components/Icon/Icon.tsx`
-- `src/shared/locales/pt-BR.ts`
-- `src/shared/locales/en-US.ts`
+- `src/shared/components/RadialNav/RadialNav.tsx`
+- `src/shared/components/RadialNav/RadialNav.css`
 
-**Estimated scope:** M
+**Estimated scope:** S
 
-## Checkpoint B
-- [ ] AC1–AC6 conferidos no navegador nos dois módulos, temas e idiomas
+## Checkpoint A
+- [ ] AC1–AC9 no Safari em 320/360/390/430px, claro/escuro, PT/EN, com e sem "Reduzir movimento"
 - [ ] Revisão com você antes da documentação
 
-## Task 4: Documentação
+## Task 4: Limpeza e documentação
 
-**Description:** Descrever a aba "Mais" em `docs/fluxo-de-telas.md` (seção do menu do módulo, perto da linha "No
-celular…", com os rótulos exatos de `pt-BR.ts`), atualizar a nota "Module navigation" do CLAUDE.md (3 principais +
-"Mais", `moduleNav.ts`) e marcar as perguntas abertas do SPEC.md como resolvidas.
+**Description:** Remover `splitNavItems` (e os testes dele) de `moduleNav.ts` e as chaves de locale que ficaram sem uso
+(`moduleSidebar.more`). Atualizar `docs/fluxo-de-telas.md` (menu do módulo no celular: o botão, o arco, segurar para ver
+o nome) e o CLAUDE.md (a nota de "Module navigation", a exceção ao `Dialog` e o `RadialNav`).
 
 **Acceptance criteria:**
-- [ ] O guia diz quais telas ficam na barra e quais vão para "Mais", em cada módulo (AC8)
-- [ ] CLAUDE.md e SPEC.md refletem o que foi construído
+- [ ] Nenhum código ou texto morto da aba "Mais"
+- [ ] Guia e CLAUDE.md descrevem o menu radial, com os rótulos exatos de `pt-BR.ts` (AC10)
 
 **Verification:**
-- [ ] Revisão de leitura: os rótulos citados batem com `src/shared/locales/pt-BR.ts` e os locales dos módulos
+- [ ] `npm test`, `npm run lint`, `npm run build`; `grep -rn "splitNavItems\|moduleSidebar.more" src` vazio
 
 **Dependencies:** Task 3
 
 **Files likely touched:**
-- `docs/fluxo-de-telas.md`
-- `CLAUDE.md`
-- `SPEC.md`
+- `src/shared/utils/moduleNav.ts`, `src/shared/utils/moduleNav.test.ts`
+- `src/shared/locales/{pt-BR,en-US}.ts`
+- `docs/fluxo-de-telas.md`, `CLAUDE.md`
 
 **Estimated scope:** XS
 
-## Checkpoint C: Completo
-- [ ] AC1–AC8 atendidos
+## Checkpoint B: Completo
+- [ ] AC1–AC10 atendidos
 - [ ] `npm test`, `npm run lint`, `npm run build` verdes
-- [ ] Pronto para você revisar e commitar
