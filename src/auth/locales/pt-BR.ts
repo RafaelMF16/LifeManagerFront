@@ -20,6 +20,19 @@ export default {
     logIn: 'Entrar',
     emailSentMessage: 'Abra o link do e-mail para escolher sua senha e terminar o cadastro.',
   },
+  setPassword: {
+    title: 'Olá, {{name}}! Escolha sua senha',
+    subtitle: 'É o último passo para criar sua conta.',
+    submit: 'Criar conta',
+    successToast: 'Conta criada. Entre com seu e-mail e senha.',
+    backToSignUp: 'Voltar ao cadastro',
+  },
+  emailLink: {
+    checking: 'Verificando o link…',
+    invalidTitle: 'Este link expirou ou já foi usado',
+    invalidMessage: 'Os links valem por pouco tempo e só podem ser usados uma vez. Peça um novo para continuar.',
+    retry: 'Tentar de novo',
+  },
   emailSent: {
     title: 'Verifique seu e-mail',
     sentTo: 'Se o endereço estiver certo, enviamos um link para',

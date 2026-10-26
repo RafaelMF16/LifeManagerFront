@@ -20,6 +20,19 @@ export default {
     logIn: 'Log in',
     emailSentMessage: 'Open the link in the e-mail to choose your password and finish signing up.',
   },
+  setPassword: {
+    title: 'Hi, {{name}}! Choose your password',
+    subtitle: "It's the last step to create your account.",
+    submit: 'Create account',
+    successToast: 'Account created. Log in with your e-mail and password.',
+    backToSignUp: 'Back to sign-up',
+  },
+  emailLink: {
+    checking: 'Checking the link…',
+    invalidTitle: 'This link has expired or was already used',
+    invalidMessage: 'Links are only valid for a short time and can be used once. Request a new one to continue.',
+    retry: 'Try again',
+  },
   emailSent: {
     title: 'Check your e-mail',
     sentTo: "If the address is right, we've sent a link to",
