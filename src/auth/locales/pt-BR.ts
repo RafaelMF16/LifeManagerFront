@@ -18,7 +18,17 @@ export default {
     submit: 'Criar conta',
     hasAccount: 'Já tem conta?',
     logIn: 'Entrar',
-    successToast: 'Conta criada com sucesso',
+    emailSentMessage: 'Abra o link do e-mail para escolher sua senha e terminar o cadastro.',
+  },
+  emailSent: {
+    title: 'Verifique seu e-mail',
+    sentTo: 'Se o endereço estiver certo, enviamos um link para',
+    spamHint: 'Não chegou? Confira a caixa de spam ou lixo eletrônico.',
+    resend: 'Reenviar e-mail',
+    resendIn: 'Reenviar em {{seconds}}s',
+    resentToast: 'E-mail reenviado',
+    resendFailedTitle: 'Não foi possível reenviar',
+    changeEmail: 'Usar outro e-mail',
   },
   fields: {
     name: {
@@ -47,7 +57,6 @@ export default {
     email: {
       required: 'E-mail é obrigatório',
       invalid: 'E-mail inválido',
-      taken: 'Este e-mail já está cadastrado',
     },
     password: {
       required: 'Senha é obrigatória',

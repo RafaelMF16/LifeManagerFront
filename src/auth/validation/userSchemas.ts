@@ -28,10 +28,17 @@ const plainPasswordSchema = z
   .min(8, { message: 'auth:validation.password.tooShort' }) // code: User.PlainPasswordTooShort
   .max(50, { message: 'auth:validation.password.tooLong' }) // code: User.PlainPasswordTooLong
 
-export const registerSchema = z
+// Só nome e e-mail: a senha é escolhida depois, na página aberta pelo link de confirmação (newPasswordSchema).
+export const registerSchema = z.object({
+  name: userNameSchema,
+  email: emailSchema,
+})
+
+export type RegisterFormValues = z.infer<typeof registerSchema>
+
+// Página de definir senha (cadastro) e de redefinir senha (recuperação).
+export const newPasswordSchema = z
   .object({
-    name: userNameSchema,
-    email: emailSchema,
     password: plainPasswordSchema,
     confirmPassword: z.string().min(1, { message: 'auth:validation.confirmPassword.required' }),
   })
@@ -41,7 +48,14 @@ export const registerSchema = z
     path: ['confirmPassword'],
   })
 
-export type RegisterFormValues = z.infer<typeof registerSchema>
+export type NewPasswordFormValues = z.infer<typeof newPasswordSchema>
+
+// "Esqueceu a senha?": só o e-mail.
+export const forgotPasswordSchema = z.object({
+  email: emailSchema,
+})
+
+export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>
 
 // Login NÃO passa pelo Email.Create no backend: AuthService/UserService.AuthenticateUser
 // busca o e-mail diretamente no repositório, sem validar formato. Ainda assim, replicamos aqui

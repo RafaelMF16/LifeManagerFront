@@ -20,7 +20,6 @@ export async function register(data: RegisterFormValues, preferences: UserPrefer
     body: {
       name: data.name,
       email: data.email,
-      userPassword: data.password,
       ...toUserPreferencesDto(preferences),
     } satisfies RegisterRequestDto,
   })

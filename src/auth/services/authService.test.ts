@@ -21,7 +21,7 @@ describe('register', () => {
   beforeEach(() => {
     vi.stubGlobal('sessionStorage', createStorage())
     vi.stubGlobal('fetch', fetchMock)
-    fetchMock.mockResolvedValue(new Response(null, { status: 201 }))
+    fetchMock.mockResolvedValue(new Response(null, { status: 202 }))
   })
 
   afterEach(() => {
@@ -31,7 +31,7 @@ describe('register', () => {
 
   it('sends the sign-up screen language and theme as backend enum names', async () => {
     await register(
-      { name: 'Ana', email: 'ana@email.com', password: 'password123', confirmPassword: 'password123' },
+      { name: 'Ana', email: 'ana@email.com' },
       { theme: 'dark', language: 'en-US' },
     )
 
@@ -40,7 +40,6 @@ describe('register', () => {
     expect(JSON.parse(String(init?.body))).toEqual({
       name: 'Ana',
       email: 'ana@email.com',
-      userPassword: 'password123',
       theme: 'Dark',
       language: 'EN',
     })

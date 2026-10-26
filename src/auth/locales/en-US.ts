@@ -18,7 +18,17 @@ export default {
     submit: 'Create account',
     hasAccount: 'Already have an account?',
     logIn: 'Log in',
-    successToast: 'Account created successfully',
+    emailSentMessage: 'Open the link in the e-mail to choose your password and finish signing up.',
+  },
+  emailSent: {
+    title: 'Check your e-mail',
+    sentTo: "If the address is right, we've sent a link to",
+    spamHint: "Didn't get it? Check your spam or junk folder.",
+    resend: 'Resend e-mail',
+    resendIn: 'Resend in {{seconds}}s',
+    resentToast: 'E-mail sent again',
+    resendFailedTitle: "Couldn't resend",
+    changeEmail: 'Use another e-mail',
   },
   fields: {
     name: {
@@ -47,7 +57,6 @@ export default {
     email: {
       required: 'Email is required',
       invalid: 'Invalid email',
-      taken: 'This email is already registered',
     },
     password: {
       required: 'Password is required',
