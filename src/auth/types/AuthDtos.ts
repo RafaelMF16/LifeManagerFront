@@ -31,3 +31,16 @@ export interface CompleteRegistrationRequestDto {
   token: string
   password: string
 }
+
+export interface ForgotPasswordRequestDto {
+  email: string
+}
+
+export interface PasswordResetResponseDto {
+  email: string
+}
+
+export interface ResetPasswordRequestDto {
+  token: string
+  password: string
+}

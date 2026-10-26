@@ -27,6 +27,20 @@ export default {
     successToast: 'Conta criada. Entre com seu e-mail e senha.',
     backToSignUp: 'Voltar ao cadastro',
   },
+  forgotPassword: {
+    title: 'Esqueceu a senha?',
+    subtitle: 'Informe o e-mail da sua conta e enviaremos um link para você escolher uma nova senha.',
+    submit: 'Enviar link',
+    emailSentMessage: 'Abra o link do e-mail para escolher uma nova senha. Ele vale por 1 hora.',
+    backToLogin: 'Voltar para o login',
+  },
+  resetPassword: {
+    title: 'Escolha uma nova senha',
+    subtitle: 'Ao salvar, você sai de todos os aparelhos em que estava conectado.',
+    submit: 'Salvar nova senha',
+    successToast: 'Senha alterada. Entre com a nova senha.',
+    requestNewLink: 'Pedir novo link',
+  },
   emailLink: {
     checking: 'Verificando o link…',
     invalidTitle: 'Este link expirou ou já foi usado',

@@ -27,6 +27,20 @@ export default {
     successToast: 'Account created. Log in with your e-mail and password.',
     backToSignUp: 'Back to sign-up',
   },
+  forgotPassword: {
+    title: 'Forgot your password?',
+    subtitle: "Enter your account's e-mail and we'll send you a link to choose a new password.",
+    submit: 'Send link',
+    emailSentMessage: 'Open the link in the e-mail to choose a new password. It is valid for 1 hour.',
+    backToLogin: 'Back to log in',
+  },
+  resetPassword: {
+    title: 'Choose a new password',
+    subtitle: "Saving it logs you out of every device you're signed in on.",
+    submit: 'Save new password',
+    successToast: 'Password changed. Log in with your new password.',
+    requestNewLink: 'Request a new link',
+  },
   emailLink: {
     checking: 'Checking the link…',
     invalidTitle: 'This link has expired or was already used',

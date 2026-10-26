@@ -1,5 +1,7 @@
 import { Navigate, Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import AuthPage from './auth/pages/AuthPage'
+import ForgotPasswordPage from './auth/pages/ForgotPasswordPage'
+import ResetPasswordPage from './auth/pages/ResetPasswordPage'
 import SetPasswordPage from './auth/pages/SetPasswordPage'
 import FinanceLayout from './finance/components/FinanceLayout/FinanceLayout'
 import BudgetsPage from './finance/pages/BudgetsPage'
@@ -38,9 +40,11 @@ const router = createBrowserRouter(
     <Route element={<RootLayout />}>
       <Route element={<PublicOnlyRoute />}>
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
       </Route>
       {/* Opened from e-mail links: no guard, so they work even in a browser signed in to another account */}
       <Route path="/auth/set-password" element={<SetPasswordPage />} />
+      <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/home" element={<HomePage />} />
         <Route path="/finance" element={<FinanceLayout />}>

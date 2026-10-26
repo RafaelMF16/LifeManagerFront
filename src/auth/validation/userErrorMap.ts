@@ -1,10 +1,15 @@
 import type { ApiErrorFieldMap } from '../../shared/utils/applyApiErrorToForm'
-import type { LoginFormValues, NewPasswordFormValues, RegisterFormValues } from './userSchemas'
+import type { ForgotPasswordFormValues, LoginFormValues, NewPasswordFormValues, RegisterFormValues } from './userSchemas'
 
 // Espelha os códigos de LifeManager.Domain/Users/Errors/UserErrors.cs
 export const registerErrorFieldMap: ApiErrorFieldMap<RegisterFormValues> = {
   'User.UserNameIsNullOrWhiteSpace': { field: 'name', message: 'auth:validation.name.required' },
   'User.UserNameTooLong': { field: 'name', message: 'auth:validation.name.tooLong' },
+  'User.EmailIsNullOrWhiteSpace': { field: 'email', message: 'auth:validation.email.required' },
+  'User.EmailIsInvalid': { field: 'email', message: 'auth:validation.email.invalid' },
+}
+
+export const forgotPasswordErrorFieldMap: ApiErrorFieldMap<ForgotPasswordFormValues> = {
   'User.EmailIsNullOrWhiteSpace': { field: 'email', message: 'auth:validation.email.required' },
   'User.EmailIsInvalid': { field: 'email', message: 'auth:validation.email.invalid' },
 }
