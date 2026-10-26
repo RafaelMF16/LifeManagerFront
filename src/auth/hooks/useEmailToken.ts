@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { isApiError } from '../../shared/types/ApiError'
+import { emailLinkFailure } from '../utils/authApiErrors'
 import { readEmailLinkToken, withoutEmailLinkToken } from '../utils/emailLinkToken'
 
 export type EmailTokenState<T> =
@@ -9,10 +9,12 @@ export type EmailTokenState<T> =
   | { status: 'invalid' }
   // Couldn't reach the API: the link may still be fine
   | { status: 'error' }
+  // Rate limited (429): the link may still be fine, a few minutes later
+  | { status: 'tooManyRequests' }
 
 /**
  * Reads the token of an auth e-mail link (`?token=`), removes it from the address bar before any request, and checks
- * it with `verify`. Any API error means an invalid link (the backend answers one code for unknown, expired and used).
+ * it with `verify`. The invalid-token code means a bad link (the backend answers one code for unknown, expired and used).
  */
 export function useEmailToken<T>(verify: (token: string, signal: AbortSignal) => Promise<T>) {
   // Read once, on the first render: the effect below removes it from the URL.
@@ -34,7 +36,7 @@ export function useEmailToken<T>(verify: (token: string, signal: AbortSignal) =>
       .then((data) => setState({ status: 'valid', token, data }))
       .catch((err: unknown) => {
         if (controller.signal.aborted) return
-        setState(isApiError(err) ? { status: 'invalid' } : { status: 'error' })
+        setState({ status: emailLinkFailure(err) })
       })
 
     return () => controller.abort()

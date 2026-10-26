@@ -41,6 +41,10 @@ export default {
     successToast: 'Senha alterada. Entre com a nova senha.',
     requestNewLink: 'Pedir novo link',
   },
+  errors: {
+    tooManyRequestsTitle: 'Muitas tentativas',
+    tooManyRequests: 'Muitas tentativas. Tente de novo em alguns minutos.',
+  },
   emailLink: {
     checking: 'Verificando o link…',
     invalidTitle: 'Este link expirou ou já foi usado',

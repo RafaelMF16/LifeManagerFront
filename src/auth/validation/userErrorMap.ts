@@ -18,6 +18,9 @@ export const forgotPasswordErrorFieldMap: ApiErrorFieldMap<ForgotPasswordFormVal
 // Não é erro de campo: a página troca o formulário pela mensagem de link inválido.
 export const INVALID_EMAIL_TOKEN_CODE = 'Auth.InvalidEmailToken'
 
+// 429 do limite por IP nos endpoints que enviam e-mail ou recebem o token do link (AuthRateLimits no backend)
+export const TOO_MANY_REQUESTS_CODE = 'Auth.TooManyRequests'
+
 // Senha escolhida pelo link (cadastro e recuperação): regras de PlainPassword.Create
 export const newPasswordErrorFieldMap: ApiErrorFieldMap<NewPasswordFormValues> = {
   'User.PlainPasswordIsNullOrWhiteSpace': { field: 'password', message: 'auth:validation.password.required' },

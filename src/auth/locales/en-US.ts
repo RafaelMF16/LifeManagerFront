@@ -41,6 +41,10 @@ export default {
     successToast: 'Password changed. Log in with your new password.',
     requestNewLink: 'Request a new link',
   },
+  errors: {
+    tooManyRequestsTitle: 'Too many attempts',
+    tooManyRequests: 'Too many attempts. Try again in a few minutes.',
+  },
   emailLink: {
     checking: 'Checking the link…',
     invalidTitle: 'This link has expired or was already used',

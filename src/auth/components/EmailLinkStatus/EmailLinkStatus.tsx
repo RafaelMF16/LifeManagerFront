@@ -23,12 +23,21 @@ function EmailLinkStatus({ state, newLinkLabel, onNewLink, onRetry }: EmailLinkS
     )
   }
 
-  if (state === 'error') {
+  if (state === 'error' || state === 'tooManyRequests') {
     return (
       <>
         <div className="lm-auth-form__header">
-          <h1 className="lm-auth-form__title">{translate('common:errors.connection.title')}</h1>
-          <p className="lm-auth-form__subtitle">{translate('common:errors.connection.message')}</p>
+          {state === 'error' ? (
+            <>
+              <h1 className="lm-auth-form__title">{translate('common:errors.connection.title')}</h1>
+              <p className="lm-auth-form__subtitle">{translate('common:errors.connection.message')}</p>
+            </>
+          ) : (
+            <>
+              <h1 className="lm-auth-form__title">{translate('auth:errors.tooManyRequestsTitle')}</h1>
+              <p className="lm-auth-form__subtitle">{translate('auth:errors.tooManyRequests')}</p>
+            </>
+          )}
         </div>
         <Button variant="primary" size="lg" fullWidth onClick={onRetry}>
           {translate('auth:emailLink.retry')}

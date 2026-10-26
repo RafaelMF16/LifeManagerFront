@@ -13,6 +13,7 @@ import EmailSentNotice from '../components/EmailSentNotice/EmailSentNotice'
 import { requestPasswordReset } from '../services/authService'
 import { forgotPasswordErrorFieldMap } from '../validation/userErrorMap'
 import { forgotPasswordSchema } from '../validation/userSchemas'
+import { authErrorMessageKey } from '../utils/authApiErrors'
 import type { ForgotPasswordFormValues } from '../validation/userSchemas'
 import type { AuthPageState } from './AuthPage'
 import '../components/AuthForm.css'
@@ -37,7 +38,7 @@ function ForgotPasswordPage() {
       setSent(data)
     } catch (err) {
       if (isApiError(err)) {
-        applyApiErrorToForm(err, setError, forgotPasswordErrorFieldMap, translate)
+        applyApiErrorToForm(err, setError, forgotPasswordErrorFieldMap, translate, authErrorMessageKey(err))
       } else {
         showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       }
@@ -50,7 +51,7 @@ function ForgotPasswordPage() {
       showToast(translate('auth:emailSent.resentToast'))
     } catch (err) {
       if (isApiError(err)) {
-        showErrorModal(translate('auth:emailSent.resendFailedTitle'), translate('common:errors.generic'))
+        showErrorModal(translate('auth:emailSent.resendFailedTitle'), translate(authErrorMessageKey(err)))
       } else {
         showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       }

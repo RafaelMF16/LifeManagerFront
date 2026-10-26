@@ -7,6 +7,7 @@ import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
 import { isApiError } from '../../../shared/types/ApiError'
 import { INVALID_EMAIL_TOKEN_CODE, newPasswordErrorFieldMap } from '../../validation/userErrorMap'
 import { newPasswordSchema } from '../../validation/userSchemas'
+import { authErrorMessageKey } from '../../utils/authApiErrors'
 import type { NewPasswordFormValues } from '../../validation/userSchemas'
 import '../AuthForm.css'
 
@@ -37,7 +38,7 @@ function NewPasswordForm({ email, submitLabel, onSubmit, onInvalidLink }: NewPas
       if (isApiError(err) && err.code === INVALID_EMAIL_TOKEN_CODE) {
         onInvalidLink()
       } else if (isApiError(err)) {
-        applyApiErrorToForm(err, setError, newPasswordErrorFieldMap, translate)
+        applyApiErrorToForm(err, setError, newPasswordErrorFieldMap, translate, authErrorMessageKey(err))
       } else {
         showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       }

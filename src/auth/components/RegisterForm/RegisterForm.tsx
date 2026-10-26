@@ -11,6 +11,7 @@ import type { UserPreferences } from '../../../shared/types/UserPreferences'
 import { register as registerUser } from '../../services/authService'
 import { registerErrorFieldMap } from '../../validation/userErrorMap'
 import { registerSchema } from '../../validation/userSchemas'
+import { authErrorMessageKey } from '../../utils/authApiErrors'
 import type { RegisterFormValues } from '../../validation/userSchemas'
 import EmailSentNotice from '../EmailSentNotice/EmailSentNotice'
 import '../AuthForm.css'
@@ -40,7 +41,7 @@ function RegisterForm({ preferences, onSwitchToLogin }: RegisterFormProps) {
       setSent(data)
     } catch (err) {
       if (isApiError(err)) {
-        applyApiErrorToForm(err, setError, registerErrorFieldMap, translate)
+        applyApiErrorToForm(err, setError, registerErrorFieldMap, translate, authErrorMessageKey(err))
       } else {
         showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       }
@@ -53,7 +54,7 @@ function RegisterForm({ preferences, onSwitchToLogin }: RegisterFormProps) {
       showToast(translate('auth:emailSent.resentToast'))
     } catch (err) {
       if (isApiError(err)) {
-        showErrorModal(translate('auth:emailSent.resendFailedTitle'), translate('common:errors.generic'))
+        showErrorModal(translate('auth:emailSent.resendFailedTitle'), translate(authErrorMessageKey(err)))
       } else {
         showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       }
