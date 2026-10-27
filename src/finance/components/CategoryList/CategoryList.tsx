@@ -74,8 +74,8 @@ function CategoryList({
       )
     }
 
-    return data.items.map((category, index) => (
-      <div key={category.id} className="lm-category-list__row" data-tour={index === 0 ? 'categories.row' : undefined}>
+    return data.items.map((category) => (
+      <div key={category.id} className="lm-category-list__row" data-tour="categories.row">
         <span className="lm-category-list__name">{category.name}</span>
         <div className="lm-category-list__actions">
           <IconButton icon="pencil" size="sm" label={translate('finance:categories.list.edit')} onClick={() => onEdit(category)} />

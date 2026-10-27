@@ -150,14 +150,14 @@ function RecurringTransactionList({
       )
     }
 
-    return data.items.map((item, index) => {
+    return data.items.map((item) => {
       const display = TYPE_DISPLAY[item.type]
       const paused = item.status === 'Paused'
       return (
         <div
           key={item.id}
           className={`lm-recurring-list__row${item.status !== 'Active' ? ' lm-recurring-list__row--inactive' : ''}`}
-          data-tour={index === 0 ? 'recurring.row' : undefined}
+          data-tour="recurring.row"
         >
           <div className="lm-recurring-list__main">
             <span className="lm-recurring-list__description">

@@ -121,8 +121,8 @@ function MonthlySummaryList({
       )
     }
 
-    return data.items.map((summary, index) => (
-      <div key={summary.id} className="lm-month-list__row" data-tour={index === 0 ? 'months.row' : undefined}>
+    return data.items.map((summary) => (
+      <div key={summary.id} className="lm-month-list__row" data-tour="months.row">
         <span className="lm-month-list__period">
           <Link to={`/finance/months/${summary.id}`} className="lm-month-list__period-label">
             {periodLabel(summary.month, summary.year)}

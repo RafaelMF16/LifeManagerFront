@@ -147,11 +147,11 @@ function HabitList({
 
     if (data.totalCount === 0) return renderEmpty()
 
-    return data.items.map((habit, index) => (
+    return data.items.map((habit) => (
       <div
         key={habit.id}
         className={`lm-habit-list__row${habit.archivedAt ? ' lm-habit-list__row--archived' : ''}`}
-        data-tour={index === 0 ? 'habits.row' : undefined}
+        data-tour="habits.row"
       >
         <div className="lm-habit-list__main">
           <Link to={`/habits/list/${habit.id}`} className="lm-habit-list__name">

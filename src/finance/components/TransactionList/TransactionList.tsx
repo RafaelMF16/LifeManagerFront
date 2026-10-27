@@ -145,14 +145,10 @@ function TransactionList({
       )
     }
 
-    return data.items.map((transaction, index) => {
+    return data.items.map((transaction) => {
       const display = TYPE_DISPLAY[transaction.type]
       return (
-        <div
-          key={transaction.id}
-          className="lm-transaction-list__row"
-          data-tour={index === 0 ? 'monthDetails.row' : undefined}
-        >
+        <div key={transaction.id} className="lm-transaction-list__row" data-tour="monthDetails.row">
           <span className="lm-transaction-list__date lm-numeric">{dayLabel(transaction.date)}</span>
           <span className="lm-transaction-list__description">
             <Icon
