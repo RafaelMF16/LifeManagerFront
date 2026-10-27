@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import type { Location } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
@@ -78,7 +78,7 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
       </div>
 
       <div className="lm-auth-form__forgot">
-        <a href="#">{translate('auth:login.forgotPassword')}</a>
+        <Link to="/auth/forgot-password">{translate('auth:login.forgotPassword')}</Link>
       </div>
 
       {errors.root?.serverError?.message ? (

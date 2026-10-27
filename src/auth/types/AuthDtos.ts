@@ -9,11 +9,38 @@ export interface LoginResponseDto {
   accessToken: string
 }
 
-// language/theme: os da tela de cadastro; o backend cria as categorias padrão nesse idioma e salva as preferências
+// language/theme: os da tela de cadastro; viram o idioma do e-mail, das categorias padrão e as preferências
 export interface RegisterRequestDto {
   name: string
   email: string
-  userPassword: string
   language: LanguageDto
   theme: ThemeDto
+}
+
+// O token do link do e-mail vai sempre no corpo, nunca na URL da chamada
+export interface EmailTokenRequestDto {
+  token: string
+}
+
+export interface PendingRegistrationResponseDto {
+  email: string
+  name: string
+}
+
+export interface CompleteRegistrationRequestDto {
+  token: string
+  password: string
+}
+
+export interface ForgotPasswordRequestDto {
+  email: string
+}
+
+export interface PasswordResetResponseDto {
+  email: string
+}
+
+export interface ResetPasswordRequestDto {
+  token: string
+  password: string
 }

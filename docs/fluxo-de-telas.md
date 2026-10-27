@@ -11,6 +11,11 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
 - [Mapa de telas](#mapa-de-telas)
 - [Elementos comuns](#elementos-comuns)
 - [Acesso](#acesso)
+  - [Entrar](#entrar)
+  - [Criar conta](#criar-conta)
+  - [Escolher a senha do cadastro](#escolher-a-senha-do-cadastro)
+  - [Esqueceu a senha?](#esqueceu-a-senha)
+  - [Escolher uma nova senha](#escolher-uma-nova-senha)
 - [Home](#home)
 - [Financeiro](#financeiro)
   - [Painel](#painel)
@@ -34,6 +39,9 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
 
 ```
 /auth                       Entrar / Criar conta (só sem sessão)
+/auth/forgot-password       Esqueceu a senha? (só sem sessão)
+/auth/set-password          Escolher a senha do cadastro (link do e-mail)
+/auth/reset-password        Escolher uma nova senha (link do e-mail)
 /home                       Escolha do módulo
 /finance                    → Painel
   /finance/dashboard        Painel
@@ -108,7 +116,7 @@ As listas (meses, lançamentos, categorias, recorrências, hábitos, recompensas
 
 ## Acesso
 
-**Rota:** `/auth`. Só abre sem sessão; quem já está logado vai para a Home.
+**Rota:** `/auth`. Só abre sem sessão; quem já está logado vai para a Home. As telas abertas pelos links dos e-mails (definir senha e nova senha) ficam fora dessa regra.
 
 A tela tem duas abas: **Entrar** e **Criar conta**.
 
@@ -121,19 +129,57 @@ A tela tem duas abas: **Entrar** e **Criar conta**.
 
 - **Entrar:** com dados certos, mostra "Login realizado com sucesso", aplica o tema e o idioma salvos na conta e abre a Home (ou a tela que você tentou abrir antes). Com dados errados, mostra "E-mail ou senha inválidos".
 - **Não tem conta? Criar conta:** troca para a aba de cadastro.
-- **Esqueceu a senha?** ainda não tem função.
+- **Esqueceu a senha?:** abre a tela [Esqueceu a senha?](#esqueceu-a-senha).
 
 ### Criar conta
+
+O cadastro tem duas etapas: aqui você informa nome e e-mail; a senha é escolhida pelo link que chega por e-mail.
 
 | Campo | Regra |
 |---|---|
 | Nome | Obrigatório, até 100 caracteres |
-| E-mail | Obrigatório, formato válido, não pode estar cadastrado ("Este e-mail já está cadastrado") |
+| E-mail | Obrigatório, formato válido |
+
+- **Criar conta:** troca o formulário pelo aviso **"Verifique seu e-mail"**: "Se o endereço estiver certo, enviamos um link para" o e-mail digitado, "Abra o link do e-mail para escolher sua senha e terminar o cadastro." e "Não chegou? Confira a caixa de spam ou lixo eletrônico." O aviso é o mesmo se o e-mail já tiver conta (nesse caso, o e-mail que chega avisa isso e traz o link para recuperar a senha). O tema e o idioma escolhidos no topo da tela nesse momento viram o idioma do e-mail e, depois, os da conta.
+- **Reenviar e-mail:** envia de novo. Fica desabilitado por um minuto depois de cada envio, contando "Reenviar em 60s"; ao reenviar, aparece "E-mail reenviado".
+- **Usar outro e-mail:** volta ao formulário com o que foi digitado.
+- **Já tem conta? Entrar:** volta para a aba de login.
+- Pedidos demais do mesmo lugar em pouco tempo mostram "Muitas tentativas. Tente de novo em alguns minutos."
+
+### Escolher a senha do cadastro
+
+**Rota:** `/auth/set-password`, aberta pelo link do e-mail de confirmação (vale por 24 horas). Abre mesmo com outra conta logada no navegador.
+
+- Enquanto confere o link, mostra "Verificando o link…".
+- Com o link válido: **"Olá, <nome>! Escolha sua senha"**, "É o último passo para criar sua conta.", o e-mail (só leitura) e os campos:
+
+| Campo | Regra |
+|---|---|
 | Senha | De 8 a 50 caracteres |
 | Confirmar senha | Igual à senha ("As senhas não coincidem") |
 
-- **Criar conta:** cria a conta, mostra "Conta criada com sucesso" e volta para a aba **Entrar**. O cadastro não faz login automático. O tema e o idioma escolhidos no topo da tela no momento de criar a conta ficam salvos como os da conta, e ela já vem com 12 categorias prontas nesse idioma (Moradia, Mercado, Restaurantes etc.), que podem ser renomeadas ou excluídas em **Categorias**.
-- **Já tem conta? Entrar:** volta para a aba de login.
+- **Criar conta:** cria a conta, mostra "Conta criada. Entre com seu e-mail e senha." e abre a aba **Entrar** (sem login automático). A conta já vem com 12 categorias prontas no idioma do cadastro (Moradia, Mercado, Restaurantes etc.), que podem ser renomeadas ou excluídas em **Categorias**.
+- Link vencido, já usado ou trocado por um cadastro mais novo: **"Este link expirou ou já foi usado"**, com **Voltar ao cadastro** (abre a aba **Criar conta**).
+- Sem conexão: a mensagem de erro de conexão com **Tentar de novo**. Muitas tentativas: **"Muitas tentativas"**, também com **Tentar de novo**.
+
+### Esqueceu a senha?
+
+**Rota:** `/auth/forgot-password`, pelo link **Esqueceu a senha?** do login. Só abre sem sessão.
+
+| Campo | Regra |
+|---|---|
+| E-mail | Obrigatório, formato válido |
+
+- **Enviar link:** mostra o mesmo aviso **"Verifique seu e-mail"** do cadastro, com "Abra o link do e-mail para escolher uma nova senha. Ele vale por 1 hora.", **Reenviar e-mail** e **Usar outro e-mail**. O aviso é o mesmo para qualquer e-mail; só um e-mail com conta recebe o link.
+- **Voltar para o login:** volta para a aba **Entrar**.
+
+### Escolher uma nova senha
+
+**Rota:** `/auth/reset-password`, aberta pelo link do e-mail de recuperação. Abre mesmo com uma conta logada no navegador.
+
+- Com o link válido: **"Escolha uma nova senha"**, "Ao salvar, você sai de todos os aparelhos em que estava conectado.", o e-mail (só leitura), **Senha** e **Confirmar senha** (mesmas regras do cadastro).
+- **Salvar nova senha:** troca a senha, encerra todas as sessões da conta (inclusive a desta aba), mostra "Senha alterada. Entre com a nova senha." e abre a aba **Entrar**.
+- Link vencido ou já usado: **"Este link expirou ou já foi usado"**, com **Pedir novo link** (abre [Esqueceu a senha?](#esqueceu-a-senha)). Sem conexão ou com muitas tentativas, as mesmas mensagens da tela anterior, com **Tentar de novo**.
 
 ## Home
 

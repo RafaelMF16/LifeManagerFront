@@ -44,3 +44,10 @@
   font-size: var(--text-sm);
   color: var(--danger);
 }
+
+/* A form that sits inside a card with other content (the set/reset password pages): same rhythm as the panels. */
+.lm-auth-form__fields-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}

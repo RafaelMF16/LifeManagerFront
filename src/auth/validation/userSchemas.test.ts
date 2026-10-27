@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { loginSchema, registerSchema } from './userSchemas'
+import { loginSchema, newPasswordSchema, registerSchema } from './userSchemas'
 
 const validRegisterPayload = {
   name: 'Ada Lovelace',
   email: 'ada@example.com',
+}
+
+const validNewPasswordPayload = {
   password: '12345678',
   confirmPassword: '12345678',
 }
@@ -57,10 +60,10 @@ describe('registerSchema - email', () => {
   })
 })
 
-describe('registerSchema - password', () => {
+describe('newPasswordSchema', () => {
   it('rejeita senha vazia', () => {
-    const result = registerSchema.safeParse({
-      ...validRegisterPayload,
+    const result = newPasswordSchema.safeParse({
+      ...validNewPasswordPayload,
       password: '',
       confirmPassword: '',
     })
@@ -68,8 +71,8 @@ describe('registerSchema - password', () => {
   })
 
   it('rejeita senha com menos de 8 caracteres', () => {
-    const result = registerSchema.safeParse({
-      ...validRegisterPayload,
+    const result = newPasswordSchema.safeParse({
+      ...validNewPasswordPayload,
       password: '1234567',
       confirmPassword: '1234567',
     })
@@ -78,17 +81,27 @@ describe('registerSchema - password', () => {
 
   it('rejeita senha com mais de 50 caracteres', () => {
     const longPassword = '1'.repeat(51)
-    const result = registerSchema.safeParse({
-      ...validRegisterPayload,
+    const result = newPasswordSchema.safeParse({
+      ...validNewPasswordPayload,
       password: longPassword,
       confirmPassword: longPassword,
     })
     expect(result.success).toBe(false)
   })
 
+  it('aceita senha e confirmação iguais', () => {
+    const result = newPasswordSchema.safeParse(validNewPasswordPayload)
+    expect(result.success).toBe(true)
+  })
+
+  it('rejeita confirmação vazia', () => {
+    const result = newPasswordSchema.safeParse({ ...validNewPasswordPayload, confirmPassword: '' })
+    expect(result.success).toBe(false)
+  })
+
   it('rejeita quando confirmPassword diverge de password', () => {
-    const result = registerSchema.safeParse({
-      ...validRegisterPayload,
+    const result = newPasswordSchema.safeParse({
+      ...validNewPasswordPayload,
       confirmPassword: '87654321',
     })
     expect(result.success).toBe(false)
@@ -103,6 +116,11 @@ describe('registerSchema - payload válido', () => {
   it('aceita payload válido', () => {
     const result = registerSchema.safeParse(validRegisterPayload)
     expect(result.success).toBe(true)
+  })
+
+  it('não tem campo de senha (a senha é escolhida pelo link do e-mail)', () => {
+    const result = registerSchema.safeParse({ ...validRegisterPayload, password: 'x' })
+    expect(result.success && 'password' in result.data).toBe(false)
   })
 })
 

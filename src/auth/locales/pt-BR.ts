@@ -18,7 +18,48 @@ export default {
     submit: 'Criar conta',
     hasAccount: 'Já tem conta?',
     logIn: 'Entrar',
-    successToast: 'Conta criada com sucesso',
+    emailSentMessage: 'Abra o link do e-mail para escolher sua senha e terminar o cadastro.',
+  },
+  setPassword: {
+    title: 'Olá, {{name}}! Escolha sua senha',
+    subtitle: 'É o último passo para criar sua conta.',
+    submit: 'Criar conta',
+    successToast: 'Conta criada. Entre com seu e-mail e senha.',
+    backToSignUp: 'Voltar ao cadastro',
+  },
+  forgotPassword: {
+    title: 'Esqueceu a senha?',
+    subtitle: 'Informe o e-mail da sua conta e enviaremos um link para você escolher uma nova senha.',
+    submit: 'Enviar link',
+    emailSentMessage: 'Abra o link do e-mail para escolher uma nova senha. Ele vale por 1 hora.',
+    backToLogin: 'Voltar para o login',
+  },
+  resetPassword: {
+    title: 'Escolha uma nova senha',
+    subtitle: 'Ao salvar, você sai de todos os aparelhos em que estava conectado.',
+    submit: 'Salvar nova senha',
+    successToast: 'Senha alterada. Entre com a nova senha.',
+    requestNewLink: 'Pedir novo link',
+  },
+  errors: {
+    tooManyRequestsTitle: 'Muitas tentativas',
+    tooManyRequests: 'Muitas tentativas. Tente de novo em alguns minutos.',
+  },
+  emailLink: {
+    checking: 'Verificando o link…',
+    invalidTitle: 'Este link expirou ou já foi usado',
+    invalidMessage: 'Os links valem por pouco tempo e só podem ser usados uma vez. Peça um novo para continuar.',
+    retry: 'Tentar de novo',
+  },
+  emailSent: {
+    title: 'Verifique seu e-mail',
+    sentTo: 'Se o endereço estiver certo, enviamos um link para',
+    spamHint: 'Não chegou? Confira a caixa de spam ou lixo eletrônico.',
+    resend: 'Reenviar e-mail',
+    resendIn: 'Reenviar em {{seconds}}s',
+    resentToast: 'E-mail reenviado',
+    resendFailedTitle: 'Não foi possível reenviar',
+    changeEmail: 'Usar outro e-mail',
   },
   fields: {
     name: {
@@ -47,7 +88,6 @@ export default {
     email: {
       required: 'E-mail é obrigatório',
       invalid: 'E-mail inválido',
-      taken: 'Este e-mail já está cadastrado',
     },
     password: {
       required: 'Senha é obrigatória',

@@ -56,3 +56,15 @@
     display: none;
   }
 }
+
+/* The card of the pages without tabs (set password, forgot password, reset password): same surface as AuthTabs. */
+.lm-auth-card {
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}

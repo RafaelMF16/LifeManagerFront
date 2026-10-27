@@ -1,19 +1,16 @@
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import Input from '../../../shared/components/Input/Input'
-import { useZodForm } from '../../../shared/hooks/useZodForm'
-import { useToast } from '../../../shared/hooks/useToast'
-import { useErrorModal } from '../../../shared/hooks/useErrorModal'
-import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
-import { isApiError } from '../../../shared/types/ApiError'
 import type { UserPreferences } from '../../../shared/types/UserPreferences'
+import { useEmailRequestForm } from '../../hooks/useEmailRequestForm'
 import { register as registerUser } from '../../services/authService'
 import { registerErrorFieldMap } from '../../validation/userErrorMap'
 import { registerSchema } from '../../validation/userSchemas'
+import EmailSentNotice from '../EmailSentNotice/EmailSentNotice'
 import '../AuthForm.css'
 
 interface RegisterFormProps {
-  // Tema e idioma da tela no momento do envio: viram as preferências do usuário e o idioma das categorias padrão
+  // Tema e idioma da tela no momento do envio: viram o idioma do e-mail, as preferências e o idioma das categorias padrão
   preferences: UserPreferences
   onSwitchToLogin: () => void
 }
@@ -21,27 +18,28 @@ interface RegisterFormProps {
 function RegisterForm({ preferences, onSwitchToLogin }: RegisterFormProps) {
   const { t: translate } = useTranslation(['auth', 'common'])
   const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useZodForm(registerSchema)
-  const { show: showToast } = useToast()
-  const { show: showErrorModal } = useErrorModal()
+    form: {
+      register,
+      formState: { errors, isSubmitting },
+    },
+    sent,
+    onSubmit,
+    resend,
+    changeEmail,
+  } = useEmailRequestForm(registerSchema, (data) => registerUser(data, preferences), registerErrorFieldMap)
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      await registerUser(data, preferences)
-      showToast(translate('auth:register.successToast'))
-      onSwitchToLogin()
-    } catch (err) {
-      if (isApiError(err)) {
-        applyApiErrorToForm(err, setError, registerErrorFieldMap, translate)
-      } else {
-        showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
-      }
-    }
-  })
+  if (sent) {
+    return (
+      <div className="lm-auth-tabs__panel">
+        <EmailSentNotice
+          email={sent.email}
+          message={translate('auth:register.emailSentMessage')}
+          onResend={resend}
+          onChangeEmail={changeEmail}
+        />
+      </div>
+    )
+  }
 
   return (
     <form className="lm-auth-tabs__panel" onSubmit={onSubmit} noValidate>
@@ -66,23 +64,6 @@ function RegisterForm({ preferences, onSwitchToLogin }: RegisterFormProps) {
           autoComplete="email"
           error={errors.email?.message ? translate(errors.email.message) : undefined}
           {...register('email')}
-        />
-        <Input
-          label={translate('auth:fields.password.label')}
-          type="password"
-          placeholder={translate('auth:fields.password.placeholder')}
-          autoComplete="new-password"
-          hint={translate('auth:fields.password.hint')}
-          error={errors.password?.message ? translate(errors.password.message) : undefined}
-          {...register('password')}
-        />
-        <Input
-          label={translate('auth:fields.confirmPassword.label')}
-          type="password"
-          placeholder={translate('auth:fields.confirmPassword.placeholder')}
-          autoComplete="new-password"
-          error={errors.confirmPassword?.message ? translate(errors.confirmPassword.message) : undefined}
-          {...register('confirmPassword')}
         />
       </div>
 
