@@ -997,6 +997,10 @@ export default {
         title: 'Send the file',
         body: 'Pick an OFX or CSV file from your bank. For a CSV you check the columns first; the app remembers them for next time.',
       },
+      holders: {
+        title: 'Your accounts\' holders',
+        body: 'List the names the bank writes on transfers between your accounts (your full name, a business or joint account). Those transfers come in left out of the import.',
+      },
       list: {
         title: 'Imports',
         body: 'Carry on with a review in progress or discard it. Finished imports stay in the history.',

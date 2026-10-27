@@ -997,6 +997,10 @@ export default {
         title: 'Enviar o arquivo',
         body: 'Escolha um arquivo OFX ou CSV do seu banco. Num CSV você confere as colunas antes; o app lembra a escolha para o próximo.',
       },
+      holders: {
+        title: 'Titulares das suas contas',
+        body: 'Cadastre os nomes que o banco escreve nas transferências entre as suas contas (o seu completo, uma conta PJ ou conjunta). Essas transferências vêm fora da importação.',
+      },
       list: {
         title: 'Importações',
         body: 'Continue uma revisão em andamento ou descarte. As importadas ficam no histórico.',
