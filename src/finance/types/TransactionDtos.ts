@@ -36,6 +36,8 @@ export interface TransactionListQuery {
   type: TransactionTypeFilter
   /** Null means every category. */
   categoryId: number | null
+  /** One day of the month, ISO `YYYY-MM-DD`; left out means every day. */
+  date?: string
   search?: string
   sortBy: TransactionSortBy
   sortDirection: SortDirection

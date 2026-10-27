@@ -50,6 +50,7 @@ export function createFinanceFormat(language: string, hidden: boolean) {
     maximumFractionDigits: 1,
   })
   const shortMonthFormatter = new Intl.DateTimeFormat(language, { month: 'short', timeZone: 'UTC' })
+  const fullDayFormatter = new Intl.DateTimeFormat(language, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' })
   const weekdayFormatters = {
     short: new Intl.DateTimeFormat(language, { weekday: 'short', timeZone: 'UTC' }),
     narrow: new Intl.DateTimeFormat(language, { weekday: 'narrow', timeZone: 'UTC' }),
@@ -73,6 +74,11 @@ export function createFinanceFormat(language: string, hidden: boolean) {
         .filter((part) => part.type === 'day' || part.type === 'month')
         .map((part) => part.value.replace('.', ''))
         .join(' ')
+    },
+    /** "Sexta-feira, 2 de outubro" / "Friday, October 2" from an ISO `YYYY-MM-DD` date. */
+    fullDayLabel: (isoDate: string) => {
+      const [year, month, day] = isoDate.split('-').map(Number)
+      return capitalize(fullDayFormatter.format(Date.UTC(year, month - 1, day)))
     },
     /** A 0–1 ratio as a percentage, e.g. 0.623 → "62,3%". */
     percent: (ratio: number) => (hidden ? maskedPercent : percentFormatter.format(ratio)),

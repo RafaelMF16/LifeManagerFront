@@ -1,4 +1,4 @@
-import { useId } from 'react'
+import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import IconButton from '../../../shared/components/IconButton/IconButton'
@@ -8,8 +8,8 @@ import { usePrivacyMode } from '../../hooks/usePrivacyMode'
 import type { DashboardDayDto } from '../../types/DashboardDtos'
 import { calendarGrid } from '../../utils/calendarGrid'
 import { dayHeatLevel } from '../../utils/dayHeatLevel'
-import { parseYearMonth, toIsoDate } from '../../utils/yearMonth'
-import Amount from '../Amount/Amount'
+import { parseYearMonth, toIsoDate, toYearMonth } from '../../utils/yearMonth'
+import DayExpensesPanel from '../DayExpensesPanel/DayExpensesPanel'
 import './DailySpendingCalendar.css'
 
 /** The legend's swatches, from no spending to the month's biggest days. */
@@ -20,7 +20,12 @@ interface DailySpendingCalendarProps {
   months: string[]
 }
 
-/** The month's expenses day by day, starting on the period's newest month. */
+interface DaySelection {
+  month: string
+  date: string | null
+}
+
+/** The month's expenses day by day, starting on the period's newest month; a tapped day lists its expenses. */
 function DailySpendingCalendar({ months }: DailySpendingCalendarProps) {
   const { t: translate } = useTranslation('finance')
   const { money, compactMoney, periodLabel, weekdayNames } = useFinanceFormat()
@@ -28,8 +33,13 @@ function DailySpendingCalendar({ months }: DailySpendingCalendarProps) {
   const titleId = useId()
   const { month, data, status, isFetching, reload, previousMonth, nextMonth, setMonth } = useDashboardDays(months)
 
+  const [selection, setSelection] = useState<DaySelection | null>(null)
+
   const parsedMonth = parseYearMonth(month)
-  const today = toIsoDate(new Date())
+  const now = new Date()
+  const today = toIsoDate(now)
+  // A month starts with nothing selected, except the current one, which opens on today.
+  const selectedDate = selection?.month === month ? selection.date : month === toYearMonth(now) ? today : null
   const showsNavigation = months.length > 1
   // While the next month loads, the previous one's days stay on screen, dimmed.
   const daysByDate = new Map<string, DashboardDayDto>((data?.days ?? []).map((day) => [day.date, day]))
@@ -58,64 +68,65 @@ function DailySpendingCalendar({ months }: DailySpendingCalendarProps) {
         className={`lm-daily-calendar__body${isFetching ? ' lm-daily-calendar__body--fetching' : ''}`}
         aria-busy={isFetching}
       >
-        <div className="lm-daily-calendar__summary">
-          {data.total > 0 ? (
-            <>
-              <span className="lm-daily-calendar__summary-label">{translate('finance:dashboard.days.monthTotal')}</span>
-              <Amount value={data.total} tone="negative" emphasis />
-            </>
-          ) : (
-            <span className="lm-daily-calendar__summary-label">{translate('finance:dashboard.days.empty')}</span>
-          )}
-        </div>
-
-        <div className="lm-daily-calendar__grid">
-          {shortNames.map((name, index) => (
-            <span key={index} className="lm-daily-calendar__weekday" aria-hidden="true">
-              <span className="lm-daily-calendar__wide">{name}</span>
-              <span className="lm-daily-calendar__compact">{narrowNames[index]}</span>
-            </span>
-          ))}
-          {weeks.flat().map((date, index) => {
-            if (date === null) return <span key={`blank-${index}`} className="lm-daily-calendar__blank" aria-hidden="true" />
-
-            const day = daysByDate.get(date)
-            const total = day?.total ?? 0
-            const isFuture = date > today
-            // In privacy mode every day looks the same: how strong a color is gives the amount away.
-            const level = hidden ? 0 : dayHeatLevel(total, data.maxDayTotal)
-            const classes = [
-              'lm-daily-calendar__day',
-              `lm-daily-calendar__day--heat-${level}`,
-              date === today && 'lm-daily-calendar__day--today',
-              isFuture && 'lm-daily-calendar__day--future',
-            ]
-              .filter(Boolean)
-              .join(' ')
-
-            return (
-              <div key={date} className={classes}>
-                <span className="lm-daily-calendar__day-number">{Number(date.slice(8))}</span>
-                {total > 0 ? (
-                  <span className="lm-daily-calendar__day-total lm-numeric">
-                    <span className="lm-daily-calendar__wide">{money(total)}</span>
-                    <span className="lm-daily-calendar__compact">{compactMoney(total)}</span>
-                  </span>
-                ) : null}
-              </div>
-            )
-          })}
-        </div>
-
-        {!hidden && data.total > 0 ? (
-          <div className="lm-daily-calendar__legend" aria-hidden="true">
-            <span>{translate('finance:dashboard.days.legendLess')}</span>
-            {LEGEND_LEVELS.map((level) => (
-              <span key={level} className={`lm-daily-calendar__swatch lm-daily-calendar__day--heat-${level}`} />
+        <div className="lm-daily-calendar__calendar">
+          <div className="lm-daily-calendar__grid">
+            {shortNames.map((name, index) => (
+              <span key={index} className="lm-daily-calendar__weekday" aria-hidden="true">
+                <span className="lm-daily-calendar__wide">{name}</span>
+                <span className="lm-daily-calendar__compact">{narrowNames[index]}</span>
+              </span>
             ))}
-            <span>{translate('finance:dashboard.days.legendMore')}</span>
+            {weeks.flat().map((date, index) => {
+              if (date === null) return <span key={`blank-${index}`} className="lm-daily-calendar__blank" aria-hidden="true" />
+
+              const day = daysByDate.get(date)
+              const total = day?.total ?? 0
+              const isFuture = date > today
+              // In privacy mode every day looks the same: how strong a color is gives the amount away.
+              const level = hidden ? 0 : dayHeatLevel(total, data.maxDayTotal)
+              const classes = [
+                'lm-daily-calendar__day',
+                `lm-daily-calendar__day--heat-${level}`,
+                date === today && 'lm-daily-calendar__day--today',
+                date === selectedDate && 'lm-daily-calendar__day--selected',
+                isFuture && 'lm-daily-calendar__day--future',
+              ]
+                .filter(Boolean)
+                .join(' ')
+
+              return (
+                <button
+                  key={date}
+                  type="button"
+                  className={classes}
+                  disabled={isFuture}
+                  aria-pressed={date === selectedDate}
+                  onClick={() => setSelection({ month, date })}
+                >
+                  <span className="lm-daily-calendar__day-number">{Number(date.slice(8))}</span>
+                  {total > 0 ? (
+                    <span className="lm-daily-calendar__day-total lm-numeric">
+                      <span className="lm-daily-calendar__wide">{money(total)}</span>
+                      <span className="lm-daily-calendar__compact">{compactMoney(total)}</span>
+                    </span>
+                  ) : null}
+                </button>
+              )
+            })}
           </div>
-        ) : null}
+
+          {!hidden && data.total > 0 ? (
+            <div className="lm-daily-calendar__legend" aria-hidden="true">
+              <span>{translate('finance:dashboard.days.legendLess')}</span>
+              {LEGEND_LEVELS.map((level) => (
+                <span key={level} className={`lm-daily-calendar__swatch lm-daily-calendar__day--heat-${level}`} />
+              ))}
+              <span>{translate('finance:dashboard.days.legendMore')}</span>
+            </div>
+          ) : null}
+        </div>
+
+        <DayExpensesPanel days={data} selectedDate={data.month === month ? selectedDate : null} />
       </div>
     )
   }

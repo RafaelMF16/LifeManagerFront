@@ -40,9 +40,10 @@
 }
 
 .lm-daily-calendar__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+  align-items: start;
+  gap: var(--space-5);
   transition: opacity var(--duration-fast) var(--ease-standard);
 }
 
@@ -52,15 +53,11 @@
   pointer-events: none;
 }
 
-.lm-daily-calendar__summary {
+.lm-daily-calendar__calendar {
   display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-}
-
-.lm-daily-calendar__summary-label {
-  color: var(--text-secondary);
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
 }
 
 .lm-daily-calendar__grid {
@@ -85,7 +82,26 @@
   min-height: 56px;
   padding: 6px;
   background: var(--surface-sunken);
+  border: none;
   border-radius: var(--radius-sm);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lm-daily-calendar__day:disabled {
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .lm-daily-calendar__day:not(:disabled):hover {
+    filter: brightness(0.94);
+  }
+}
+
+.lm-daily-calendar__day:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* Heat: the text follows the step's ink (see colors.css), the day number included. Level 0 keeps the neutral cell. */
@@ -115,6 +131,15 @@
 
 .lm-daily-calendar__day--today {
   box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* The selected day: a ring outside the cell, so it never hides the heat color. */
+.lm-daily-calendar__day--selected {
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--text-primary);
+}
+
+.lm-daily-calendar__day--today.lm-daily-calendar__day--selected {
+  box-shadow: inset 0 0 0 2px var(--accent), 0 0 0 2px var(--surface), 0 0 0 4px var(--text-primary);
 }
 
 .lm-daily-calendar__day--future {
@@ -168,6 +193,11 @@
 @media (max-width: 768px) {
   .lm-daily-calendar {
     padding: var(--space-4);
+  }
+
+  .lm-daily-calendar__body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
   }
 
   .lm-daily-calendar__day {
