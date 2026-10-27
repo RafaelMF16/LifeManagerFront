@@ -73,6 +73,8 @@ export default {
       loadError: 'Não foi possível carregar os gastos do mês.',
       monthTotal: 'Total do mês',
       empty: 'Nenhuma despesa neste mês',
+      legendLess: 'Menos',
+      legendMore: 'Mais',
     },
     evolution: {
       title: 'Evolução mensal',

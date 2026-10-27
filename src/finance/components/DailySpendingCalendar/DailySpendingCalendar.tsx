@@ -4,11 +4,16 @@ import Button from '../../../shared/components/Button/Button'
 import IconButton from '../../../shared/components/IconButton/IconButton'
 import { useDashboardDays } from '../../hooks/useDashboardDays'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
+import { usePrivacyMode } from '../../hooks/usePrivacyMode'
 import type { DashboardDayDto } from '../../types/DashboardDtos'
 import { calendarGrid } from '../../utils/calendarGrid'
+import { dayHeatLevel } from '../../utils/dayHeatLevel'
 import { parseYearMonth, toIsoDate } from '../../utils/yearMonth'
 import Amount from '../Amount/Amount'
 import './DailySpendingCalendar.css'
+
+/** The legend's swatches, from no spending to the month's biggest days. */
+const LEGEND_LEVELS = [0, 1, 2, 3, 4] as const
 
 interface DailySpendingCalendarProps {
   /** The dashboard period's months, `yyyy-MM`, oldest first. Key the component by period to start over. */
@@ -19,6 +24,7 @@ interface DailySpendingCalendarProps {
 function DailySpendingCalendar({ months }: DailySpendingCalendarProps) {
   const { t: translate } = useTranslation('finance')
   const { money, compactMoney, periodLabel, weekdayNames } = useFinanceFormat()
+  const { hidden } = usePrivacyMode()
   const titleId = useId()
   const { month, data, status, isFetching, reload, previousMonth, nextMonth, setMonth } = useDashboardDays(months)
 
@@ -76,8 +82,11 @@ function DailySpendingCalendar({ months }: DailySpendingCalendarProps) {
             const day = daysByDate.get(date)
             const total = day?.total ?? 0
             const isFuture = date > today
+            // In privacy mode every day looks the same: how strong a color is gives the amount away.
+            const level = hidden ? 0 : dayHeatLevel(total, data.maxDayTotal)
             const classes = [
               'lm-daily-calendar__day',
+              `lm-daily-calendar__day--heat-${level}`,
               date === today && 'lm-daily-calendar__day--today',
               isFuture && 'lm-daily-calendar__day--future',
             ]
@@ -97,6 +106,16 @@ function DailySpendingCalendar({ months }: DailySpendingCalendarProps) {
             )
           })}
         </div>
+
+        {!hidden && data.total > 0 ? (
+          <div className="lm-daily-calendar__legend" aria-hidden="true">
+            <span>{translate('finance:dashboard.days.legendLess')}</span>
+            {LEGEND_LEVELS.map((level) => (
+              <span key={level} className={`lm-daily-calendar__swatch lm-daily-calendar__day--heat-${level}`} />
+            ))}
+            <span>{translate('finance:dashboard.days.legendMore')}</span>
+          </div>
+        ) : null}
       </div>
     )
   }

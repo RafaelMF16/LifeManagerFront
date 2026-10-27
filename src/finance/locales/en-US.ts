@@ -73,6 +73,8 @@ export default {
       loadError: "Couldn't load the month's spending.",
       monthTotal: 'Month total',
       empty: 'No expenses this month',
+      legendLess: 'Less',
+      legendMore: 'More',
     },
     evolution: {
       title: 'Monthly overview',

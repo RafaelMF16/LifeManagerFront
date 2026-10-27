@@ -83,6 +83,17 @@
   --chart-slice-5: #1baf7a;
   --chart-slice-6: #eb6834;
   --chart-slice-extra: var(--slate-500);
+  /* Spending calendar heat (one red ramp, light → dark), validated with the dataviz ordinal checker: monotone
+     lightness, every step ≥ 2:1 against the surface. Days with no spending keep --surface-sunken. Each step's
+     -text is the ink with the better APCA contrast on it. */
+  --chart-expense-heat-1: #f87171;
+  --chart-expense-heat-2: #dc2626;
+  --chart-expense-heat-3: #991b1b;
+  --chart-expense-heat-4: #5f1212;
+  --chart-expense-heat-1-text: var(--text-primary);
+  --chart-expense-heat-2-text: var(--text-inverse);
+  --chart-expense-heat-3-text: var(--text-inverse);
+  --chart-expense-heat-4-text: var(--text-inverse);
   --danger: var(--money-out-500);
   --danger-hover: var(--money-out-600);
   --success: var(--money-in-500);
@@ -129,6 +140,15 @@
   --chart-slice-5: #199e70;
   --chart-slice-6: #d95926;
   --chart-slice-extra: var(--slate-400);
+  /* The anchor flips on the dark surface: the biggest days are the brightest. */
+  --chart-expense-heat-1: #991b1b;
+  --chart-expense-heat-2: #dc2626;
+  --chart-expense-heat-3: #f87171;
+  --chart-expense-heat-4: #fecaca;
+  --chart-expense-heat-1-text: var(--text-primary);
+  --chart-expense-heat-2-text: var(--text-primary);
+  --chart-expense-heat-3-text: var(--text-inverse);
+  --chart-expense-heat-4-text: var(--text-inverse);
   --danger: var(--money-out-500);
   --danger-hover: var(--money-out-600);
   --success: var(--money-in-500);
