@@ -83,6 +83,76 @@ function AccountHoldersDialog({ onClose, onSaved }: AccountHoldersDialogProps) {
 
   const full = fields.length >= ACCOUNT_HOLDERS_MAX
 
+  function renderHolders() {
+    if (load.status === 'loading') {
+      return (
+        <p className="lm-account-holders__status" role="status">
+          {translate('finance:accountHolders.loading')}
+        </p>
+      )
+    }
+
+    if (load.status === 'failed') {
+      return (
+        <div className="lm-account-holders__failed" role="alert">
+          <p className="lm-account-holders__error">{translate('finance:accountHolders.loadError')}</p>
+          <Button variant="secondary" size="sm" onClick={retry}>
+            {translate('finance:accountHolders.retry')}
+          </Button>
+        </div>
+      )
+    }
+
+    return (
+      <>
+        {fields.length === 0 ? (
+          <p className="lm-account-holders__status">{translate('finance:accountHolders.empty')}</p>
+        ) : (
+          <ol className="lm-account-holders__list">
+            {fields.map((field, index) => {
+              const message = errors.holders?.[index]?.name?.message
+              return (
+                <li key={field.id} className="lm-account-holders__item">
+                  <div className="lm-account-holders__field">
+                    <Input
+                      label={translate('finance:accountHolders.nameLabel', { number: index + 1 })}
+                      placeholder={translate('finance:accountHolders.namePlaceholder')}
+                      maxLength={ACCOUNT_HOLDER_NAME_MAX_LENGTH}
+                      autoComplete="off"
+                      error={message ? translate(message) : undefined}
+                      {...register(`holders.${index}.name`)}
+                    />
+                  </div>
+                  <IconButton
+                    icon="trash-2"
+                    size="sm"
+                    className="lm-account-holders__remove"
+                    label={translate('finance:accountHolders.remove', { number: index + 1 })}
+                    onClick={() => remove(index)}
+                  />
+                </li>
+              )
+            })}
+          </ol>
+        )}
+
+        <Button
+          variant="ghost"
+          size="sm"
+          icon="plus"
+          className="lm-account-holders__add"
+          disabled={full}
+          onClick={() => append({ name: '' })}
+        >
+          {translate('finance:accountHolders.add')}
+        </Button>
+        {full ? (
+          <p className="lm-account-holders__note">{translate('finance:accountHolders.limit', { max: ACCOUNT_HOLDERS_MAX })}</p>
+        ) : null}
+      </>
+    )
+  }
+
   return (
     <Dialog labelledBy={titleId} onClose={onClose} className="lm-account-holders">
       <form onSubmit={submit} noValidate>
@@ -101,65 +171,7 @@ function AccountHoldersDialog({ onClose, onSaved }: AccountHoldersDialogProps) {
               : translate('finance:accountHolders.registeredNameUnknown')}
           </p>
 
-          {load.status === 'loading' ? (
-            <p className="lm-account-holders__status" role="status">
-              {translate('finance:accountHolders.loading')}
-            </p>
-          ) : load.status === 'failed' ? (
-            <div className="lm-account-holders__failed" role="alert">
-              <p className="lm-account-holders__error">{translate('finance:accountHolders.loadError')}</p>
-              <Button variant="secondary" size="sm" onClick={retry}>
-                {translate('finance:accountHolders.retry')}
-              </Button>
-            </div>
-          ) : (
-            <>
-              {fields.length === 0 ? (
-                <p className="lm-account-holders__status">{translate('finance:accountHolders.empty')}</p>
-              ) : (
-                <ol className="lm-account-holders__list">
-                  {fields.map((field, index) => {
-                    const message = errors.holders?.[index]?.name?.message
-                    return (
-                      <li key={field.id} className="lm-account-holders__item">
-                        <div className="lm-account-holders__field">
-                          <Input
-                            label={translate('finance:accountHolders.nameLabel', { number: index + 1 })}
-                            placeholder={translate('finance:accountHolders.namePlaceholder')}
-                            maxLength={ACCOUNT_HOLDER_NAME_MAX_LENGTH}
-                            autoComplete="off"
-                            error={message ? translate(message) : undefined}
-                            {...register(`holders.${index}.name`)}
-                          />
-                        </div>
-                        <IconButton
-                          icon="trash-2"
-                          size="sm"
-                          className="lm-account-holders__remove"
-                          label={translate('finance:accountHolders.remove', { number: index + 1 })}
-                          onClick={() => remove(index)}
-                        />
-                      </li>
-                    )
-                  })}
-                </ol>
-              )}
-
-              <Button
-                variant="ghost"
-                size="sm"
-                icon="plus"
-                className="lm-account-holders__add"
-                disabled={full}
-                onClick={() => append({ name: '' })}
-              >
-                {translate('finance:accountHolders.add')}
-              </Button>
-              {full ? (
-                <p className="lm-account-holders__note">{translate('finance:accountHolders.limit', { max: ACCOUNT_HOLDERS_MAX })}</p>
-              ) : null}
-            </>
-          )}
+          {renderHolders()}
 
           {errors.root?.serverError?.message ? (
             <p className="lm-account-holders__error" role="alert">
