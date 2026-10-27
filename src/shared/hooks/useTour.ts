@@ -22,7 +22,8 @@ export function useTour(tours: TourDefinition[]) {
   const tour = matchTour(pathname, tours)
   const [active, setActive] = useState<ActiveTour | null>(null)
 
-  // Ends the tour on another screen, adjusted during render rather than in an effect.
+  // Ends the tour on another screen, adjusted during render rather than in an effect: React discards this render and
+  // runs the component again at once, so the old screen's tour never reaches the overlay.
   if (active && active.pathname !== pathname) setActive(null)
 
   function start() {
@@ -45,11 +46,11 @@ export function useTour(tours: TourDefinition[]) {
     setActive(null)
   }
 
-  const open = active && active.pathname === pathname ? active : null
-
   return {
     tour,
-    active: open ? { tour: open.tour, step: open.steps[open.index], index: open.index, count: open.steps.length } : null,
+    active: active
+      ? { tour: active.tour, step: active.steps[active.index], index: active.index, count: active.steps.length }
+      : null,
     start,
     next,
     previous,
