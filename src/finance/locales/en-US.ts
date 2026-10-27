@@ -83,6 +83,9 @@ export default {
       listLoading: "Loading the day's expenses…",
       listLoadError: "Couldn't load the day's expenses.",
       seeMonth: 'See in the month',
+      dayAria_one: '{{day}}, {{amount}}, {{count}} expense',
+      dayAria_other: '{{day}}, {{amount}}, {{count}} expenses',
+      dayAriaEmpty: '{{day}}, no expenses',
     },
     evolution: {
       title: 'Monthly overview',

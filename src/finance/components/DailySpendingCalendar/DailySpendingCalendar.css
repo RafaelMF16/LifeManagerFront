@@ -66,6 +66,15 @@
   gap: var(--space-1);
 }
 
+.lm-daily-calendar__row {
+  display: contents;
+}
+
+.lm-daily-calendar__cell {
+  display: flex;
+  min-width: 0;
+}
+
 .lm-daily-calendar__weekday {
   padding-bottom: var(--space-1);
   font-size: var(--text-xs);
@@ -78,9 +87,12 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 2px;
+  flex: 1;
   min-width: 0;
   min-height: 56px;
   padding: 6px;
+  /* The total adapts to the cell's own width (container queries below), not the screen's. */
+  container-type: inline-size;
   background: var(--surface-sunken);
   border: none;
   border-radius: var(--radius-sm);
@@ -162,6 +174,29 @@
 
 .lm-daily-calendar__compact {
   display: none;
+}
+
+/* Full amount when it fits, the short one ("R$ 1,2 mil") in narrower cells, nothing in the narrowest (phones):
+   there the color and the day panel carry the amount, and every day's label reads it out. */
+.lm-daily-calendar__total-full,
+.lm-daily-calendar__total-compact {
+  display: none;
+}
+
+@container (min-width: 56px) {
+  .lm-daily-calendar__total-compact {
+    display: inline;
+  }
+}
+
+@container (min-width: 96px) {
+  .lm-daily-calendar__total-full {
+    display: inline;
+  }
+
+  .lm-daily-calendar__total-compact {
+    display: none;
+  }
 }
 
 .lm-daily-calendar__legend {

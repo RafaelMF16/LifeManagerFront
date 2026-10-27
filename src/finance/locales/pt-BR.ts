@@ -83,6 +83,9 @@ export default {
       listLoading: 'Carregando as despesas do dia…',
       listLoadError: 'Não foi possível carregar as despesas do dia.',
       seeMonth: 'Ver no mês',
+      dayAria_one: '{{day}}, {{amount}}, {{count}} despesa',
+      dayAria_other: '{{day}}, {{amount}}, {{count}} despesas',
+      dayAriaEmpty: '{{day}}, sem despesas',
     },
     evolution: {
       title: 'Evolução mensal',

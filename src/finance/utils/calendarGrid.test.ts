@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { calendarGrid } from './calendarGrid'
+import { calendarGrid, calendarKeyTarget } from './calendarGrid'
 
 describe('calendarGrid', () => {
   it('starts on Sunday with no leading blanks when the 1st is a Sunday', () => {
@@ -32,5 +32,38 @@ describe('calendarGrid', () => {
 
   it('returns no weeks for an invalid month', () => {
     expect(calendarGrid('2026-13')).toEqual([])
+  })
+})
+
+describe('calendarKeyTarget', () => {
+  // October 2026 starts on a Thursday: its first week is [_, _, _, _, 1, 2, 3].
+  const weeks = calendarGrid('2026-10')
+
+  it('moves a day sideways and a week up or down', () => {
+    expect(calendarKeyTarget(weeks, '2026-10-15', 'ArrowRight', '2026-10-31')).toBe('2026-10-16')
+    expect(calendarKeyTarget(weeks, '2026-10-15', 'ArrowLeft', '2026-10-31')).toBe('2026-10-14')
+    expect(calendarKeyTarget(weeks, '2026-10-15', 'ArrowDown', '2026-10-31')).toBe('2026-10-22')
+    expect(calendarKeyTarget(weeks, '2026-10-15', 'ArrowUp', '2026-10-31')).toBe('2026-10-08')
+  })
+
+  it('goes to the start or end of the week, inside the month', () => {
+    expect(calendarKeyTarget(weeks, '2026-10-02', 'Home', '2026-10-31')).toBe('2026-10-01')
+    expect(calendarKeyTarget(weeks, '2026-10-02', 'End', '2026-10-31')).toBe('2026-10-03')
+    expect(calendarKeyTarget(weeks, '2026-10-14', 'Home', '2026-10-31')).toBe('2026-10-11')
+  })
+
+  it('stays put past the month or past the last day that can be picked', () => {
+    expect(calendarKeyTarget(weeks, '2026-10-01', 'ArrowLeft', '2026-10-31')).toBeNull()
+    expect(calendarKeyTarget(weeks, '2026-10-03', 'ArrowUp', '2026-10-31')).toBeNull()
+    expect(calendarKeyTarget(weeks, '2026-10-27', 'ArrowRight', '2026-10-27')).toBeNull()
+    expect(calendarKeyTarget(weeks, '2026-10-24', 'ArrowDown', '2026-10-27')).toBeNull()
+  })
+
+  it('stops End at the last day that can be picked', () => {
+    expect(calendarKeyTarget(weeks, '2026-10-25', 'End', '2026-10-27')).toBe('2026-10-27')
+  })
+
+  it('ignores other keys', () => {
+    expect(calendarKeyTarget(weeks, '2026-10-15', 'Enter', '2026-10-31')).toBeNull()
   })
 })

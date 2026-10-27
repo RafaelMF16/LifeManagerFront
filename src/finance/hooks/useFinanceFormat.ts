@@ -52,6 +52,7 @@ export function createFinanceFormat(language: string, hidden: boolean) {
   const shortMonthFormatter = new Intl.DateTimeFormat(language, { month: 'short', timeZone: 'UTC' })
   const fullDayFormatter = new Intl.DateTimeFormat(language, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' })
   const weekdayFormatters = {
+    long: new Intl.DateTimeFormat(language, { weekday: 'long', timeZone: 'UTC' }),
     short: new Intl.DateTimeFormat(language, { weekday: 'short', timeZone: 'UTC' }),
     narrow: new Intl.DateTimeFormat(language, { weekday: 'narrow', timeZone: 'UTC' }),
   }
@@ -111,7 +112,7 @@ export function createFinanceFormat(language: string, hidden: boolean) {
     /** "Set" / "Sep". */
     shortMonthName,
     /** The 7 weekday names, Sunday first ("Dom", "Seg"… / "D", "S"…), as calendar headers. */
-    weekdayNames: (width: 'short' | 'narrow') =>
+    weekdayNames: (width: 'long' | 'short' | 'narrow') =>
       // 2026-02-01 is a Sunday.
       Array.from({ length: 7 }, (_, index) =>
         capitalize(weekdayFormatters[width].format(Date.UTC(2026, 1, 1 + index)).replace('.', '')),
