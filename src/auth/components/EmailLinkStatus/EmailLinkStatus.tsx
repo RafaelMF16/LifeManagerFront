@@ -23,37 +23,36 @@ function EmailLinkStatus({ state, newLinkLabel, onNewLink, onRetry }: EmailLinkS
     )
   }
 
-  if (state === 'error' || state === 'tooManyRequests') {
-    return (
-      <>
-        <div className="lm-auth-form__header">
-          {state === 'error' ? (
-            <>
-              <h1 className="lm-auth-form__title">{translate('common:errors.connection.title')}</h1>
-              <p className="lm-auth-form__subtitle">{translate('common:errors.connection.message')}</p>
-            </>
-          ) : (
-            <>
-              <h1 className="lm-auth-form__title">{translate('auth:errors.tooManyRequestsTitle')}</h1>
-              <p className="lm-auth-form__subtitle">{translate('auth:errors.tooManyRequests')}</p>
-            </>
-          )}
-        </div>
-        <Button variant="primary" size="lg" fullWidth onClick={onRetry}>
-          {translate('auth:emailLink.retry')}
-        </Button>
-      </>
-    )
-  }
+  // Every failure is a title, a message and the one way out: try again, or get a new link.
+  const failure = {
+    error: {
+      title: translate('common:errors.connection.title'),
+      message: translate('common:errors.connection.message'),
+      actionLabel: translate('auth:emailLink.retry'),
+      onAction: onRetry,
+    },
+    tooManyRequests: {
+      title: translate('auth:errors.tooManyRequestsTitle'),
+      message: translate('auth:errors.tooManyRequests'),
+      actionLabel: translate('auth:emailLink.retry'),
+      onAction: onRetry,
+    },
+    invalid: {
+      title: translate('auth:emailLink.invalidTitle'),
+      message: translate('auth:emailLink.invalidMessage'),
+      actionLabel: newLinkLabel,
+      onAction: onNewLink,
+    },
+  }[state]
 
   return (
     <>
       <div className="lm-auth-form__header">
-        <h1 className="lm-auth-form__title">{translate('auth:emailLink.invalidTitle')}</h1>
-        <p className="lm-auth-form__subtitle">{translate('auth:emailLink.invalidMessage')}</p>
+        <h1 className="lm-auth-form__title">{failure.title}</h1>
+        <p className="lm-auth-form__subtitle">{failure.message}</p>
       </div>
-      <Button variant="primary" size="lg" fullWidth onClick={onNewLink}>
-        {newLinkLabel}
+      <Button variant="primary" size="lg" fullWidth onClick={failure.onAction}>
+        {failure.actionLabel}
       </Button>
     </>
   )
