@@ -959,4 +959,28 @@ export default {
       rowGone: 'Esse lançamento não existe mais. A lista foi atualizada.',
     },
   },
+  tour: {
+    months: {
+      intro: {
+        title: 'Meses',
+        body: 'Cada mês reúne suas receitas, gastos e investimentos. Aqui você vê o saldo de todos e abre um mês para lançar e revisar transações.',
+      },
+      actions: {
+        title: 'Criar ou importar',
+        body: 'Novo mês cria um mês do ano atual. Importar extrato traz os lançamentos de um arquivo do banco e cria os meses que faltarem.',
+      },
+      filters: {
+        title: 'Filtrar a lista',
+        body: 'Escolha um ano ou veja só os meses que fecharam com saldo positivo ou negativo.',
+      },
+      sort: {
+        title: 'Ordenar',
+        body: 'Ordene por mês, receitas, gastos, investido ou saldo. Tocar de novo inverte a ordem.',
+      },
+      row: {
+        title: 'Abrir um mês',
+        body: 'Toque num mês para ver os totais e as transações dele, lançar novas e acompanhar o orçamento.',
+      },
+    },
+  },
 } as const

@@ -29,7 +29,7 @@ function MonthsPage() {
           <span className="lm-months-page__eyebrow">{translate('finance:module.name')}</span>
           <h1 className="lm-months-page__title">{translate('finance:months.title')}</h1>
         </div>
-        <div className="lm-months-page__actions">
+        <div className="lm-months-page__actions" data-tour="months.actions">
           <Button variant="secondary" icon="upload" onClick={() => navigate('/finance/imports')}>
             {translate('finance:imports.monthsButton')}
           </Button>

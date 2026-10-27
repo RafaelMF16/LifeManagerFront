@@ -1,6 +1,8 @@
 import { Outlet } from 'react-router-dom'
 import Footer from '../../../shared/components/Footer/Footer'
 import Header from '../../../shared/components/Header/Header'
+import TourButton from '../../../shared/components/Tour/TourButton'
+import { FINANCE_TOURS } from '../../utils/financeTours'
 import FinanceSidebar from '../FinanceSidebar/FinanceSidebar'
 import PrivacyToggle from '../PrivacyToggle/PrivacyToggle'
 import './FinanceLayout.css'
@@ -9,7 +11,14 @@ import './FinanceLayout.css'
 function FinanceLayout() {
   return (
     <div className="lm-finance-layout">
-      <Header actions={<PrivacyToggle />} />
+      <Header
+        actions={
+          <>
+            <TourButton tours={FINANCE_TOURS} />
+            <PrivacyToggle />
+          </>
+        }
+      />
 
       <div className="lm-finance-layout__body">
         <FinanceSidebar />

@@ -959,4 +959,28 @@ export default {
       rowGone: 'This transaction no longer exists. The list has been refreshed.',
     },
   },
+  tour: {
+    months: {
+      intro: {
+        title: 'Months',
+        body: 'Each month gathers your income, expenses and investments. Here you see every balance and open a month to add and review transactions.',
+      },
+      actions: {
+        title: 'Create or import',
+        body: 'New month creates a month of the current year. Import statement brings in a bank file and creates any missing months.',
+      },
+      filters: {
+        title: 'Filter the list',
+        body: 'Pick a year, or show only the months that closed with a positive or negative balance.',
+      },
+      sort: {
+        title: 'Sort',
+        body: 'Sort by month, income, expenses, invested or balance. Tap again to flip the order.',
+      },
+      row: {
+        title: 'Open a month',
+        body: 'Tap a month to see its totals and transactions, add new ones and follow its budget.',
+      },
+    },
+  },
 } as const
