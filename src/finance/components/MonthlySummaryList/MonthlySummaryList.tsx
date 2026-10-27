@@ -122,7 +122,7 @@ function MonthlySummaryList({
     }
 
     return data.items.map((summary) => (
-      <div key={summary.id} className="lm-month-list__row">
+      <div key={summary.id} className="lm-month-list__row" data-tour="months.row">
         <span className="lm-month-list__period">
           <Link to={`/finance/months/${summary.id}`} className="lm-month-list__period-label">
             {periodLabel(summary.month, summary.year)}
@@ -177,7 +177,7 @@ function MonthlySummaryList({
           ) : null}
         </div>
 
-        <div className="lm-month-list__filters">
+        <div className="lm-month-list__filters" data-tour="months.filters">
           <Select
             size="sm"
             label={translate('finance:months.list.filters.year')}
@@ -209,7 +209,7 @@ function MonthlySummaryList({
           ) : null}
         </div>
 
-        <div className="lm-month-list__compact-sort">
+        <div className="lm-month-list__compact-sort" data-tour="months.sort">
           <Select
             size="sm"
             label={translate('finance:months.list.sort.label')}
@@ -232,7 +232,7 @@ function MonthlySummaryList({
         </div>
       </div>
 
-      <div className="lm-month-list__columns">
+      <div className="lm-month-list__columns" data-tour="months.sort">
         {COLUMNS.map((column) => {
           const active = column.id === sortBy
           return (

@@ -95,7 +95,7 @@ function DashboardTotals({ totals, comparisonRange }: DashboardTotalsProps) {
   )
 
   return (
-    <section className="lm-dashboard-totals" aria-labelledby={titleId}>
+    <section className="lm-dashboard-totals" aria-labelledby={titleId} data-tour="dashboard.totals">
       <h2 id={titleId} className="lm-dashboard-totals__title">
         {translate('finance:dashboard.totals.label')}
       </h2>

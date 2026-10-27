@@ -31,6 +31,15 @@ export default {
     expand: 'Expand menu',
     close: 'Close menu',
   },
+  tour: {
+    start: 'Tour of this screen',
+    step: 'Step {{current}} of {{total}}',
+    previous: 'Back',
+    next: 'Next',
+    skip: 'Skip',
+    done: 'Done',
+    close: 'Close tour',
+  },
   errors: {
     connection: {
       title: 'Connection error',

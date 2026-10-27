@@ -28,7 +28,11 @@ function DashboardBudgets({ budgets }: DashboardBudgetsProps) {
 
   if (!budgets.hasGoals) {
     return (
-      <section className="lm-dashboard-budgets lm-dashboard-budgets--empty" aria-labelledby={titleId}>
+      <section
+        className="lm-dashboard-budgets lm-dashboard-budgets--empty"
+        aria-labelledby={titleId}
+        data-tour="dashboard.budgets"
+      >
         <div className="lm-dashboard-budgets__empty">
           <h2 id={titleId} className="lm-dashboard-budgets__title">
             {translate('finance:dashboard.budgets.title')}
@@ -131,7 +135,7 @@ function DashboardBudgets({ budgets }: DashboardBudgetsProps) {
   }
 
   return (
-    <section className="lm-dashboard-budgets" aria-labelledby={titleId}>
+    <section className="lm-dashboard-budgets" aria-labelledby={titleId} data-tour="dashboard.budgets">
       <div className="lm-dashboard-budgets__header">
         <h2 id={titleId} className="lm-dashboard-budgets__title">
           {translate('finance:dashboard.budgets.title')}

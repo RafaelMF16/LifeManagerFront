@@ -27,7 +27,7 @@ function ShopPage() {
         <p className="lm-shop-page__intro">{translate('habits:shop.intro')}</p>
       </div>
 
-      <nav className="lm-shop-page__tabs" aria-label={translate('habits:shop.tabsAria')}>
+      <nav className="lm-shop-page__tabs" aria-label={translate('habits:shop.tabsAria')} data-tour="shop.tabs">
         {TABS.map((tab) => (
           <NavLink
             key={tab.id}

@@ -154,7 +154,11 @@ function RecurringTransactionList({
       const display = TYPE_DISPLAY[item.type]
       const paused = item.status === 'Paused'
       return (
-        <div key={item.id} className={`lm-recurring-list__row${item.status !== 'Active' ? ' lm-recurring-list__row--inactive' : ''}`}>
+        <div
+          key={item.id}
+          className={`lm-recurring-list__row${item.status !== 'Active' ? ' lm-recurring-list__row--inactive' : ''}`}
+          data-tour="recurring.row"
+        >
           <div className="lm-recurring-list__main">
             <span className="lm-recurring-list__description">
               <Icon
@@ -205,7 +209,7 @@ function RecurringTransactionList({
       className={`lm-recurring-list${isFetching && status === 'ready' ? ' lm-recurring-list--fetching' : ''}`}
       aria-busy={isFetching}
     >
-      <div className="lm-recurring-list__toolbar">
+      <div className="lm-recurring-list__toolbar" data-tour="recurring.filters">
         <div className="lm-recurring-list__heading">
           <h2 className="lm-recurring-list__title">{translate('finance:recurring.list.title')}</h2>
           {status === 'ready' && data ? (

@@ -15,6 +15,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronUp,
+  CircleHelp,
   Coffee,
   Coins,
   Copy,
@@ -127,6 +128,7 @@ const ICONS = {
   'book-open': BookOpen,
   footprints: Footprints,
   upload: Upload,
+  'circle-help': CircleHelp,
 } as const
 
 export type IconName = keyof typeof ICONS

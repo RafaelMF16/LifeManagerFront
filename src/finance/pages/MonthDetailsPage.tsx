@@ -143,7 +143,7 @@ function MonthDetailsPage() {
             ) : null}
           </div>
         </div>
-        <div className="lm-month-details__actions">
+        <div className="lm-month-details__actions" data-tour="monthDetails.actions">
           <IconButton
             icon="chevron-left"
             variant="secondary"
@@ -164,7 +164,10 @@ function MonthDetailsPage() {
         </div>
       </div>
 
-      <div className={month.isFetching ? 'lm-month-details__totals lm-month-details__totals--fetching' : 'lm-month-details__totals'}>
+      <div
+        className={month.isFetching ? 'lm-month-details__totals lm-month-details__totals--fetching' : 'lm-month-details__totals'}
+        data-tour="monthDetails.totals"
+      >
         <MonthTotals month={data} />
       </div>
 

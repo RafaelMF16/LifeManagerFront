@@ -91,7 +91,11 @@ function StatementImportList({ data, status, isFetching, onPageChange, onRetry, 
       )
     }
 
-    return <ul className="lm-import-list__items">{data.items.map(renderItem)}</ul>
+    return (
+      <ul className="lm-import-list__items" data-tour="imports.list">
+        {data.items.map(renderItem)}
+      </ul>
+    )
   }
 
   function paginationLabel(page: PagedResponse<StatementImportResponseDto>) {

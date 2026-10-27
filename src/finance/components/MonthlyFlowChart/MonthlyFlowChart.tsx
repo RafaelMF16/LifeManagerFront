@@ -86,6 +86,7 @@ function MonthlyFlowChart({ months, goals = [] }: MonthlyFlowChartProps) {
     <section
       className={`lm-flow-chart${hidden ? ' lm-flow-chart--hidden' : ''}`}
       aria-labelledby={titleId}
+      data-tour="dashboard.chart"
     >
       <div className="lm-flow-chart__header">
         <h2 id={titleId} className="lm-flow-chart__title">

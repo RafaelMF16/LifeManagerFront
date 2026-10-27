@@ -21,7 +21,7 @@ function HabitStatsSummary({ stats }: HabitStatsSummaryProps) {
   const towardAutomatic = Math.min(totalKept / AUTOMATIC_DAYS, 1)
 
   return (
-    <dl className="lm-habit-stats">
+    <dl className="lm-habit-stats" data-tour="details.summary">
       <div className="lm-habit-stats__tile">
         <dt className="lm-habit-stats__label">{translate('habits:details.summary.streak')}</dt>
         <dd className="lm-habit-stats__value">

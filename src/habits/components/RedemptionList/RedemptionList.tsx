@@ -40,6 +40,7 @@ function RedemptionList({ data, status, isFetching, onPageChange, onRetry, onUnd
         disabled={pendingId === redemption.id}
         onClick={() => onUndo(redemption)}
         aria-label={translate('habits:shop.redemptions.undoAria', { name: redemption.rewardName })}
+        data-tour="redemptions.undo"
       >
         {translate('habits:shop.redemptions.undo')}
       </Button>
@@ -72,7 +73,7 @@ function RedemptionList({ data, status, isFetching, onPageChange, onRetry, onUnd
     }
 
     return (
-      <ul className="lm-redemption-list__rows">
+      <ul className="lm-redemption-list__rows" data-tour="redemptions.list">
         {data.items.map((redemption) => (
           <li
             key={redemption.id}

@@ -200,7 +200,11 @@ function BudgetsPage() {
 
     return (
       <div className="lm-budget-plan">
-        <section className="lm-budget-plan__overview" aria-label={translate('finance:budgetPlan.overviewLabel')}>
+        <section
+          className="lm-budget-plan__overview"
+          aria-label={translate('finance:budgetPlan.overviewLabel')}
+          data-tour="budget.overview"
+        >
           {hidden ? (
             // Privacy mode: the field would show the value, so the total is only shown masked.
             <div className="lm-budget-plan__total">
@@ -244,7 +248,7 @@ function BudgetsPage() {
             locked={hidden}
           />
           {hidden ? null : (
-            <div className="lm-budget-plan__add">
+            <div className="lm-budget-plan__add" data-tour="budget.add">
               <Button variant="secondary" icon="plus" onClick={() => setIsAdding(true)}>
                 {translate('finance:budgetPlan.add.button')}
               </Button>
@@ -343,7 +347,7 @@ function BudgetsPage() {
 
   return (
     <div className="lm-budgets-page">
-      <div className="lm-budgets-page__header">
+      <div className="lm-budgets-page__header" data-tour="budget.month">
         <MonthNavigator month={month} onChange={changeMonth} />
         {plan.data?.exists && plan.data.month === month ? (
           <Button variant="ghost" icon="trash-2" onClick={() => setIsDeleting(true)}>

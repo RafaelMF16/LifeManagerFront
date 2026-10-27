@@ -959,4 +959,198 @@ export default {
       rowGone: 'This transaction no longer exists. The list has been refreshed.',
     },
   },
+  tour: {
+    imports: {
+      intro: {
+        title: 'Import statement',
+        body: 'Bring your bank statement into the app: the transactions and any missing months, after a review.',
+      },
+      upload: {
+        title: 'Send the file',
+        body: 'Pick an OFX or CSV file from your bank. For a CSV you check the columns first; the app remembers them for next time.',
+      },
+      list: {
+        title: 'Imports',
+        body: 'Carry on with a review in progress or discard it. Finished imports stay in the history.',
+      },
+    },
+    importReview: {
+      intro: {
+        title: 'Review import',
+        body: 'Check the statement\'s lines before they go into your months. The review is saved, so you can carry on later.',
+      },
+      summary: {
+        title: 'Counters',
+        body: 'How many lines go in, how many have no category, are suggested or look like duplicates. Tap one to filter the list.',
+      },
+      months: {
+        title: 'Statement months',
+        body: 'Each month shows whether it exists or will be created and what goes into it. Tap a month to see only its lines.',
+      },
+      filters: {
+        title: 'Show and search',
+        body: 'Filter by state, search the description and change the order.',
+      },
+      rows: {
+        title: 'Each line',
+        body: 'Pick the category (saved at once), leave it out or edit it. Badges tell where a suggestion came from; tick several to change them together.',
+      },
+      confirm: {
+        title: 'Confirm',
+        body: 'Confirm import posts everything and creates the missing months. It unlocks once every included line has a category.',
+      },
+    },
+    budget: {
+      intro: {
+        title: 'Budget',
+        body: 'Set how much to spend and invest in the month and split that total among your categories. Each month has its own budget.',
+      },
+      tabs: {
+        title: 'Planning',
+        body: 'Planning has two parts: each month\'s Budget and the Recurring transactions.',
+      },
+      month: {
+        title: 'Pick the month',
+        body: 'Move between months or back to the current one. Delete budget removes only the open month\'s.',
+      },
+      empty: {
+        title: 'Start the budget',
+        body: 'Copy the budget of an earlier month or create one from scratch. Nothing is saved until you tap Save.',
+      },
+      overview: {
+        title: 'Total and split',
+        body: 'Enter the month\'s total. The chart shows each category\'s slice and the part that is still free.',
+      },
+      slice: {
+        title: 'Each slice',
+        body: 'Drag the slider to change the %, or tap the % to type an exact value. The bar shows how much is already spent.',
+      },
+      add: {
+        title: 'Add category',
+        body: 'Add a category, or Investments, to the budget. The new slice starts at 0%.',
+      },
+      save: {
+        title: 'Save',
+        body: 'Changes only count once saved. Discard goes back to the budget as it was.',
+      },
+    },
+    monthDetails: {
+      intro: {
+        title: 'Month details',
+        body: 'Everything that came in and went out this month: the totals, the budget and each transaction, which you can add, edit or delete.',
+      },
+      actions: {
+        title: 'Move and add',
+        body: 'The arrows go to the previous or next month. New transaction records income, an expense or an investment.',
+      },
+      totals: {
+        title: 'Month totals',
+        body: 'Income, expenses, invested and balance, with how many transactions and how much of your income is already spent.',
+      },
+      budget: {
+        title: 'Month budget',
+        body: 'The slices closest to their limit. See budget opens this month\'s plan.',
+      },
+      filters: {
+        title: 'Filter',
+        body: 'Filter by type and category, or search the description.',
+      },
+      row: {
+        title: 'Each transaction',
+        body: 'Date, description, category and amount, with the edit and delete buttons. Every change updates the totals at once.',
+      },
+    },
+    recurring: {
+      intro: {
+        title: 'Recurring',
+        body: 'Bills and income that repeat every month, like rent or salary. The app posts each one by itself on the right day.',
+      },
+      tabs: {
+        title: 'Planning',
+        body: 'Planning has two parts: each month\'s Budget and the Recurring transactions.',
+      },
+      create: {
+        title: 'New recurring',
+        body: 'Enter the amount, category, day of the month and when it starts. If that day already passed this month, it posts right away.',
+      },
+      filters: {
+        title: 'Filter and sort',
+        body: 'Filter by type and status, search the description, and sort by next posting, amount or day.',
+      },
+      row: {
+        title: 'Each recurring one',
+        body: 'Shows its day and next posting. Pause it to skip months, edit it to change the next ones, or delete it; what was posted stays.',
+      },
+    },
+    dashboard: {
+      intro: {
+        title: 'Dashboard',
+        body: 'A summary of your money in the chosen period: what came in, went out, was invested and saved, and how it changed over time.',
+      },
+      period: {
+        title: 'Period',
+        body: 'Pick the months the dashboard looks at. Next to it is the period the totals are compared with.',
+      },
+      totals: {
+        title: 'Period totals',
+        body: 'Income, expenses, invested and saved, with the change from the comparison period and your savings rate.',
+      },
+      days: {
+        title: 'Spending by day',
+        body: 'The redder the day, the more you spent. Tap a day to see its expenses.',
+      },
+      chart: {
+        title: 'Monthly trend',
+        body: 'Income, investments and expenses for each month, with the budget limits. Select a month to see its amounts.',
+      },
+      budgets: {
+        title: 'Period budget',
+        body: 'Compare what you planned with what you spent, and see the categories furthest past their limit.',
+      },
+      rankings: {
+        title: 'By category',
+        body: 'Where you spent and invested the most in the period. Tap a category to see it month by month.',
+      },
+    },
+    categories: {
+      intro: {
+        title: 'Categories',
+        body: 'Categories group your transactions, such as Groceries, Rent or Salary, and organize the dashboard and the budget.',
+      },
+      create: {
+        title: 'New category',
+        body: 'Create a category with just a name. A repeated name is refused, even with different accents or capitals.',
+      },
+      search: {
+        title: 'Search',
+        body: 'Find a category by name. Tapping Name, just below, flips the alphabetical order.',
+      },
+      row: {
+        title: 'Edit or delete',
+        body: 'Rename or delete a category. If it has transactions or recurring ones, move them to another category first.',
+      },
+    },
+    months: {
+      intro: {
+        title: 'Months',
+        body: 'Each month gathers your income, expenses and investments. Here you see every balance and open a month to add and review transactions.',
+      },
+      actions: {
+        title: 'Create or import',
+        body: 'New month creates a month of the current year. Import statement brings in a bank file and creates any missing months.',
+      },
+      filters: {
+        title: 'Filter the list',
+        body: 'Pick a year, or show only the months that closed with a positive or negative balance.',
+      },
+      sort: {
+        title: 'Sort',
+        body: 'Sort by month, income, expenses, invested or balance. Tap again to flip the order.',
+      },
+      row: {
+        title: 'Open a month',
+        body: 'Tap a month to see its totals and transactions, add new ones and follow its budget.',
+      },
+    },
+  },
 } as const

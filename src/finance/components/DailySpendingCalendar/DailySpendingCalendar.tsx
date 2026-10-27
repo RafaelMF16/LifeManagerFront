@@ -186,7 +186,7 @@ function DailySpendingCalendar({ months }: DailySpendingCalendarProps) {
   }
 
   return (
-    <section className="lm-daily-calendar" aria-labelledby={titleId}>
+    <section className="lm-daily-calendar" aria-labelledby={titleId} data-tour="dashboard.days">
       <div className="lm-daily-calendar__header">
         <h2 id={titleId} className="lm-daily-calendar__title">
           {translate('finance:dashboard.days.title')}

@@ -542,4 +542,118 @@ export default {
       episode: 'One episode of a show',
     },
   },
+  tour: {
+    rewards: {
+      intro: {
+        title: 'Rewards',
+        body: 'Treats you set for yourself and pay for with the coins your habits earn. Pick things you would do anyway.',
+      },
+      tabs: {
+        title: 'Shop',
+        body: 'The shop has two parts: the Rewards you set and the Redemptions you made.',
+      },
+      create: {
+        title: 'New reward',
+        body: 'Give it a name, a price in coins and an icon. An easy habit earns 5 coins; a hard one, 20.',
+      },
+      filters: {
+        title: 'Filter and sort',
+        body: 'See active or archived rewards, search by name and sort by price or name.',
+      },
+      cards: {
+        title: 'Redeem',
+        body: 'Each card shows the price and how many days of habits it costs. Redeem asks before spending the coins.',
+      },
+    },
+    redemptions: {
+      intro: {
+        title: 'Redemptions',
+        body: 'The rewards you already redeemed, newest first, with the price you paid.',
+      },
+      tabs: {
+        title: 'Shop',
+        body: 'The shop has two parts: the Rewards you set and the Redemptions you made.',
+      },
+      list: {
+        title: 'Redemption history',
+        body: 'Each redemption with its date and the coins spent. Undone ones are marked.',
+      },
+      undo: {
+        title: 'Undo',
+        body: 'A redemption made today can be undone: the coins come back to you.',
+      },
+    },
+    history: {
+      intro: {
+        title: 'History',
+        body: 'Everything that moved your coins, XP and HP: habits kept, misses, relapses, rewards and knockouts.',
+      },
+      ledger: {
+        title: 'Statement',
+        body: 'Newest first. Each line shows what happened and how much you gained or lost.',
+      },
+    },
+    today: {
+      intro: {
+        title: 'Today',
+        body: 'The day\'s list: check off what you did and log relapses of the habits you are avoiding.',
+      },
+      player: {
+        title: 'Your character',
+        body: 'Level, XP, HP, coins and streak freezes. They change as you keep or miss your habits.',
+      },
+      empty: {
+        title: 'Start here',
+        body: 'Pick an easy suggestion or create your own habit. Nothing is created until you save.',
+      },
+      yesterday: {
+        title: 'Left over from yesterday',
+        body: 'Yesterday\'s habits you can still check off until today ends. After that, the day counts as missed.',
+      },
+      list: {
+        title: 'For today',
+        body: 'Tap a habit to mark it done and earn coins and XP. Tap again to undo.',
+      },
+      avoid: {
+        title: 'Avoiding',
+        body: 'The clean days of each habit you avoid. I relapsed logs the slip and shows its cost first.',
+      },
+    },
+    habits: {
+      intro: {
+        title: 'Habits',
+        body: 'The habits you want to build or avoid. Keeping them earns coins and XP; missing them costs HP.',
+      },
+      create: {
+        title: 'New habit',
+        body: 'Choose whether to build or avoid it, the difficulty and the frequency. A cue, like "after coffee", helps you remember.',
+      },
+      filters: {
+        title: 'Filter and sort',
+        body: 'See active or archived habits, search by name and sort by name or creation date.',
+      },
+      row: {
+        title: 'Each habit',
+        body: 'Kind, frequency, streak and record. Tap to see its history; edit or archive it with the buttons.',
+      },
+    },
+    details: {
+      intro: {
+        title: 'Habit details',
+        body: 'How this habit is going: the streak, the consistency, a map of recent days and everything it earned or cost.',
+      },
+      summary: {
+        title: 'Summary',
+        body: 'Streak and record, recent consistency, and how many days are left of the 66 that make a habit automatic.',
+      },
+      heatmap: {
+        title: 'Last 13 weeks',
+        body: 'One square per day, colored by what happened. Tap a day to see the details.',
+      },
+      ledger: {
+        title: 'Entries',
+        body: 'This habit\'s own statement: coins, XP and HP earned or lost each day.',
+      },
+    },
+  },
 } as const

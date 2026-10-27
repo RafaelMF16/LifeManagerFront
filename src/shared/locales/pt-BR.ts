@@ -31,6 +31,15 @@ export default {
     expand: 'Expandir menu',
     close: 'Fechar menu',
   },
+  tour: {
+    start: 'Tour desta tela',
+    step: 'Passo {{current}} de {{total}}',
+    previous: 'Anterior',
+    next: 'Próximo',
+    skip: 'Pular',
+    done: 'Concluir',
+    close: 'Fechar tour',
+  },
   errors: {
     connection: {
       title: 'Erro de conexão',

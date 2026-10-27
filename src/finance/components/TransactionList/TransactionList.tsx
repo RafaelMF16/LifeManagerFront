@@ -148,7 +148,7 @@ function TransactionList({
     return data.items.map((transaction) => {
       const display = TYPE_DISPLAY[transaction.type]
       return (
-        <div key={transaction.id} className="lm-transaction-list__row">
+        <div key={transaction.id} className="lm-transaction-list__row" data-tour="monthDetails.row">
           <span className="lm-transaction-list__date lm-numeric">{dayLabel(transaction.date)}</span>
           <span className="lm-transaction-list__description">
             <Icon
@@ -225,7 +225,7 @@ function TransactionList({
           ) : null}
         </div>
 
-        <div className="lm-transaction-list__filters">
+        <div className="lm-transaction-list__filters" data-tour="monthDetails.filters">
           <div className="lm-transaction-list__type">
             <span className="lm-transaction-list__filter-label" aria-hidden="true">
               {translate('finance:transactions.list.filters.type')}

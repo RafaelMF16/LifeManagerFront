@@ -142,6 +142,7 @@ function BudgetSliceList({ rows, free, selectedKey, onSelect, onPercentChange, o
           key={row.key}
           ref={setItemRef(row.key)}
           className={`lm-budget-slice${row.key === selectedKey ? ' lm-budget-slice--selected' : ''}`}
+          data-tour="budget.slice"
         >
           {renderHead(row.key, row.name, row.percent, row.amount, row.color, true)}
           {onPercentChange ? (

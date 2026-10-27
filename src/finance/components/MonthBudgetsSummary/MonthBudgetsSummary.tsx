@@ -44,7 +44,11 @@ function MonthBudgetsSummary({ year, month, refreshKey }: MonthBudgetsSummaryPro
 
   if (!data.exists) {
     return (
-      <section className="lm-month-budgets lm-month-budgets--empty" aria-label={translate('finance:budgetPlan.summary.title')}>
+      <section
+        className="lm-month-budgets lm-month-budgets--empty"
+        aria-label={translate('finance:budgetPlan.summary.title')}
+        data-tour="monthDetails.budget"
+      >
         <span className="lm-month-budgets__empty-text">
           <Icon name="target" size={16} aria-hidden="true" />
           {translate('finance:budgetPlan.summary.none')}
@@ -84,7 +88,7 @@ function MonthBudgetsSummary({ year, month, refreshKey }: MonthBudgetsSummaryPro
   const shown = [...goals].sort((first, second) => second.ratio - first.ratio).slice(0, MAX_SHOWN)
 
   return (
-    <section className="lm-month-budgets" aria-labelledby="lm-month-budgets-title">
+    <section className="lm-month-budgets" aria-labelledby="lm-month-budgets-title" data-tour="monthDetails.budget">
       <div className="lm-month-budgets__header">
         <div className="lm-month-budgets__heading">
           <h2 id="lm-month-budgets-title" className="lm-month-budgets__title">

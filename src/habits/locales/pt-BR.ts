@@ -542,4 +542,118 @@ export default {
       episode: 'Um episódio de série',
     },
   },
+  tour: {
+    rewards: {
+      intro: {
+        title: 'Recompensas',
+        body: 'Prêmios que você mesmo define e paga com as moedas dos hábitos. Escolha coisas que você já faria.',
+      },
+      tabs: {
+        title: 'Loja',
+        body: 'A loja tem duas partes: as Recompensas que você define e os Resgates que já fez.',
+      },
+      create: {
+        title: 'Nova recompensa',
+        body: 'Dê um nome, um preço em moedas e um ícone. Um hábito fácil rende 5 moedas; um difícil, 20.',
+      },
+      filters: {
+        title: 'Filtrar e ordenar',
+        body: 'Veja as ativas ou as arquivadas, busque pelo nome e ordene por preço ou nome.',
+      },
+      cards: {
+        title: 'Resgatar',
+        body: 'Cada cartão mostra o preço e quantos dias de hábitos ele custa. Resgatar confirma antes de gastar as moedas.',
+      },
+    },
+    redemptions: {
+      intro: {
+        title: 'Resgates',
+        body: 'As recompensas que você já resgatou, da mais recente para a mais antiga, com o preço pago.',
+      },
+      tabs: {
+        title: 'Loja',
+        body: 'A loja tem duas partes: as Recompensas que você define e os Resgates que já fez.',
+      },
+      list: {
+        title: 'Histórico de resgates',
+        body: 'Cada resgate com a data e as moedas gastas. Os desfeitos ficam marcados.',
+      },
+      undo: {
+        title: 'Desfazer',
+        body: 'Um resgate de hoje pode ser desfeito: as moedas voltam para você.',
+      },
+    },
+    history: {
+      intro: {
+        title: 'Histórico',
+        body: 'Tudo o que mexeu nas suas moedas, XP e HP: hábitos cumpridos, falhas, recaídas, resgates e nocautes.',
+      },
+      ledger: {
+        title: 'Extrato',
+        body: 'Do mais recente para o mais antigo. Cada linha mostra o que aconteceu e quanto ganhou ou perdeu.',
+      },
+    },
+    today: {
+      intro: {
+        title: 'Hoje',
+        body: 'A lista do dia: marque o que você fez e registre recaídas dos hábitos que está evitando.',
+      },
+      player: {
+        title: 'Seu personagem',
+        body: 'Nível, XP, HP, moedas e proteções de ofensiva. Tudo muda conforme você cumpre ou falha nos hábitos.',
+      },
+      empty: {
+        title: 'Comece por aqui',
+        body: 'Escolha uma sugestão fácil ou crie o seu próprio hábito. Nada é criado até você salvar.',
+      },
+      yesterday: {
+        title: 'Ontem ficou pendente',
+        body: 'Hábitos de ontem que você ainda pode marcar até o fim de hoje. Depois, o dia conta como falha.',
+      },
+      list: {
+        title: 'Para hoje',
+        body: 'Toque num hábito para marcar como feito e ganhar moedas e XP. Toque de novo para desfazer.',
+      },
+      avoid: {
+        title: 'Evitando',
+        body: 'Os dias limpos de cada hábito que você evita. Tive uma recaída registra o deslize e mostra o custo antes.',
+      },
+    },
+    habits: {
+      intro: {
+        title: 'Hábitos',
+        body: 'Os hábitos que você quer construir ou evitar. Cumprir rende moedas e XP; falhar custa HP.',
+      },
+      create: {
+        title: 'Novo hábito',
+        body: 'Escolha se é para construir ou evitar, a dificuldade e a frequência. Um gatilho, como "depois do café", ajuda a lembrar.',
+      },
+      filters: {
+        title: 'Filtrar e ordenar',
+        body: 'Veja os ativos ou os arquivados, busque pelo nome e ordene por nome ou data de criação.',
+      },
+      row: {
+        title: 'Cada hábito',
+        body: 'Tipo, frequência, ofensiva e recorde. Toque para ver o histórico; edite ou arquive pelos botões.',
+      },
+    },
+    details: {
+      intro: {
+        title: 'Detalhe do hábito',
+        body: 'Como este hábito está indo: a ofensiva, a consistência, o mapa dos últimos dias e tudo o que ele já rendeu ou custou.',
+      },
+      summary: {
+        title: 'Resumo',
+        body: 'Ofensiva e recorde, a consistência recente e quantos dias faltam para os 66 que tornam um hábito automático.',
+      },
+      heatmap: {
+        title: 'Últimas 13 semanas',
+        body: 'Um quadrado por dia, colorido pelo que aconteceu. Toque num dia para ver o detalhe.',
+      },
+      ledger: {
+        title: 'Lançamentos',
+        body: 'O extrato só deste hábito: moedas, XP e HP ganhos ou perdidos em cada dia.',
+      },
+    },
+  },
 } as const

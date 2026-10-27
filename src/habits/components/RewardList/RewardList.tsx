@@ -208,7 +208,11 @@ function RewardList({
 
     if (data.totalCount === 0) return renderEmpty()
 
-    return <ul className="lm-reward-list__grid">{data.items.map(renderCard)}</ul>
+    return (
+      <ul className="lm-reward-list__grid" data-tour="rewards.cards">
+        {data.items.map(renderCard)}
+      </ul>
+    )
   }
 
   function rangeLabel(page: PagedResponse<RewardResponseDto>) {
@@ -223,7 +227,7 @@ function RewardList({
       className={`lm-reward-list${isFetching && status === 'ready' ? ' lm-reward-list--fetching' : ''}`}
       aria-busy={isFetching}
     >
-      <div className="lm-reward-list__toolbar">
+      <div className="lm-reward-list__toolbar" data-tour="rewards.filters">
         <div className="lm-reward-list__heading">
           <h2 className="lm-reward-list__title">{translate('habits:shop.list.title')}</h2>
           {status === 'ready' && data ? (

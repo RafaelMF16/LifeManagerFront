@@ -21,7 +21,7 @@ function PlanningPage() {
         <h1 className="lm-planning-page__title">{translate('finance:planning.title')}</h1>
       </div>
 
-      <nav className="lm-planning-page__tabs" aria-label={translate('finance:planning.tabsAria')}>
+      <nav className="lm-planning-page__tabs" aria-label={translate('finance:planning.tabsAria')} data-tour="planning.tabs">
         {TABS.map((tab) => (
           <NavLink
             key={tab.id}

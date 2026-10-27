@@ -959,4 +959,198 @@ export default {
       rowGone: 'Esse lançamento não existe mais. A lista foi atualizada.',
     },
   },
+  tour: {
+    imports: {
+      intro: {
+        title: 'Importar extrato',
+        body: 'Traga o extrato do banco para o app: as transações e os meses que faltam, depois de uma revisão.',
+      },
+      upload: {
+        title: 'Enviar o arquivo',
+        body: 'Escolha um arquivo OFX ou CSV do seu banco. Num CSV você confere as colunas antes; o app lembra a escolha para o próximo.',
+      },
+      list: {
+        title: 'Importações',
+        body: 'Continue uma revisão em andamento ou descarte. As importadas ficam no histórico.',
+      },
+    },
+    importReview: {
+      intro: {
+        title: 'Revisar importação',
+        body: 'Confira os lançamentos do extrato antes de levá-los para os seus meses. A revisão fica salva: dá para continuar depois.',
+      },
+      summary: {
+        title: 'Contadores',
+        body: 'Quantos lançamentos vão entrar, quantos estão sem categoria, sugeridos ou parecem duplicados. Toque num deles para filtrar a lista.',
+      },
+      months: {
+        title: 'Meses do extrato',
+        body: 'Cada mês mostra se já existe ou será criado e o que entra nele. Toque num mês para ver só os lançamentos dele.',
+      },
+      filters: {
+        title: 'Mostrar e buscar',
+        body: 'Filtre por situação, busque pela descrição e mude a ordem.',
+      },
+      rows: {
+        title: 'Cada lançamento',
+        body: 'Escolha a categoria (salva na hora), deixe de fora ou edite. Os selos dizem de onde veio a sugestão; marque vários para mudar em lote.',
+      },
+      confirm: {
+        title: 'Confirmar',
+        body: 'Confirmar importação lança tudo e cria os meses que faltam. Só libera quando todo lançamento incluído tem categoria.',
+      },
+    },
+    budget: {
+      intro: {
+        title: 'Orçamento',
+        body: 'Defina quanto vai gastar e investir no mês e divida esse total entre as categorias. Cada mês tem o seu orçamento.',
+      },
+      tabs: {
+        title: 'Planejamento',
+        body: 'O planejamento tem duas partes: o Orçamento de cada mês e as transações Recorrentes.',
+      },
+      month: {
+        title: 'Escolher o mês',
+        body: 'Ande entre os meses ou volte para o atual. Excluir orçamento apaga só o do mês aberto.',
+      },
+      empty: {
+        title: 'Começar o orçamento',
+        body: 'Copie o orçamento de um mês anterior ou crie um do zero. Nada é salvo até você tocar em Salvar.',
+      },
+      overview: {
+        title: 'Total e divisão',
+        body: 'Informe o total do mês. O gráfico mostra a fatia de cada categoria e a parte que ainda está livre.',
+      },
+      slice: {
+        title: 'Cada fatia',
+        body: 'Arraste o controle para mudar o %, ou toque no % para digitar o valor exato. A barra mostra quanto já foi gasto.',
+      },
+      add: {
+        title: 'Adicionar categoria',
+        body: 'Inclua uma categoria ou os Investimentos no orçamento. A fatia nova começa em 0%.',
+      },
+      save: {
+        title: 'Salvar',
+        body: 'As mudanças só valem depois de salvas. Descartar volta para o orçamento como estava.',
+      },
+    },
+    monthDetails: {
+      intro: {
+        title: 'Detalhe do mês',
+        body: 'Tudo o que entrou e saiu neste mês: os totais, o orçamento e cada transação, que você pode lançar, editar ou excluir.',
+      },
+      actions: {
+        title: 'Navegar e lançar',
+        body: 'As setas vão para o mês anterior ou o próximo. Novo lançamento registra uma receita, um gasto ou um investimento.',
+      },
+      totals: {
+        title: 'Totais do mês',
+        body: 'Receitas, gastos, investido e saldo, com a quantidade de lançamentos e quanto das receitas você já gastou.',
+      },
+      budget: {
+        title: 'Orçamento do mês',
+        body: 'As fatias mais perto do limite. Ver orçamento abre o planejamento deste mês.',
+      },
+      filters: {
+        title: 'Filtrar',
+        body: 'Filtre por tipo e categoria ou busque pela descrição.',
+      },
+      row: {
+        title: 'Cada lançamento',
+        body: 'Data, descrição, categoria e valor, com os botões de editar e excluir. Toda mudança atualiza os totais na hora.',
+      },
+    },
+    recurring: {
+      intro: {
+        title: 'Recorrentes',
+        body: 'Contas e receitas que se repetem todo mês, como aluguel ou salário. O app lança cada uma sozinho no dia certo.',
+      },
+      tabs: {
+        title: 'Planejamento',
+        body: 'O planejamento tem duas partes: o Orçamento de cada mês e as transações Recorrentes.',
+      },
+      create: {
+        title: 'Nova recorrência',
+        body: 'Informe o valor, a categoria, o dia do mês e quando começa. Se o dia já passou neste mês, ela é lançada na hora.',
+      },
+      filters: {
+        title: 'Filtrar e ordenar',
+        body: 'Filtre por tipo e situação, busque pela descrição e ordene pelo próximo lançamento, valor ou dia.',
+      },
+      row: {
+        title: 'Cada recorrência',
+        body: 'Mostra o dia e o próximo lançamento. Pause para pular meses, edite para mudar os próximos ou exclua; o que já foi lançado fica.',
+      },
+    },
+    dashboard: {
+      intro: {
+        title: 'Painel',
+        body: 'Um resumo do seu dinheiro no período escolhido: quanto entrou, saiu, foi investido e poupado, e como isso mudou com o tempo.',
+      },
+      period: {
+        title: 'Período',
+        body: 'Escolha os meses que o painel analisa. Ao lado aparece o período usado na comparação dos totais.',
+      },
+      totals: {
+        title: 'Totais do período',
+        body: 'Receitas, gastos, investido e poupado, com a variação em relação ao período de comparação e a sua taxa de poupança.',
+      },
+      days: {
+        title: 'Gastos por dia',
+        body: 'Quanto mais vermelho o dia, mais você gastou. Toque num dia para ver as despesas dele.',
+      },
+      chart: {
+        title: 'Evolução mensal',
+        body: 'Receitas, investimentos e gastos de cada mês, com os limites do orçamento. Selecione um mês para ver os valores dele.',
+      },
+      budgets: {
+        title: 'Orçamento do período',
+        body: 'Compare o que você planejou com o que gastou e veja as categorias que mais passaram do limite.',
+      },
+      rankings: {
+        title: 'Por categoria',
+        body: 'Onde você mais gastou e investiu no período. Toque numa categoria para ver o valor mês a mês.',
+      },
+    },
+    categories: {
+      intro: {
+        title: 'Categorias',
+        body: 'Categorias agrupam suas transações, como Mercado, Aluguel ou Salário, e organizam o painel e o orçamento.',
+      },
+      create: {
+        title: 'Nova categoria',
+        body: 'Crie uma categoria só com o nome. Um nome repetido não é aceito, mesmo escrito com outros acentos ou maiúsculas.',
+      },
+      search: {
+        title: 'Buscar',
+        body: 'Encontre uma categoria pelo nome. Tocar em Nome, logo abaixo, inverte a ordem alfabética.',
+      },
+      row: {
+        title: 'Editar ou excluir',
+        body: 'Renomeie ou exclua uma categoria. Se ela tem transações ou recorrências, troque a categoria delas antes de excluir.',
+      },
+    },
+    months: {
+      intro: {
+        title: 'Meses',
+        body: 'Cada mês reúne suas receitas, gastos e investimentos. Aqui você vê o saldo de todos e abre um mês para lançar e revisar transações.',
+      },
+      actions: {
+        title: 'Criar ou importar',
+        body: 'Novo mês cria um mês do ano atual. Importar extrato traz os lançamentos de um arquivo do banco e cria os meses que faltarem.',
+      },
+      filters: {
+        title: 'Filtrar a lista',
+        body: 'Escolha um ano ou veja só os meses que fecharam com saldo positivo ou negativo.',
+      },
+      sort: {
+        title: 'Ordenar',
+        body: 'Ordene por mês, receitas, gastos, investido ou saldo. Tocar de novo inverte a ordem.',
+      },
+      row: {
+        title: 'Abrir um mês',
+        body: 'Toque num mês para ver os totais e as transações dele, lançar novas e acompanhar o orçamento.',
+      },
+    },
+  },
 } as const

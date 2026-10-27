@@ -88,6 +88,7 @@ function LedgerList({ data, status, isFetching, onPageChange, onRetry, title, hi
     <section
       className={`lm-ledger-list${isFetching && status === 'ready' ? ' lm-ledger-list--fetching' : ''}`}
       aria-busy={isFetching}
+      data-tour="habits.ledger"
     >
       <div className="lm-ledger-list__toolbar">
         <h2 className="lm-ledger-list__heading">{title}</h2>
