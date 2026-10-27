@@ -668,6 +668,34 @@ export default {
       notFound: 'Essa recorrência não existe mais. A lista foi atualizada.',
     },
   },
+  accountHolders: {
+    button: 'Titulares das minhas contas',
+    title: 'Titulares das minhas contas',
+    intro:
+      'Escreva o nome completo como aparece no extrato: o seu, o de uma conta PJ ou conjunta. Transferências para esses nomes vêm fora da importação.',
+    registeredName: 'Seu nome do cadastro ({{name}}) também é usado.',
+    registeredNameUnknown: 'Seu nome do cadastro também é usado.',
+    loading: 'Carregando…',
+    loadError: 'Não foi possível carregar os titulares.',
+    retry: 'Tentar de novo',
+    empty: 'Nenhum titular. Só o nome do cadastro é usado.',
+    nameLabel: 'Titular {{number}}',
+    namePlaceholder: 'Ex.: Maria Aparecida da Silva',
+    remove: 'Remover titular {{number}}',
+    add: 'Adicionar titular',
+    limit: 'Até {{max}} titulares.',
+    save: 'Salvar',
+    saved: 'Titulares salvos. Valem para os próximos extratos.',
+    validation: {
+      required: 'Informe o nome ou remova o titular',
+      tooLong: 'Use no máximo 100 caracteres',
+      tooShort: 'Use o nome completo, com pelo menos 2 nomes',
+      duplicate: 'Este nome já está na lista',
+    },
+    errors: {
+      tooMany: 'São no máximo 5 titulares.',
+    },
+  },
   imports: {
     title: 'Importar extrato',
     intro:

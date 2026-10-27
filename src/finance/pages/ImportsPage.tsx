@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
+import Button from '../../shared/components/Button/Button'
+import AccountHoldersDialog from '../components/AccountHoldersDialog/AccountHoldersDialog'
 import CsvMappingDialog from '../components/CsvMappingDialog/CsvMappingDialog'
 import DeleteImportDialog from '../components/DeleteImportDialog/DeleteImportDialog'
 import StatementImportList from '../components/StatementImportList/StatementImportList'
@@ -36,6 +38,13 @@ function ImportsPage() {
   const [busy, setBusy] = useState<StatementUploadBusy>(null)
   const [csv, setCsv] = useState<CsvInProgress | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<StatementImportResponseDto | null>(null)
+  const [holdersOpen, setHoldersOpen] = useState(false)
+  const holdersRef = useRef<HTMLDivElement>(null)
+
+  const closeHolders = () => {
+    setHoldersOpen(false)
+    holdersRef.current?.querySelector('button')?.focus()
+  }
 
   const showUploadError = (message: string) => showErrorModal(translate('finance:imports.upload.errors.title'), message)
 
@@ -126,6 +135,18 @@ function ImportsPage() {
 
       <StatementUpload busy={busy} onFile={(file) => void handleFile(file)} />
 
+      <div ref={holdersRef} className="lm-imports-page__holders">
+        <Button
+          variant="secondary"
+          size="sm"
+          icon="wallet"
+          data-tour="imports.holders"
+          onClick={() => setHoldersOpen(true)}
+        >
+          {translate('finance:accountHolders.button')}
+        </Button>
+      </div>
+
       <StatementImportList
         data={imports.data}
         status={imports.status}
@@ -142,6 +163,16 @@ function ImportsPage() {
           initialMapping={csv.initialMapping}
           onClose={() => setCsv(null)}
           onSubmit={handleCsvSubmit}
+        />
+      ) : null}
+
+      {holdersOpen ? (
+        <AccountHoldersDialog
+          onClose={closeHolders}
+          onSaved={() => {
+            closeHolders()
+            showToast(translate('finance:accountHolders.saved'))
+          }}
         />
       ) : null}
 
