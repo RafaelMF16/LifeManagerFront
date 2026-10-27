@@ -58,7 +58,7 @@ function DashboardPage() {
         />
         <MonthlyFlowChart key={periodKey} months={data.months} goals={data.budgets.months} />
         <DashboardBudgets budgets={data.budgets} />
-        <div className="lm-dashboard-page__rankings">
+        <div className="lm-dashboard-page__rankings" data-tour="dashboard.rankings">
           <CategoryRanking
             key={`expense:${periodKey}`}
             kind="expense"
@@ -86,7 +86,7 @@ function DashboardPage() {
           <h1 className="lm-dashboard-page__title">{translate('finance:dashboard.title')}</h1>
         </div>
 
-        <div className="lm-dashboard-page__period">
+        <div className="lm-dashboard-page__period" data-tour="dashboard.period">
           <Select
             label={translate('finance:dashboard.periodLabel')}
             options={presetOptions}

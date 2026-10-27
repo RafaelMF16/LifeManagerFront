@@ -63,7 +63,12 @@ function CategoriesPage() {
           <span className="lm-categories-page__eyebrow">{translate('finance:module.name')}</span>
           <h1 className="lm-categories-page__title">{translate('finance:categories.title')}</h1>
         </div>
-        <Button variant="primary" icon="plus" onClick={() => setFormTarget({ mode: 'create' })}>
+        <Button
+          variant="primary"
+          icon="plus"
+          onClick={() => setFormTarget({ mode: 'create' })}
+          data-tour="categories.create"
+        >
           {translate('finance:categories.newButton')}
         </Button>
       </div>

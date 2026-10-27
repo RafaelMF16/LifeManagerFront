@@ -960,6 +960,54 @@ export default {
     },
   },
   tour: {
+    dashboard: {
+      intro: {
+        title: 'Painel',
+        body: 'Um resumo do seu dinheiro no período escolhido: quanto entrou, saiu, foi investido e poupado, e como isso mudou com o tempo.',
+      },
+      period: {
+        title: 'Período',
+        body: 'Escolha os meses que o painel analisa. Ao lado aparece o período usado na comparação dos totais.',
+      },
+      totals: {
+        title: 'Totais do período',
+        body: 'Receitas, gastos, investido e poupado, com a variação em relação ao período de comparação e a sua taxa de poupança.',
+      },
+      days: {
+        title: 'Gastos por dia',
+        body: 'Quanto mais vermelho o dia, mais você gastou. Toque num dia para ver as despesas dele.',
+      },
+      chart: {
+        title: 'Evolução mensal',
+        body: 'Receitas, investimentos e gastos de cada mês, com os limites do orçamento. Selecione um mês para ver os valores dele.',
+      },
+      budgets: {
+        title: 'Orçamento do período',
+        body: 'Compare o que você planejou com o que gastou e veja as categorias que mais passaram do limite.',
+      },
+      rankings: {
+        title: 'Por categoria',
+        body: 'Onde você mais gastou e investiu no período. Toque numa categoria para ver o valor mês a mês.',
+      },
+    },
+    categories: {
+      intro: {
+        title: 'Categorias',
+        body: 'Categorias agrupam suas transações, como Mercado, Aluguel ou Salário, e organizam o painel e o orçamento.',
+      },
+      create: {
+        title: 'Nova categoria',
+        body: 'Crie uma categoria só com o nome. Um nome repetido não é aceito, mesmo escrito com outros acentos ou maiúsculas.',
+      },
+      search: {
+        title: 'Buscar',
+        body: 'Encontre uma categoria pelo nome. Tocar em Nome, logo abaixo, inverte a ordem alfabética.',
+      },
+      row: {
+        title: 'Editar ou excluir',
+        body: 'Renomeie ou exclua uma categoria. Se ela tem transações ou recorrências, troque a categoria delas antes de excluir.',
+      },
+    },
     months: {
       intro: {
         title: 'Meses',

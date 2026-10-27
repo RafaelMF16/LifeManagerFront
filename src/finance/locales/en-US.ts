@@ -960,6 +960,54 @@ export default {
     },
   },
   tour: {
+    dashboard: {
+      intro: {
+        title: 'Dashboard',
+        body: 'A summary of your money in the chosen period: what came in, went out, was invested and saved, and how it changed over time.',
+      },
+      period: {
+        title: 'Period',
+        body: 'Pick the months the dashboard looks at. Next to it is the period the totals are compared with.',
+      },
+      totals: {
+        title: 'Period totals',
+        body: 'Income, expenses, invested and saved, with the change from the comparison period and your savings rate.',
+      },
+      days: {
+        title: 'Spending by day',
+        body: 'The redder the day, the more you spent. Tap a day to see its expenses.',
+      },
+      chart: {
+        title: 'Monthly trend',
+        body: 'Income, investments and expenses for each month, with the budget limits. Select a month to see its amounts.',
+      },
+      budgets: {
+        title: 'Period budget',
+        body: 'Compare what you planned with what you spent, and see the categories furthest past their limit.',
+      },
+      rankings: {
+        title: 'By category',
+        body: 'Where you spent and invested the most in the period. Tap a category to see it month by month.',
+      },
+    },
+    categories: {
+      intro: {
+        title: 'Categories',
+        body: 'Categories group your transactions, such as Groceries, Rent or Salary, and organize the dashboard and the budget.',
+      },
+      create: {
+        title: 'New category',
+        body: 'Create a category with just a name. A repeated name is refused, even with different accents or capitals.',
+      },
+      search: {
+        title: 'Search',
+        body: 'Find a category by name. Tapping Name, just below, flips the alphabetical order.',
+      },
+      row: {
+        title: 'Edit or delete',
+        body: 'Rename or delete a category. If it has transactions or recurring ones, move them to another category first.',
+      },
+    },
     months: {
       intro: {
         title: 'Months',

@@ -74,8 +74,8 @@ function CategoryList({
       )
     }
 
-    return data.items.map((category) => (
-      <div key={category.id} className="lm-category-list__row">
+    return data.items.map((category, index) => (
+      <div key={category.id} className="lm-category-list__row" data-tour={index === 0 ? 'categories.row' : undefined}>
         <span className="lm-category-list__name">{category.name}</span>
         <div className="lm-category-list__actions">
           <IconButton icon="pencil" size="sm" label={translate('finance:categories.list.edit')} onClick={() => onEdit(category)} />
@@ -101,7 +101,7 @@ function CategoryList({
       className={`lm-category-list${isFetching && status === 'ready' ? ' lm-category-list--fetching' : ''}`}
       aria-busy={isFetching}
     >
-      <div className="lm-category-list__toolbar">
+      <div className="lm-category-list__toolbar" data-tour="categories.search">
         <div className="lm-category-list__heading">
           <h2 className="lm-category-list__title">{translate('finance:categories.list.title')}</h2>
           {status === 'ready' && data ? (
