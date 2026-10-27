@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from 'react'
+import type { ButtonHTMLAttributes, Ref } from 'react'
 import Icon from '../Icon/Icon'
 import type { IconName } from '../Icon/Icon'
 import './IconButton.css'
@@ -9,6 +9,7 @@ type IconButtonSize = 'sm' | 'md' | 'lg'
 interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label'> {
   icon: IconName
   label: string
+  ref?: Ref<HTMLButtonElement>
   variant?: IconButtonVariant
   size?: IconButtonSize
 }

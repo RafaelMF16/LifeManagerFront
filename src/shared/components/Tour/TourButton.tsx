@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import IconButton from '../IconButton/IconButton'
 import { useTour } from '../../hooks/useTour'
@@ -13,12 +14,21 @@ interface TourButtonProps {
 function TourButton({ tours }: TourButtonProps) {
   const { t: translate } = useTranslation('common')
   const { tour, active, start, next, previous, close } = useTour(tours)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const isOpen = active !== null
+  const wasOpen = useRef(false)
+
+  // Hands the focus back to the "?" once the tour closes, however it closed.
+  useEffect(() => {
+    if (wasOpen.current && !isOpen) buttonRef.current?.focus()
+    wasOpen.current = isOpen
+  }, [isOpen])
 
   if (!tour) return null
 
   return (
     <>
-      <IconButton icon="circle-help" label={translate('common:tour.start')} onClick={start} />
+      <IconButton ref={buttonRef} icon="circle-help" label={translate('common:tour.start')} onClick={start} />
       {active ? (
         <TourOverlay
           key={active.step.id}

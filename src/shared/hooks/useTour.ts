@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import type { TourDefinition, TourRect, TourStep } from '../types/Tour'
 import { matchTour, resolveSteps } from '../utils/tourSteps'
@@ -7,8 +8,9 @@ interface ActiveTour {
   tour: TourDefinition
   steps: TourStep[]
   index: number
-  /** The screen the tour was started on: leaving it ends the tour. */
+  /** The screen and language the tour was started in: leaving the screen or switching language ends it. */
   pathname: string
+  language: string
 }
 
 /** The first element marked `data-tour="<target>"` that is laid out (a screen may mark a wide and a compact version). */
@@ -27,19 +29,22 @@ function measureTarget(target: string): TourRect | null {
 
 /**
  * State of the current screen's guided tour: which tour the route has (`null` hides the "?" button), and the open
- * tour's steps, resolved against the page when it starts. Leaving the screen ends it.
+ * tour's steps, resolved against the page when it starts. Leaving the screen or switching language ends it; the
+ * theme doesn't.
  */
 export function useTour(tours: TourDefinition[]) {
   const { pathname } = useLocation()
+  const { i18n } = useTranslation()
   const tour = matchTour(pathname, tours)
   const [active, setActive] = useState<ActiveTour | null>(null)
+  const isCurrent = (candidate: ActiveTour) => candidate.pathname === pathname && candidate.language === i18n.language
 
-  // Ends the tour on another screen (a link, the browser's back), adjusted during render rather than in an effect.
-  if (active && active.pathname !== pathname) setActive(null)
+  // Ends the tour on another screen (the browser's back) or language, adjusted during render rather than in an effect.
+  if (active && !isCurrent(active)) setActive(null)
 
   function start() {
     if (!tour) return
-    setActive({ tour, steps: resolveSteps(tour.steps, measureTarget), index: 0, pathname })
+    setActive({ tour, steps: resolveSteps(tour.steps, measureTarget), index: 0, pathname, language: i18n.language })
   }
 
   function next() {
@@ -57,7 +62,7 @@ export function useTour(tours: TourDefinition[]) {
     setActive(null)
   }
 
-  const open = active && active.pathname === pathname ? active : null
+  const open = active && isCurrent(active) ? active : null
 
   return {
     tour,
