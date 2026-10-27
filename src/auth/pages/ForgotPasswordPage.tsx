@@ -1,20 +1,13 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
 import Input from '../../shared/components/Input/Input'
-import { useZodForm } from '../../shared/hooks/useZodForm'
-import { useToast } from '../../shared/hooks/useToast'
-import { useErrorModal } from '../../shared/hooks/useErrorModal'
-import { applyApiErrorToForm } from '../../shared/utils/applyApiErrorToForm'
-import { isApiError } from '../../shared/types/ApiError'
 import AuthLayout from '../components/AuthLayout/AuthLayout'
 import EmailSentNotice from '../components/EmailSentNotice/EmailSentNotice'
+import { useEmailRequestForm } from '../hooks/useEmailRequestForm'
 import { requestPasswordReset } from '../services/authService'
 import { forgotPasswordErrorFieldMap } from '../validation/userErrorMap'
 import { forgotPasswordSchema } from '../validation/userSchemas'
-import { authErrorMessageKey } from '../utils/authApiErrors'
-import type { ForgotPasswordFormValues } from '../validation/userSchemas'
 import type { AuthPageState } from './AuthPage'
 import '../components/AuthForm.css'
 
@@ -22,42 +15,15 @@ import '../components/AuthForm.css'
 function ForgotPasswordPage() {
   const { t: translate } = useTranslation(['auth', 'common'])
   const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useZodForm(forgotPasswordSchema)
-  const { show: showToast } = useToast()
-  const { show: showErrorModal } = useErrorModal()
-  // What was sent: while set, the card shows "check your e-mail" instead of the form (whose value stays in place)
-  const [sent, setSent] = useState<ForgotPasswordFormValues | null>(null)
-
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      await requestPasswordReset(data)
-      setSent(data)
-    } catch (err) {
-      if (isApiError(err)) {
-        applyApiErrorToForm(err, setError, forgotPasswordErrorFieldMap, translate, authErrorMessageKey(err))
-      } else {
-        showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
-      }
-    }
-  })
-
-  async function resend(data: ForgotPasswordFormValues) {
-    try {
-      await requestPasswordReset(data)
-      showToast(translate('auth:emailSent.resentToast'))
-    } catch (err) {
-      if (isApiError(err)) {
-        showErrorModal(translate('auth:emailSent.resendFailedTitle'), translate(authErrorMessageKey(err)))
-      } else {
-        showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
-      }
-      throw err
-    }
-  }
+    form: {
+      register,
+      formState: { errors, isSubmitting },
+    },
+    sent,
+    onSubmit,
+    resend,
+    changeEmail,
+  } = useEmailRequestForm(forgotPasswordSchema, requestPasswordReset, forgotPasswordErrorFieldMap)
 
   const backToLogin = (
     <p className="lm-auth-form__footer">
@@ -75,8 +41,8 @@ function ForgotPasswordPage() {
             <EmailSentNotice
               email={sent.email}
               message={translate('auth:forgotPassword.emailSentMessage')}
-              onResend={() => resend(sent)}
-              onChangeEmail={() => setSent(null)}
+              onResend={resend}
+              onChangeEmail={changeEmail}
             />
             {backToLogin}
           </>

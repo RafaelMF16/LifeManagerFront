@@ -1,18 +1,11 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import Input from '../../../shared/components/Input/Input'
-import { useZodForm } from '../../../shared/hooks/useZodForm'
-import { useToast } from '../../../shared/hooks/useToast'
-import { useErrorModal } from '../../../shared/hooks/useErrorModal'
-import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
-import { isApiError } from '../../../shared/types/ApiError'
 import type { UserPreferences } from '../../../shared/types/UserPreferences'
+import { useEmailRequestForm } from '../../hooks/useEmailRequestForm'
 import { register as registerUser } from '../../services/authService'
 import { registerErrorFieldMap } from '../../validation/userErrorMap'
 import { registerSchema } from '../../validation/userSchemas'
-import { authErrorMessageKey } from '../../utils/authApiErrors'
-import type { RegisterFormValues } from '../../validation/userSchemas'
 import EmailSentNotice from '../EmailSentNotice/EmailSentNotice'
 import '../AuthForm.css'
 
@@ -25,42 +18,15 @@ interface RegisterFormProps {
 function RegisterForm({ preferences, onSwitchToLogin }: RegisterFormProps) {
   const { t: translate } = useTranslation(['auth', 'common'])
   const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useZodForm(registerSchema)
-  const { show: showToast } = useToast()
-  const { show: showErrorModal } = useErrorModal()
-  // What was sent: while set, the panel shows "check your e-mail" instead of the form (whose values stay in place)
-  const [sent, setSent] = useState<RegisterFormValues | null>(null)
-
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      await registerUser(data, preferences)
-      setSent(data)
-    } catch (err) {
-      if (isApiError(err)) {
-        applyApiErrorToForm(err, setError, registerErrorFieldMap, translate, authErrorMessageKey(err))
-      } else {
-        showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
-      }
-    }
-  })
-
-  async function resend(data: RegisterFormValues) {
-    try {
-      await registerUser(data, preferences)
-      showToast(translate('auth:emailSent.resentToast'))
-    } catch (err) {
-      if (isApiError(err)) {
-        showErrorModal(translate('auth:emailSent.resendFailedTitle'), translate(authErrorMessageKey(err)))
-      } else {
-        showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
-      }
-      throw err
-    }
-  }
+    form: {
+      register,
+      formState: { errors, isSubmitting },
+    },
+    sent,
+    onSubmit,
+    resend,
+    changeEmail,
+  } = useEmailRequestForm(registerSchema, (data) => registerUser(data, preferences), registerErrorFieldMap)
 
   if (sent) {
     return (
@@ -68,8 +34,8 @@ function RegisterForm({ preferences, onSwitchToLogin }: RegisterFormProps) {
         <EmailSentNotice
           email={sent.email}
           message={translate('auth:register.emailSentMessage')}
-          onResend={() => resend(sent)}
-          onChangeEmail={() => setSent(null)}
+          onResend={resend}
+          onChangeEmail={changeEmail}
         />
       </div>
     )
