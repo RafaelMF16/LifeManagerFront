@@ -4,9 +4,9 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import Button from '../Button/Button'
 import IconButton from '../IconButton/IconButton'
-import { findTourTarget } from '../../hooks/useTour'
 import type { TourDefinition, TourRect, TourSize, TourStep } from '../../types/Tour'
 import { tourPlacement } from '../../utils/tourPlacement'
+import { findTourTarget } from '../../utils/tourTarget'
 import './TourOverlay.css'
 
 /** Room around the highlighted element, so the spotlight doesn't clip its border or focus ring. */
@@ -43,8 +43,9 @@ function useTargetRect(target: string | undefined) {
 
   useLayoutEffect(() => {
     // The overlay remounts per step (`key`), so a step without an element simply keeps the initial `null`.
-    const element = target ? findTourTarget(target) : null
-    if (!element) return
+    const found = target ? findTourTarget(target) : null
+    if (!found) return
+    const element: HTMLElement = found
 
     // On a phone the card covers the bottom of the screen, so the element goes to the top (below the header, by
     // the `scroll-margin-top` in the CSS) instead of the middle.
@@ -57,8 +58,8 @@ function useTargetRect(target: string | undefined) {
 
     let frame = 0
     function measure() {
-      const box = element!.getBoundingClientRect()
-      setRect(element!.isConnected && box.width > 0 && box.height > 0 ? padded(box) : null)
+      const box = element.getBoundingClientRect()
+      setRect(element.isConnected && box.width > 0 && box.height > 0 ? padded(box) : null)
     }
     function schedule() {
       cancelAnimationFrame(frame)

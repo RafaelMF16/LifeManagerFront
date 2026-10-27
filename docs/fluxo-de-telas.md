@@ -84,7 +84,7 @@ Aparece no topo de todas as telas depois do login.
   - Enquanto o tour está aberto, a tela não recebe cliques: ele só explica, não faz nada por você.
   - Partes que não estão na tela (uma lista vazia, um mês sem orçamento) ficam de fora do tour.
   - No computador, a explicação aparece ao lado do controle; no celular, num cartão embaixo da tela, com o controle rolado para cima.
-  - O tour só abre quando você toca no botão, e trocar de tela ou de idioma o encerra.
+  - O tour só abre quando você toca no botão, e voltar de tela pelo navegador o encerra.
 
 ### Menu lateral dos módulos
 
