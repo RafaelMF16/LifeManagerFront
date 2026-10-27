@@ -97,7 +97,12 @@ function RecurringTransactionsPage() {
     <div className="lm-recurring-page">
       <div className="lm-recurring-page__header">
         <p className="lm-recurring-page__intro">{translate('finance:recurring.intro')}</p>
-        <Button variant="primary" icon="plus" onClick={() => setFormTarget({ mode: 'create' })}>
+        <Button
+          variant="primary"
+          icon="plus"
+          onClick={() => setFormTarget({ mode: 'create' })}
+          data-tour="recurring.create"
+        >
           {translate('finance:recurring.newButton')}
         </Button>
       </div>

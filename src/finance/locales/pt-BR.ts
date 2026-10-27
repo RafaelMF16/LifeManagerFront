@@ -960,6 +960,54 @@ export default {
     },
   },
   tour: {
+    monthDetails: {
+      intro: {
+        title: 'Detalhe do mês',
+        body: 'Tudo o que entrou e saiu neste mês: os totais, o orçamento e cada transação, que você pode lançar, editar ou excluir.',
+      },
+      actions: {
+        title: 'Navegar e lançar',
+        body: 'As setas vão para o mês anterior ou o próximo. Novo lançamento registra uma receita, um gasto ou um investimento.',
+      },
+      totals: {
+        title: 'Totais do mês',
+        body: 'Receitas, gastos, investido e saldo, com a quantidade de lançamentos e quanto das receitas você já gastou.',
+      },
+      budget: {
+        title: 'Orçamento do mês',
+        body: 'As fatias mais perto do limite. Ver orçamento abre o planejamento deste mês.',
+      },
+      filters: {
+        title: 'Filtrar',
+        body: 'Filtre por tipo e categoria ou busque pela descrição.',
+      },
+      row: {
+        title: 'Cada lançamento',
+        body: 'Data, descrição, categoria e valor, com os botões de editar e excluir. Toda mudança atualiza os totais na hora.',
+      },
+    },
+    recurring: {
+      intro: {
+        title: 'Recorrentes',
+        body: 'Contas e receitas que se repetem todo mês, como aluguel ou salário. O app lança cada uma sozinho no dia certo.',
+      },
+      tabs: {
+        title: 'Planejamento',
+        body: 'O planejamento tem duas partes: o Orçamento de cada mês e as transações Recorrentes.',
+      },
+      create: {
+        title: 'Nova recorrência',
+        body: 'Informe o valor, a categoria, o dia do mês e quando começa. Se o dia já passou neste mês, ela é lançada na hora.',
+      },
+      filters: {
+        title: 'Filtrar e ordenar',
+        body: 'Filtre por tipo e situação, busque pela descrição e ordene pelo próximo lançamento, valor ou dia.',
+      },
+      row: {
+        title: 'Cada recorrência',
+        body: 'Mostra o dia e o próximo lançamento. Pause para pular meses, edite para mudar os próximos ou exclua; o que já foi lançado fica.',
+      },
+    },
     dashboard: {
       intro: {
         title: 'Painel',

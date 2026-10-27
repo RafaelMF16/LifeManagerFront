@@ -29,6 +29,31 @@ export const FINANCE_TOURS: TourDefinition[] = [
     ],
   },
   {
+    id: 'monthDetails',
+    path: '/finance/months/:monthlySummaryId',
+    namespace: 'finance',
+    steps: [
+      { id: 'intro' },
+      { id: 'actions', target: 'monthDetails.actions' },
+      { id: 'totals', target: 'monthDetails.totals' },
+      { id: 'budget', target: 'monthDetails.budget' },
+      { id: 'filters', target: 'monthDetails.filters' },
+      { id: 'row', target: 'monthDetails.row' },
+    ],
+  },
+  {
+    id: 'recurring',
+    path: '/finance/planning/recurring',
+    namespace: 'finance',
+    steps: [
+      { id: 'intro' },
+      { id: 'tabs', target: 'planning.tabs' },
+      { id: 'create', target: 'recurring.create' },
+      { id: 'filters', target: 'recurring.filters' },
+      { id: 'row', target: 'recurring.row' },
+    ],
+  },
+  {
     id: 'categories',
     path: '/finance/categories',
     namespace: 'finance',

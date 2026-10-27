@@ -960,6 +960,54 @@ export default {
     },
   },
   tour: {
+    monthDetails: {
+      intro: {
+        title: 'Month details',
+        body: 'Everything that came in and went out this month: the totals, the budget and each transaction, which you can add, edit or delete.',
+      },
+      actions: {
+        title: 'Move and add',
+        body: 'The arrows go to the previous or next month. New transaction records income, an expense or an investment.',
+      },
+      totals: {
+        title: 'Month totals',
+        body: 'Income, expenses, invested and balance, with how many transactions and how much of your income is already spent.',
+      },
+      budget: {
+        title: 'Month budget',
+        body: 'The slices closest to their limit. See budget opens this month\'s plan.',
+      },
+      filters: {
+        title: 'Filter',
+        body: 'Filter by type and category, or search the description.',
+      },
+      row: {
+        title: 'Each transaction',
+        body: 'Date, description, category and amount, with the edit and delete buttons. Every change updates the totals at once.',
+      },
+    },
+    recurring: {
+      intro: {
+        title: 'Recurring',
+        body: 'Bills and income that repeat every month, like rent or salary. The app posts each one by itself on the right day.',
+      },
+      tabs: {
+        title: 'Planning',
+        body: 'Planning has two parts: each month\'s Budget and the Recurring transactions.',
+      },
+      create: {
+        title: 'New recurring',
+        body: 'Enter the amount, category, day of the month and when it starts. If that day already passed this month, it posts right away.',
+      },
+      filters: {
+        title: 'Filter and sort',
+        body: 'Filter by type and status, search the description, and sort by next posting, amount or day.',
+      },
+      row: {
+        title: 'Each recurring one',
+        body: 'Shows its day and next posting. Pause it to skip months, edit it to change the next ones, or delete it; what was posted stays.',
+      },
+    },
     dashboard: {
       intro: {
         title: 'Dashboard',
