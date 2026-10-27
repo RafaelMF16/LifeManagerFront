@@ -21,9 +21,17 @@ interface DailySpendingCalendarProps {
   months: string[]
 }
 
+/** The day picked in a month; it only counts while that month is on screen. */
 interface DaySelection {
   month: string
-  date: string | null
+  date: string
+}
+
+/** A month starts with nothing selected, except the current one, which opens on today. */
+function selectedDateOf(selection: DaySelection | null, month: string, now: Date) {
+  if (selection?.month === month) return selection.date
+  if (month === toYearMonth(now)) return toIsoDate(now)
+  return null
 }
 
 /** The month's expenses day by day, starting on the period's newest month; a tapped day lists its expenses. */
@@ -41,8 +49,7 @@ function DailySpendingCalendar({ months }: DailySpendingCalendarProps) {
   const parsedMonth = parseYearMonth(month)
   const now = new Date()
   const today = toIsoDate(now)
-  // A month starts with nothing selected, except the current one, which opens on today.
-  const selectedDate = selection?.month === month ? selection.date : month === toYearMonth(now) ? today : null
+  const selectedDate = selectedDateOf(selection, month, now)
   const showsNavigation = months.length > 1
   // While the next month loads, the previous one's days stay on screen, dimmed.
   const daysByDate = new Map<string, DashboardDayDto>((data?.days ?? []).map((day) => [day.date, day]))

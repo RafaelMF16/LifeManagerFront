@@ -93,7 +93,6 @@
   padding: 6px;
   /* The total adapts to the cell's own width (container queries below), not the screen's. */
   container-type: inline-size;
-  background: var(--surface-sunken);
   border: none;
   border-radius: var(--radius-sm);
   font: inherit;
@@ -116,7 +115,8 @@
   outline-offset: 2px;
 }
 
-/* Heat: the text follows the step's ink (see colors.css), the day number included. Level 0 keeps the neutral cell. */
+/* Heat: every day (and legend swatch) has a level, so these paint the background; 0 is the neutral cell. The text
+   follows the step's ink (see colors.css), the day number included. */
 .lm-daily-calendar__day--heat-0 {
   background: var(--surface-sunken);
 }
