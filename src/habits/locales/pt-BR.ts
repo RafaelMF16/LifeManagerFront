@@ -543,6 +543,56 @@ export default {
     },
   },
   tour: {
+    rewards: {
+      intro: {
+        title: 'Recompensas',
+        body: 'Prêmios que você mesmo define e paga com as moedas dos hábitos. Escolha coisas que você já faria.',
+      },
+      tabs: {
+        title: 'Loja',
+        body: 'A loja tem duas partes: as Recompensas que você define e os Resgates que já fez.',
+      },
+      create: {
+        title: 'Nova recompensa',
+        body: 'Dê um nome, um preço em moedas e um ícone. Um hábito fácil rende 5 moedas; um difícil, 20.',
+      },
+      filters: {
+        title: 'Filtrar e ordenar',
+        body: 'Veja as ativas ou as arquivadas, busque pelo nome e ordene por preço ou nome.',
+      },
+      cards: {
+        title: 'Resgatar',
+        body: 'Cada cartão mostra o preço e quantos dias de hábitos ele custa. Resgatar confirma antes de gastar as moedas.',
+      },
+    },
+    redemptions: {
+      intro: {
+        title: 'Resgates',
+        body: 'As recompensas que você já resgatou, da mais recente para a mais antiga, com o preço pago.',
+      },
+      tabs: {
+        title: 'Loja',
+        body: 'A loja tem duas partes: as Recompensas que você define e os Resgates que já fez.',
+      },
+      list: {
+        title: 'Histórico de resgates',
+        body: 'Cada resgate com a data e as moedas gastas. Os desfeitos ficam marcados.',
+      },
+      undo: {
+        title: 'Desfazer',
+        body: 'Um resgate de hoje pode ser desfeito: as moedas voltam para você.',
+      },
+    },
+    history: {
+      intro: {
+        title: 'Histórico',
+        body: 'Tudo o que mexeu nas suas moedas, XP e HP: hábitos cumpridos, falhas, recaídas, resgates e nocautes.',
+      },
+      ledger: {
+        title: 'Extrato',
+        body: 'Do mais recente para o mais antigo. Cada linha mostra o que aconteceu e quanto ganhou ou perdeu.',
+      },
+    },
     today: {
       intro: {
         title: 'Hoje',

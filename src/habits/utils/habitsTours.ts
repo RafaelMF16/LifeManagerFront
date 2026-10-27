@@ -37,4 +37,36 @@ export const HABITS_TOURS: TourDefinition[] = [
       { id: 'ledger', target: 'habits.ledger' },
     ],
   },
+  {
+    id: 'rewards',
+    path: '/habits/shop/rewards',
+    namespace: 'habits',
+    steps: [
+      { id: 'intro' },
+      { id: 'tabs', target: 'shop.tabs' },
+      { id: 'create', target: 'rewards.create' },
+      { id: 'filters', target: 'rewards.filters' },
+      { id: 'cards', target: 'rewards.cards' },
+    ],
+  },
+  {
+    id: 'redemptions',
+    path: '/habits/shop/redemptions',
+    namespace: 'habits',
+    steps: [
+      { id: 'intro' },
+      { id: 'tabs', target: 'shop.tabs' },
+      { id: 'list', target: 'redemptions.list' },
+      { id: 'undo', target: 'redemptions.undo' },
+    ],
+  },
+  {
+    id: 'history',
+    path: '/habits/history',
+    namespace: 'habits',
+    steps: [
+      { id: 'intro' },
+      { id: 'ledger', target: 'habits.ledger' },
+    ],
+  },
 ]

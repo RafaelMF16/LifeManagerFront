@@ -543,6 +543,56 @@ export default {
     },
   },
   tour: {
+    rewards: {
+      intro: {
+        title: 'Rewards',
+        body: 'Treats you set for yourself and pay for with the coins your habits earn. Pick things you would do anyway.',
+      },
+      tabs: {
+        title: 'Shop',
+        body: 'The shop has two parts: the Rewards you set and the Redemptions you made.',
+      },
+      create: {
+        title: 'New reward',
+        body: 'Give it a name, a price in coins and an icon. An easy habit earns 5 coins; a hard one, 20.',
+      },
+      filters: {
+        title: 'Filter and sort',
+        body: 'See active or archived rewards, search by name and sort by price or name.',
+      },
+      cards: {
+        title: 'Redeem',
+        body: 'Each card shows the price and how many days of habits it costs. Redeem asks before spending the coins.',
+      },
+    },
+    redemptions: {
+      intro: {
+        title: 'Redemptions',
+        body: 'The rewards you already redeemed, newest first, with the price you paid.',
+      },
+      tabs: {
+        title: 'Shop',
+        body: 'The shop has two parts: the Rewards you set and the Redemptions you made.',
+      },
+      list: {
+        title: 'Redemption history',
+        body: 'Each redemption with its date and the coins spent. Undone ones are marked.',
+      },
+      undo: {
+        title: 'Undo',
+        body: 'A redemption made today can be undone: the coins come back to you.',
+      },
+    },
+    history: {
+      intro: {
+        title: 'History',
+        body: 'Everything that moved your coins, XP and HP: habits kept, misses, relapses, rewards and knockouts.',
+      },
+      ledger: {
+        title: 'Statement',
+        body: 'Newest first. Each line shows what happened and how much you gained or lost.',
+      },
+    },
     today: {
       intro: {
         title: 'Today',

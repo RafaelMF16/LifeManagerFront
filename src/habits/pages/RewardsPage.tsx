@@ -109,7 +109,12 @@ function RewardsPage() {
   return (
     <>
       <div className="lm-shop-page__actions">
-        <Button variant="primary" icon="plus" onClick={() => setFormTarget({ mode: 'create' })}>
+        <Button
+          variant="primary"
+          icon="plus"
+          onClick={() => setFormTarget({ mode: 'create' })}
+          data-tour="rewards.create"
+        >
           {translate('habits:shop.newButton')}
         </Button>
       </div>
