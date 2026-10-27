@@ -32,7 +32,7 @@ function StatementUpload({ busy, onFile }: StatementUploadProps) {
   }
 
   return (
-    <section className="lm-statement-upload" aria-busy={busy !== null}>
+    <section className="lm-statement-upload" aria-busy={busy !== null} data-tour="imports.upload">
       <div
         className={`lm-statement-upload__area${dragging ? ' lm-statement-upload__area--dragging' : ''}`}
         onDragOver={(event) => {

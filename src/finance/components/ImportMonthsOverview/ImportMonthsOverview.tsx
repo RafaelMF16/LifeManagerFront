@@ -35,7 +35,7 @@ function ImportMonthsOverview({ months, selectedMonth, onSelect }: ImportMonthsO
       : months.filter((month, index) => index < COLLAPSED_MONTHS || month.month === selectedMonth)
 
   return (
-    <section className="lm-import-months" aria-labelledby="lm-import-months-title">
+    <section className="lm-import-months" aria-labelledby="lm-import-months-title" data-tour="importReview.months">
       <h2 id="lm-import-months-title" className="lm-import-months__title">
         {translate('finance:imports.months.title')}
       </h2>

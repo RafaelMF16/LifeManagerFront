@@ -296,7 +296,11 @@ function ImportRowList({
       )
     }
 
-    return <ul className="lm-import-rows__items">{data.items.map(renderRow)}</ul>
+    return (
+      <ul className="lm-import-rows__items" data-tour="importReview.rows">
+        {data.items.map(renderRow)}
+      </ul>
+    )
   }
 
   function rangeLabel(page: PagedResponse<StatementImportRowDto>) {
@@ -315,7 +319,7 @@ function ImportRowList({
           ) : null}
         </div>
 
-        <div className="lm-import-rows__filters">
+        <div className="lm-import-rows__filters" data-tour="importReview.filters">
           <Select
             size="sm"
             label={translate('finance:imports.rows.filters.label')}

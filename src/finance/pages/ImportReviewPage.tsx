@@ -318,7 +318,7 @@ function ImportReviewPage() {
           <h1 className="lm-import-review__title">{data.fileName}</h1>
           <span className="lm-import-review__period">{period}</span>
         </div>
-        <div className="lm-import-review__actions">
+        <div className="lm-import-review__actions" data-tour="importReview.confirm">
           <Button variant="secondary" icon="trash-2" onClick={() => setIsDiscardOpen(true)}>
             {translate('finance:imports.review.discard')}
           </Button>
@@ -328,7 +328,10 @@ function ImportReviewPage() {
         </div>
       </div>
 
-      <div className={`lm-import-review__summary${details.isFetching ? ' lm-import-review__summary--fetching' : ''}`}>
+      <div
+        className={`lm-import-review__summary${details.isFetching ? ' lm-import-review__summary--fetching' : ''}`}
+        data-tour="importReview.summary"
+      >
         {summary.map((item) => (
           <button
             key={item.key}

@@ -69,6 +69,29 @@ export const FINANCE_TOURS: TourDefinition[] = [
     ],
   },
   {
+    id: 'imports',
+    path: '/finance/imports',
+    namespace: 'finance',
+    steps: [
+      { id: 'intro' },
+      { id: 'upload', target: 'imports.upload' },
+      { id: 'list', target: 'imports.list' },
+    ],
+  },
+  {
+    id: 'importReview',
+    path: '/finance/imports/:importId',
+    namespace: 'finance',
+    steps: [
+      { id: 'intro' },
+      { id: 'summary', target: 'importReview.summary' },
+      { id: 'months', target: 'importReview.months' },
+      { id: 'filters', target: 'importReview.filters' },
+      { id: 'rows', target: 'importReview.rows' },
+      { id: 'confirm', target: 'importReview.confirm' },
+    ],
+  },
+  {
     id: 'categories',
     path: '/finance/categories',
     namespace: 'finance',

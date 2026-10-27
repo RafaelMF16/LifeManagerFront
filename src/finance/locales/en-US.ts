@@ -960,6 +960,46 @@ export default {
     },
   },
   tour: {
+    imports: {
+      intro: {
+        title: 'Import statement',
+        body: 'Bring your bank statement into the app: the transactions and any missing months, after a review.',
+      },
+      upload: {
+        title: 'Send the file',
+        body: 'Pick an OFX or CSV file from your bank. For a CSV you check the columns first; the app remembers them for next time.',
+      },
+      list: {
+        title: 'Imports',
+        body: 'Carry on with a review in progress or discard it. Finished imports stay in the history.',
+      },
+    },
+    importReview: {
+      intro: {
+        title: 'Review import',
+        body: 'Check the statement\'s lines before they go into your months. The review is saved, so you can carry on later.',
+      },
+      summary: {
+        title: 'Counters',
+        body: 'How many lines go in, how many have no category, are suggested or look like duplicates. Tap one to filter the list.',
+      },
+      months: {
+        title: 'Statement months',
+        body: 'Each month shows whether it exists or will be created and what goes into it. Tap a month to see only its lines.',
+      },
+      filters: {
+        title: 'Show and search',
+        body: 'Filter by state, search the description and change the order.',
+      },
+      rows: {
+        title: 'Each line',
+        body: 'Pick the category (saved at once), leave it out or edit it. Badges tell where a suggestion came from; tick several to change them together.',
+      },
+      confirm: {
+        title: 'Confirm',
+        body: 'Confirm import posts everything and creates the missing months. It unlocks once every included line has a category.',
+      },
+    },
     budget: {
       intro: {
         title: 'Budget',

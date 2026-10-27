@@ -960,6 +960,46 @@ export default {
     },
   },
   tour: {
+    imports: {
+      intro: {
+        title: 'Importar extrato',
+        body: 'Traga o extrato do banco para o app: as transações e os meses que faltam, depois de uma revisão.',
+      },
+      upload: {
+        title: 'Enviar o arquivo',
+        body: 'Escolha um arquivo OFX ou CSV do seu banco. Num CSV você confere as colunas antes; o app lembra a escolha para o próximo.',
+      },
+      list: {
+        title: 'Importações',
+        body: 'Continue uma revisão em andamento ou descarte. As importadas ficam no histórico.',
+      },
+    },
+    importReview: {
+      intro: {
+        title: 'Revisar importação',
+        body: 'Confira os lançamentos do extrato antes de levá-los para os seus meses. A revisão fica salva: dá para continuar depois.',
+      },
+      summary: {
+        title: 'Contadores',
+        body: 'Quantos lançamentos vão entrar, quantos estão sem categoria, sugeridos ou parecem duplicados. Toque num deles para filtrar a lista.',
+      },
+      months: {
+        title: 'Meses do extrato',
+        body: 'Cada mês mostra se já existe ou será criado e o que entra nele. Toque num mês para ver só os lançamentos dele.',
+      },
+      filters: {
+        title: 'Mostrar e buscar',
+        body: 'Filtre por situação, busque pela descrição e mude a ordem.',
+      },
+      rows: {
+        title: 'Cada lançamento',
+        body: 'Escolha a categoria (salva na hora), deixe de fora ou edite. Os selos dizem de onde veio a sugestão; marque vários para mudar em lote.',
+      },
+      confirm: {
+        title: 'Confirmar',
+        body: 'Confirmar importação lança tudo e cria os meses que faltam. Só libera quando todo lançamento incluído tem categoria.',
+      },
+    },
     budget: {
       intro: {
         title: 'Orçamento',
