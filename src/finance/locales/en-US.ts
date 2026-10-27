@@ -65,6 +65,15 @@ export default {
       none: 'Nothing in {{range}} to compare with',
       hidden: 'Change hidden',
     },
+    days: {
+      title: 'Spending by day',
+      previousMonth: 'Previous month',
+      nextMonth: 'Next month',
+      loading: "Loading the month's spending…",
+      loadError: "Couldn't load the month's spending.",
+      monthTotal: 'Month total',
+      empty: 'No expenses this month',
+    },
     evolution: {
       title: 'Monthly overview',
       legendLabel: 'Legend',

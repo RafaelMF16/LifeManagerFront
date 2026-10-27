@@ -142,3 +142,23 @@ export interface FinanceDashboardResponseDto {
   investments: DashboardCategoryBreakdownDto
   budgets: DashboardBudgetsDto
 }
+
+/** One day of the month: its expenses summed (0 with none) and how many there were. */
+export interface DashboardDayDto {
+  /** ISO date, `YYYY-MM-DD`. */
+  date: string
+  total: number
+  count: number
+}
+
+/** GET /api/FinanceDashboard/Days: a month's expenses day by day, every day of the month in order. */
+export interface DashboardDaysResponseDto {
+  /** `yyyy-MM`. */
+  month: string
+  /** Null when the user has no such month (then every day is zero). */
+  monthlySummaryId: number | null
+  total: number
+  /** The biggest day (0 with no expenses): the calendar's colors are relative to it. */
+  maxDayTotal: number
+  days: DashboardDayDto[]
+}

@@ -27,6 +27,11 @@ describe('createFinanceFormat', () => {
     }
   })
 
+  it('names the weekdays Sunday first, in the UI language', () => {
+    expect(createFinanceFormat('en-US', false).weekdayNames('short')).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'])
+    expect(createFinanceFormat('pt-BR', false).weekdayNames('narrow')).toEqual(['D', 'S', 'T', 'Q', 'Q', 'S', 'S'])
+  })
+
   it('formats the dashboard figures when not hidden', () => {
     const format = createFinanceFormat('en-US', false)
 

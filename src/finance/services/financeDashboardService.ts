@@ -1,5 +1,5 @@
 import { apiRequest } from '../../shared/services/httpClient'
-import type { FinanceDashboardQuery, FinanceDashboardResponseDto } from '../types/DashboardDtos'
+import type { DashboardDaysResponseDto, FinanceDashboardQuery, FinanceDashboardResponseDto } from '../types/DashboardDtos'
 
 const FINANCE_DASHBOARD_PATH = '/api/FinanceDashboard'
 
@@ -8,4 +8,11 @@ export function getFinanceDashboard(query: FinanceDashboardQuery, signal?: Abort
   const params = new URLSearchParams({ from: query.from, to: query.to, comparison: query.comparison })
 
   return apiRequest<FinanceDashboardResponseDto>(`${FINANCE_DASHBOARD_PATH}?${params}`, { method: 'GET', signal })
+}
+
+/** A `yyyy-MM` month's expenses day by day, for the dashboard's calendar. */
+export function getDashboardDays(month: string, signal?: AbortSignal): Promise<DashboardDaysResponseDto> {
+  const params = new URLSearchParams({ month })
+
+  return apiRequest<DashboardDaysResponseDto>(`${FINANCE_DASHBOARD_PATH}/Days?${params}`, { method: 'GET', signal })
 }

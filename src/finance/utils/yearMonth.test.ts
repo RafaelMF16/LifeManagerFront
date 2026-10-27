@@ -1,10 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { addMonths, formatYearMonth, parseYearMonth, toYearMonth } from './yearMonth'
+import { addMonths, formatYearMonth, parseYearMonth, toIsoDate, toYearMonth } from './yearMonth'
 
 describe('yearMonth', () => {
   it('formats with a zero-padded month', () => {
     expect(formatYearMonth(2026, 3)).toBe('2026-03')
     expect(toYearMonth(new Date(2026, 9, 6))).toBe('2026-10')
+  })
+
+  it('formats a local date as YYYY-MM-DD', () => {
+    expect(toIsoDate(new Date(2026, 9, 6))).toBe('2026-10-06')
+    expect(toIsoDate(new Date(2026, 0, 31, 23, 59))).toBe('2026-01-31')
   })
 
   it('parses valid months only', () => {

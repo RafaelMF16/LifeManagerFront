@@ -50,6 +50,10 @@ export function createFinanceFormat(language: string, hidden: boolean) {
     maximumFractionDigits: 1,
   })
   const shortMonthFormatter = new Intl.DateTimeFormat(language, { month: 'short', timeZone: 'UTC' })
+  const weekdayFormatters = {
+    short: new Intl.DateTimeFormat(language, { weekday: 'short', timeZone: 'UTC' }),
+    narrow: new Intl.DateTimeFormat(language, { weekday: 'narrow', timeZone: 'UTC' }),
+  }
 
   const maskedMoney = maskedLayout(moneyFormatter, MONEY_MASK)
   const maskedPercent = maskedLayout(percentFormatter, PERCENT_MASK)
@@ -100,6 +104,12 @@ export function createFinanceFormat(language: string, hidden: boolean) {
     },
     /** "Set" / "Sep". */
     shortMonthName,
+    /** The 7 weekday names, Sunday first ("Dom", "Seg"… / "D", "S"…), as calendar headers. */
+    weekdayNames: (width: 'short' | 'narrow') =>
+      // 2026-02-01 is a Sunday.
+      Array.from({ length: 7 }, (_, index) =>
+        capitalize(weekdayFormatters[width].format(Date.UTC(2026, 1, 1 + index)).replace('.', '')),
+      ),
     /** A run of months from `yyyy-MM` bounds: "Set 2026", "Abr – Set 2026" or "Nov 2025 – Jan 2026". */
     rangeLabel: (from: string, to: string) => {
       const start = parseYearMonth(from)

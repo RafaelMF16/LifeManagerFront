@@ -65,6 +65,15 @@ export default {
       none: 'Sem valor em {{range}} para comparar',
       hidden: 'Variação oculta',
     },
+    days: {
+      title: 'Gastos por dia',
+      previousMonth: 'Mês anterior',
+      nextMonth: 'Próximo mês',
+      loading: 'Carregando os gastos do mês…',
+      loadError: 'Não foi possível carregar os gastos do mês.',
+      monthTotal: 'Total do mês',
+      empty: 'Nenhuma despesa neste mês',
+    },
     evolution: {
       title: 'Evolução mensal',
       legendLabel: 'Legenda',

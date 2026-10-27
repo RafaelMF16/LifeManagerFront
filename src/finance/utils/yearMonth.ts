@@ -16,6 +16,11 @@ export function toYearMonth(date: Date) {
   return formatYearMonth(date.getFullYear(), date.getMonth() + 1)
 }
 
+/** A local date (e.g. today's) as the backend's `DateOnly`, `YYYY-MM-DD`; never UTC, which may be another day. */
+export function toIsoDate(date: Date) {
+  return `${toYearMonth(date)}-${pad(date.getDate())}`
+}
+
 /** "2026-09" → { year: 2026, month: 9 }; null when it isn't a valid `yyyy-MM`. */
 export function parseYearMonth(value: string | null | undefined) {
   const match = YEAR_MONTH_PATTERN.exec(value ?? '')

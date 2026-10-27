@@ -3,11 +3,13 @@ import Button from '../../shared/components/Button/Button'
 import Select from '../../shared/components/Select/Select'
 import CategoryRanking from '../components/CategoryRanking/CategoryRanking'
 import DashboardBudgets from '../components/DashboardBudgets/DashboardBudgets'
+import DailySpendingCalendar from '../components/DailySpendingCalendar/DailySpendingCalendar'
 import DashboardTotals from '../components/DashboardTotals/DashboardTotals'
 import MonthlyFlowChart from '../components/MonthlyFlowChart/MonthlyFlowChart'
 import { useFinanceDashboard } from '../hooks/useFinanceDashboard'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
 import type { DashboardPresetId } from '../types/DashboardDtos'
+import { formatYearMonth } from '../utils/yearMonth'
 import './DashboardPage.css'
 
 /** The Finance module's landing screen: a period's totals, month by month evolution and categories. */
@@ -50,6 +52,10 @@ function DashboardPage() {
         aria-busy={isFetching}
       >
         <DashboardTotals totals={data.totals} comparisonRange={comparisonRange} />
+        <DailySpendingCalendar
+          key={`days:${periodKey}`}
+          months={data.months.map((month) => formatYearMonth(month.year, month.month))}
+        />
         <MonthlyFlowChart key={periodKey} months={data.months} goals={data.budgets.months} />
         <DashboardBudgets budgets={data.budgets} />
         <div className="lm-dashboard-page__rankings">
