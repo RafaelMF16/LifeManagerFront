@@ -32,6 +32,7 @@ export function getTransactions(
     sortDirection: query.sortDirection,
   })
   if (query.categoryId !== null) params.set('categoryId', String(query.categoryId))
+  if (query.date) params.set('date', query.date)
   if (query.search) params.set('search', query.search)
 
   return apiRequest<PagedResponse<TransactionResponseDto>>(`${transactionsPath(monthlySummaryId)}?${params}`, { method: 'GET', signal })

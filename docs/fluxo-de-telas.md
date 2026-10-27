@@ -206,6 +206,11 @@ A escolha fica salva neste dispositivo e vale para todas as abas abertas.
 
 - **Período:** Este mês, Últimos 3 meses, **Últimos 6 meses** (padrão), Últimos 12 meses, Este ano e cada ano anterior em que você tem meses. Ao lado aparece "Comparado com …", o período usado na comparação.
 - **Totais do período:** Receitas, Gastos, Investido e **Poupado**, cada um com a variação ("Subiu 12% em relação a …"). Poupado é o que sobrou das receitas depois dos gastos: investir conta como guardar, não como gastar. Ao lado do nome vem a **taxa de poupança** (a parte das receitas que foi poupada; não aparece sem receitas, e abaixo de −100% aparece como "<−100%") e embaixo a divisão: quanto foi **investido** e quanto ficou **em conta** (o mesmo Saldo da tela do mês, que pode ser negativo quando você investiu dinheiro de meses anteriores).
+- **Gastos por dia:** um calendário do mês com o total de gastos de cada dia (só despesas; receitas e investimentos ficam de fora). Quanto mais vermelho o dia, mais se gastou, sempre em relação ao **maior dia daquele mês** (legenda **Menos** … **Mais**). Abre no mês mais recente do período; as setas **Mês anterior** e **Próximo mês** andam só pelos meses do período. Hoje tem contorno e os dias futuros ficam apagados, sem clique.
+  - **Toque em um dia** para ver, ao lado (embaixo no celular), as despesas daquele dia, da maior para a menor, com o total e a quantidade, e **Ver no mês** para abrir o mês. No mês atual, hoje já vem selecionado; sem dia escolhido aparecem o **Total do mês**, o **Maior gasto** e a dica "Toque em um dia para ver os gastos".
+  - No celular o valor não cabe dentro do dia: a cor mostra a intensidade e o valor aparece no painel ao tocar.
+  - Dá para usar pelo teclado: as setas movem entre os dias e Enter escolhe.
+  - No modo privacidade os valores ficam ocultos e todos os dias ficam da mesma cor.
 - **Evolução mensal:** gráfico com receitas, investimentos e gastos por mês, o **Poupado** de cada mês embaixo das barras e os limites do orçamento de cada mês como marcadores. **Selecione um mês** para ver os valores dele, incluindo o Poupado e o que ficou **Em conta**.
 - **Gastos por categoria** e **Investimentos por categoria:** as 8 maiores categorias e "Outras". Clicar numa categoria abre o detalhe **Por mês**.
 - **Orçamento do período:**

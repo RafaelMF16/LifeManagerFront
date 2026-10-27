@@ -1,0 +1,131 @@
+.lm-day-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-4);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+}
+
+.lm-day-panel__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.lm-day-panel__label,
+.lm-day-panel__count {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-day-panel__date {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-day-panel__figures {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.lm-day-panel__biggest {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-day-panel__hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-day-panel__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+/* Keeps the previous page visible, dimmed, while the next one loads. */
+.lm-day-panel__list--fetching {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.lm-day-panel__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'description amount'
+    'category amount';
+  column-gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-top: var(--border-width) solid var(--border);
+}
+
+.lm-day-panel__item:first-child {
+  border-top: none;
+}
+
+.lm-day-panel__description {
+  grid-area: description;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.lm-day-panel__description-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lm-day-panel__recurring {
+  flex: none;
+  color: var(--text-tertiary);
+}
+
+.lm-day-panel__category {
+  grid-area: category;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-day-panel__amount {
+  grid-area: amount;
+  align-self: center;
+  font-size: var(--text-sm);
+}
+
+.lm-day-panel__link {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-end;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.lm-day-panel__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}

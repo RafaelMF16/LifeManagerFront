@@ -27,6 +27,16 @@ describe('createFinanceFormat', () => {
     }
   })
 
+  it('names the weekdays Sunday first, in the UI language', () => {
+    expect(createFinanceFormat('en-US', false).weekdayNames('short')).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'])
+    expect(createFinanceFormat('pt-BR', false).weekdayNames('narrow')).toEqual(['D', 'S', 'T', 'Q', 'Q', 'S', 'S'])
+  })
+
+  it('writes a day in full, in the UI language', () => {
+    expect(createFinanceFormat('en-US', false).fullDayLabel('2026-10-02')).toBe('Friday, October 2')
+    expect(createFinanceFormat('pt-BR', false).fullDayLabel('2026-10-02')).toBe('Sexta-feira, 2 de outubro')
+  })
+
   it('formats the dashboard figures when not hidden', () => {
     const format = createFinanceFormat('en-US', false)
 

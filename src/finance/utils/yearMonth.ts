@@ -16,6 +16,11 @@ export function toYearMonth(date: Date) {
   return formatYearMonth(date.getFullYear(), date.getMonth() + 1)
 }
 
+/** A local date (e.g. today's) as the backend's `DateOnly`, `YYYY-MM-DD`; never UTC, which may be another day. */
+export function toIsoDate(date: Date) {
+  return `${toYearMonth(date)}-${pad(date.getDate())}`
+}
+
 /** "2026-09" → { year: 2026, month: 9 }; null when it isn't a valid `yyyy-MM`. */
 export function parseYearMonth(value: string | null | undefined) {
   const match = YEAR_MONTH_PATTERN.exec(value ?? '')
@@ -33,4 +38,12 @@ export function addMonths(value: string, months: number) {
 
   const ordinal = parsed.year * 12 + parsed.month - 1 + months
   return formatYearMonth(Math.floor(ordinal / 12), (ordinal % 12) + 1)
+}
+
+/** The months before and after `month` inside a period (`yyyy-MM`, oldest first); null at either end. */
+export function neighborMonths(months: string[], month: string) {
+  const index = months.indexOf(month)
+  if (index < 0) return { previous: null, next: null }
+
+  return { previous: months[index - 1] ?? null, next: months[index + 1] ?? null }
 }
