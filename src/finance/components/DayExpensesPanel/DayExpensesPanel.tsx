@@ -27,10 +27,10 @@ function DayExpensesPanel({ days, selectedDate }: DayExpensesPanelProps) {
     const biggest = days.total > 0 ? days.days.reduce((max, item) => (item.total > max.total ? item : max)) : null
 
     return (
-      <div className="lm-day-panel" aria-live="polite">
+      <div className="lm-day-panel">
         {biggest ? (
           <>
-            <div className="lm-day-panel__heading">
+            <div className="lm-day-panel__heading" aria-live="polite">
               <span className="lm-day-panel__label">{translate('finance:dashboard.days.monthTotal')}</span>
               <Amount value={days.total} tone="negative" emphasis />
             </div>
@@ -48,8 +48,9 @@ function DayExpensesPanel({ days, selectedDate }: DayExpensesPanelProps) {
   }
 
   return (
-    <div className="lm-day-panel" aria-live="polite">
-      <div className="lm-day-panel__heading">
+    <div className="lm-day-panel">
+      {/* Only the heading is announced: the day button already reads its total, and the list would be noise. */}
+      <div className="lm-day-panel__heading" aria-live="polite">
         <span className="lm-day-panel__date">{fullDayLabel(day.date)}</span>
         {day.count > 0 ? (
           <span className="lm-day-panel__figures">

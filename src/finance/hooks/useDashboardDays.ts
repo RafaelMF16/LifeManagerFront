@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { getDashboardDays } from '../services/financeDashboardService'
 import type { DashboardDaysResponseDto } from '../types/DashboardDtos'
+import { neighborMonths } from '../utils/yearMonth'
 
 export type DashboardDaysStatus = 'loading' | 'ready' | 'error'
 
@@ -45,9 +46,7 @@ export function useDashboardDays(months: string[]) {
   const current = result?.key === requestKey ? result : null
   const status: DashboardDaysStatus = current?.failed ? 'error' : data ? 'ready' : 'loading'
 
-  const index = months.indexOf(month)
-  const previousMonth = index > 0 ? months[index - 1] : null
-  const nextMonth = index >= 0 && index < months.length - 1 ? months[index + 1] : null
+  const { previous: previousMonth, next: nextMonth } = neighborMonths(months, month)
   const reload = useCallback(() => setReloadKey((key) => key + 1), [])
 
   return { month, setMonth, data, status, isFetching, reload, previousMonth, nextMonth }

@@ -39,3 +39,11 @@ export function addMonths(value: string, months: number) {
   const ordinal = parsed.year * 12 + parsed.month - 1 + months
   return formatYearMonth(Math.floor(ordinal / 12), (ordinal % 12) + 1)
 }
+
+/** The months before and after `month` inside a period (`yyyy-MM`, oldest first); null at either end. */
+export function neighborMonths(months: string[], month: string) {
+  const index = months.indexOf(month)
+  if (index < 0) return { previous: null, next: null }
+
+  return { previous: months[index - 1] ?? null, next: months[index + 1] ?? null }
+}
