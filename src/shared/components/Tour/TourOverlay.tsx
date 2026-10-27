@@ -212,7 +212,7 @@ function TourOverlay({ tour, step, index, count, onNext, onPrevious, onClose }: 
           </div>
         </div>
 
-        {placement ? <span className="lm-tour__arrow" aria-hidden="true" /> : null}
+        {placement?.arrow ? <span className="lm-tour__arrow" aria-hidden="true" /> : null}
       </div>
     </div>,
     document.body,

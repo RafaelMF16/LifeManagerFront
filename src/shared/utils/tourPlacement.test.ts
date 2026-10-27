@@ -38,6 +38,19 @@ describe('tourPlacement', () => {
     expectInsideViewport(placement)
   })
 
+  it('prefers the right over the left when both have room', () => {
+    const placement = tourPlacement(rect(500, 150, 100, 520), POPOVER, VIEWPORT)
+    expect(placement.side).toBe('right')
+  })
+
+  it('points the arrow at a target near the top of the screen from the side, inside the corner', () => {
+    // Center at y = 30: the balloon pins to the top margin and the arrow stops at the corner's inset.
+    const placement = tourPlacement(rect(100, -700, 200, 1460), POPOVER, VIEWPORT)
+    expect(placement.side).toBe('right')
+    expect(placement.top).toBe(TOUR_EDGE_MARGIN)
+    expect(placement.arrowOffset).toBe(TOUR_ARROW_INSET)
+  })
+
   it('goes to the left when only the left side has room', () => {
     const placement = tourPlacement(rect(900, 150, 300, 520), POPOVER, VIEWPORT)
     expect(placement.side).toBe('left')
@@ -58,9 +71,21 @@ describe('tourPlacement', () => {
     expect(placement.left + placement.arrowOffset).toBe(1230)
   })
 
-  it('overlaps a target bigger than the screen, on the side with more room, still on screen', () => {
-    const placement = tourPlacement(rect(-50, -100, 1400, 1200), POPOVER, VIEWPORT)
-    expect(['bottom', 'top']).toContain(placement.side)
+  it('draws the arrow when the balloon sits beside its target', () => {
+    expect(tourPlacement(rect(500, 100), POPOVER, VIEWPORT).arrow).toBe(true)
+  })
+
+  it('overlaps a target bigger than the screen at the bottom when more of it is above, without an arrow', () => {
+    const placement = tourPlacement(rect(-50, -400, 1400, 1250), POPOVER, VIEWPORT)
+    expect(placement.side).toBe('bottom')
+    expect(placement.arrow).toBe(false)
+    expectInsideViewport(placement)
+  })
+
+  it('overlaps a target bigger than the screen at the top when more of it is below', () => {
+    const placement = tourPlacement(rect(-50, -10, 1400, 1250), POPOVER, VIEWPORT)
+    expect(placement.side).toBe('top')
+    expect(placement.arrow).toBe(false)
     expectInsideViewport(placement)
   })
 

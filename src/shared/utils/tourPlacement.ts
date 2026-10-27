@@ -8,6 +8,8 @@ export interface TourPlacement {
   top: number
   left: number
   arrowOffset: number
+  /** `false` when the balloon had to sit over its target, where an arrow would point at nothing. */
+  arrow: boolean
 }
 
 /** Space kept between the balloon and the sides of the screen. */
@@ -37,7 +39,7 @@ function fits(side: TourSide, target: TourRect, popover: TourSize, viewport: Tou
   }
 }
 
-function place(side: TourSide, target: TourRect, popover: TourSize, viewport: TourSize): TourPlacement {
+function place(side: TourSide, target: TourRect, popover: TourSize, viewport: TourSize): Omit<TourPlacement, 'arrow'> {
   const maxLeft = viewport.width - TOUR_EDGE_MARGIN - popover.width
   const maxTop = viewport.height - TOUR_EDGE_MARGIN - popover.height
   const centerX = target.left + target.width / 2
@@ -72,12 +74,12 @@ function place(side: TourSide, target: TourRect, popover: TourSize, viewport: To
  * Places the tour's balloon next to its target: below, then above, right and left, the first side with room for it.
  * Along that side it centers on the target and stays `TOUR_EDGE_MARGIN` inside the screen, with the arrow still
  * pointing at the target. A target with no room on any side (bigger than the screen) gets the balloon over it, on
- * whichever of below/above has more space.
+ * whichever of below/above has more space, and no arrow.
  */
 export function tourPlacement(target: TourRect, popover: TourSize, viewport: TourSize): TourPlacement {
   const side = SIDES.find((candidate) => fits(candidate, target, popover, viewport))
-  if (side) return place(side, target, popover, viewport)
+  if (side) return { ...place(side, target, popover, viewport), arrow: true }
 
   const spaceBelow = viewport.height - (target.top + target.height)
-  return place(spaceBelow >= target.top ? 'bottom' : 'top', target, popover, viewport)
+  return { ...place(spaceBelow >= target.top ? 'bottom' : 'top', target, popover, viewport), arrow: false }
 }
