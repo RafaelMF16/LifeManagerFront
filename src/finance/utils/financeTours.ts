@@ -42,6 +42,21 @@ export const FINANCE_TOURS: TourDefinition[] = [
     ],
   },
   {
+    id: 'budget',
+    path: '/finance/planning/goals',
+    namespace: 'finance',
+    steps: [
+      { id: 'intro' },
+      { id: 'tabs', target: 'planning.tabs' },
+      { id: 'month', target: 'budget.month' },
+      { id: 'empty', target: 'budget.empty' },
+      { id: 'overview', target: 'budget.overview' },
+      { id: 'slice', target: 'budget.slice' },
+      { id: 'add', target: 'budget.add' },
+      { id: 'save', target: 'budget.save' },
+    ],
+  },
+  {
     id: 'recurring',
     path: '/finance/planning/recurring',
     namespace: 'finance',

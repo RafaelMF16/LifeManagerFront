@@ -960,6 +960,40 @@ export default {
     },
   },
   tour: {
+    budget: {
+      intro: {
+        title: 'Orçamento',
+        body: 'Defina quanto vai gastar e investir no mês e divida esse total entre as categorias. Cada mês tem o seu orçamento.',
+      },
+      tabs: {
+        title: 'Planejamento',
+        body: 'O planejamento tem duas partes: o Orçamento de cada mês e as transações Recorrentes.',
+      },
+      month: {
+        title: 'Escolher o mês',
+        body: 'Ande entre os meses ou volte para o atual. Excluir orçamento apaga só o do mês aberto.',
+      },
+      empty: {
+        title: 'Começar o orçamento',
+        body: 'Copie o orçamento de um mês anterior ou crie um do zero. Nada é salvo até você tocar em Salvar.',
+      },
+      overview: {
+        title: 'Total e divisão',
+        body: 'Informe o total do mês. O gráfico mostra a fatia de cada categoria e a parte que ainda está livre.',
+      },
+      slice: {
+        title: 'Cada fatia',
+        body: 'Arraste o controle para mudar o %, ou toque no % para digitar o valor exato. A barra mostra quanto já foi gasto.',
+      },
+      add: {
+        title: 'Adicionar categoria',
+        body: 'Inclua uma categoria ou os Investimentos no orçamento. A fatia nova começa em 0%.',
+      },
+      save: {
+        title: 'Salvar',
+        body: 'As mudanças só valem depois de salvas. Descartar volta para o orçamento como estava.',
+      },
+    },
     monthDetails: {
       intro: {
         title: 'Detalhe do mês',

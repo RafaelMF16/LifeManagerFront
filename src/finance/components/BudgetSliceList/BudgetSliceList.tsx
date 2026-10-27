@@ -137,11 +137,12 @@ function BudgetSliceList({ rows, free, selectedKey, onSelect, onPercentChange, o
 
   return (
     <ul className="lm-budget-slices" aria-label={translate('finance:budgetPlan.slicesLabel')}>
-      {rows.map((row) => (
+      {rows.map((row, index) => (
         <li
           key={row.key}
           ref={setItemRef(row.key)}
           className={`lm-budget-slice${row.key === selectedKey ? ' lm-budget-slice--selected' : ''}`}
+          data-tour={index === 0 ? 'budget.slice' : undefined}
         >
           {renderHead(row.key, row.name, row.percent, row.amount, row.color, true)}
           {onPercentChange ? (

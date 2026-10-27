@@ -13,7 +13,7 @@ function BudgetPlanEmpty({ children }: BudgetPlanEmptyProps) {
   const { t: translate } = useTranslation('finance')
 
   return (
-    <section className="lm-budget-plan-empty" aria-labelledby="lm-budget-plan-empty-title">
+    <section className="lm-budget-plan-empty" aria-labelledby="lm-budget-plan-empty-title" data-tour="budget.empty">
       <span className="lm-budget-plan-empty__icon" aria-hidden="true">
         <Icon name="target" size={24} />
       </span>

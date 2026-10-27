@@ -960,6 +960,40 @@ export default {
     },
   },
   tour: {
+    budget: {
+      intro: {
+        title: 'Budget',
+        body: 'Set how much to spend and invest in the month and split that total among your categories. Each month has its own budget.',
+      },
+      tabs: {
+        title: 'Planning',
+        body: 'Planning has two parts: each month\'s Budget and the Recurring transactions.',
+      },
+      month: {
+        title: 'Pick the month',
+        body: 'Move between months or back to the current one. Delete budget removes only the open month\'s.',
+      },
+      empty: {
+        title: 'Start the budget',
+        body: 'Copy the budget of an earlier month or create one from scratch. Nothing is saved until you tap Save.',
+      },
+      overview: {
+        title: 'Total and split',
+        body: 'Enter the month\'s total. The chart shows each category\'s slice and the part that is still free.',
+      },
+      slice: {
+        title: 'Each slice',
+        body: 'Drag the slider to change the %, or tap the % to type an exact value. The bar shows how much is already spent.',
+      },
+      add: {
+        title: 'Add category',
+        body: 'Add a category, or Investments, to the budget. The new slice starts at 0%.',
+      },
+      save: {
+        title: 'Save',
+        body: 'Changes only count once saved. Discard goes back to the budget as it was.',
+      },
+    },
     monthDetails: {
       intro: {
         title: 'Month details',

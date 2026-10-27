@@ -18,7 +18,12 @@ function UnsavedChangesBar({ blockedReason, isSaving, onDiscard, onSave }: Unsav
   const { t: translate } = useTranslation('finance')
 
   return (
-    <div className="lm-unsaved-bar" role="region" aria-label={translate('finance:budgetPlan.unsaved.label')}>
+    <div
+      className="lm-unsaved-bar"
+      role="region"
+      aria-label={translate('finance:budgetPlan.unsaved.label')}
+      data-tour="budget.save"
+    >
       <div className="lm-unsaved-bar__text">
         <span className="lm-unsaved-bar__label">
           <span className="lm-unsaved-bar__dot" aria-hidden="true" />
