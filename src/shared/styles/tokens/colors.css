@@ -140,15 +140,16 @@
   --chart-slice-5: #199e70;
   --chart-slice-6: #d95926;
   --chart-slice-extra: var(--slate-400);
-  /* The anchor flips on the dark surface: the biggest days are the brightest. */
-  --chart-expense-heat-1: #991b1b;
-  --chart-expense-heat-2: #dc2626;
-  --chart-expense-heat-3: #f87171;
-  --chart-expense-heat-4: #fecaca;
+  /* On the dark surface the small days sink toward it and the biggest are the most vivid red, never a pale pink
+     (which reads as less). Light ink has the better APCA contrast on every step. */
+  --chart-expense-heat-1: #8b1e1e;
+  --chart-expense-heat-2: #b01c1c;
+  --chart-expense-heat-3: #d92222;
+  --chart-expense-heat-4: #f74343;
   --chart-expense-heat-1-text: var(--text-primary);
   --chart-expense-heat-2-text: var(--text-primary);
-  --chart-expense-heat-3-text: var(--text-inverse);
-  --chart-expense-heat-4-text: var(--text-inverse);
+  --chart-expense-heat-3-text: var(--text-primary);
+  --chart-expense-heat-4-text: var(--text-primary);
   --danger: var(--money-out-500);
   --danger-hover: var(--money-out-600);
   --success: var(--money-in-500);
