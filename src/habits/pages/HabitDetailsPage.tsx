@@ -87,7 +87,7 @@ function HabitDetailsPage() {
 
       <HabitStatsSummary stats={data} />
 
-      <section className="lm-habit-details__card" aria-labelledby="habit-heatmap-title">
+      <section className="lm-habit-details__card" aria-labelledby="habit-heatmap-title" data-tour="details.heatmap">
         <div className="lm-habit-details__card-header">
           <h2 id="habit-heatmap-title" className="lm-habit-details__card-title">
             {translate('habits:details.heatmap.title')}

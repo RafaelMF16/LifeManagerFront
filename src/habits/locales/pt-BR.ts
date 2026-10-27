@@ -542,4 +542,68 @@ export default {
       episode: 'Um episódio de série',
     },
   },
+  tour: {
+    today: {
+      intro: {
+        title: 'Hoje',
+        body: 'A lista do dia: marque o que você fez e registre recaídas dos hábitos que está evitando.',
+      },
+      player: {
+        title: 'Seu personagem',
+        body: 'Nível, XP, HP, moedas e proteções de ofensiva. Tudo muda conforme você cumpre ou falha nos hábitos.',
+      },
+      empty: {
+        title: 'Comece por aqui',
+        body: 'Escolha uma sugestão fácil ou crie o seu próprio hábito. Nada é criado até você salvar.',
+      },
+      yesterday: {
+        title: 'Ontem ficou pendente',
+        body: 'Hábitos de ontem que você ainda pode marcar até o fim de hoje. Depois, o dia conta como falha.',
+      },
+      list: {
+        title: 'Para hoje',
+        body: 'Toque num hábito para marcar como feito e ganhar moedas e XP. Toque de novo para desfazer.',
+      },
+      avoid: {
+        title: 'Evitando',
+        body: 'Os dias limpos de cada hábito que você evita. Tive uma recaída registra o deslize e mostra o custo antes.',
+      },
+    },
+    habits: {
+      intro: {
+        title: 'Hábitos',
+        body: 'Os hábitos que você quer construir ou evitar. Cumprir rende moedas e XP; falhar custa HP.',
+      },
+      create: {
+        title: 'Novo hábito',
+        body: 'Escolha se é para construir ou evitar, a dificuldade e a frequência. Um gatilho, como "depois do café", ajuda a lembrar.',
+      },
+      filters: {
+        title: 'Filtrar e ordenar',
+        body: 'Veja os ativos ou os arquivados, busque pelo nome e ordene por nome ou data de criação.',
+      },
+      row: {
+        title: 'Cada hábito',
+        body: 'Tipo, frequência, ofensiva e recorde. Toque para ver o histórico; edite ou arquive pelos botões.',
+      },
+    },
+    details: {
+      intro: {
+        title: 'Detalhe do hábito',
+        body: 'Como este hábito está indo: a ofensiva, a consistência, o mapa dos últimos dias e tudo o que ele já rendeu ou custou.',
+      },
+      summary: {
+        title: 'Resumo',
+        body: 'Ofensiva e recorde, a consistência recente e quantos dias faltam para os 66 que tornam um hábito automático.',
+      },
+      heatmap: {
+        title: 'Últimas 13 semanas',
+        body: 'Um quadrado por dia, colorido pelo que aconteceu. Toque num dia para ver o detalhe.',
+      },
+      ledger: {
+        title: 'Lançamentos',
+        body: 'O extrato só deste hábito: moedas, XP e HP ganhos ou perdidos em cada dia.',
+      },
+    },
+  },
 } as const

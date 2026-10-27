@@ -167,7 +167,7 @@ function TodayPage() {
 
     if (habits.today.length === 0 && habits.yesterdayPending.length === 0 && !hasAvoiding) {
       return (
-        <div className="lm-today-page__empty">
+        <div className="lm-today-page__empty" data-tour="today.empty">
           <span className="lm-today-page__empty-icon" aria-hidden="true">
             <Icon name="calendar-check" size={24} />
           </span>
@@ -197,7 +197,11 @@ function TodayPage() {
         {shouldWelcomeBack(habits.lastMissedOn, welcomeDismissedFor) ? <WelcomeBackBanner onDismiss={dismissWelcomeBack} /> : null}
 
         {habits.yesterdayPending.length > 0 ? (
-          <section className="lm-today-page__section lm-today-page__section--yesterday" aria-labelledby="lm-today-yesterday">
+          <section
+            className="lm-today-page__section lm-today-page__section--yesterday"
+            aria-labelledby="lm-today-yesterday"
+            data-tour="today.yesterday"
+          >
             <div className="lm-today-page__section-header">
               <h2 id="lm-today-yesterday" className="lm-today-page__section-title">
                 {translate('habits:today.yesterday.title')}
@@ -209,7 +213,7 @@ function TodayPage() {
         ) : null}
 
         {habits.today.length > 0 || !hasAvoiding ? (
-          <section className="lm-today-page__section" aria-labelledby="lm-today-today">
+          <section className="lm-today-page__section" aria-labelledby="lm-today-today" data-tour="today.list">
             <div className="lm-today-page__section-header">
               <h2 id="lm-today-today" className="lm-today-page__section-title">
                 {translate('habits:today.list.title')}
@@ -237,7 +241,7 @@ function TodayPage() {
         ) : null}
 
         {hasAvoiding ? (
-          <section className="lm-today-page__section" aria-labelledby="lm-today-avoiding">
+          <section className="lm-today-page__section" aria-labelledby="lm-today-avoiding" data-tour="today.avoid">
             <div className="lm-today-page__section-header">
               <h2 id="lm-today-avoiding" className="lm-today-page__section-title">
                 {translate('habits:today.avoid.title')}

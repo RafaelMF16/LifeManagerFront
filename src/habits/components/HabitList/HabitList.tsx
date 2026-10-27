@@ -147,8 +147,12 @@ function HabitList({
 
     if (data.totalCount === 0) return renderEmpty()
 
-    return data.items.map((habit) => (
-      <div key={habit.id} className={`lm-habit-list__row${habit.archivedAt ? ' lm-habit-list__row--archived' : ''}`}>
+    return data.items.map((habit, index) => (
+      <div
+        key={habit.id}
+        className={`lm-habit-list__row${habit.archivedAt ? ' lm-habit-list__row--archived' : ''}`}
+        data-tour={index === 0 ? 'habits.row' : undefined}
+      >
         <div className="lm-habit-list__main">
           <Link to={`/habits/list/${habit.id}`} className="lm-habit-list__name">
             {habit.name}
@@ -195,7 +199,7 @@ function HabitList({
       className={`lm-habit-list${isFetching && status === 'ready' ? ' lm-habit-list--fetching' : ''}`}
       aria-busy={isFetching}
     >
-      <div className="lm-habit-list__toolbar">
+      <div className="lm-habit-list__toolbar" data-tour="habits.filters">
         <div className="lm-habit-list__heading">
           <h2 className="lm-habit-list__title">{translate('habits:habits.list.title')}</h2>
           {status === 'ready' && data ? (

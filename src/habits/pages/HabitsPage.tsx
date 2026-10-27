@@ -103,7 +103,12 @@ function HabitsPage() {
           <h1 className="lm-habits-page__title">{translate('habits:habits.title')}</h1>
           <p className="lm-habits-page__intro">{translate('habits:habits.intro')}</p>
         </div>
-        <Button variant="primary" icon="plus" onClick={() => setFormTarget({ mode: 'create' })}>
+        <Button
+          variant="primary"
+          icon="plus"
+          onClick={() => setFormTarget({ mode: 'create' })}
+          data-tour="habits.create"
+        >
           {translate('habits:habits.newButton')}
         </Button>
       </div>

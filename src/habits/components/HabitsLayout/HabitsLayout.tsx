@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Footer from '../../../shared/components/Footer/Footer'
 import Header from '../../../shared/components/Header/Header'
+import TourButton from '../../../shared/components/Tour/TourButton'
 import { usePlayerProfile } from '../../hooks/usePlayerProfile'
 import type { HabitsOutletContext } from '../../types/HabitsOutletContext'
 import {
@@ -12,6 +13,7 @@ import {
   writeSeenKnockout,
   writeSeenLevel,
 } from '../../utils/gameMoments'
+import { HABITS_TOURS } from '../../utils/habitsTours'
 import GameMomentDialog from '../GameMomentDialog/GameMomentDialog'
 import HabitsSidebar from '../HabitsSidebar/HabitsSidebar'
 import PlayerHeader from '../PlayerHeader/PlayerHeader'
@@ -52,13 +54,13 @@ function HabitsLayout() {
 
   return (
     <div className="lm-habits-layout">
-      <Header />
+      <Header actions={<TourButton tours={HABITS_TOURS} />} />
 
       <div className="lm-habits-layout__body">
         <HabitsSidebar />
 
         <div className="lm-habits-layout__content">
-          <div className="lm-habits-layout__player">
+          <div className="lm-habits-layout__player" data-tour="habits.player">
             <PlayerHeader profile={profile} status={status} />
           </div>
           <Outlet context={outletContext} />
