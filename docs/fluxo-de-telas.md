@@ -78,6 +78,13 @@ Aparece no topo de todas as telas depois do login.
   - **Sair:** encerra a sessão, mostra "Você saiu da sua conta." e volta para o login.
 - Tema e idioma mudam na hora e são salvos na conta: valem em qualquer dispositivo no próximo login.
 - No Financeiro, ao lado do menu fica o botão **Ocultar valores / Mostrar valores** (veja [Modo privacidade](#modo-privacidade)).
+- **Tour desta tela** (ícone de interrogação), no Financeiro e nos Hábitos: aparece em todas as telas desses módulos e abre um tour guiado da tela aberta.
+  - O primeiro passo explica para que serve a tela; os seguintes destacam um controle por vez, com uma explicação curta e o contador "Passo X de N".
+  - **Próximo**, **Anterior** e, no último passo, **Concluir**. **Pular**, o **X** ou Esc fecham o tour. Pelo teclado, as setas também avançam e voltam.
+  - Enquanto o tour está aberto, a tela não recebe cliques: ele só explica, não faz nada por você.
+  - Partes que não estão na tela (uma lista vazia, um mês sem orçamento) ficam de fora do tour.
+  - No computador, a explicação aparece ao lado do controle; no celular, num cartão embaixo da tela, com o controle rolado para cima.
+  - O tour só abre quando você toca no botão, e trocar de tela ou de idioma o encerra.
 
 ### Menu lateral dos módulos
 
