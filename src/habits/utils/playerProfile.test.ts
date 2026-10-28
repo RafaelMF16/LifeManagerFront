@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import type { AchievementDto } from '../types/AchievementDtos'
-import { formatPlayingSince, showcase, unlockedTitles } from './playerProfile'
+import type { EvolutionPointDto } from '../types/PlayerProfileDtos'
+import {
+  formatPlayingSince,
+  isEmptyEvolution,
+  nearestPointIndex,
+  periodSummary,
+  showcase,
+  unlockedTitles,
+  weeklyPoints,
+} from './playerProfile'
 
 function achievement(overrides: Partial<AchievementDto>): AchievementDto {
   return {
@@ -62,5 +71,63 @@ describe('showcase', () => {
 
   it('is empty before any unlock', () => {
     expect(showcase([achievement({})])).toEqual([])
+  })
+})
+
+function days(count: number, value = (index: number) => index): EvolutionPointDto[] {
+  return Array.from({ length: count }, (_, index) => ({
+    date: new Date(Date.UTC(2026, 9, 1 + index)).toISOString().slice(0, 10),
+    totalXp: value(index) * 10,
+    coins: value(index),
+  }))
+}
+
+describe('periodSummary', () => {
+  it('gives the start, the end and the change of the series asked for', () => {
+    const points = [
+      { date: '2026-10-01', totalXp: 400, coins: 120 },
+      { date: '2026-10-02', totalXp: 450, coins: 90 },
+    ]
+
+    expect(periodSummary(points, 'xp')).toEqual({ start: 400, end: 450, change: 50 })
+    expect(periodSummary(points, 'coins')).toEqual({ start: 120, end: 90, change: -30 })
+  })
+
+  it('is all zero without points', () => {
+    expect(periodSummary([], 'xp')).toEqual({ start: 0, end: 0, change: 0 })
+  })
+})
+
+describe('isEmptyEvolution', () => {
+  it('tells a new player apart from one who played', () => {
+    expect(isEmptyEvolution(days(30, () => 0))).toBe(true)
+    expect(isEmptyEvolution(days(30))).toBe(false)
+  })
+})
+
+describe('weeklyPoints', () => {
+  it('keeps today and every seventh day before it, plus the first day', () => {
+    const points = days(30)
+    const weekly = weeklyPoints(points)
+
+    expect(weekly.map((point) => point.date)).toEqual(['2026-10-01', '2026-10-02', '2026-10-09', '2026-10-16', '2026-10-23', '2026-10-30'])
+  })
+
+  it('does not repeat the first day when it is already a week step', () => {
+    expect(weeklyPoints(days(15)).map((point) => point.date)).toEqual(['2026-10-01', '2026-10-08', '2026-10-15'])
+  })
+})
+
+describe('nearestPointIndex', () => {
+  it('snaps the pointer to the closest day', () => {
+    expect(nearestPointIndex(0, 600, 30)).toBe(0)
+    expect(nearestPointIndex(600, 600, 30)).toBe(29)
+    expect(nearestPointIndex(305, 600, 30)).toBe(15)
+  })
+
+  it('stays inside the plot', () => {
+    expect(nearestPointIndex(-20, 600, 30)).toBe(0)
+    expect(nearestPointIndex(900, 600, 30)).toBe(29)
+    expect(nearestPointIndex(10, 0, 30)).toBe(0)
   })
 })

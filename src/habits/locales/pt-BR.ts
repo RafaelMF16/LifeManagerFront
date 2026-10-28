@@ -698,6 +698,37 @@ export default {
       redemptions: 'Recompensas resgatadas',
       knockouts: 'Nocautes superados',
     },
+    evolution: {
+      title: 'Evolução',
+      loading: 'Carregando sua evolução…',
+      loadError: 'Não foi possível carregar sua evolução.',
+      seriesAria: 'O que mostrar',
+      rangeAria: 'Período',
+      series: {
+        xp: 'XP',
+        coins: 'Moedas',
+      },
+      ranges: {
+        Month: '30 dias',
+        Quarter: '90 dias',
+        Year: '1 ano',
+      },
+      values: {
+        xp: '{{value}} XP',
+        coins_one: '{{value}} moeda',
+        coins_other: '{{value}} moedas',
+      },
+      changes: {
+        xp: '{{change}} XP no período',
+        coins_one: '{{change}} moeda no período',
+        coins_other: '{{change}} moedas no período',
+      },
+      fromTo: 'de {{start}} para {{end}}',
+      empty: 'Faça seu primeiro check-in para começar sua evolução.',
+      plotAria: 'Evolução de {{series}}. Use as setas para percorrer os dias.',
+      tableCaption: '{{series}} por semana',
+      day: 'Dia',
+    },
     showcase: {
       title: 'Vitrine',
       seeAll: 'Ver todas',

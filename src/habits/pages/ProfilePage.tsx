@@ -8,6 +8,7 @@ import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
 import AppearanceDialog from '../components/AppearanceDialog/AppearanceDialog'
+import EvolutionChart from '../components/EvolutionChart/EvolutionChart'
 import PlayerAvatar from '../components/PlayerAvatar/PlayerAvatar'
 import PlayerStatsGrid from '../components/PlayerStatsGrid/PlayerStatsGrid'
 import ProfileShowcase from '../components/ProfileShowcase/ProfileShowcase'
@@ -107,6 +108,13 @@ function ProfilePage() {
           </Link>
         </div>
         <ProfileShowcase achievements={achievements.data} status={achievements.status} onRetry={achievements.reload} />
+      </section>
+
+      <section className="lm-profile-page__section" aria-labelledby="lm-profile-evolution" data-tour="profile.evolution">
+        <h2 id="lm-profile-evolution" className="lm-profile-page__section-title">
+          {translate('habits:profile.evolution.title')}
+        </h2>
+        <EvolutionChart />
       </section>
 
       {editing && profile ? (

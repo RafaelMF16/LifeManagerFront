@@ -698,6 +698,37 @@ export default {
       redemptions: 'Rewards redeemed',
       knockouts: 'Knockouts overcome',
     },
+    evolution: {
+      title: 'Evolution',
+      loading: 'Loading your evolution…',
+      loadError: "Couldn't load your evolution.",
+      seriesAria: 'What to show',
+      rangeAria: 'Period',
+      series: {
+        xp: 'XP',
+        coins: 'Coins',
+      },
+      ranges: {
+        Month: '30 days',
+        Quarter: '90 days',
+        Year: '1 year',
+      },
+      values: {
+        xp: '{{value}} XP',
+        coins_one: '{{value}} coin',
+        coins_other: '{{value}} coins',
+      },
+      changes: {
+        xp: '{{change}} XP in the period',
+        coins_one: '{{change}} coin in the period',
+        coins_other: '{{change}} coins in the period',
+      },
+      fromTo: 'from {{start}} to {{end}}',
+      empty: 'Do your first check-in to start your evolution.',
+      plotAria: '{{series}} evolution. Use the arrow keys to move through the days.',
+      tableCaption: '{{series}} per week',
+      day: 'Day',
+    },
     showcase: {
       title: 'Showcase',
       seeAll: 'See all',
