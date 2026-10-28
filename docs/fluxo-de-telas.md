@@ -32,6 +32,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   - [Hábitos (lista)](#hábitos-lista)
   - [Detalhe do hábito](#detalhe-do-hábito)
   - [Loja](#loja)
+  - [Conquistas](#conquistas)
   - [Histórico](#histórico)
   - [Momentos de jogo](#momentos-de-jogo)
 
@@ -61,6 +62,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
     /habits/shop/rewards         Recompensas
     /habits/shop/items           Itens
     /habits/shop/redemptions     Resgates
+  /habits/achievements      Conquistas
   /habits/history           Histórico
 ```
 
@@ -554,11 +556,23 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 - **Histórico de resgates**, do mais recente para o mais antigo, com o preço pago.
 - **Desfazer:** só aparece nos resgates de hoje que ainda não foram desfeitos. Devolve as moedas e mostra "Resgate desfeito: …". Resgates desfeitos ficam marcados como **Desfeito**.
 
+### Conquistas
+
+**Rota:** `/habits/achievements` (item **Conquistas** do menu, entre Loja e Histórico).
+
+**16 conquistas** em bronze, prata e ouro. Cada uma paga um bônus de moedas e XP uma vez só e libera um título. O que você fez antes de elas existirem também conta.
+
+- **Cabeçalho:** "N de 16 desbloqueadas".
+- **Quase lá:** até 3 próximos objetivos (a próxima conquista de cada família), as mais perto de sair primeiro, com a barra e o que falta ("Faltam 3 check-ins"). Some quando todas estiverem desbloqueadas.
+- **Todas as conquistas**, por família: Check-ins, Ofensiva, Nível, Resgates, Dias limpos e Superação. Cada cartão mostra o nível (bronze, prata ou ouro), o nome, o que é preciso ("100 check-ins"), o bônus ("+100 moedas · +150 XP") e o título que libera.
+  - **Bloqueada:** em cinza, com um cadeado e a barra de progresso ("37 / 100").
+  - **Desbloqueada:** na cor da medalha, com a data. Uma conquista desbloqueada é para sempre, mesmo que um check-in seja desfeito.
+
 ### Histórico
 
 **Rota:** `/habits/history`.
 
-O **Extrato** completo, do mais recente para o mais antigo: tudo o que mexeu em moedas, XP e HP. Isso inclui hábito cumprido, falha, recaída, dia limpo, marco de ofensiva, resgate, resgate desfeito, item comprado ("Item comprado · Poção de HP"), compra desfeita, nocaute, proteção usada e subida de nível. Cada linha mostra as variações ("+10 moedas", "−8 HP").
+O **Extrato** completo, do mais recente para o mais antigo: tudo o que mexeu em moedas, XP e HP. Isso inclui hábito cumprido, falha, recaída, dia limpo, marco de ofensiva, resgate, resgate desfeito, item comprado ("Item comprado · Poção de HP"), compra desfeita, conquista ("Conquista · Constância"), nocaute, proteção usada e subida de nível. Cada linha mostra as variações ("+10 moedas", "−8 HP").
 
 ### Momentos de jogo
 
@@ -566,5 +580,6 @@ Em qualquer tela de Hábitos, uma janela comemora ou avisa um acontecimento que 
 
 - **Nível N!** "Seu HP foi restaurado." Botão **Continuar**.
 - **Você foi nocauteado:** mostra as moedas perdidas e que o HP foi restaurado. Nível e XP continuam. Botão **Recomeçar**.
+- **Conquista desbloqueada!** Mostra o nome, o nível, o bônus e o título liberado. Com várias de uma vez (como na primeira visita), uma janela só: "Você desbloqueou N conquistas!", com a lista e o bônus total. Botões **Ver conquistas** (abre a página) e **Continuar**.
 
-Cada momento aparece uma vez por dispositivo.
+A ordem é: nocaute, conquistas, nível (o bônus de uma conquista pode subir o nível logo depois). O nocaute e o nível aparecem uma vez por dispositivo; as conquistas, uma vez só em qualquer dispositivo.

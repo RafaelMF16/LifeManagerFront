@@ -820,6 +820,24 @@ export default {
         body: 'A redemption made today can be undone: the coins come back to you.',
       },
     },
+    achievements: {
+      intro: {
+        title: 'Achievements',
+        body: 'The long-term milestones of your journey. Each achievement pays a coins and XP bonus once and unlocks a title.',
+      },
+      summary: {
+        title: 'Your score',
+        body: 'How many of the 16 achievements you have unlocked. What you did before counts too.',
+      },
+      near: {
+        title: 'Almost there',
+        body: 'Your next goals, the closest ones first, with what each still needs.',
+      },
+      grid: {
+        title: 'All achievements',
+        body: 'By family, in bronze, silver and gold. Locked ones show the progress; once unlocked, an achievement stays.',
+      },
+    },
     history: {
       intro: {
         title: 'History',

@@ -820,6 +820,24 @@ export default {
         body: 'Um resgate de hoje pode ser desfeito: as moedas voltam para você.',
       },
     },
+    achievements: {
+      intro: {
+        title: 'Conquistas',
+        body: 'Os marcos de longo prazo da sua jornada. Cada conquista paga um bônus de moedas e XP uma vez só e libera um título.',
+      },
+      summary: {
+        title: 'Seu placar',
+        body: 'Quantas das 16 conquistas você já desbloqueou. O que você fez antes também conta.',
+      },
+      near: {
+        title: 'Quase lá',
+        body: 'Seus próximos objetivos, os mais perto de sair primeiro, com o que ainda falta.',
+      },
+      grid: {
+        title: 'Todas as conquistas',
+        body: 'Por família, em bronze, prata e ouro. As bloqueadas mostram o progresso; uma conquista desbloqueada é para sempre.',
+      },
+    },
     history: {
       intro: {
         title: 'Histórico',

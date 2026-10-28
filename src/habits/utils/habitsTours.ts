@@ -72,6 +72,17 @@ export const HABITS_TOURS: TourDefinition[] = [
     ],
   },
   {
+    id: 'achievements',
+    path: '/habits/achievements',
+    namespace: 'habits',
+    steps: [
+      { id: 'intro' },
+      { id: 'summary', target: 'achievements.summary' },
+      { id: 'near', target: 'achievements.near' },
+      { id: 'grid', target: 'achievements.grid' },
+    ],
+  },
+  {
     id: 'history',
     path: '/habits/history',
     namespace: 'habits',
