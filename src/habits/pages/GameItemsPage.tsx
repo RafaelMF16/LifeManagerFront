@@ -6,16 +6,17 @@ import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
 import GameItemList from '../components/GameItemList/GameItemList'
+import GameItemPurchaseList from '../components/GameItemPurchaseList/GameItemPurchaseList'
 import PurchaseItemDialog from '../components/PurchaseItemDialog/PurchaseItemDialog'
 import { useGameItems } from '../hooks/useGameItems'
-import { purchaseGameItem } from '../services/gameItemService'
-import type { GameItemDto } from '../types/GameItemDtos'
+import { purchaseGameItem, undoGameItemPurchase } from '../services/gameItemService'
+import type { GameItemDto, GameItemPurchaseDto } from '../types/GameItemDtos'
 import type { HabitsOutletContext } from '../types/HabitsOutletContext'
 import { gameItemName } from '../utils/gameItems'
 import { formatWalletChange } from '../utils/todayProgress'
 import { gameItemErrorMessages, SILENT_GAME_ITEM_CODES } from '../validation/gameItemErrorMap'
 
-/** The shop's game items: bought here with coins, applied at once. */
+/** The shop's game items: bought here with coins, applied at once; today's purchases can be undone here. */
 function GameItemsPage() {
   const { t: translate } = useTranslation(['habits', 'common'])
   const { profile, reloadProfile } = useOutletContext<HabitsOutletContext>()
@@ -24,6 +25,7 @@ function GameItemsPage() {
   const gameItems = useGameItems()
   const { reload } = gameItems
   const [purchaseTarget, setPurchaseTarget] = useState<GameItemDto | null>(null)
+  const [pendingUndoId, setPendingUndoId] = useState<number | null>(null)
 
   /** Every refusal comes from a state that changed since the shop loaded, so both the shop and the profile reload. */
   function showActionError(err: unknown, titleKey: string) {
@@ -52,6 +54,20 @@ function GameItemsPage() {
     setPurchaseTarget(null)
   }
 
+  async function handleUndo(purchase: GameItemPurchaseDto) {
+    setPendingUndoId(purchase.id)
+    try {
+      const { wallet } = await undoGameItemPurchase(purchase.id)
+      reloadProfile()
+      reload()
+      showToast(translate('habits:shop.toasts.purchaseUndone', { name: gameItemName(purchase.kind, translate) }), formatWalletChange(wallet, translate))
+    } catch (err) {
+      showActionError(err, 'habits:shop.items.today.errorTitle')
+    } finally {
+      setPendingUndoId(null)
+    }
+  }
+
   return (
     <>
       <GameItemList
@@ -61,6 +77,12 @@ function GameItemsPage() {
         profile={profile}
         onRetry={reload}
         onBuy={setPurchaseTarget}
+      />
+
+      <GameItemPurchaseList
+        purchases={gameItems.data?.todayPurchases ?? []}
+        onUndo={(purchase) => void handleUndo(purchase)}
+        pendingId={pendingUndoId}
       />
 
       {purchaseTarget ? (

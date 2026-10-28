@@ -363,6 +363,14 @@ export default {
       loading: 'Loading items…',
       loadError: "Couldn't load the items.",
       retry: 'Try again',
+      today: {
+        title: "Today's purchases",
+        hint: 'They can be undone until the end of the day: the coins come back and the item goes.',
+        undone: 'Undone',
+        undo: 'Undo',
+        undoAria: 'Undo the purchase of {{name}}',
+        errorTitle: "Couldn't undo",
+      },
       purchase: {
         title: 'Buy item?',
         hpAfter: 'HP after',
@@ -588,6 +596,8 @@ export default {
       Knockout: 'Knockout',
       Undo: 'Undone',
       UndoRedemption: 'Redemption undone',
+      ItemPurchased: 'Item bought',
+      UndoItemPurchase: 'Purchase undone',
       FreezeUsed: 'Streak freeze used',
       LevelUp: 'Level up',
     },
@@ -672,6 +682,10 @@ export default {
       cards: {
         title: 'Buy',
         body: 'Each card shows the effect, the price and how much of the limit you used. When you can\'t buy it, the button says why.',
+      },
+      undo: {
+        title: 'Undo',
+        body: "A purchase made today can be undone: the coins come back and the item goes. A freeze that already covered a day can't.",
       },
     },
     redemptions: {

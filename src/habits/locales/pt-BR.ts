@@ -363,6 +363,14 @@ export default {
       loading: 'Carregando itens…',
       loadError: 'Não foi possível carregar os itens.',
       retry: 'Tentar novamente',
+      today: {
+        title: 'Compras de hoje',
+        hint: 'Podem ser desfeitas até o fim do dia: as moedas voltam e o item sai.',
+        undone: 'Desfeita',
+        undo: 'Desfazer',
+        undoAria: 'Desfazer a compra de {{name}}',
+        errorTitle: 'Não foi possível desfazer',
+      },
       purchase: {
         title: 'Comprar item?',
         hpAfter: 'HP depois',
@@ -588,6 +596,8 @@ export default {
       Knockout: 'Nocaute',
       Undo: 'Desfeito',
       UndoRedemption: 'Resgate desfeito',
+      ItemPurchased: 'Item comprado',
+      UndoItemPurchase: 'Compra desfeita',
       FreezeUsed: 'Proteção usada',
       LevelUp: 'Subiu de nível',
     },
@@ -672,6 +682,10 @@ export default {
       cards: {
         title: 'Comprar',
         body: 'Cada cartão mostra o efeito, o preço e quanto do limite você já usou. Quando não dá para comprar, o botão diz o motivo.',
+      },
+      undo: {
+        title: 'Desfazer',
+        body: 'Uma compra de hoje pode ser desfeita: as moedas voltam e o item sai. Uma proteção que já cobriu um dia não volta.',
       },
     },
     redemptions: {

@@ -1,3 +1,5 @@
+import type { GameItemKind } from './GameItemDtos'
+
 // Espelha LifeManager.Domain/Habits/Enums/GameLedgerEntryKind (binds by name) e Application/Habits/DTOs/GameLedgerEntryDtos
 export type GameLedgerEntryKind =
   | 'HabitDone'
@@ -10,6 +12,7 @@ export type GameLedgerEntryKind =
   | 'Undo'
   | 'FreezeUsed'
   | 'LevelUp'
+  | 'ItemPurchased'
 
 /** One line of the player's statement (`GET /api/Habits/Ledger`). */
 export interface GameLedgerEntryDto {
@@ -25,4 +28,6 @@ export interface GameLedgerEntryDto {
   description: string | null
   habitId: number | null
   rewardId: number | null
+  /** The game item behind a purchase or its undo (and their level-up or knockout lines); null otherwise. */
+  itemKind: GameItemKind | null
 }

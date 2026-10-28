@@ -57,6 +57,7 @@ export const HABITS_TOURS: TourDefinition[] = [
       { id: 'intro' },
       { id: 'tabs', target: 'shop.tabs' },
       { id: 'cards', target: 'items.cards' },
+      { id: 'undo', target: 'items.undo' },
     ],
   },
   {
