@@ -44,6 +44,11 @@ describe('ledgerTitle', () => {
     expect(ledgerTitle(entry({ kind: 'Undo', habitId: 3, description: 'Read' }), translate)).toBe('Undo · Read')
   })
 
+  it('reads an undone habit day as one even when the item is missing from the line', () => {
+    const withoutItem = { ...entry({ kind: 'Undo', habitId: 3, description: 'Read' }), itemKind: undefined } as unknown as GameLedgerEntryDto
+    expect(ledgerTitle(withoutItem, translate)).toBe('Undo · Read')
+  })
+
   it('keeps a level-up caused by a purchase as a plain level-up', () => {
     expect(ledgerTitle(entry({ kind: 'LevelUp', itemKind: 'HpPotion' }), translate)).toBe('LevelUp')
   })

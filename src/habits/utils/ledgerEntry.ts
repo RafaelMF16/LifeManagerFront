@@ -45,7 +45,7 @@ export function ledgerTitle(entry: GameLedgerEntryDto, translate: Translate) {
 function titleKindKey(entry: GameLedgerEntryDto) {
   if (entry.kind !== 'Undo') return entry.kind
   if (entry.rewardId !== null) return 'UndoRedemption'
-  if (entry.itemKind !== null) return 'UndoItemPurchase'
+  if (entry.itemKind) return 'UndoItemPurchase'
   return entry.kind
 }
 
