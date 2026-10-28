@@ -83,6 +83,18 @@ export const HABITS_TOURS: TourDefinition[] = [
     ],
   },
   {
+    id: 'profile',
+    path: '/habits/profile',
+    namespace: 'habits',
+    steps: [
+      { id: 'intro' },
+      { id: 'identity', target: 'profile.identity' },
+      { id: 'stats', target: 'profile.stats' },
+      { id: 'showcase', target: 'profile.showcase' },
+      { id: 'evolution', target: 'profile.evolution' },
+    ],
+  },
+  {
     id: 'history',
     path: '/habits/history',
     namespace: 'habits',

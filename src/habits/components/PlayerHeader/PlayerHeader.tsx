@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import Icon from '../../../shared/components/Icon/Icon'
 import type { IconName } from '../../../shared/components/Icon/Icon'
 import type { PlayerProfileStatus } from '../../hooks/usePlayerProfile'
 import type { PlayerProfileDto } from '../../types/PlayerProfileDtos'
+import { achievementTitle } from '../../utils/achievements'
 import { progressRatio } from '../../utils/playerProgress'
+import PlayerAvatar from '../PlayerAvatar/PlayerAvatar'
 import './PlayerHeader.css'
 
 interface PlayerHeaderProps {
@@ -95,7 +98,10 @@ function PlayerHeader({ profile, status }: PlayerHeaderProps) {
       <section className="lm-player-header lm-player-header--loading" aria-busy="true">
         <span className="lm-player-header__visually-hidden">{translate('habits:player.loading')}</span>
         <div className="lm-player-header__top" aria-hidden="true">
-          <span className="lm-player-header__placeholder lm-player-header__placeholder--badge" />
+          <span className="lm-player-header__identity">
+            <span className="lm-player-header__placeholder lm-player-header__placeholder--avatar" />
+            <span className="lm-player-header__placeholder lm-player-header__placeholder--badge" />
+          </span>
           <span className="lm-player-header__placeholder lm-player-header__placeholder--stats" />
         </div>
         <div className="lm-player-header__bars" aria-hidden="true">
@@ -106,16 +112,24 @@ function PlayerHeader({ profile, status }: PlayerHeaderProps) {
     )
   }
 
-  const { level, xpInLevel, xpToNextLevel, hp, maxHp, coins, streakFreezes, maxStreakFreezes } = profile
+  const { level, xpInLevel, xpToNextLevel, hp, maxHp, coins, streakFreezes, maxStreakFreezes, avatar, title } = profile
 
   return (
     <section className="lm-player-header" aria-label={translate('habits:player.aria')}>
       <div className="lm-player-header__top">
-        <span className="lm-player-header__level" title={translate('habits:player.level', { level })}>
-          <Icon name="sparkles" size={14} aria-hidden="true" />
-          <BumpValue value={level}>{translate('habits:player.levelShort', { level })}</BumpValue>
-          <span className="lm-player-header__visually-hidden">{translate('habits:player.level', { level })}</span>
-        </span>
+        <div className="lm-player-header__identity">
+          <Link to="/habits/profile" className="lm-player-header__avatar" aria-label={translate('habits:player.openProfile')}>
+            <PlayerAvatar avatar={avatar} size="sm" />
+          </Link>
+          <div className="lm-player-header__who">
+            <span className="lm-player-header__level" title={translate('habits:player.level', { level })}>
+              <Icon name="sparkles" size={14} aria-hidden="true" />
+              <BumpValue value={level}>{translate('habits:player.levelShort', { level })}</BumpValue>
+              <span className="lm-player-header__visually-hidden">{translate('habits:player.level', { level })}</span>
+            </span>
+            {title && <span className="lm-player-header__title">{achievementTitle(title, translate)}</span>}
+          </div>
+        </div>
 
         <div className="lm-player-header__stats">
           <span className="lm-player-header__stat lm-player-header__stat--coins" title={translate('habits:player.coins')}>

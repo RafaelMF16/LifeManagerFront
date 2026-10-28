@@ -94,6 +94,18 @@
   --chart-expense-heat-2-text: var(--text-inverse);
   --chart-expense-heat-3-text: var(--text-inverse);
   --chart-expense-heat-4-text: var(--text-inverse);
+  /* Habits profile evolution chart: one series at a time, validated as a pair with the dataviz checker (light on
+     the white surface). Text never uses these. */
+  --chart-xp: #0d9488;
+  --chart-coins: #d97706;
+  /* Player avatars (habits profile): decorative hues, never meaning. Each is the icon's ink on a 16% tint of
+     itself, so the icon clears 3:1 on its disc in both themes. Kept off the reserved money colours. */
+  --avatar-tone-1: #c2410c;
+  --avatar-tone-2: #0f766e;
+  --avatar-tone-3: #6d28d9;
+  --avatar-tone-4: #be123c;
+  --avatar-tone-5: #0369a1;
+  --avatar-tone-6: #4d7c0f;
   --danger: var(--money-out-500);
   --danger-hover: var(--money-out-600);
   --success: var(--money-in-500);
@@ -153,6 +165,14 @@
   --danger: var(--money-out-500);
   --danger-hover: var(--money-out-600);
   --success: var(--money-in-500);
+  --chart-xp: #0f9e8e;
+  --chart-coins: #c08009;
+  --avatar-tone-1: #fb923c;
+  --avatar-tone-2: #2dd4bf;
+  --avatar-tone-3: #a78bfa;
+  --avatar-tone-4: #fb7185;
+  --avatar-tone-5: #38bdf8;
+  --avatar-tone-6: #a3e635;
   --warning: var(--warn-300);
   --warning-tint: color-mix(in oklch, var(--warn-300) 12%, transparent);
 

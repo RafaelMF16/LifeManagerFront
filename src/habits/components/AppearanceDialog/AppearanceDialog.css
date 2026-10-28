@@ -1,0 +1,129 @@
+.lm-appearance-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.lm-appearance-dialog__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.lm-appearance-dialog__legend {
+  padding: 0;
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-appearance-dialog__avatars {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.lm-appearance-dialog__avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+/* The radio stays in the accessibility tree and takes the focus; the avatar shows the state. */
+.lm-appearance-dialog__input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.lm-appearance-dialog__avatar:has(.lm-appearance-dialog__input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+
+.lm-appearance-dialog__avatar:has(.lm-appearance-dialog__input:focus-visible) {
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+@media (hover: hover) {
+  .lm-appearance-dialog__avatar:hover {
+    background: var(--surface-hover);
+  }
+}
+
+.lm-appearance-dialog__titles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.lm-appearance-dialog__title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.lm-appearance-dialog__title input {
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.lm-appearance-dialog__title:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+  color: var(--accent-text);
+  font-weight: var(--weight-medium);
+}
+
+.lm-appearance-dialog__hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-appearance-dialog__error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.lm-appearance-dialog__hint a {
+  color: var(--accent-text);
+}
+
+.lm-appearance-dialog__visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .lm-appearance-dialog__avatars {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
