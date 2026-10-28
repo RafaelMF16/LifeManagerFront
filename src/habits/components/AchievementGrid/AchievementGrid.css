@@ -228,3 +228,8 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* The next goals stand out from the full grid below. */
+.lm-achievement-grid--near {
+  border-color: color-mix(in oklch, var(--accent) 35%, var(--border));
+}

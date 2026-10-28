@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import Icon from '../../shared/components/Icon/Icon'
 import AchievementGrid from '../components/AchievementGrid/AchievementGrid'
+import AchievementNearList from '../components/AchievementGrid/AchievementNearList'
 import { useAchievements } from '../hooks/useAchievements'
 import './AchievementsPage.css'
 
-/** The player's achievements: how many are unlocked and every one of them with its progress. */
+/** The player's achievements: how many are unlocked, the next goals ("Almost there") and every one with its progress. */
 function AchievementsPage() {
   const { t: translate } = useTranslation('habits')
   const achievements = useAchievements()
@@ -23,6 +24,8 @@ function AchievementsPage() {
           </span>
         ) : null}
       </div>
+
+      {data ? <AchievementNearList achievements={data.achievements} /> : null}
 
       <AchievementGrid
         achievements={data?.achievements}
