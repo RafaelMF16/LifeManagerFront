@@ -1,13 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { checkIn, getToday, undoCheckIn } from '../services/habitCheckInService'
+import { addProgress as addProgressRequest, removeProgress as removeProgressRequest } from '../services/habitProgressService'
 import { relapse as relapseRequest, undoRelapse as undoRelapseRequest } from '../services/habitRelapseService'
 import type {
   HabitAvoidItemDto,
   HabitCheckInResultDto,
+  HabitProgressEntryDto,
+  HabitProgressResultDto,
   HabitRelapseResultDto,
   HabitTodayDto,
   HabitTodayItemDto,
 } from '../types/HabitTodayDtos'
+import { withPendingProgress } from '../utils/habitProgress'
+import type { DayProgress, PendingProgress } from '../utils/habitProgress'
 
 export type HabitsTodayStatus = 'loading' | 'ready' | 'error'
 
@@ -26,6 +31,11 @@ function toggleKey(habitId: number, date: string) {
  * The day's checklist. `toggle` checks a habit in (or undoes it) optimistically: the item flips at once and flips
  * back if the request fails. `setRelapse` logs (or undoes) a relapse of a habit to avoid and waits for the server,
  * since it costs HP. A habit already being saved ignores further taps.
+ *
+ * `addProgress`/`removeProgress` change a measured habit's day optimistically too, but every tap counts: they queue
+ * per habit and day, each request starting once the previous one answered, and the item shows the last saved day
+ * with the queued changes applied. A failed one just leaves the queue, which takes the bar back. The list reloads
+ * once the queue is empty.
  */
 export function useHabitsToday() {
   const [reloadKey, setReloadKey] = useState(0)
@@ -35,6 +45,12 @@ export function useHabitsToday() {
   const [pending, setPending] = useState<ReadonlySet<string>>(new Set())
   // Read synchronously by toggle, so a double tap is caught before React re-renders.
   const pendingRef = useRef(new Set<string>())
+  // A measured day as the latest progress answer left it, kept until the list reloads with it.
+  const [savedProgress, setSavedProgress] = useState<Record<string, DayProgress>>({})
+  const [queuedProgress, setQueuedProgress] = useState<Record<string, PendingProgress[]>>({})
+  // The tail of each day's queue, and the next id for a queued change.
+  const progressQueuesRef = useRef(new Map<string, Promise<unknown>>())
+  const nextProgressIdRef = useRef(1)
 
   useEffect(() => {
     // Aborted on reload or unmount, which also fires the backend's CancellationToken.
@@ -47,6 +63,9 @@ export function useHabitsToday() {
         // The saved state replaces the optimistic one, except for habits whose own save is still running.
         setOverrides((current) =>
           Object.fromEntries(Object.entries(current).filter(([key]) => pendingRef.current.has(key))),
+        )
+        setSavedProgress((current) =>
+          Object.fromEntries(Object.entries(current).filter(([key]) => progressQueuesRef.current.has(key))),
         )
       },
       () => {
@@ -107,13 +126,82 @@ export function useHabitsToday() {
     [reload],
   )
 
+  /** Runs `request` after the day's earlier progress requests, showing `change` until it answers. */
+  const queueProgress = useCallback(
+    (
+      item: HabitTodayItemDto,
+      date: string,
+      change: PendingProgress,
+      request: () => Promise<HabitProgressResultDto>,
+    ): Promise<HabitProgressResultDto> => {
+      const key = toggleKey(item.id, date)
+      setQueuedProgress((current) => ({ ...current, [key]: [...(current[key] ?? []), change] }))
+
+      const queues = progressQueuesRef.current
+      const run = (queues.get(key) ?? Promise.resolve())
+        .then(request)
+        .then((saved) => {
+          setSavedProgress((current) => ({
+            ...current,
+            [key]: { progress: saved.progress, done: saved.done, entries: saved.entries },
+          }))
+          return saved
+        })
+        .finally(() => {
+          setQueuedProgress((current) => {
+            const left = (current[key] ?? []).filter((queued) => queued.id !== change.id)
+            const next = { ...current }
+            if (left.length > 0) next[key] = left
+            else delete next[key]
+            return next
+          })
+        })
+
+      // A failure belongs to its own caller; the next request in the queue still runs.
+      const tail = run.catch(() => undefined)
+      queues.set(key, tail)
+      void tail.then(() => {
+        if (queues.get(key) !== tail) return
+        queues.delete(key)
+        reload()
+      })
+
+      return run
+    },
+    [reload],
+  )
+
+  const addProgress = useCallback(
+    (item: HabitTodayItemDto, date: string, value: number) =>
+      queueProgress(item, date, { id: nextProgressIdRef.current++, kind: 'add', value }, () =>
+        addProgressRequest(item.id, date, value),
+      ),
+    [queueProgress],
+  )
+
+  const removeProgress = useCallback(
+    (item: HabitTodayItemDto, date: string, entry: HabitProgressEntryDto) =>
+      queueProgress(
+        item,
+        date,
+        { id: nextProgressIdRef.current++, kind: 'remove', entryId: entry.id, value: entry.value },
+        () => removeProgressRequest(item.id, entry.id),
+      ),
+    [queueProgress],
+  )
+
   const data = result?.data
   const status: HabitsTodayStatus = data ? 'ready' : result?.failed ? 'error' : 'loading'
 
   const withOverrides = (items: HabitTodayItemDto[], date: string) =>
     items.map((item) => {
-      const override = overrides[toggleKey(item.id, date)]
-      return override === undefined ? item : { ...item, done: override }
+      const key = toggleKey(item.id, date)
+      const override = overrides[key]
+      const shown = override === undefined ? item : { ...item, done: override }
+      if (!shown.target) return shown
+
+      const saved = savedProgress[key] ?? { progress: shown.progress, done: shown.done, entries: shown.entries }
+      return { ...shown, ...withPendingProgress(saved, queuedProgress[key] ?? [], shown.target.value) }
     })
 
   const yesterday = data ? shiftDay(data.date, -1) : ''
@@ -131,6 +219,8 @@ export function useHabitsToday() {
     isPending: (habitId: number, date: string) => pending.has(toggleKey(habitId, date)),
     toggle,
     setRelapse,
+    addProgress,
+    removeProgress,
     reload,
   }
 }
