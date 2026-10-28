@@ -1,3 +1,6 @@
+import type { AchievementCode } from './AchievementDtos'
+import type { GameItemKind } from './GameItemDtos'
+
 // Espelha LifeManager.Domain/Habits/Enums/GameLedgerEntryKind (binds by name) e Application/Habits/DTOs/GameLedgerEntryDtos
 export type GameLedgerEntryKind =
   | 'HabitDone'
@@ -10,6 +13,8 @@ export type GameLedgerEntryKind =
   | 'Undo'
   | 'FreezeUsed'
   | 'LevelUp'
+  | 'ItemPurchased'
+  | 'AchievementUnlocked'
 
 /** One line of the player's statement (`GET /api/Habits/Ledger`). */
 export interface GameLedgerEntryDto {
@@ -25,4 +30,8 @@ export interface GameLedgerEntryDto {
   description: string | null
   habitId: number | null
   rewardId: number | null
+  /** The game item behind a purchase or its undo (and their level-up or knockout lines); null otherwise. */
+  itemKind: GameItemKind | null
+  /** The achievement behind an unlock bonus (and the level-up it caused); null otherwise. Missing on older answers. */
+  achievementCode?: AchievementCode | null
 }

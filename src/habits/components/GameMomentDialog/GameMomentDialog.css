@@ -27,6 +27,76 @@
   color: var(--accent-text);
 }
 
+/* An achievement takes its first medal's color: bronze, silver or gold. */
+.lm-game-moment--achievement {
+  --medal: #b87333;
+}
+
+.lm-game-moment--silver {
+  --medal: #8a94a6;
+}
+
+.lm-game-moment--gold {
+  --medal: #e0a526;
+}
+
+.lm-game-moment--achievement .lm-game-moment__icon {
+  background: color-mix(in oklch, var(--medal) 18%, transparent);
+  color: var(--medal);
+}
+
+.lm-game-moment__name {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-game-moment__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  max-width: 320px;
+  max-height: 220px;
+  margin: var(--space-2) 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  text-align: left;
+}
+
+.lm-game-moment__item {
+  --medal: #b87333;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-button);
+  background: var(--surface-raised);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.lm-game-moment__item svg {
+  flex: none;
+  color: var(--medal);
+}
+
+.lm-game-moment__item--silver {
+  --medal: #8a94a6;
+}
+
+.lm-game-moment__item--gold {
+  --medal: #e0a526;
+}
+
+.lm-game-moment__item-tier {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
 .lm-game-moment__title {
   margin: 0;
   font-size: var(--text-xl);
@@ -58,6 +128,13 @@
 
   /* A soft glow pulses twice around a new level. */
   .lm-game-moment--level-up .lm-game-moment__icon {
+    animation:
+      lm-game-moment-enter var(--duration-slow) var(--ease-out) both,
+      lm-game-moment-glow 1.2s var(--ease-standard) var(--duration-slow) 2;
+  }
+
+  /* An achievement glows like a new level. */
+  .lm-game-moment--achievement .lm-game-moment__icon {
     animation:
       lm-game-moment-enter var(--duration-slow) var(--ease-out) both,
       lm-game-moment-glow 1.2s var(--ease-standard) var(--duration-slow) 2;

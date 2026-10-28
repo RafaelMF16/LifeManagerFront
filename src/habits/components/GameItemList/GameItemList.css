@@ -1,0 +1,157 @@
+.lm-game-item-list {
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+}
+
+.lm-game-item-list__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-game-item-list__title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-game-item-list__hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+/* Keeps the previous answer visible, dimmed, while the next one loads. */
+.lm-game-item-list__body {
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.lm-game-item-list--fetching .lm-game-item-list__body {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.lm-game-item-list__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  list-style: none;
+}
+
+/* Icon, name and effect on top; price and usage, then the button, pinned to the bottom. */
+.lm-game-item-list__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface-raised);
+}
+
+.lm-game-item-list__top {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.lm-game-item-list__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-button);
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.lm-game-item-list__icon--HpPotion {
+  background: var(--negative-tint);
+  color: var(--danger);
+}
+
+.lm-game-item-list__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lm-game-item-list__name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.lm-game-item-list__effect {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-game-item-list__description {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-game-item-list__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.lm-game-item-list__price {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--warning);
+}
+
+.lm-game-item-list__usage {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.lm-game-item-list__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .lm-game-item-list__heading {
+    padding: var(--space-4);
+  }
+
+  .lm-game-item-list__grid {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-4);
+  }
+
+  .lm-game-item-list__state {
+    padding: var(--space-8) var(--space-4);
+  }
+}

@@ -5,7 +5,7 @@ import Dialog from '../../../shared/components/Dialog/Dialog'
 import Icon from '../../../shared/components/Icon/Icon'
 import type { RewardResponseDto } from '../../types/RewardDtos'
 import { rewardIcon } from '../../utils/rewardIcons'
-import './RedeemRewardDialog.css'
+import '../ShopDialog.css'
 
 interface RedeemRewardDialogProps {
   reward: RewardResponseDto

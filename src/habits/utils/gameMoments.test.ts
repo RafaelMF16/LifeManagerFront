@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { PlayerProfileDto } from '../types/PlayerProfileDtos'
-import { levelBaseline, pendingMoment } from './gameMoments'
+import type { NewAchievementDto } from '../types/AchievementDtos'
+import { achievementsKey, levelBaseline, pendingMoment } from './gameMoments'
 
 const profile: PlayerProfileDto = {
   level: 3,
@@ -16,6 +17,11 @@ const profile: PlayerProfileDto = {
 }
 
 const knockout = { id: 12, occurredOn: '2026-10-06', coinsLost: 10 }
+
+const unlocks: NewAchievementDto[] = [
+  { code: 'CheckIns10', tier: 'Bronze', coinsBonus: 25, xpBonus: 50, unlockedAt: '2026-10-28T12:00:00Z' },
+  { code: 'Streak7', tier: 'Bronze', coinsBonus: 25, xpBonus: 50, unlockedAt: '2026-10-28T12:00:00Z' },
+]
 
 describe('levelBaseline', () => {
   it('remembers the current level on a device that never saw one, without celebrating', () => {
@@ -56,5 +62,24 @@ describe('pendingMoment', () => {
 
   it('has nothing new otherwise', () => {
     expect(pendingMoment(profile, null, 3)).toBeNull()
+  })
+
+  it('shows the unseen achievements, all in one moment', () => {
+    expect(pendingMoment({ ...profile, newAchievements: unlocks }, null, 3)).toEqual({ kind: 'achievements', achievements: unlocks })
+  })
+
+  it('puts achievements after a knockout and before the level they paid for', () => {
+    expect(pendingMoment({ ...profile, newAchievements: unlocks, lastKnockout: knockout }, null, 3)?.kind).toBe('knockout')
+    expect(pendingMoment({ ...profile, level: 4, newAchievements: unlocks }, null, 3)?.kind).toBe('achievements')
+  })
+
+  it('skips the achievements the layout just closed, but not newer ones', () => {
+    const closed = achievementsKey(unlocks)
+    expect(pendingMoment({ ...profile, level: 4, newAchievements: unlocks }, null, 3, closed)).toEqual({ kind: 'levelUp', level: 4 })
+    expect(pendingMoment({ ...profile, newAchievements: [unlocks[0]] }, null, 3, closed)?.kind).toBe('achievements')
+  })
+
+  it('has no achievements moment without new ones', () => {
+    expect(pendingMoment({ ...profile, newAchievements: [] }, null, 3)).toBeNull()
   })
 })

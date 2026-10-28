@@ -1,10 +1,20 @@
+import type { NewAchievementDto } from '../types/AchievementDtos'
 import type { LastKnockoutDto, PlayerProfileDto } from '../types/PlayerProfileDtos'
 
 const SEEN_KNOCKOUT_KEY = 'lm-habits-seen-knockout'
 const SEEN_LEVEL_KEY = 'lm-habits-seen-level'
 
-/** A moment worth stopping the player for: shown once, then marked as seen on this device. */
-export type GameMoment = { kind: 'knockout'; knockout: LastKnockoutDto } | { kind: 'levelUp'; level: number }
+/**
+ * A moment worth stopping the player for, shown once: a knockout or a level is marked as seen on this device, new
+ * achievements on the backend (any device).
+ */
+export type GameMoment =
+  | { kind: 'knockout'; knockout: LastKnockoutDto }
+  | { kind: 'achievements'; achievements: NewAchievementDto[] }
+  | { kind: 'levelUp'; level: number }
+
+/** Names a set of unlocks, so the layout can tell the ones it already closed (and is marking as seen) from new ones. */
+export const achievementsKey = (achievements: readonly NewAchievementDto[]) => achievements.map((achievement) => achievement.code).join(',')
 
 function readNumber(key: string): number | null {
   try {
@@ -45,11 +55,19 @@ export function levelBaseline(level: number, seenLevel: number | null): number |
 
 /**
  * What to show the player now, most important first: a knockout they haven't seen (whether a check-in or the day close
- * caused it), then a level reached since the last one they saw. Null when there is nothing new.
+ * caused it), then the achievements they haven't been shown (unless the layout just closed that same set), then a
+ * level reached since the last one they saw (often one an achievement's bonus paid for). Null when there is nothing new.
  */
-export function pendingMoment(profile: PlayerProfileDto, seenKnockout: number | null, seenLevel: number | null): GameMoment | null {
+export function pendingMoment(
+  profile: PlayerProfileDto,
+  seenKnockout: number | null,
+  seenLevel: number | null,
+  closedAchievements: string | null = null,
+): GameMoment | null {
   const knockout = profile.lastKnockout
   if (knockout && knockout.id > (seenKnockout ?? 0)) return { kind: 'knockout', knockout }
+  const achievements = profile.newAchievements ?? []
+  if (achievements.length > 0 && achievementsKey(achievements) !== closedAchievements) return { kind: 'achievements', achievements }
   if (seenLevel !== null && profile.level > seenLevel) return { kind: 'levelUp', level: profile.level }
   return null
 }

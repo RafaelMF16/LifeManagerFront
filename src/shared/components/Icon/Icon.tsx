@@ -31,8 +31,10 @@ import {
   Languages,
   LayoutDashboard,
   ListChecks,
+  Lock,
   LogOut,
   Mail,
+  Medal,
   Minus,
   Moon,
   PanelLeftClose,
@@ -56,6 +58,7 @@ import {
   Trash2,
   TrendingDown,
   TrendingUp,
+  Trophy,
   Tv,
   Undo2,
   Upload,
@@ -129,6 +132,9 @@ const ICONS = {
   footprints: Footprints,
   upload: Upload,
   'circle-help': CircleHelp,
+  trophy: Trophy,
+  medal: Medal,
+  lock: Lock,
 } as const
 
 export type IconName = keyof typeof ICONS
