@@ -76,11 +76,11 @@ function TodayPage() {
   }
 
   /** Logs or removes an amount; only the change that completes or undoes the day touches the wallet and is toasted. */
-  async function handleProgress(request: Promise<HabitProgressResultDto>) {
+  async function handleProgress(request: Promise<HabitProgressResultDto | undefined>) {
     try {
       const saved = await request
-      const { wallet } = saved
-      if (!wallet) return
+      const wallet = saved?.wallet
+      if (!saved || !wallet) return
 
       reloadProfile()
       const change = formatWalletChange(wallet, translate)

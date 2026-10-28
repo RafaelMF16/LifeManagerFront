@@ -1,19 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
-import Icon from '../../../shared/components/Icon/Icon'
 import IconButton from '../../../shared/components/IconButton/IconButton'
 import Input from '../../../shared/components/Input/Input'
+import { useCelebration } from '../../hooks/useCelebration'
 import type { HabitProgressEntryDto, HabitTargetDto, HabitTodayItemDto } from '../../types/HabitTodayDtos'
 import { formatAmount, progressPercent, remaining } from '../../utils/habitProgress'
-import { HABIT_TARGET_MAX_VALUE } from '../../validation/habitSchema'
+import { HABIT_TARGET_MAX_VALUE, parseWholeNumber } from '../../validation/habitSchema'
+import HabitItemHeader from '../HabitItemHeader/HabitItemHeader'
 import ProgressEntriesList from '../ProgressEntriesList/ProgressEntriesList'
 import './HabitProgressItem.css'
-
-/** Same as the check item's celebration. */
-const CELEBRATION_MS = 700
-const WHOLE_NUMBER_PATTERN = /^\d{1,6}$/
 
 interface HabitProgressItemProps {
   /** A habit with a daily target (`item.target` set). */
@@ -31,7 +28,6 @@ interface HabitProgressItemProps {
 function HabitProgressItem({ item, onAdd, onRemove, streakRisk }: HabitProgressItemProps) {
   const { t: translate, i18n } = useTranslation('habits')
   const { target } = item
-  const weekly = item.frequencyType === 'TimesPerWeek'
   const amount = (value: number) => formatAmount(value, i18n.language)
   const left = remaining(item.progress, target.value)
   const amountText = translate('habits:today.progress.amount', {
@@ -39,35 +35,22 @@ function HabitProgressItem({ item, onAdd, onRemove, streakRisk }: HabitProgressI
     target: amount(target.value),
     unit: target.unit,
   })
-  const streakLabel = [
-    translate(weekly ? 'habits:habits.list.streakWeeks' : 'habits:habits.list.streakDays', { count: item.currentStreak }),
-    translate('habits:habits.list.record', { count: item.longestStreak }),
-  ].join(' · ')
-  const showRisk = streakRisk !== undefined && !item.done && item.currentStreak > 0
 
-  const [celebration, setCelebration] = useState<{ key: number; coins: number } | null>(null)
-  const timeoutRef = useRef<number | undefined>(undefined)
+  const { celebration, celebrate } = useCelebration()
   const [customOpen, setCustomOpen] = useState(false)
   const [customValue, setCustomValue] = useState('')
   const [customError, setCustomError] = useState(false)
 
-  useEffect(() => () => window.clearTimeout(timeoutRef.current), [])
-
   function add(value: number) {
     // Celebrated on the tap that reaches the target: the progress is optimistic, so the day turns done right away.
-    if (!item.done && item.progress + value >= target.value) {
-      window.clearTimeout(timeoutRef.current)
-      setCelebration({ key: Date.now(), coins: item.coinsPreview })
-      timeoutRef.current = window.setTimeout(() => setCelebration(null), CELEBRATION_MS)
-    }
+    if (!item.done && item.progress + value >= target.value) celebrate(item.coinsPreview)
     onAdd(value)
   }
 
   function submitCustom(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const text = customValue.trim()
-    const value = Number(text)
-    if (!WHOLE_NUMBER_PATTERN.test(text) || value < 1 || value > HABIT_TARGET_MAX_VALUE) {
+    const value = parseWholeNumber(customValue.trim(), HABIT_TARGET_MAX_VALUE)
+    if (value === null) {
       setCustomError(true)
       return
     }
@@ -83,52 +66,9 @@ function HabitProgressItem({ item, onAdd, onRemove, streakRisk }: HabitProgressI
 
   return (
     <div
-      className={`lm-habit-progress${item.done ? ' lm-habit-progress--done' : ''}${celebration ? ' lm-habit-progress--celebrate' : ''}`}
+      className="lm-habit-progress"
     >
-      {celebration && celebration.coins > 0 ? (
-        <span key={celebration.key} className="lm-habit-progress__burst" aria-hidden="true">
-          <Icon name="coins" size={14} />
-          {translate('habits:today.item.coins', { count: celebration.coins })}
-        </span>
-      ) : null}
-
-      <div className="lm-habit-progress__header">
-        <span className="lm-habit-progress__box" aria-hidden="true">
-          {item.done ? <Icon name="check" size={16} strokeWidth={2.5} /> : null}
-        </span>
-
-        <span className="lm-habit-progress__main">
-          <span className="lm-habit-progress__name">{item.name}</span>
-          {item.trigger ? <span className="lm-habit-progress__trigger">{item.trigger}</span> : null}
-          {showRisk ? (
-            <span className={`lm-habit-progress__risk lm-habit-progress__risk--${streakRisk}`}>
-              <Icon name={streakRisk === 'protected' ? 'snowflake' : 'flame'} size={12} aria-hidden="true" />
-              {streakRisk === 'protected'
-                ? translate('habits:today.item.atRiskProtected')
-                : translate(weekly ? 'habits:today.item.atRiskWeeks' : 'habits:today.item.atRiskDays', {
-                    count: item.currentStreak,
-                  })}
-            </span>
-          ) : null}
-        </span>
-
-        <span className="lm-habit-progress__side">
-          <span
-            className={`lm-habit-progress__streak${item.currentStreak > 0 ? ' lm-habit-progress__streak--on' : ''}`}
-            title={streakLabel}
-          >
-            <Icon name="flame" size={14} aria-hidden="true" />
-            <span aria-hidden="true">{item.currentStreak}</span>
-            <span className="lm-habit-progress__visually-hidden">{streakLabel}</span>
-          </span>
-          {!item.done && item.coinsPreview > 0 ? (
-            <span className="lm-habit-progress__coins">
-              <Icon name="coins" size={12} aria-hidden="true" />
-              {translate('habits:today.item.coins', { count: item.coinsPreview })}
-            </span>
-          ) : null}
-        </span>
-      </div>
+      <HabitItemHeader item={item} streakRisk={streakRisk} celebration={celebration} />
 
       <div
         className="lm-habit-progress__bar"

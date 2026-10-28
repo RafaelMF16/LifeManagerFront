@@ -15,7 +15,7 @@ const TIMES_PATTERN = /^\d{1,2}$/
 const WHOLE_NUMBER_PATTERN = /^\d{1,6}$/
 
 /** A whole number typed as text, between 1 and `max`; null otherwise. */
-function parseWholeNumber(value: string, max: number): number | null {
+export function parseWholeNumber(value: string, max: number): number | null {
   if (!WHOLE_NUMBER_PATTERN.test(value)) return null
   const number = Number(value)
   return number >= 1 && number <= max ? number : null

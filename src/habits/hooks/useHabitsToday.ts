@@ -51,6 +51,8 @@ export function useHabitsToday() {
   // The tail of each day's queue, and the next id for a queued change.
   const progressQueuesRef = useRef(new Map<string, Promise<unknown>>())
   const nextProgressIdRef = useRef(1)
+  // Entries whose removal is queued: a second tap on the same one is ignored, like a check-in's double tap.
+  const removingEntriesRef = useRef(new Set<number>())
 
   useEffect(() => {
     // Aborted on reload or unmount, which also fires the backend's CancellationToken.
@@ -180,13 +182,22 @@ export function useHabitsToday() {
   )
 
   const removeProgress = useCallback(
-    (item: HabitTodayItemDto, date: string, entry: HabitProgressEntryDto) =>
-      queueProgress(
-        item,
-        date,
-        { id: nextProgressIdRef.current++, kind: 'remove', entryId: entry.id, value: entry.value },
-        () => removeProgressRequest(item.id, entry.id),
-      ),
+    async (item: HabitTodayItemDto, date: string, entry: HabitProgressEntryDto): Promise<HabitProgressResultDto | undefined> => {
+      const removing = removingEntriesRef.current
+      if (removing.has(entry.id)) return undefined
+
+      removing.add(entry.id)
+      try {
+        return await queueProgress(
+          item,
+          date,
+          { id: nextProgressIdRef.current++, kind: 'remove', entryId: entry.id, value: entry.value },
+          () => removeProgressRequest(item.id, entry.id),
+        )
+      } finally {
+        removing.delete(entry.id)
+      }
+    },
     [queueProgress],
   )
 
