@@ -240,12 +240,11 @@ function HabitFormModal({ habit, initialValues, onClose, onSubmit }: HabitFormMo
             <Input
               type="number"
               label={translate('habits:habits.form.targetStepLabel')}
-              placeholder="250"
+              placeholder={translate('habits:habits.form.targetStepPlaceholder')}
               min={1}
               max={HABIT_TARGET_MAX_VALUE}
               inputMode="numeric"
               numeric
-              hint={translate('habits:habits.form.targetStepHint')}
               error={fieldError(errors.targetStep?.message)}
               {...register('targetStep')}
             />

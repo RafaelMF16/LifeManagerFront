@@ -1,9 +1,6 @@
 /* Wider than the default dialog: two selects per row and a preview of the lines. */
 .lm-dialog.lm-csv-mapping {
   max-width: 560px;
-  max-height: calc(100vh - 2 * var(--space-6));
-  max-height: calc(100dvh - 2 * var(--space-6));
-  overflow-y: auto;
 }
 
 .lm-csv-mapping .lm-dialog__body {
@@ -129,11 +126,6 @@
 }
 
 @media (max-width: 768px) {
-  .lm-dialog.lm-csv-mapping {
-    max-height: 90vh;
-    max-height: 90dvh;
-  }
-
   .lm-csv-mapping__grid {
     grid-template-columns: minmax(0, 1fr);
   }

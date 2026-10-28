@@ -487,7 +487,7 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
   | Medir quantidade | Só em **Construir**. Desligado, o hábito é cumprido com um toque. Ligado, mostra os três campos abaixo e o dia conta como feito quando a soma do dia bate a meta |
   | Meta por dia | Com **Medir quantidade**: número inteiro de 1 a 100000 |
   | Unidade | Com **Medir quantidade**: obrigatória, até 15 caracteres; sugere ml, páginas, min, passos, m e vezes, mas aceita qualquer texto |
-  | Incremento (opcional) | Com **Medir quantidade**: número inteiro de 1 até a meta; vira o botão de adicionar rápido |
+  | Incremento | Com **Medir quantidade**, opcional: número inteiro de 1 até a meta; vira o botão de adicionar rápido |
 
   **Criar hábito** mostra "Hábito criado".
 - **Editar:** muda tudo, menos o tipo. Mudanças na frequência valem a partir do próximo dia avaliado. Desligar **Medir quantidade** tira a meta ao salvar; ligar transforma o hábito num hábito com meta. Mudar a meta não muda nenhum dia já marcado.

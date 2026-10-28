@@ -72,6 +72,18 @@
   margin-top: var(--space-2);
 }
 
+/* Three numbers side by side: the browser's spin arrows only take room from the value. */
+.lm-habit-form__target input::-webkit-inner-spin-button,
+.lm-habit-form__target input::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.lm-habit-form__target input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 .lm-habit-form__note {
   margin: 0;
   padding: var(--space-3);
@@ -97,14 +109,6 @@
     max-width: none;
   }
 
-  .lm-habit-form__target {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  /* The step and its hint take the whole row. */
-  .lm-habit-form__target > :last-child {
-    grid-column: 1 / -1;
-  }
 }
 
 @media (pointer: coarse) {
