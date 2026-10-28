@@ -8,6 +8,7 @@ const NAV_ITEMS: { id: string; icon: IconName; path: string | null }[] = [
   { id: 'today', icon: 'calendar-check', path: '/habits/today' },
   { id: 'habits', icon: 'list-checks', path: '/habits/list' },
   { id: 'shop', icon: 'store', path: '/habits/shop' },
+  { id: 'achievements', icon: 'trophy', path: '/habits/achievements' },
   { id: 'history', icon: 'history', path: '/habits/history' },
 ]
 
