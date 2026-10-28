@@ -102,6 +102,13 @@
   color: var(--text-secondary);
 }
 
+.lm-appearance-dialog__error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .lm-appearance-dialog__hint a {
   color: var(--accent-text);
 }

@@ -751,6 +751,7 @@ export default {
       titleLabel: 'Title',
       noTitle: 'No title',
       titlesLoading: 'Loading your titles…',
+      titlesError: "Couldn't load your titles.",
       noTitlesYet: 'Each achievement unlocks a title.',
       seeAchievements: 'See achievements',
       save: 'Save',

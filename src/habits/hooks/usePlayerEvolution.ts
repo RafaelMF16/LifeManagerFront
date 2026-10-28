@@ -7,13 +7,15 @@ export type PlayerEvolutionStatus = 'loading' | 'ready' | 'error'
 interface FetchResult {
   /** Which request this outcome belongs to, so a stale one is never shown as current. */
   requestKey: string
+  /** The range `data` covers: after a failed switch, the previous range's chart must not pass for the new one. */
+  range?: EvolutionRange
   data?: PlayerEvolutionDto
   failed: boolean
 }
 
 /**
  * XP and coins day by day over `range`. Switching the range keeps the previous chart on screen (`isFetching`) until
- * the next one arrives, so the frame never jumps.
+ * the next one arrives, so the frame never jumps; if it fails, `data` is cleared rather than left showing the old range.
  */
 export function usePlayerEvolution(range: EvolutionRange) {
   const [reloadKey, setReloadKey] = useState(0)
@@ -26,10 +28,18 @@ export function usePlayerEvolution(range: EvolutionRange) {
 
     getPlayerEvolution(range, controller.signal).then(
       (data) => {
-        if (!controller.signal.aborted) setResult({ requestKey: `${range}:${reloadKey}`, data, failed: false })
+        if (!controller.signal.aborted) setResult({ requestKey: `${range}:${reloadKey}`, range, data, failed: false })
       },
       () => {
-        if (!controller.signal.aborted) setResult((previous) => ({ requestKey: `${range}:${reloadKey}`, data: previous?.data, failed: true }))
+        if (!controller.signal.aborted) {
+          // A failed reload of the same range keeps its chart; a failed switch shows the error instead.
+          setResult((previous) => ({
+            requestKey: `${range}:${reloadKey}`,
+            range: previous?.range === range ? range : undefined,
+            data: previous?.range === range ? previous.data : undefined,
+            failed: true,
+          }))
+        }
       },
     )
 

@@ -26,7 +26,7 @@ import './ProfilePage.css'
 function ProfilePage() {
   const { t: translate, i18n } = useTranslation(['habits', 'common'])
   const { profile, reloadProfile } = useOutletContext<HabitsOutletContext>()
-  const { name } = useCurrentUser()
+  const currentUser = useCurrentUser()
   const { show: showToast } = useToast()
   const { show: showErrorModal } = useErrorModal()
   const achievements = useAchievements()
@@ -48,6 +48,9 @@ function ProfilePage() {
         return
       }
 
+      // A refusal means the dialog's lists were stale: close it, so it reopens on the reloaded ones (and the error
+      // modal isn't stacked on it). A connection error keeps it open, to try again.
+      setEditing(false)
       showErrorModal(
         translate('habits:profile.appearance.errorTitle'),
         translate(appearanceErrorMessages[err.code] ?? 'common:errors.generic'),
@@ -69,7 +72,11 @@ function ProfilePage() {
           <>
             <PlayerAvatar avatar={profile.avatar} size="lg" />
             <div className="lm-profile-identity__info">
-              <span className="lm-profile-identity__name">{name ?? translate('habits:profile.identity.player')}</span>
+              {currentUser.name || currentUser.failed ? (
+                <span className="lm-profile-identity__name">{currentUser.name ?? translate('habits:profile.identity.player')}</span>
+              ) : (
+                <span className="lm-profile-identity__name-placeholder" aria-hidden="true" />
+              )}
               <span className={`lm-profile-identity__title${profile.title ? '' : ' lm-profile-identity__title--none'}`}>
                 {profile.title ? achievementTitle(profile.title, translate) : translate('habits:profile.identity.noTitle')}
               </span>
@@ -122,6 +129,8 @@ function ProfilePage() {
           avatar={profile.avatar}
           title={profile.title}
           titles={titles}
+          titlesFailed={achievements.status === 'error'}
+          onRetryTitles={achievements.reload}
           onClose={() => setEditing(false)}
           onSave={handleSave}
         />

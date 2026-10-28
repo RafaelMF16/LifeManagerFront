@@ -751,6 +751,7 @@ export default {
       titleLabel: 'Título',
       noTitle: 'Sem título',
       titlesLoading: 'Carregando seus títulos…',
+      titlesError: 'Não foi possível carregar seus títulos.',
       noTitlesYet: 'Cada conquista libera um título.',
       seeAchievements: 'Ver conquistas',
       save: 'Salvar',

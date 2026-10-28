@@ -13,15 +13,18 @@ import './AppearanceDialog.css'
 interface AppearanceDialogProps {
   avatar: PlayerAvatarCode
   title: AchievementCode | null
-  /** The titles the player unlocked, in catalog order; undefined while the achievements load. */
+  /** The titles the player unlocked, in catalog order; undefined while the achievements load or after they failed. */
   titles: AchievementCode[] | undefined
+  /** The achievements couldn't load: the titles show an error with a retry instead of loading forever. */
+  titlesFailed: boolean
+  onRetryTitles: () => void
   onClose: () => void
   /** Saves it; the dialog stays open, with its button loading, until it settles. */
   onSave: (appearance: UpdateAppearanceRequestDto) => Promise<void>
 }
 
 /** Picks the avatar (all free) and the title (one of the unlocked achievements', or none). */
-function AppearanceDialog({ avatar, title, titles, onClose, onSave }: AppearanceDialogProps) {
+function AppearanceDialog({ avatar, title, titles, titlesFailed, onRetryTitles, onClose, onSave }: AppearanceDialogProps) {
   const { t: translate } = useTranslation('habits')
   const headingId = useId()
   const radioName = useId()
@@ -70,7 +73,14 @@ function AppearanceDialog({ avatar, title, titles, onClose, onSave }: Appearance
 
         <fieldset className="lm-appearance-dialog__group">
           <legend className="lm-appearance-dialog__legend">{translate('habits:profile.appearance.titleLabel')}</legend>
-          {titles === undefined ? (
+          {titles === undefined && titlesFailed ? (
+            <div className="lm-appearance-dialog__error">
+              <p className="lm-appearance-dialog__hint">{translate('habits:profile.appearance.titlesError')}</p>
+              <Button variant="secondary" size="sm" onClick={onRetryTitles}>
+                {translate('habits:profile.retry')}
+              </Button>
+            </div>
+          ) : titles === undefined ? (
             <p className="lm-appearance-dialog__hint">{translate('habits:profile.appearance.titlesLoading')}</p>
           ) : (
             <div className="lm-appearance-dialog__titles">
