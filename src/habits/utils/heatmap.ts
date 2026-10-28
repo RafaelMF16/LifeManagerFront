@@ -1,4 +1,5 @@
 import type { HabitDayDto, HabitDayState } from '../types/HabitStatsDtos'
+import { formatAmount } from './habitProgress'
 
 /** One heatmap column: Monday to Sunday; null where the week runs outside the days shown. */
 export type HeatmapWeek = (HabitDayDto | null)[]
@@ -52,6 +53,16 @@ export function stateCounts(days: readonly HabitDayDto[]): Partial<Record<HabitD
   const counts: Partial<Record<HabitDayState, number>> = {}
   for (const day of days) counts[day.state] = (counts[day.state] ?? 0) + 1
   return counts
+}
+
+/**
+ * A day's progress for its readout: "12 / 20 pages" against the habit's current target, or just the total when the
+ * habit no longer has one; null without progress.
+ */
+export function formatDayAmount(amount: number | null, target: { value: number; unit: string } | null, locale: string) {
+  if (amount === null) return null
+  const total = formatAmount(amount, locale)
+  return target ? `${total} / ${formatAmount(target.value, locale)} ${target.unit}` : total
 }
 
 /** "Wed, Oct 7" for a `yyyy-MM-dd` day, in `locale`. */

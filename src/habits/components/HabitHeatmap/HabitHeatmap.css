@@ -68,6 +68,10 @@
   background: var(--heatmap-frozen);
 }
 
+.lm-heatmap__cell--partial {
+  background: var(--warning);
+}
+
 .lm-heatmap__cell--missed,
 .lm-heatmap__cell--relapse {
   background: var(--heatmap-failed);

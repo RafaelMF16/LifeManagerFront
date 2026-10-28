@@ -479,6 +479,7 @@ export default {
       Done: 'Done',
       Clean: 'Clean day',
       Frozen: 'Protected',
+      Partial: 'Partial',
       Missed: 'Missed',
       Relapse: 'Relapse',
     },

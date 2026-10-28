@@ -102,7 +102,11 @@ function HabitDetailsPage() {
           </h2>
           <span className="lm-habit-details__card-hint">{translate('habits:details.heatmap.hint')}</span>
         </div>
-        <HabitHeatmap days={data.days} kind={habit.kind} />
+        <HabitHeatmap
+          days={data.days}
+          kind={habit.kind}
+          target={habit.targetValue != null && habit.targetUnit ? { value: habit.targetValue, unit: habit.targetUnit } : null}
+        />
       </section>
 
       <LedgerList

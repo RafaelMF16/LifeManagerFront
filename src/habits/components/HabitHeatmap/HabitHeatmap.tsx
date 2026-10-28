@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { HabitKind } from '../../types/HabitDtos'
 import type { HabitDayDto, HabitDayState } from '../../types/HabitStatsDtos'
-import { formatHeatmapDay, heatmapWeeks, monthLabels, stateCounts } from '../../utils/heatmap'
+import { formatDayAmount, formatHeatmapDay, heatmapWeeks, monthLabels, stateCounts } from '../../utils/heatmap'
 import './HabitHeatmap.css'
 
-/** Legend order: kept, protected, failed, then the neutral states. Before-start days aren't listed. */
-const LEGEND_ORDER: HabitDayState[] = ['Done', 'Clean', 'Frozen', 'Missed', 'Relapse', 'Pending', 'Off', 'None']
+/** Legend order: kept, protected, partial, failed, then the neutral states. Before-start days aren't listed. */
+const LEGEND_ORDER: HabitDayState[] = ['Done', 'Clean', 'Frozen', 'Partial', 'Missed', 'Relapse', 'Pending', 'Off', 'None']
 
 /** Rows that carry a weekday label (Monday, Wednesday, Friday), like a calendar heatmap. */
 const LABELLED_ROWS = [0, 2, 4]
@@ -19,6 +19,8 @@ interface HabitHeatmapProps {
   days: HabitDayDto[]
   /** A habit to avoid calls its days off "free" rather than "off". */
   kind: HabitKind
+  /** The habit's current daily target, which a day's progress is read against; null without one. */
+  target?: { value: number; unit: string } | null
 }
 
 /**
@@ -26,7 +28,7 @@ interface HabitHeatmapProps {
  * (kept, protected, failed; neutral when nothing was due or recorded). Tapping or hovering a day reads it out below; the
  * legend counts the days per state, so the colors are never the only way to read it.
  */
-function HabitHeatmap({ days, kind }: HabitHeatmapProps) {
+function HabitHeatmap({ days, kind, target = null }: HabitHeatmapProps) {
   const { t: translate, i18n } = useTranslation('habits')
   const [selected, setSelected] = useState<HabitDayDto | null>(null)
   const weeks = heatmapWeeks(days)
@@ -36,7 +38,11 @@ function HabitHeatmap({ days, kind }: HabitHeatmapProps) {
 
   const stateLabel = (state: HabitDayState) =>
     translate(state === 'Off' && kind === 'Negative' ? 'habits:details.states.Free' : `habits:details.states.${state}`)
-  const dayLabel = (day: HabitDayDto) => `${formatHeatmapDay(day.date, i18n.language)}: ${stateLabel(day.state)}`
+  const dayLabel = (day: HabitDayDto) => {
+    const amount = formatDayAmount(day.amount, target, i18n.language)
+    const label = `${formatHeatmapDay(day.date, i18n.language)}: ${stateLabel(day.state)}`
+    return amount ? `${label} · ${amount}` : label
+  }
   const readout = selected ?? days[days.length - 1]
 
   return (
