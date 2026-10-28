@@ -56,6 +56,28 @@ export interface HabitTodayItemDto {
   weekDoneCount: number | null
   /** Coins a check-in would earn now; 0 once a weekly target is met. */
   coinsPreview: number
+  /** The daily target; null for a habit checked in with one tap. */
+  target: HabitTargetDto | null
+  /** The total logged on the day of the list it is in; 0 without entries. */
+  progress: number
+  /** That day's entries, oldest first. */
+  entries: HabitProgressEntryDto[]
+}
+
+/** A habit's daily target ("2000 ml", quick-add "+250"). */
+export interface HabitTargetDto {
+  value: number
+  unit: string
+  /** Null when the user only types amounts. */
+  step: number | null
+}
+
+/** One amount logged towards a daily target. */
+export interface HabitProgressEntryDto {
+  id: number
+  value: number
+  /** ISO date-time. */
+  createdAt: string
 }
 
 /** What a change did to the player; deltas are what was actually applied. */
@@ -84,6 +106,25 @@ export interface HabitCheckInResultDto {
   /** Coins those milestones added (already in `wallet.coinsDelta`). */
   milestoneCoins: number
   /** Streak freezes earned (the player holds at most 2). */
+  freezesEarned: number
+}
+
+/** `POST /api/Habits/{id}/Progress` and `DELETE /api/Habits/{id}/Progress/{entryId}`. */
+export interface HabitProgressResultDto {
+  habitId: number
+  date: string
+  /** The day's total after the change. */
+  progress: number
+  /** Whether the day is checked in now. */
+  done: boolean
+  /** The day's entries after the change, oldest first. */
+  entries: HabitProgressEntryDto[]
+  currentStreak: number
+  longestStreak: number
+  /** What completing or undoing the day applied; null when the check-in didn't change. */
+  wallet: WalletChangeDto | null
+  milestoneDays: number | null
+  milestoneCoins: number
   freezesEarned: number
 }
 

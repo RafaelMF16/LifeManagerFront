@@ -23,6 +23,11 @@ export interface HabitUpdateRequestDto {
   weekDays: WeekDay[] | null
   /** 1–6, only for `TimesPerWeek`; null otherwise. */
   timesPerWeek: number | null
+  /** The daily target of a habit to build (1–100000); null, with the unit and step, for a one-tap habit. */
+  targetValue: number | null
+  targetUnit: string | null
+  /** The quick-add amount (1 up to the target); null for none. */
+  targetStep: number | null
 }
 
 /** The kind is fixed once the habit is created, so only the create request carries it. */
@@ -48,6 +53,10 @@ export interface HabitResponseDto {
   longestStreak: number
   /** Null while the habit is active. */
   archivedAt: string | null
+  /** The daily target; null, with the unit and step, for a one-tap habit. */
+  targetValue: number | null
+  targetUnit: string | null
+  targetStep: number | null
 }
 
 // Espelha HabitListQueryDto (query string de GET /api/Habits)

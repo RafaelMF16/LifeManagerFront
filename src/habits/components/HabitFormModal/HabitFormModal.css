@@ -44,6 +44,46 @@
   max-width: 200px;
 }
 
+.lm-habit-form__check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.lm-habit-form__check input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+/* Lines up under the checkbox label (box width + gap). */
+.lm-habit-form__hint--check {
+  padding-left: calc(16px + var(--space-2));
+}
+
+.lm-habit-form__target {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* Three numbers side by side: the browser's spin arrows only take room from the value. */
+.lm-habit-form__target input::-webkit-inner-spin-button,
+.lm-habit-form__target input::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.lm-habit-form__target input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 .lm-habit-form__note {
   margin: 0;
   padding: var(--space-3);
@@ -67,5 +107,17 @@
 @media (max-width: 768px) {
   .lm-habit-form__times {
     max-width: none;
+  }
+
+}
+
+@media (pointer: coarse) {
+  .lm-habit-form__check input {
+    width: 20px;
+    height: 20px;
+  }
+
+  .lm-habit-form__hint--check {
+    padding-left: calc(20px + var(--space-2));
   }
 }

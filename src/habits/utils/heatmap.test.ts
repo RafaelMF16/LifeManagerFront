@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { HabitDayDto } from '../types/HabitStatsDtos'
-import { heatmapWeeks, monthLabels, stateCounts, weekdayIndex } from './heatmap'
+import { formatDayAmount, heatmapWeeks, monthLabels, stateCounts, weekdayIndex } from './heatmap'
 
 /** Consecutive days from `start` (`yyyy-MM-dd`), all in `state`. */
 function daysFrom(start: string, count: number, state: HabitDayDto['state'] = 'None'): HabitDayDto[] {
@@ -8,6 +8,7 @@ function daysFrom(start: string, count: number, state: HabitDayDto['state'] = 'N
   return Array.from({ length: count }, (_, offset) => ({
     date: new Date(Date.UTC(year, month - 1, day + offset)).toISOString().slice(0, 10),
     state,
+    amount: null,
   }))
 }
 
@@ -64,5 +65,30 @@ describe('stateCounts', () => {
     const counts = stateCounts([...daysFrom('2026-10-01', 3, 'Done'), ...daysFrom('2026-10-04', 1, 'Missed')])
 
     expect(counts).toEqual({ Done: 3, Missed: 1 })
+  })
+})
+
+describe('stateCounts with progress', () => {
+  it('counts partial days apart', () => {
+    const counts = stateCounts([...daysFrom('2026-10-01', 2, 'Partial'), ...daysFrom('2026-10-03', 1, 'Done')])
+
+    expect(counts).toEqual({ Partial: 2, Done: 1 })
+  })
+})
+
+describe('formatDayAmount', () => {
+  const target = { value: 20, unit: 'páginas' }
+
+  it('reads the total against the current target', () => {
+    expect(formatDayAmount(12, target, 'pt-BR')).toBe('12 / 20 páginas')
+    expect(formatDayAmount(2500, { value: 2000, unit: 'ml' }, 'pt-BR')).toBe('2.500 / 2.000 ml')
+  })
+
+  it('is just the total once the habit has no target', () => {
+    expect(formatDayAmount(1250, null, 'en-US')).toBe('1,250')
+  })
+
+  it('is null for a day without progress', () => {
+    expect(formatDayAmount(null, target, 'pt-BR')).toBeNull()
   })
 })

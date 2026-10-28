@@ -18,6 +18,8 @@ import {
   HABIT_MAX_TIMES_PER_WEEK,
   HABIT_MIN_TIMES_PER_WEEK,
   HABIT_NAME_MAX_LENGTH,
+  HABIT_TARGET_MAX_VALUE,
+  HABIT_TARGET_UNIT_MAX_LENGTH,
   HABIT_TRIGGER_MAX_LENGTH,
   habitSchema,
 } from '../../validation/habitSchema'
@@ -28,6 +30,8 @@ import './HabitFormModal.css'
 const KINDS: HabitKind[] = ['Positive', 'Negative']
 const DIFFICULTIES: HabitDifficulty[] = ['Easy', 'Medium', 'Hard']
 const FREQUENCIES: HabitFrequencyType[] = ['Daily', 'WeekDays', 'TimesPerWeek']
+/** Ids under `habits.form.targetUnits`; the unit field still takes any text. */
+const UNIT_SUGGESTIONS = ['ml', 'pages', 'min', 'steps', 'm', 'times'] as const
 
 interface HabitFormModalProps {
   /** The habit being edited; omitted when creating a new one. */
@@ -49,6 +53,10 @@ function toDefaultValues(habit: HabitResponseDto | undefined, initialValues?: Pa
     frequencyType: habit?.frequencyType ?? 'Daily',
     weekDays: habit?.weekDays ?? [],
     timesPerWeek: habit?.timesPerWeek ? String(habit.timesPerWeek) : '3',
+    measured: habit?.targetValue != null,
+    targetValue: habit?.targetValue != null ? String(habit.targetValue) : '',
+    targetUnit: habit?.targetUnit ?? '',
+    targetStep: habit?.targetStep != null ? String(habit.targetStep) : '',
   }
   return habit ? defaults : { ...defaults, ...initialValues }
 }
@@ -71,6 +79,8 @@ function HabitFormModal({ habit, initialValues, onClose, onSubmit }: HabitFormMo
   const difficulty = useWatch({ control, name: 'difficulty' })
   const frequencyType = useWatch({ control, name: 'frequencyType' })
   const weekDays = useWatch({ control, name: 'weekDays' })
+  const measured = useWatch({ control, name: 'measured' })
+  const unitListId = `${titleId}-units`
 
   const fieldError = (message: string | undefined) => (message ? translate(message) : undefined)
 
@@ -115,7 +125,11 @@ function HabitFormModal({ habit, initialValues, onClose, onSubmit }: HabitFormMo
           aria-label={translate('habits:habits.form.kindLabel')}
           options={KINDS.map((option) => ({ value: option, label: translate(`habits:habits.form.kindOptions.${option}`) }))}
           value={kind}
-          onChange={(value) => setValue('kind', value, { shouldValidate: true })}
+          onChange={(value) => {
+            setValue('kind', value, { shouldValidate: true })
+            // Only a habit to build takes a target; switching to "avoid" drops it.
+            if (value === 'Negative') setValue('measured', false, { shouldValidate: true })
+          }}
           className="lm-habit-form__segments lm-habit-form__segments--2"
         />
         <span className="lm-habit-form__hint">{translate(`habits:habits.form.kindHints.${kind}`)}</span>
@@ -182,6 +196,64 @@ function HabitFormModal({ habit, initialValues, onClose, onSubmit }: HabitFormMo
     )
   }
 
+  function renderTargetField() {
+    if (kind !== 'Positive') return null
+
+    return (
+      <div className="lm-habit-form__group">
+        <label className="lm-habit-form__check">
+          <input type="checkbox" aria-describedby={`${titleId}-measured`} {...register('measured')} />
+          {translate('habits:habits.form.measuredLabel')}
+        </label>
+        <span id={`${titleId}-measured`} className="lm-habit-form__hint lm-habit-form__hint--check">
+          {translate(measured ? 'habits:habits.form.measuredHintOn' : 'habits:habits.form.measuredHintOff')}
+        </span>
+        {errors.measured?.message ? <span className="lm-habit-form__error">{translate(errors.measured.message)}</span> : null}
+
+        {measured ? (
+          <div className="lm-habit-form__target">
+            <Input
+              type="number"
+              label={translate('habits:habits.form.targetValueLabel')}
+              placeholder="2000"
+              min={1}
+              max={HABIT_TARGET_MAX_VALUE}
+              inputMode="numeric"
+              numeric
+              error={fieldError(errors.targetValue?.message)}
+              {...register('targetValue')}
+            />
+            <Input
+              label={translate('habits:habits.form.targetUnitLabel')}
+              placeholder={translate('habits:habits.form.targetUnits.ml')}
+              maxLength={HABIT_TARGET_UNIT_MAX_LENGTH}
+              autoComplete="off"
+              list={unitListId}
+              error={fieldError(errors.targetUnit?.message)}
+              {...register('targetUnit')}
+            />
+            <datalist id={unitListId}>
+              {UNIT_SUGGESTIONS.map((unit) => (
+                <option key={unit} value={translate(`habits:habits.form.targetUnits.${unit}`)} />
+              ))}
+            </datalist>
+            <Input
+              type="number"
+              label={translate('habits:habits.form.targetStepLabel')}
+              placeholder={translate('habits:habits.form.targetStepPlaceholder')}
+              min={1}
+              max={HABIT_TARGET_MAX_VALUE}
+              inputMode="numeric"
+              numeric
+              error={fieldError(errors.targetStep?.message)}
+              {...register('targetStep')}
+            />
+          </div>
+        ) : null}
+      </div>
+    )
+  }
+
   return (
     <Dialog labelledBy={titleId} onClose={onClose}>
       <form onSubmit={submit} noValidate>
@@ -225,6 +297,8 @@ function HabitFormModal({ habit, initialValues, onClose, onSubmit }: HabitFormMo
             </div>
 
             {renderFrequencyField()}
+
+            {renderTargetField()}
 
             <Input
               label={translate('habits:habits.form.triggerLabel')}

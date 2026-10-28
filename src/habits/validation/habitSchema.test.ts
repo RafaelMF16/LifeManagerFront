@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { HABIT_DESCRIPTION_MAX_LENGTH, HABIT_NAME_MAX_LENGTH, HABIT_TRIGGER_MAX_LENGTH, habitSchema } from './habitSchema'
+import {
+  HABIT_DESCRIPTION_MAX_LENGTH,
+  HABIT_NAME_MAX_LENGTH,
+  HABIT_TARGET_MAX_VALUE,
+  HABIT_TARGET_UNIT_MAX_LENGTH,
+  HABIT_TRIGGER_MAX_LENGTH,
+  habitSchema,
+} from './habitSchema'
 
 const valid = {
   name: 'Ler',
@@ -91,5 +98,49 @@ describe('habitSchema', () => {
     ])
     expect(habitSchema.safeParse({ ...negative, frequencyType: 'WeekDays', weekDays: ['Monday', 'Friday'] }).success).toBe(true)
     expect(habitSchema.safeParse({ ...negative, frequencyType: 'TimesPerWeek', timesPerWeek: '2' }).success).toBe(true)
+  })
+
+  describe('daily target', () => {
+    const measured = { ...valid, measured: true, targetValue: '2000', targetUnit: ' ml ', targetStep: '250' }
+
+    it('defaults to no target when the fields are left out', () => {
+      const result = habitSchema.safeParse(valid)
+
+      expect(result.success).toBe(true)
+      expect(result.data).toMatchObject({ measured: false, targetValue: '', targetUnit: '', targetStep: '' })
+    })
+
+    it('accepts a valid target and trims the unit', () => {
+      const result = habitSchema.safeParse(measured)
+
+      expect(result.success).toBe(true)
+      expect(result.data?.targetUnit).toBe('ml')
+    })
+
+    it('accepts a target without a step', () => {
+      expect(habitSchema.safeParse({ ...measured, targetStep: '' }).success).toBe(true)
+    })
+
+    it.each(['', '0', String(HABIT_TARGET_MAX_VALUE + 1), '2.5', 'abc'])('rejects the target %j', (targetValue) => {
+      expect(messagesFor({ ...measured, targetValue, targetStep: '' }, 'targetValue')).toEqual(['habits:habits.validation.target.value'])
+    })
+
+    it('rejects a missing or too long unit', () => {
+      expect(messagesFor({ ...measured, targetUnit: '  ' }, 'targetUnit')).toEqual(['habits:habits.validation.target.unitRequired'])
+      expect(messagesFor({ ...measured, targetUnit: 'a'.repeat(HABIT_TARGET_UNIT_MAX_LENGTH + 1) }, 'targetUnit')).toEqual([
+        'habits:habits.validation.target.unitTooLong',
+      ])
+    })
+
+    it.each(['0', '2001', '1.5'])('rejects the step %j', (targetStep) => {
+      expect(messagesFor({ ...measured, targetStep }, 'targetStep')).toEqual(['habits:habits.validation.target.step'])
+    })
+
+    it('ignores the target when it is switched off or the habit is to avoid', () => {
+      const broken = { ...measured, targetValue: 'abc', targetUnit: '' }
+
+      expect(habitSchema.safeParse({ ...broken, measured: false }).success).toBe(true)
+      expect(habitSchema.safeParse({ ...broken, kind: 'Negative' }).success).toBe(true)
+    })
   })
 })

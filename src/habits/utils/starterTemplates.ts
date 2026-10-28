@@ -7,13 +7,14 @@ type Translate = (key: string) => string
 
 /**
  * Starter habits for an empty list: easy, daily and tied to a cue, since starting with 1 to 3 easy habits is what
- * keeps a streak going. Their texts live in `habits:onboarding.habits.<id>`.
+ * keeps a streak going. Each one measures an amount towards a daily target; the unit is an id under
+ * `habits:habits.form.targetUnits`. Their texts live in `habits:onboarding.habits.<id>`.
  */
 export const HABIT_TEMPLATES = [
-  { id: 'water', icon: 'glass-water' },
-  { id: 'read', icon: 'book-open' },
-  { id: 'walk', icon: 'footprints' },
-] as const satisfies readonly { id: string; icon: IconName }[]
+  { id: 'water', icon: 'glass-water', target: { value: 2000, unit: 'ml', step: 250 } },
+  { id: 'read', icon: 'book-open', target: { value: 10, unit: 'pages', step: 1 } },
+  { id: 'walk', icon: 'footprints', target: { value: 10, unit: 'min', step: 5 } },
+] as const satisfies readonly { id: string; icon: IconName; target: { value: number; unit: string; step: number } }[]
 
 export type HabitTemplateId = (typeof HABIT_TEMPLATES)[number]['id']
 
@@ -32,12 +33,17 @@ export function isHabitTemplateId(value: unknown): value is HabitTemplateId {
 
 /** The habit form's values for a starter habit, in the UI language. */
 export function habitTemplateValues(id: HabitTemplateId, translate: Translate): Partial<HabitFormValues> {
+  const { target } = HABIT_TEMPLATES.find((habit) => habit.id === id)!
   return {
     name: translate(`habits:onboarding.habits.${id}.name`),
     trigger: translate(`habits:onboarding.habits.${id}.trigger`),
     kind: 'Positive',
     difficulty: 'Easy',
     frequencyType: 'Daily',
+    measured: true,
+    targetValue: String(target.value),
+    targetUnit: translate(`habits:habits.form.targetUnits.${target.unit}`),
+    targetStep: String(target.step),
   }
 }
 

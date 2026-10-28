@@ -427,8 +427,8 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 **Rota:** `/habits/today` (é a tela inicial de Hábitos).
 
 **Sem nenhum hábito**
-- Aparecem sugestões fáceis: "Beber um copo de água", "Ler 10 páginas" e "Caminhar 10 minutos".
-- Clicar numa sugestão abre o formulário de novo hábito já preenchido, na tela Hábitos. Nada é criado até você salvar.
+- Aparecem sugestões fáceis: "Beber água", "Ler" e "Caminhar".
+- Clicar numa sugestão abre o formulário de novo hábito já preenchido, na tela Hábitos, com **Medir quantidade** ligado e a meta pronta: 2000 ml de água (de 250 em 250), 10 páginas (de 1 em 1) e 10 min de caminhada (de 5 em 5). Nada é criado até você salvar.
 - **Criar meu próprio hábito** leva para a tela Hábitos.
 
 **Bem-vindo de volta!**
@@ -445,6 +445,16 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 - **Toque de novo** num hábito feito para desfazer ("Check-in desfeito").
 - Hábitos "vezes por semana" mostram "2/3 esta semana". Depois de bater a meta, marcar não rende nada ("Feito! A meta da semana já tinha sido batida.").
 - Com tudo marcado: "Tudo feito hoje. Sua ofensiva agradece!".
+
+**Hábitos com meta diária** (criados com **Medir quantidade**, aqui e em "Ontem ficou pendente")
+- Em vez do toque único, o cartão mostra uma barra com o progresso do dia ("1.250 / 2.000 ml") e o que falta ("Faltam 750 ml"), ou "Meta do dia batida".
+- **+250** (o incremento do hábito, quando ele tem um) registra esse valor na hora.
+- **+** (Adicionar outro valor) abre o campo "Quanto você fez? (ml)"; **Adicionar** registra. Aceita um número inteiro de 1 a 100000.
+- **Completar** registra de uma vez o que falta para a meta.
+- Quando a soma do dia bate a meta, o dia conta como feito, com o mesmo ganho e o mesmo aviso do toque único. Passar da meta não rende nada a mais.
+- **Registros (N)** abre a lista do dia, com o horário e o valor de cada registro. O **X** remove um registro; se a soma cair abaixo da meta, o dia deixa de contar como feito e o ganho volta ("Abaixo da meta: o dia não conta mais como feito").
+- Um dia aceita até 50 registros. No 51º aparece "Esse dia já tem o máximo de 50 registros. Remova algum ou use um valor maior."
+- Um dia que não bateu a meta fecha como falha, igual a um dia sem nada.
 
 **Evitando** (hábitos para evitar)
 - Um cartão por hábito, com os dias limpos (ou as semanas no limite) e o recorde. No limite semanal, mostra "N de M nesta semana".
@@ -474,9 +484,13 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
   | Frequência | Construir: **Todo dia**, **Dias fixos** (escolha os dias) ou **Vezes/semana** (1 a 6). Evitar ("Quando evitar"): **Todo dia**, **Dias fixos** (dias em que você evita; nos outros está liberado) ou **Limite semanal** (máximo de vezes por semana) |
   | Gatilho (opcional) | Até 120 caracteres ("Depois de tomar café…") |
   | Descrição (opcional) | Até 200 caracteres |
+  | Medir quantidade | Só em **Construir**. Desligado, o hábito é cumprido com um toque. Ligado, mostra os três campos abaixo e o dia conta como feito quando a soma do dia bate a meta |
+  | Meta por dia | Com **Medir quantidade**: número inteiro de 1 a 100000 |
+  | Unidade | Com **Medir quantidade**: obrigatória, até 15 caracteres; sugere ml, páginas, min, passos, m e vezes, mas aceita qualquer texto |
+  | Incremento | Com **Medir quantidade**, opcional: número inteiro de 1 até a meta; vira o botão de adicionar rápido |
 
   **Criar hábito** mostra "Hábito criado".
-- **Editar:** muda tudo, menos o tipo. Mudanças na frequência valem a partir do próximo dia avaliado.
+- **Editar:** muda tudo, menos o tipo. Mudanças na frequência valem a partir do próximo dia avaliado. Desligar **Medir quantidade** tira a meta ao salvar; ligar transforma o hábito num hábito com meta. Mudar a meta não muda nenhum dia já marcado.
 - **Arquivar:** pede confirmação. O hábito sai da lista e deixa de ser cobrado, mas o histórico é mantido.
 - **Restaurar** (em Arquivados): volta o hábito com a ofensiva zerada. Se já existe um ativo com o mesmo nome, a restauração é recusada.
 - Sem hábitos, aparecem as mesmas sugestões da tela Hoje.
@@ -485,13 +499,14 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 
 **Rota:** `/habits/list/:id`. Para chegar: clique num hábito da lista.
 
-- **Hábitos** (voltar) retorna à lista. Um hábito arquivado mostra o selo **Arquivado**.
+- **Hábitos** (voltar) retorna à lista. Um hábito arquivado mostra o selo **Arquivado**. Um hábito com meta mostra "Meta: 2.000 ml por dia".
 - **Resumo:**
   - **Ofensiva** e recorde.
   - **Consistência (30 dias)**, ou **(4 semanas)** nos hábitos semanais.
   - **Rumo ao automático:** dias cumpridos de 66.
-- **Últimas 13 semanas:** um mapa com um quadrado por dia (segunda no topo), colorido pelo estado: Feito, Dia limpo, Protegido, Falhou, Recaída, Pendente, Folga, Liberado, Sem registro ou Antes do início.
-  - **Toque ou passe o mouse** num dia para ver o que aconteceu.
+- **Últimas 13 semanas:** um mapa com um quadrado por dia (segunda no topo), colorido pelo estado: Feito, Dia limpo, Protegido, Parcial, Falhou, Recaída, Pendente, Folga, Liberado, Sem registro ou Antes do início.
+  - **Parcial** (amarelo): o dia teve registros, mas não bateu a meta.
+  - **Toque ou passe o mouse** num dia para ver o que aconteceu. Num dia com registros aparece a quantidade, comparada com a meta atual ("Parcial · 12 / 20 páginas"), ou só a soma se o hábito não tem mais meta.
   - A legenda mostra quantos dias há em cada estado.
 - **Lançamentos deste hábito:** o extrato só desse hábito.
 

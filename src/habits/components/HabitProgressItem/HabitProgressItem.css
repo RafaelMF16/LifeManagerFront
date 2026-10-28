@@ -1,0 +1,91 @@
+/* A measured habit: the habit's header, then the bar, the amount and its actions. */
+.lm-habit-progress {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--elevation-1);
+  color: var(--text-primary);
+}
+
+.lm-habit-progress__bar {
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+}
+
+.lm-habit-progress__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+
+.lm-habit-progress__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+}
+
+.lm-habit-progress__amount {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--font-numeric);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.lm-habit-progress__left {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--text-secondary);
+}
+
+.lm-habit-progress__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.lm-habit-progress__custom {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.lm-habit-progress__custom-field {
+  flex: 1;
+  max-width: 220px;
+}
+
+@media (max-width: 768px) {
+  .lm-habit-progress__actions {
+    width: 100%;
+  }
+
+  /* The quick add and "Complete" share the row; the "+" keeps its size. */
+  .lm-habit-progress__actions > :not(.lm-icon-button) {
+    flex: 1;
+  }
+
+  .lm-habit-progress__custom-field {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lm-habit-progress__fill {
+    transition: width var(--duration-slow) var(--ease-out);
+  }
+
+}
