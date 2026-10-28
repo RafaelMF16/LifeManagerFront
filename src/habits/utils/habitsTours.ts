@@ -50,6 +50,16 @@ export const HABITS_TOURS: TourDefinition[] = [
     ],
   },
   {
+    id: 'items',
+    path: '/habits/shop/items',
+    namespace: 'habits',
+    steps: [
+      { id: 'intro' },
+      { id: 'tabs', target: 'shop.tabs' },
+      { id: 'cards', target: 'items.cards' },
+    ],
+  },
+  {
     id: 'redemptions',
     path: '/habits/shop/redemptions',
     namespace: 'habits',

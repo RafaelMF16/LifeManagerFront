@@ -332,6 +332,57 @@ export default {
     tabs: {
       rewards: 'Recompensas',
       redemptions: 'Resgates',
+      items: 'Itens',
+    },
+    items: {
+      title: 'Itens de jogo',
+      hint: 'Usados na hora da compra. Os limites voltam todo dia (poção) e toda segunda-feira (proteção).',
+      names: {
+        HpPotion: 'Poção de HP',
+        StreakFreeze: 'Proteção de ofensiva',
+      },
+      descriptions: {
+        HpPotion: 'Recupera HP na hora, sem passar do máximo.',
+        StreakFreeze: 'Guarda mais uma proteção: um dia esquecido não quebra a ofensiva.',
+      },
+      effects: {
+        hp: '+{{count}} HP',
+        freeze: '+1 proteção de ofensiva',
+      },
+      usage: {
+        Day: '{{used}} de {{limit}} hoje',
+        Week: '{{used}} de {{limit}} nesta semana',
+      },
+      buy: 'Comprar',
+      blocked: {
+        limitDay: 'Limite de hoje atingido',
+        limitWeek: 'Limite da semana atingido',
+        hpFull: 'HP cheio',
+        freezesFull: 'Proteções cheias ({{max}}/{{max}})',
+      },
+      loading: 'Carregando itens…',
+      loadError: 'Não foi possível carregar os itens.',
+      retry: 'Tentar novamente',
+      purchase: {
+        title: 'Comprar item?',
+        hpAfter: 'HP depois',
+        freezesAfter: 'Proteções depois',
+        partialHeal_one: 'Seu HP está quase cheio: a poção cura só {{count}} HP, pelo mesmo preço.',
+        partialHeal_other: 'Seu HP está quase cheio: a poção cura só {{count}} HP, pelo mesmo preço.',
+        note: 'O item é usado na hora. Se foi engano, dá para desfazer até o fim do dia.',
+        confirm_one: 'Comprar por {{count}} moeda',
+        confirm_other: 'Comprar por {{count}} moedas',
+        errorTitle: 'Não foi possível comprar',
+      },
+      errors: {
+        insufficientCoins: 'Você não tem moedas suficientes para esse item.',
+        hpFull: 'Seu HP já está cheio.',
+        freezesFull: 'Você já tem o máximo de proteções guardadas.',
+        dailyLimit: 'Você já comprou o máximo desse item hoje.',
+        weeklyLimit: 'Você já comprou esse item nesta semana. Ele volta na segunda-feira.',
+        outsideWindow: 'Essa compra não é de hoje e não pode mais ser desfeita.',
+        alreadyUsed: 'Essa proteção já foi usada para cobrir um dia, então a compra não pode ser desfeita.',
+      },
     },
     newButton: 'Nova recompensa',
     list: {
@@ -439,6 +490,8 @@ export default {
       outsideWindow: 'Esse resgate não é de hoje e não pode mais ser desfeito.',
     },
     toasts: {
+      purchased: 'Comprado: {{name}}',
+      purchaseUndone: 'Compra desfeita: {{name}}',
       created: 'Recompensa criada',
       updated: 'Recompensa atualizada',
       archived: 'Recompensa arquivada',
@@ -592,7 +645,7 @@ export default {
       },
       tabs: {
         title: 'Loja',
-        body: 'A loja tem duas partes: as Recompensas que você define e os Resgates que já fez.',
+        body: 'A loja tem três partes: as Recompensas que você define, os Itens do jogo e os Resgates que já fez.',
       },
       create: {
         title: 'Nova recompensa',
@@ -607,6 +660,20 @@ export default {
         body: 'Cada cartão mostra o preço e quantos dias de hábitos ele custa. Resgatar confirma antes de gastar as moedas.',
       },
     },
+    items: {
+      intro: {
+        title: 'Itens de jogo',
+        body: 'Itens que o jogo vende pelas suas moedas e que agem na hora: uma poção de HP e uma proteção de ofensiva.',
+      },
+      tabs: {
+        title: 'Loja',
+        body: 'A loja tem três partes: as Recompensas que você define, os Itens do jogo e os Resgates que já fez.',
+      },
+      cards: {
+        title: 'Comprar',
+        body: 'Cada cartão mostra o efeito, o preço e quanto do limite você já usou. Quando não dá para comprar, o botão diz o motivo.',
+      },
+    },
     redemptions: {
       intro: {
         title: 'Resgates',
@@ -614,7 +681,7 @@ export default {
       },
       tabs: {
         title: 'Loja',
-        body: 'A loja tem duas partes: as Recompensas que você define e os Resgates que já fez.',
+        body: 'A loja tem três partes: as Recompensas que você define, os Itens do jogo e os Resgates que já fez.',
       },
       list: {
         title: 'Histórico de resgates',

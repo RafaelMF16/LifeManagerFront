@@ -8,12 +8,13 @@ import './ShopPage.css'
 // `id` doubles as an i18next key lookup (`habits:shop.tabs.${id}`); `path` is relative to /habits/shop.
 const TABS: { id: string; path: string; icon: IconName }[] = [
   { id: 'rewards', path: 'rewards', icon: 'gift' },
+  { id: 'items', path: 'items', icon: 'sparkles' },
   { id: 'redemptions', path: 'redemptions', icon: 'history' },
 ]
 
 /**
- * The shop: rewards the player set for themselves, bought with the coins earned with habits, and the history of what
- * was redeemed. Each tab is a child route; the layout's outlet context (profile, reloadProfile) is passed on to them.
+ * The shop: rewards the player set for themselves, bought with the coins earned with habits, the game's own items, and
+ * the history of what was redeemed. Each tab is a child route; the layout's outlet context (profile, reloadProfile) is passed on to them.
  */
 function ShopPage() {
   const { t: translate } = useTranslation('habits')

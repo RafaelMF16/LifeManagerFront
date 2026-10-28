@@ -1,3 +1,4 @@
+/* Shared by the shop's confirmations (RedeemRewardDialog, PurchaseItemDialog): what is bought, its price and what changes. */
 .lm-redeem-dialog__reward {
   display: flex;
   align-items: center;

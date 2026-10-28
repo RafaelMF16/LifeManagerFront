@@ -19,6 +19,7 @@ import HabitsPage from './habits/pages/HabitsPage'
 import HistoryPage from './habits/pages/HistoryPage'
 import RedemptionsPage from './habits/pages/RedemptionsPage'
 import RewardsPage from './habits/pages/RewardsPage'
+import GameItemsPage from './habits/pages/GameItemsPage'
 import ShopPage from './habits/pages/ShopPage'
 import TodayPage from './habits/pages/TodayPage'
 import HomePage from './home/pages/HomePage'
@@ -70,6 +71,7 @@ const router = createBrowserRouter(
           <Route path="shop" element={<ShopPage />}>
             <Route index element={<Navigate to="rewards" replace />} />
             <Route path="rewards" element={<RewardsPage />} />
+            <Route path="items" element={<GameItemsPage />} />
             <Route path="redemptions" element={<RedemptionsPage />} />
           </Route>
         </Route>

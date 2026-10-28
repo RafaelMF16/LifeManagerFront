@@ -332,6 +332,57 @@ export default {
     tabs: {
       rewards: 'Rewards',
       redemptions: 'Redemptions',
+      items: 'Items',
+    },
+    items: {
+      title: 'Game items',
+      hint: 'Used as soon as you buy them. The limits reset every day (potion) and every Monday (freeze).',
+      names: {
+        HpPotion: 'HP potion',
+        StreakFreeze: 'Streak freeze',
+      },
+      descriptions: {
+        HpPotion: 'Restores HP at once, never past the maximum.',
+        StreakFreeze: 'Holds one more freeze: a forgotten day won\'t break the streak.',
+      },
+      effects: {
+        hp: '+{{count}} HP',
+        freeze: '+1 streak freeze',
+      },
+      usage: {
+        Day: '{{used}} of {{limit}} today',
+        Week: '{{used}} of {{limit}} this week',
+      },
+      buy: 'Buy',
+      blocked: {
+        limitDay: "Today's limit reached",
+        limitWeek: "This week's limit reached",
+        hpFull: 'HP is full',
+        freezesFull: 'Freezes full ({{max}}/{{max}})',
+      },
+      loading: 'Loading items…',
+      loadError: "Couldn't load the items.",
+      retry: 'Try again',
+      purchase: {
+        title: 'Buy item?',
+        hpAfter: 'HP after',
+        freezesAfter: 'Freezes after',
+        partialHeal_one: 'Your HP is nearly full: the potion only heals {{count}} HP, for the same price.',
+        partialHeal_other: 'Your HP is nearly full: the potion only heals {{count}} HP, for the same price.',
+        note: 'The item is used at once. If it was a mistake, you can undo it until the end of the day.',
+        confirm_one: 'Buy for {{count}} coin',
+        confirm_other: 'Buy for {{count}} coins',
+        errorTitle: "Couldn't buy",
+      },
+      errors: {
+        insufficientCoins: "You don't have enough coins for this item.",
+        hpFull: 'Your HP is already full.',
+        freezesFull: 'You already hold the most freezes you can.',
+        dailyLimit: 'You already bought as many of this item as you can today.',
+        weeklyLimit: 'You already bought this item this week. It comes back on Monday.',
+        outsideWindow: "This purchase isn't from today and can no longer be undone.",
+        alreadyUsed: 'This freeze already covered a day, so the purchase can no longer be undone.',
+      },
     },
     newButton: 'New reward',
     list: {
@@ -439,6 +490,8 @@ export default {
       outsideWindow: "This redemption isn't from today and can no longer be undone.",
     },
     toasts: {
+      purchased: 'Bought: {{name}}',
+      purchaseUndone: 'Purchase undone: {{name}}',
       created: 'Reward created',
       updated: 'Reward updated',
       archived: 'Reward archived',
@@ -592,7 +645,7 @@ export default {
       },
       tabs: {
         title: 'Shop',
-        body: 'The shop has two parts: the Rewards you set and the Redemptions you made.',
+        body: 'The shop has three parts: the Rewards you set, the game Items and the Redemptions you made.',
       },
       create: {
         title: 'New reward',
@@ -607,6 +660,20 @@ export default {
         body: 'Each card shows the price and how many days of habits it costs. Redeem asks before spending the coins.',
       },
     },
+    items: {
+      intro: {
+        title: 'Game items',
+        body: 'Items the game sells for your coins, which work at once: an HP potion and a streak freeze.',
+      },
+      tabs: {
+        title: 'Shop',
+        body: 'The shop has three parts: the Rewards you set, the game Items and the Redemptions you made.',
+      },
+      cards: {
+        title: 'Buy',
+        body: 'Each card shows the effect, the price and how much of the limit you used. When you can\'t buy it, the button says why.',
+      },
+    },
     redemptions: {
       intro: {
         title: 'Redemptions',
@@ -614,7 +681,7 @@ export default {
       },
       tabs: {
         title: 'Shop',
-        body: 'The shop has two parts: the Rewards you set and the Redemptions you made.',
+        body: 'The shop has three parts: the Rewards you set, the game Items and the Redemptions you made.',
       },
       list: {
         title: 'Redemption history',
