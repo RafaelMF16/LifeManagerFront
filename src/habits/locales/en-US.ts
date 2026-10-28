@@ -721,6 +721,15 @@ export default {
       message: "Your level and XP are still here. A bad day doesn't erase what you built: pick an easy habit and start again today.",
       confirm: 'Start again',
     },
+    achievements: {
+      titleOne: 'Achievement unlocked!',
+      titleMany_one: 'You unlocked {{count}} achievement!',
+      titleMany_other: 'You unlocked {{count}} achievements!',
+      titleUnlocked: 'Title unlocked: {{title}}',
+      titlesUnlocked: 'Each one unlocked a title for your profile. Keep it up!',
+      see: 'See achievements',
+      confirm: 'Continue',
+    },
     levelUp: {
       title: 'Level {{level}}!',
       message: 'Your HP is full again. Consistency is paying off.',

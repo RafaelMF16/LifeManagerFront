@@ -1,3 +1,5 @@
+import type { NewAchievementDto } from './AchievementDtos'
+
 /** `GET /api/Habits/Profile`: the player's character. A user who never played gets a new player's values. */
 export interface PlayerProfileDto {
   level: number
@@ -13,6 +15,8 @@ export interface PlayerProfileDto {
   maxStreakFreezes: number
   /** Only on `GET Profile`: the latest knockout, often caused by the day close while the player was away. */
   lastKnockout?: LastKnockoutDto | null
+  /** Only on `GET Profile`: unlocks the player hasn't been shown yet, in catalog order; empty elsewhere. */
+  newAchievements?: NewAchievementDto[]
 }
 
 export interface LastKnockoutDto {

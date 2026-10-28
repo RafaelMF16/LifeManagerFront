@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { GameLedgerEntryDto } from '../types/LedgerDtos'
 import { ledgerDeltas, ledgerIcon, ledgerTitle, signedValue } from './ledgerEntry'
 
-const translate = (key: string) => key.replace('habits:history.kinds.', '').replace('habits:shop.items.names.', 'item:')
+const translate = (key: string) => key.replace('habits:history.kinds.', '').replace('habits:shop.items.names.', 'item:').replace('habits:achievements.names.', 'achievement:')
 
 function entry(overrides: Partial<GameLedgerEntryDto>): GameLedgerEntryDto {
   return {
@@ -52,6 +52,11 @@ describe('ledgerTitle', () => {
   it('keeps a level-up caused by a purchase as a plain level-up', () => {
     expect(ledgerTitle(entry({ kind: 'LevelUp', itemKind: 'HpPotion' }), translate)).toBe('LevelUp')
   })
+
+  it('names the achievement behind an unlock bonus, but not the level-up it caused', () => {
+    expect(ledgerTitle(entry({ kind: 'AchievementUnlocked', achievementCode: 'CheckIns100' }), translate)).toBe('AchievementUnlocked · achievement:CheckIns100')
+    expect(ledgerTitle(entry({ kind: 'LevelUp', achievementCode: 'CheckIns100' }), translate)).toBe('LevelUp')
+  })
 })
 
 describe('ledgerDeltas', () => {
@@ -76,6 +81,10 @@ describe('signedValue', () => {
 })
 
 describe('ledgerIcon', () => {
+  it('shows a trophy for an achievement', () => {
+    expect(ledgerIcon(entry({ kind: 'AchievementUnlocked', achievementCode: 'Streak7' }))).toBe('trophy')
+  })
+
   it('shows the bought item icon', () => {
     expect(ledgerIcon(entry({ kind: 'ItemPurchased', itemKind: 'StreakFreeze' }))).toBe('snowflake')
     expect(ledgerIcon(entry({ kind: 'Undo', itemKind: 'HpPotion' }))).toBe('undo-2')

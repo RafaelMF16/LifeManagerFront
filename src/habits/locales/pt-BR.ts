@@ -721,6 +721,15 @@ export default {
       message: 'Seu nível e seu XP continuam aqui. Um dia ruim não apaga o que você construiu: escolha um hábito fácil e recomece hoje.',
       confirm: 'Recomeçar',
     },
+    achievements: {
+      titleOne: 'Conquista desbloqueada!',
+      titleMany_one: 'Você desbloqueou {{count}} conquista!',
+      titleMany_other: 'Você desbloqueou {{count}} conquistas!',
+      titleUnlocked: 'Título liberado: {{title}}',
+      titlesUnlocked: 'Cada uma liberou um título para o seu perfil. Continue assim!',
+      see: 'Ver conquistas',
+      confirm: 'Continuar',
+    },
     levelUp: {
       title: 'Nível {{level}}!',
       message: 'Seu HP foi restaurado. A consistência está valendo a pena.',

@@ -1,5 +1,6 @@
 import type { IconName } from '../../shared/components/Icon/Icon'
 import type { GameLedgerEntryDto, GameLedgerEntryKind } from '../types/LedgerDtos'
+import { achievementName } from './achievements'
 import { gameItemIcon, gameItemName } from './gameItems'
 
 type Translate = (key: string, options?: Record<string, unknown>) => string
@@ -23,6 +24,7 @@ const KIND_ICONS: Record<GameLedgerEntryKind, IconName> = {
   FreezeUsed: 'snowflake',
   LevelUp: 'sparkles',
   ItemPurchased: 'store',
+  AchievementUnlocked: 'trophy',
 }
 
 /** A purchase shows its item's icon; every other line, its kind's. */
@@ -33,13 +35,22 @@ export function ledgerIcon(entry: GameLedgerEntryDto): IconName {
 
 /**
  * What the line is about: the kind ("Habit done", "Redeemed") and, when the entry has one, the habit or reward name it
- * copied ("Habit done · Read") or the game item, named in the UI language ("Item bought · HP potion"). An undo says
+ * copied ("Habit done · Read") or the game item or achievement, named in the UI language ("Item bought · HP potion",
+ * "Achievement · Consistency"). An undo says
  * whether it undid a reward, an item purchase or a habit's day.
  */
 export function ledgerTitle(entry: GameLedgerEntryDto, translate: Translate) {
   const kind = translate(`habits:history.kinds.${titleKindKey(entry)}`)
-  const about = entry.itemKind && entry.kind !== 'LevelUp' && entry.kind !== 'Knockout' ? gameItemName(entry.itemKind, translate) : entry.description
+  const about = ledgerAbout(entry, translate)
   return about ? `${kind} · ${about}` : kind
+}
+
+/** The game item of a purchase or its undo, or the achievement of an unlock bonus, in the UI language; else the copied name. */
+function ledgerAbout(entry: GameLedgerEntryDto, translate: Translate) {
+  if (entry.kind === 'LevelUp' || entry.kind === 'Knockout') return entry.description
+  if (entry.itemKind) return gameItemName(entry.itemKind, translate)
+  if (entry.achievementCode) return achievementName(entry.achievementCode, translate)
+  return entry.description
 }
 
 function titleKindKey(entry: GameLedgerEntryDto) {
