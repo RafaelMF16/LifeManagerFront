@@ -9,6 +9,7 @@ const NAV_ITEMS: { id: string; icon: IconName; path: string | null }[] = [
   { id: 'habits', icon: 'list-checks', path: '/habits/list' },
   { id: 'shop', icon: 'store', path: '/habits/shop' },
   { id: 'achievements', icon: 'trophy', path: '/habits/achievements' },
+  { id: 'profile', icon: 'user-round', path: '/habits/profile' },
   { id: 'history', icon: 'history', path: '/habits/history' },
 ]
 
