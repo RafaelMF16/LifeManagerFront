@@ -274,6 +274,13 @@ export default {
       timesPerWeek: {
         invalid: 'Enter a number from 1 to 6',
       },
+      target: {
+        value: 'Enter a whole number from 1 to 100000',
+        unitRequired: 'Enter the unit',
+        unitTooLong: 'Use at most 15 characters',
+        step: 'Enter a whole number from 1 up to the target',
+        notAllowed: 'Only habits to build can have a target',
+      },
       notFound: 'This habit no longer exists.',
       archived: 'This habit was archived. Restore it to edit it.',
     },

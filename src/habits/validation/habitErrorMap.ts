@@ -10,6 +10,11 @@ export const HABIT_CHECK_IN_NOT_FOUND_CODE = 'Habit.CheckInNotFound'
 export const HABIT_CHECK_IN_OUTSIDE_WINDOW_CODE = 'Habit.CheckInOutsideWindow'
 export const HABIT_ALREADY_RELAPSED_CODE = 'Habit.AlreadyRelapsed'
 export const HABIT_RELAPSE_NOT_FOUND_CODE = 'Habit.RelapseNotFound'
+export const HABIT_PROGRESS_REQUIRED_CODE = 'Habit.ProgressRequired'
+export const HABIT_NOT_MEASURABLE_CODE = 'Habit.NotMeasurable'
+export const HABIT_INVALID_PROGRESS_VALUE_CODE = 'Habit.InvalidProgressValue'
+export const HABIT_TOO_MANY_PROGRESS_ENTRIES_CODE = 'Habit.TooManyProgressEntries'
+export const HABIT_PROGRESS_ENTRY_NOT_FOUND_CODE = 'Habit.ProgressEntryNotFound'
 
 export const habitErrorFieldMap: ApiErrorFieldMap<HabitFormValues> = {
   'Habit.NameIsNullOrWhiteSpace': { field: 'name', message: 'habits:habits.validation.name.required' },
@@ -23,4 +28,10 @@ export const habitErrorFieldMap: ApiErrorFieldMap<HabitFormValues> = {
   'Habit.InvalidFrequencyCombination': { field: 'frequencyType', message: 'habits:habits.validation.frequency.invalid' },
   'Habit.WeekDaysRequired': { field: 'weekDays', message: 'habits:habits.validation.weekDays.required' },
   'Habit.InvalidTimesPerWeek': { field: 'timesPerWeek', message: 'habits:habits.validation.timesPerWeek.invalid' },
+  'Habit.InvalidTargetValue': { field: 'targetValue', message: 'habits:habits.validation.target.value' },
+  'Habit.TargetUnitRequired': { field: 'targetUnit', message: 'habits:habits.validation.target.unitRequired' },
+  'Habit.TargetUnitTooLong': { field: 'targetUnit', message: 'habits:habits.validation.target.unitTooLong' },
+  'Habit.InvalidTargetStep': { field: 'targetStep', message: 'habits:habits.validation.target.step' },
+  'Habit.InvalidTargetCombination': { field: 'targetValue', message: 'habits:habits.validation.target.value' },
+  'Habit.TargetNotAllowed': { field: 'targetValue', message: 'habits:habits.validation.target.notAllowed' },
 }

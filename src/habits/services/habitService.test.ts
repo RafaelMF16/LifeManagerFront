@@ -11,6 +11,10 @@ const values: HabitFormValues = {
   frequencyType: 'WeekDays',
   weekDays: ['Monday', 'Thursday'],
   timesPerWeek: '3',
+  measured: false,
+  targetValue: '',
+  targetUnit: '',
+  targetStep: '',
 }
 
 describe('toRequestDto', () => {
@@ -24,7 +28,23 @@ describe('toRequestDto', () => {
       frequencyType: 'WeekDays',
       weekDays: ['Monday', 'Thursday'],
       timesPerWeek: null,
+      targetValue: null,
+      targetUnit: null,
+      targetStep: null,
     })
+  })
+
+  it('sends the daily target of a measured habit, without a blank step', () => {
+    const dto = toRequestDto({ ...values, measured: true, targetValue: '2000', targetUnit: 'ml', targetStep: '' })
+
+    expect(dto).toMatchObject({ targetValue: 2000, targetUnit: 'ml', targetStep: null })
+  })
+
+  it('sends no target when measuring is off or the habit is to avoid', () => {
+    const target = { measured: true, targetValue: '2000', targetUnit: 'ml', targetStep: '250' }
+
+    expect(toRequestDto({ ...values, ...target, measured: false })).toMatchObject({ targetValue: null, targetUnit: null, targetStep: null })
+    expect(toRequestDto({ ...values, ...target, kind: 'Negative' })).toMatchObject({ targetValue: null, targetUnit: null, targetStep: null })
   })
 
   it('sends only the number for a TimesPerWeek habit', () => {

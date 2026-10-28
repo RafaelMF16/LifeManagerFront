@@ -7,10 +7,12 @@ const HABITS_PATH = '/api/Habits'
 
 /**
  * Sends only what the frequency uses (the backend rejects days on a TimesPerWeek habit and vice versa). Blank optional
- * texts go as null.
+ * texts go as null. The daily target goes only when measuring is on for a habit to build; otherwise all null, which
+ * removes it.
  */
 export function toUpdateRequestDto(values: HabitFormValues): HabitUpdateRequestDto {
   const { frequencyType } = values
+  const measured = values.measured && values.kind === 'Positive'
 
   return {
     name: values.name,
@@ -20,6 +22,9 @@ export function toUpdateRequestDto(values: HabitFormValues): HabitUpdateRequestD
     frequencyType,
     weekDays: frequencyType === 'WeekDays' ? values.weekDays : null,
     timesPerWeek: frequencyType === 'TimesPerWeek' ? Number(values.timesPerWeek) : null,
+    targetValue: measured ? Number(values.targetValue) : null,
+    targetUnit: measured ? values.targetUnit : null,
+    targetStep: measured && values.targetStep !== '' ? Number(values.targetStep) : null,
   }
 }
 

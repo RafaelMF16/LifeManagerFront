@@ -49,6 +49,10 @@ function toDefaultValues(habit: HabitResponseDto | undefined, initialValues?: Pa
     frequencyType: habit?.frequencyType ?? 'Daily',
     weekDays: habit?.weekDays ?? [],
     timesPerWeek: habit?.timesPerWeek ? String(habit.timesPerWeek) : '3',
+    measured: habit?.targetValue != null,
+    targetValue: habit?.targetValue != null ? String(habit.targetValue) : '',
+    targetUnit: habit?.targetUnit ?? '',
+    targetStep: habit?.targetStep != null ? String(habit.targetStep) : '',
   }
   return habit ? defaults : { ...defaults, ...initialValues }
 }

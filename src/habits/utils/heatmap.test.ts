@@ -8,6 +8,7 @@ function daysFrom(start: string, count: number, state: HabitDayDto['state'] = 'N
   return Array.from({ length: count }, (_, offset) => ({
     date: new Date(Date.UTC(year, month - 1, day + offset)).toISOString().slice(0, 10),
     state,
+    amount: null,
   }))
 }
 

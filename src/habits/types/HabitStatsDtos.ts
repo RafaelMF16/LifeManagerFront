@@ -1,13 +1,26 @@
 import type { HabitResponseDto } from './HabitDtos'
 
 // Espelha LifeManager.Domain/Habits (HabitDayState, HabitConsistencyUnit) e Application/Habits/DTOs/HabitStatsDto
-export type HabitDayState = 'BeforeStart' | 'Off' | 'None' | 'Pending' | 'Done' | 'Clean' | 'Frozen' | 'Missed' | 'Relapse'
+export type HabitDayState =
+  | 'BeforeStart'
+  | 'Off'
+  | 'None'
+  | 'Pending'
+  | 'Done'
+  | 'Clean'
+  | 'Frozen'
+  | 'Missed'
+  | 'Relapse'
+  /** Progress logged but the target not reached: missed, not judged yet or still in progress. */
+  | 'Partial'
 export type HabitConsistencyUnit = 'Days' | 'Weeks'
 
 export interface HabitDayDto {
   /** `yyyy-MM-dd`. */
   date: string
   state: HabitDayState
+  /** The day's total progress towards the daily target; null when nothing was logged. */
+  amount: number | null
 }
 
 export interface HabitConsistencyDto {

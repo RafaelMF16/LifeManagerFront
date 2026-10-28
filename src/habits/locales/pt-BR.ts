@@ -274,6 +274,13 @@ export default {
       timesPerWeek: {
         invalid: 'Informe um número de 1 a 6',
       },
+      target: {
+        value: 'Informe um número inteiro de 1 a 100000',
+        unitRequired: 'Informe a unidade',
+        unitTooLong: 'Use no máximo 15 caracteres',
+        step: 'Informe um número inteiro de 1 até a meta',
+        notAllowed: 'Só hábitos para construir podem ter meta',
+      },
       notFound: 'Esse hábito não existe mais.',
       archived: 'Esse hábito foi arquivado. Restaure-o para editar.',
     },
