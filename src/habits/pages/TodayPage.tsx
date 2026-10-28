@@ -10,11 +10,12 @@ import { isApiError } from '../../shared/types/ApiError'
 import HabitAvoidCard from '../components/HabitAvoidCard/HabitAvoidCard'
 import type { RelapseDay } from '../components/HabitAvoidCard/HabitAvoidCard'
 import HabitCheckItem from '../components/HabitCheckItem/HabitCheckItem'
+import HabitProgressItem from '../components/HabitProgressItem/HabitProgressItem'
 import RelapseDialog from '../components/RelapseDialog/RelapseDialog'
 import WelcomeBackBanner from '../components/WelcomeBackBanner/WelcomeBackBanner'
 import { useHabitsToday } from '../hooks/useHabitsToday'
 import type { HabitsOutletContext } from '../types/HabitsOutletContext'
-import type { HabitAvoidItemDto, HabitTodayItemDto } from '../types/HabitTodayDtos'
+import type { HabitAvoidItemDto, HabitProgressEntryDto, HabitProgressResultDto, HabitTodayItemDto } from '../types/HabitTodayDtos'
 import { checkInHighlight, formatDayTitle, formatWalletChange, todayProgress } from '../utils/todayProgress'
 import { readWelcomeBackDismissed, shouldWelcomeBack, writeWelcomeBackDismissed } from '../utils/welcomeBack'
 import {
@@ -24,7 +25,10 @@ import {
   HABIT_CHECK_IN_NOT_FOUND_CODE,
   HABIT_CHECK_IN_OUTSIDE_WINDOW_CODE,
   HABIT_NOT_FOUND_CODE,
+  HABIT_PROGRESS_ENTRY_NOT_FOUND_CODE,
+  HABIT_PROGRESS_REQUIRED_CODE,
   HABIT_RELAPSE_NOT_FOUND_CODE,
+  HABIT_TOO_MANY_PROGRESS_ENTRIES_CODE,
 } from '../validation/habitErrorMap'
 import StarterSuggestions from '../components/StarterSuggestions/StarterSuggestions'
 import { HABIT_TEMPLATES } from '../utils/starterTemplates'
@@ -65,6 +69,25 @@ function TodayPage() {
         showToast(change || translate('habits:today.toasts.doneNoReward'), checkInHighlight(saved, translate))
       } else {
         showToast(translate('habits:today.toasts.undone'), change || undefined)
+      }
+    } catch (err) {
+      showSaveError(err)
+    }
+  }
+
+  /** Logs or removes an amount; only the change that completes or undoes the day touches the wallet and is toasted. */
+  async function handleProgress(request: Promise<HabitProgressResultDto>) {
+    try {
+      const saved = await request
+      const { wallet } = saved
+      if (!wallet) return
+
+      reloadProfile()
+      const change = formatWalletChange(wallet, translate)
+      if (saved.done) {
+        showToast(change || translate('habits:today.toasts.doneNoReward'), checkInHighlight({ ...saved, wallet }, translate))
+      } else {
+        showToast(translate('habits:today.toasts.progressUndone'), change || undefined)
       }
     } catch (err) {
       showSaveError(err)
@@ -114,7 +137,10 @@ function TodayPage() {
       err.code === HABIT_ALREADY_CHECKED_IN_CODE ||
       err.code === HABIT_CHECK_IN_NOT_FOUND_CODE ||
       err.code === HABIT_ALREADY_RELAPSED_CODE ||
-      err.code === HABIT_RELAPSE_NOT_FOUND_CODE
+      err.code === HABIT_RELAPSE_NOT_FOUND_CODE ||
+      err.code === HABIT_PROGRESS_ENTRY_NOT_FOUND_CODE ||
+      // A target set in another tab: the reloaded list shows the progress card.
+      err.code === HABIT_PROGRESS_REQUIRED_CODE
     ) {
       habits.reload()
       return
@@ -125,7 +151,9 @@ function TodayPage() {
         ? 'habits:today.errors.outsideWindow'
         : err.code === HABIT_NOT_FOUND_CODE || err.code === HABIT_ARCHIVED_CODE
           ? 'habits:today.errors.gone'
-          : 'common:errors.generic'
+          : err.code === HABIT_TOO_MANY_PROGRESS_ENTRIES_CODE
+            ? 'habits:today.errors.tooManyEntries'
+            : 'common:errors.generic'
     showErrorModal(translate('habits:today.errors.title'), translate(message))
     habits.reload()
   }
@@ -135,12 +163,21 @@ function TodayPage() {
       <ul className="lm-today-page__list">
         {items.map((item) => (
           <li key={item.id}>
-            <HabitCheckItem
-              item={item}
-              pending={habits.isPending(item.id, date)}
-              onToggle={() => void handleToggle(item, date)}
-              streakRisk={streakRisk}
-            />
+            {item.target ? (
+              <HabitProgressItem
+                item={{ ...item, target: item.target }}
+                onAdd={(value) => void handleProgress(habits.addProgress(item, date, value))}
+                onRemove={(entry: HabitProgressEntryDto) => void handleProgress(habits.removeProgress(item, date, entry))}
+                streakRisk={streakRisk}
+              />
+            ) : (
+              <HabitCheckItem
+                item={item}
+                pending={habits.isPending(item.id, date)}
+                onToggle={() => void handleToggle(item, date)}
+                streakRisk={streakRisk}
+              />
+            )}
           </li>
         ))}
       </ul>
