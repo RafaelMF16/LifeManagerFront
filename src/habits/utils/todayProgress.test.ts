@@ -7,7 +7,7 @@ function translate(key: string, options?: Record<string, unknown>) {
 }
 
 const wallet: WalletChangeDto = {
-  profile: { level: 3, xpInLevel: 0, xpToNextLevel: 300, totalXp: 300, hp: 100, maxHp: 100, coins: 50, streakFreezes: 0, maxStreakFreezes: 2 },
+  profile: { level: 3, xpInLevel: 0, xpToNextLevel: 300, totalXp: 300, hp: 100, maxHp: 100, coins: 50, streakFreezes: 0, maxStreakFreezes: 2, avatar: 'Cat', title: null },
   coinsDelta: 10,
   xpDelta: 20,
   hpDelta: 1,

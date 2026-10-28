@@ -47,6 +47,8 @@ function profile(overrides: Partial<PlayerProfileDto> = {}): PlayerProfileDto {
     coins: 100,
     streakFreezes: 0,
     maxStreakFreezes: 2,
+    avatar: 'Cat',
+    title: null,
     ...overrides,
   }
 }

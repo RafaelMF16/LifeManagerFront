@@ -1,0 +1,47 @@
+.lm-player-avatar {
+  --lm-avatar-tone: var(--avatar-tone-1);
+
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--lm-avatar-tone) 16%, var(--surface));
+  color: var(--lm-avatar-tone);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--lm-avatar-tone) 30%, transparent);
+}
+
+.lm-player-avatar--sm {
+  width: 28px;
+  height: 28px;
+}
+
+.lm-player-avatar--md {
+  width: 44px;
+  height: 44px;
+}
+
+.lm-player-avatar--lg {
+  width: 80px;
+  height: 80px;
+}
+
+.lm-player-avatar--tone-2 {
+  --lm-avatar-tone: var(--avatar-tone-2);
+}
+
+.lm-player-avatar--tone-3 {
+  --lm-avatar-tone: var(--avatar-tone-3);
+}
+
+.lm-player-avatar--tone-4 {
+  --lm-avatar-tone: var(--avatar-tone-4);
+}
+
+.lm-player-avatar--tone-5 {
+  --lm-avatar-tone: var(--avatar-tone-5);
+}
+
+.lm-player-avatar--tone-6 {
+  --lm-avatar-tone: var(--avatar-tone-6);
+}

@@ -29,6 +29,7 @@ export default {
     freezes: 'Streak freezes',
     freezesAria: 'Streak freezes: {{count}} of {{max}}',
     freezesValue: '{{count}}/{{max}}',
+    openProfile: 'Open your profile',
   },
   today: {
     title: 'Today',
@@ -676,6 +677,22 @@ export default {
       coins_one: '+{{count}} coin',
       coins_other: '+{{count}} coins',
       xp: '+{{value}} XP',
+    },
+  },
+  profile: {
+    avatars: {
+      Cat: 'Cat',
+      Dog: 'Dog',
+      Bird: 'Bird',
+      Rabbit: 'Rabbit',
+      Fish: 'Fish',
+      Turtle: 'Turtle',
+      Squirrel: 'Squirrel',
+      Panda: 'Panda',
+      Rocket: 'Rocket',
+      Flame: 'Flame',
+      Mountain: 'Mountain',
+      Bot: 'Robot',
     },
   },
   history: {

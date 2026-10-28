@@ -29,6 +29,7 @@ export default {
     freezes: 'Proteções de ofensiva',
     freezesAria: 'Proteções de ofensiva: {{count}} de {{max}}',
     freezesValue: '{{count}}/{{max}}',
+    openProfile: 'Abrir seu perfil',
   },
   today: {
     title: 'Hoje',
@@ -676,6 +677,22 @@ export default {
       coins_one: '+{{count}} moeda',
       coins_other: '+{{count}} moedas',
       xp: '+{{value}} XP',
+    },
+  },
+  profile: {
+    avatars: {
+      Cat: 'Gato',
+      Dog: 'Cachorro',
+      Bird: 'Pássaro',
+      Rabbit: 'Coelho',
+      Fish: 'Peixe',
+      Turtle: 'Tartaruga',
+      Squirrel: 'Esquilo',
+      Panda: 'Panda',
+      Rocket: 'Foguete',
+      Flame: 'Chama',
+      Mountain: 'Montanha',
+      Bot: 'Robô',
     },
   },
   history: {

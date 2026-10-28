@@ -13,6 +13,8 @@ const profile: PlayerProfileDto = {
   coins: 40,
   streakFreezes: 0,
   maxStreakFreezes: 2,
+  avatar: 'Cat',
+  title: null,
   lastKnockout: null,
 }
 
