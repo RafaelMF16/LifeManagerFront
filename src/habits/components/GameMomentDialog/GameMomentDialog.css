@@ -37,7 +37,7 @@
 }
 
 .lm-game-moment--gold {
-  --medal: var(--warning);
+  --medal: #e0a526;
 }
 
 .lm-game-moment--achievement .lm-game-moment__icon {
@@ -88,7 +88,7 @@
 }
 
 .lm-game-moment__item--gold {
-  --medal: var(--warning);
+  --medal: #e0a526;
 }
 
 .lm-game-moment__item-tier {
