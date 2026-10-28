@@ -33,6 +33,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   - [Detalhe do hábito](#detalhe-do-hábito)
   - [Loja](#loja)
   - [Conquistas](#conquistas)
+  - [Perfil](#perfil)
   - [Histórico](#histórico)
   - [Momentos de jogo](#momentos-de-jogo)
 
@@ -63,6 +64,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
     /habits/shop/items           Itens
     /habits/shop/redemptions     Resgates
   /habits/achievements      Conquistas
+  /habits/profile           Perfil
   /habits/history           Histórico
 ```
 
@@ -426,6 +428,7 @@ Menu: **Hoje**, **Hábitos**, **Loja**, **Histórico**.
 ### Barra do personagem
 
 Fica no topo de todas as telas de Hábitos:
+- o **avatar**, que abre o **Perfil**, e o **título** escolhido, quando houver;
 - **Nível** e barra de **XP** até o próximo nível;
 - barra de **HP** (0 a 100);
 - **Moedas**;
@@ -575,6 +578,21 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 - **Todas as conquistas**, por família: Check-ins, Ofensiva, Nível, Resgates, Dias limpos e Superação. Cada cartão mostra o nível (bronze, prata ou ouro), o nome, o que é preciso ("100 check-ins"), o bônus ("+100 moedas · +150 XP") e o título que libera.
   - **Bloqueada:** em cinza, com um cadeado e a barra de progresso ("37 / 100").
   - **Desbloqueada:** na cor da medalha, com a data. Uma conquista desbloqueada é para sempre, mesmo que um check-in seja desfeito.
+
+### Perfil
+
+**Rota:** `/habits/profile` (item **Perfil** do menu, depois de Conquistas; também pelo avatar da barra do personagem).
+
+Quem você é no jogo e o caminho que já fez. Cada parte carrega sozinha: se uma falhar, as outras continuam, com **Tentar novamente**.
+
+- **Identidade:** avatar, nome, título (ou "Sem título"), nível e "jogando desde outubro de 2026".
+  - **Editar** abre **Editar aparência**: os 12 avatares (todos liberados) e os títulos das conquistas desbloqueadas, mais "Sem título". Sem nenhuma conquista, a lista diz que cada conquista libera um título, com o link **Ver conquistas**. **Salvar** troca na hora, também na barra do personagem, e mostra "Aparência atualizada".
+- **Estatísticas:** 12 números do histórico inteiro, com os hábitos arquivados: check-ins feitos, dias limpos, dias ativos, XP total, melhor ofensiva, mais dias em um hábito, hábitos criados, conquistas, moedas ganhas, moedas gastas, recompensas resgatadas e nocautes superados. 4 por linha no computador, 2 no celular.
+- **Vitrine:** "N de 16 desbloqueadas", até 6 conquistas (as de ouro primeiro e, no mesmo nível, a mais recente) e o **Próximo objetivo** do "Quase lá", com o que falta. Sem conquistas: "Nenhuma conquista ainda. A primeira está logo ali:". O link **Ver todas** abre Conquistas.
+- **Evolução:** um gráfico de linha do **XP** ou das **Moedas** ao fim de cada dia, nos últimos **30 dias**, **90 dias** (padrão) ou **1 ano**.
+  - Acima, o dia escolhido e o valor; começa em hoje. Passar o mouse, tocar ou usar as setas do teclado escolhe outro dia.
+  - Abaixo, "+340 XP no período" e "de 160 XP para 500 XP".
+  - Jogador novo: a linha fica no zero, com "Faça seu primeiro check-in para começar sua evolução.".
 
 ### Histórico
 

@@ -936,6 +936,28 @@ export default {
         body: 'By family, in bronze, silver and gold. Locked ones show the progress; once unlocked, an achievement stays.',
       },
     },
+    profile: {
+      intro: {
+        title: 'Your profile',
+        body: 'Who you are in the game and every step you took so far.',
+      },
+      identity: {
+        title: 'Your identity',
+        body: "Pick an avatar and show an achievement's title. It also appears at the top of your habits.",
+      },
+      stats: {
+        title: 'Stats',
+        body: 'The numbers of your whole journey, archived habits included.',
+      },
+      showcase: {
+        title: 'Showcase',
+        body: 'Your best achievements, gold first, and the next goal.',
+      },
+      evolution: {
+        title: 'Evolution',
+        body: 'Your XP or your coins day by day. Slide a finger or the mouse over the chart to see each day.',
+      },
+    },
     history: {
       intro: {
         title: 'History',

@@ -936,6 +936,28 @@ export default {
         body: 'Por família, em bronze, prata e ouro. As bloqueadas mostram o progresso; uma conquista desbloqueada é para sempre.',
       },
     },
+    profile: {
+      intro: {
+        title: 'Seu perfil',
+        body: 'Quem você é no jogo e todo o caminho que já fez.',
+      },
+      identity: {
+        title: 'Sua identidade',
+        body: 'Escolha um avatar e mostre o título de uma conquista. Ele aparece também no topo dos hábitos.',
+      },
+      stats: {
+        title: 'Estatísticas',
+        body: 'Os números da sua jornada inteira, com os hábitos arquivados incluídos.',
+      },
+      showcase: {
+        title: 'Vitrine',
+        body: 'Suas melhores conquistas, as de ouro primeiro, e o próximo objetivo.',
+      },
+      evolution: {
+        title: 'Evolução',
+        body: 'Seu XP ou suas moedas dia a dia. Passe o dedo ou o mouse no gráfico para ver cada dia.',
+      },
+    },
     history: {
       intro: {
         title: 'Histórico',
