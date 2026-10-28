@@ -25,21 +25,19 @@ export function usePlayerEvolution(range: EvolutionRange) {
   useEffect(() => {
     // Aborted on a new range, reload or unmount, which also fires the backend's CancellationToken.
     const controller = new AbortController()
+    const key = `${range}:${reloadKey}`
 
     getPlayerEvolution(range, controller.signal).then(
       (data) => {
-        if (!controller.signal.aborted) setResult({ requestKey: `${range}:${reloadKey}`, range, data, failed: false })
+        if (!controller.signal.aborted) setResult({ requestKey: key, range, data, failed: false })
       },
       () => {
-        if (!controller.signal.aborted) {
-          // A failed reload of the same range keeps its chart; a failed switch shows the error instead.
-          setResult((previous) => ({
-            requestKey: `${range}:${reloadKey}`,
-            range: previous?.range === range ? range : undefined,
-            data: previous?.range === range ? previous.data : undefined,
-            failed: true,
-          }))
-        }
+        if (controller.signal.aborted) return
+        // A failed reload of the same range keeps its chart; a failed switch shows the error instead.
+        setResult((previous) => {
+          const kept = previous?.range === range ? previous : undefined
+          return { requestKey: key, range: kept?.range, data: kept?.data, failed: true }
+        })
       },
     )
 

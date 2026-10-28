@@ -7,7 +7,7 @@ import SegmentedControl from '../../../shared/components/SegmentedControl/Segmen
 import { usePlayerEvolution } from '../../hooks/usePlayerEvolution'
 import type { EvolutionRange } from '../../types/PlayerProfileDtos'
 import type { EvolutionSeries } from '../../utils/playerProfile'
-import { evolutionValue, isEmptyEvolution, nearestPointIndex, periodSummary, weeklyPoints } from '../../utils/playerProfile'
+import { evolutionValue, isEmptyEvolution, nearestPointIndex, periodSummary, signedNumber, weeklyPoints } from '../../utils/playerProfile'
 import './EvolutionChart.css'
 
 const RANGES: EvolutionRange[] = ['Month', 'Quarter', 'Year']
@@ -37,7 +37,6 @@ function EvolutionChart() {
   const formatDay = (date: string, full = false) => (full ? fullDayFormat : dayFormat).format(new Date(`${date}T00:00:00Z`))
   const formatValue = (value: number) =>
     translate(`habits:profile.evolution.values.${series}`, { value: numberFormat.format(value), count: value })
-  const signed = (value: number) => `${value > 0 ? '+' : value < 0 ? '−' : ''}${numberFormat.format(Math.abs(value))}`
 
   const selectedIndex = Math.min(picked ?? points.length - 1, points.length - 1)
   const selected = points[selectedIndex]
@@ -140,7 +139,7 @@ function EvolutionChart() {
         ) : (
           <p className="lm-evolution__summary">
             <strong>
-              {translate(`habits:profile.evolution.changes.${series}`, { change: signed(summary.change), count: Math.abs(summary.change) })}
+              {translate(`habits:profile.evolution.changes.${series}`, { change: signedNumber(summary.change, numberFormat), count: Math.abs(summary.change) })}
             </strong>
             <span>
               {translate('habits:profile.evolution.fromTo', { start: formatValue(summary.start), end: formatValue(summary.end) })}

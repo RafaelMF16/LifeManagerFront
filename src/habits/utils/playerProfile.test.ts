@@ -7,6 +7,7 @@ import {
   nearestPointIndex,
   periodSummary,
   showcase,
+  signedNumber,
   unlockedTitles,
   weeklyPoints,
 } from './playerProfile'
@@ -129,5 +130,15 @@ describe('nearestPointIndex', () => {
     expect(nearestPointIndex(-20, 600, 30)).toBe(0)
     expect(nearestPointIndex(900, 600, 30)).toBe(29)
     expect(nearestPointIndex(10, 0, 30)).toBe(0)
+  })
+})
+
+describe('signedNumber', () => {
+  it('signs a change both ways with a real minus, in the UI language', () => {
+    const format = new Intl.NumberFormat('pt-BR')
+
+    expect(signedNumber(1340, format)).toBe('+1.340')
+    expect(signedNumber(-30, format)).toBe('−30')
+    expect(signedNumber(0, format)).toBe('0')
   })
 })

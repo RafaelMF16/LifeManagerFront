@@ -37,6 +37,14 @@ export function periodSummary(points: readonly EvolutionPointDto[], series: Evol
   return { start, end, change: end - start }
 }
 
+/** A change for the UI language with its sign: "+340", "−30" (a real minus), "0". */
+export function signedNumber(value: number, format: Intl.NumberFormat) {
+  const digits = format.format(Math.abs(value))
+  if (value > 0) return `+${digits}`
+  if (value < 0) return `−${digits}`
+  return digits
+}
+
 /** Nothing ever moved: a new player, whose chart is a flat line at 0. */
 export const isEmptyEvolution = (points: readonly EvolutionPointDto[]) =>
   points.every((point) => point.totalXp === 0 && point.coins === 0)

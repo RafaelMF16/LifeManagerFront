@@ -42,6 +42,44 @@ function AppearanceDialog({ avatar, title, titles, titlesFailed, onRetryTitles, 
     }
   }
 
+  function renderTitles() {
+    if (titles === undefined && titlesFailed) {
+      return (
+        <div className="lm-appearance-dialog__error">
+          <p className="lm-appearance-dialog__hint">{translate('habits:profile.appearance.titlesError')}</p>
+          <Button variant="secondary" size="sm" onClick={onRetryTitles}>
+            {translate('habits:profile.retry')}
+          </Button>
+        </div>
+      )
+    }
+
+    if (titles === undefined) {
+      return <p className="lm-appearance-dialog__hint">{translate('habits:profile.appearance.titlesLoading')}</p>
+    }
+
+    return (
+      <div className="lm-appearance-dialog__titles">
+        <label className="lm-appearance-dialog__title">
+          <input type="radio" name={`${radioName}-title`} checked={pickedTitle === null} onChange={() => setPickedTitle(null)} />
+          {translate('habits:profile.appearance.noTitle')}
+        </label>
+        {titles.map((code) => (
+          <label key={code} className="lm-appearance-dialog__title">
+            <input
+              type="radio"
+              name={`${radioName}-title`}
+              value={code}
+              checked={pickedTitle === code}
+              onChange={() => setPickedTitle(code)}
+            />
+            {achievementTitle(code, translate)}
+          </label>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <Dialog labelledBy={headingId} onClose={onClose} className="lm-appearance-dialog">
       <div className="lm-dialog__header">
@@ -73,40 +111,7 @@ function AppearanceDialog({ avatar, title, titles, titlesFailed, onRetryTitles, 
 
         <fieldset className="lm-appearance-dialog__group">
           <legend className="lm-appearance-dialog__legend">{translate('habits:profile.appearance.titleLabel')}</legend>
-          {titles === undefined && titlesFailed ? (
-            <div className="lm-appearance-dialog__error">
-              <p className="lm-appearance-dialog__hint">{translate('habits:profile.appearance.titlesError')}</p>
-              <Button variant="secondary" size="sm" onClick={onRetryTitles}>
-                {translate('habits:profile.retry')}
-              </Button>
-            </div>
-          ) : titles === undefined ? (
-            <p className="lm-appearance-dialog__hint">{translate('habits:profile.appearance.titlesLoading')}</p>
-          ) : (
-            <div className="lm-appearance-dialog__titles">
-              <label className="lm-appearance-dialog__title">
-                <input
-                  type="radio"
-                  name={`${radioName}-title`}
-                  checked={pickedTitle === null}
-                  onChange={() => setPickedTitle(null)}
-                />
-                {translate('habits:profile.appearance.noTitle')}
-              </label>
-              {titles.map((code) => (
-                <label key={code} className="lm-appearance-dialog__title">
-                  <input
-                    type="radio"
-                    name={`${radioName}-title`}
-                    value={code}
-                    checked={pickedTitle === code}
-                    onChange={() => setPickedTitle(code)}
-                  />
-                  {achievementTitle(code, translate)}
-                </label>
-              ))}
-            </div>
-          )}
+          {renderTitles()}
           {titles?.length === 0 ? (
             <p className="lm-appearance-dialog__hint">
               {translate('habits:profile.appearance.noTitlesYet')}{' '}
