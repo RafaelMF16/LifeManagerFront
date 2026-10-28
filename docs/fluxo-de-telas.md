@@ -59,6 +59,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   /habits/list/:id          Detalhe do hábito
   /habits/shop              → Recompensas
     /habits/shop/rewards         Recompensas
+    /habits/shop/items           Itens
     /habits/shop/redemptions     Resgates
   /habits/history           Histórico
 ```
@@ -512,7 +513,7 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 
 ### Loja
 
-**Rota:** `/habits/shop`, com duas abas: **Recompensas** e **Resgates**.
+**Rota:** `/habits/shop`, com três abas: **Recompensas**, **Itens** e **Resgates**.
 
 **Recompensas**
 - Cartões com o ícone, o nome, o preço em moedas e "≈ N dias de hábitos" (quanto tempo de hábitos a recompensa custa, pelo seu ritmo recente).
@@ -534,6 +535,21 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 - **Restaurar** (em Arquivadas).
 - Sem recompensas, aparecem sugestões ("1h de videogame", "Um café especial", "Um episódio de série") e **Criar minha própria recompensa**.
 
+**Itens**
+
+**Itens de jogo**, vendidos pelo próprio jogo e usados na hora da compra:
+
+| Item | Efeito | Preço | Limite |
+|---|---|---|---|
+| **Poção de HP** | +25 HP, sem passar do máximo | 40 moedas | 3 por dia |
+| **Proteção de ofensiva** | +1 proteção de ofensiva | 150 moedas | 1 por semana (volta na segunda-feira) |
+
+- Cada cartão mostra o efeito, o preço e o uso do limite ("1 de 3 hoje", "0 de 1 nesta semana").
+- **Comprar** abre a confirmação com o preço, o saldo depois e o **HP depois** (poção) ou as **Proteções depois**. Com o HP quase cheio, avisa que a poção cura menos pelo mesmo preço.
+  - **Comprar por N moedas** confirma e mostra "Comprado: …".
+  - Quando não dá para comprar, o botão diz o motivo: "Limite de hoje atingido", "Limite da semana atingido", "HP cheio", "Proteções cheias (2/2)" ou "Faltam N moedas".
+- **Compras de hoje:** aparecem abaixo dos cartões depois da primeira compra do dia. **Desfazer** devolve as moedas, tira o item e mostra "Compra desfeita: …". Compras desfeitas ficam marcadas como **Desfeita**. Uma proteção que já cobriu um dia não pode ser desfeita.
+
 **Resgates**
 - **Histórico de resgates**, do mais recente para o mais antigo, com o preço pago.
 - **Desfazer:** só aparece nos resgates de hoje que ainda não foram desfeitos. Devolve as moedas e mostra "Resgate desfeito: …". Resgates desfeitos ficam marcados como **Desfeito**.
@@ -542,7 +558,7 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 
 **Rota:** `/habits/history`.
 
-O **Extrato** completo, do mais recente para o mais antigo: tudo o que mexeu em moedas, XP e HP. Isso inclui hábito cumprido, falha, recaída, dia limpo, marco de ofensiva, resgate, resgate desfeito, nocaute, proteção usada e subida de nível. Cada linha mostra as variações ("+10 moedas", "−8 HP").
+O **Extrato** completo, do mais recente para o mais antigo: tudo o que mexeu em moedas, XP e HP. Isso inclui hábito cumprido, falha, recaída, dia limpo, marco de ofensiva, resgate, resgate desfeito, item comprado ("Item comprado · Poção de HP"), compra desfeita, nocaute, proteção usada e subida de nível. Cada linha mostra as variações ("+10 moedas", "−8 HP").
 
 ### Momentos de jogo
 
