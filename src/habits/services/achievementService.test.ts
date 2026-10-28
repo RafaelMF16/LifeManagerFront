@@ -13,8 +13,8 @@ describe('achievementService', () => {
     expect(apiRequest).toHaveBeenCalledWith('/api/Achievements', { method: 'GET', signal: controller.signal })
   })
 
-  it('marks the unlocks as seen', async () => {
-    await markAchievementsSeen()
-    expect(apiRequest).toHaveBeenCalledWith('/api/Achievements/Seen', { method: 'POST' })
+  it('marks the shown unlocks as seen', async () => {
+    await markAchievementsSeen(['CheckIns10', 'Streak7'])
+    expect(apiRequest).toHaveBeenCalledWith('/api/Achievements/Seen', { method: 'POST', body: { codes: ['CheckIns10', 'Streak7'] } })
   })
 })

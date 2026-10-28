@@ -1,5 +1,5 @@
 import { apiRequest } from '../../shared/services/httpClient'
-import type { AchievementsResponseDto } from '../types/AchievementDtos'
+import type { AchievementCode, AchievementsResponseDto } from '../types/AchievementDtos'
 
 const ACHIEVEMENTS_PATH = '/api/Achievements'
 
@@ -8,7 +8,10 @@ export function getAchievements(signal?: AbortSignal): Promise<AchievementsRespo
   return apiRequest<AchievementsResponseDto>(ACHIEVEMENTS_PATH, { method: 'GET', signal })
 }
 
-/** Marks every unlock the player was shown as seen, so the moment doesn't come back on any device. */
-export function markAchievementsSeen(): Promise<void> {
-  return apiRequest<void>(`${ACHIEVEMENTS_PATH}/Seen`, { method: 'POST' })
+/**
+ * Marks the unlocks the moment showed as seen, so it doesn't come back on any device. Only those: one that came in
+ * meanwhile (from another tab) still gets its moment.
+ */
+export function markAchievementsSeen(codes: AchievementCode[]): Promise<void> {
+  return apiRequest<void>(`${ACHIEVEMENTS_PATH}/Seen`, { method: 'POST', body: { codes } })
 }

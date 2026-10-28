@@ -56,7 +56,7 @@ function HabitsLayout() {
     } else if (moment.kind === 'achievements') {
       setClosedAchievements(achievementsKey(moment.achievements))
       // A failure leaves them unseen on the backend, so the moment comes back on the next visit.
-      markAchievementsSeen().then(reload, () => undefined)
+      markAchievementsSeen(moment.achievements.map((achievement) => achievement.code)).then(reload, () => undefined)
     } else {
       setSeenLevel(moment.level)
     }
