@@ -8,6 +8,7 @@ import LedgerList from '../components/LedgerList/LedgerList'
 import { useHabitStats } from '../hooks/useHabitStats'
 import { useLedger } from '../hooks/useLedger'
 import { formatFrequency } from '../utils/formatFrequency'
+import { formatAmount } from '../utils/habitProgress'
 import './HabitDetailsPage.css'
 
 const LEDGER_PAGE_SIZE = 10
@@ -66,6 +67,7 @@ function HabitDetailsPage() {
   }
 
   const { habit } = data
+  const target = habit.targetValue != null && habit.targetUnit ? { value: habit.targetValue, unit: habit.targetUnit } : null
 
   return (
     <main className="lm-habit-details">
@@ -82,12 +84,9 @@ function HabitDetailsPage() {
           <span className="lm-habit-details__badge">{translate(`habits:habits.list.difficulty.${habit.difficulty}`)}</span>
           <span className="lm-habit-details__frequency">{formatFrequency(habit, translate, i18n.language)}</span>
         </div>
-        {habit.targetValue != null ? (
+        {target ? (
           <p className="lm-habit-details__target">
-            {translate('habits:details.target', {
-              value: habit.targetValue.toLocaleString(i18n.language),
-              unit: habit.targetUnit,
-            })}
+            {translate('habits:details.target', { value: formatAmount(target.value, i18n.language), unit: target.unit })}
           </p>
         ) : null}
         {habit.trigger ? <p className="lm-habit-details__trigger">{habit.trigger}</p> : null}
@@ -102,11 +101,7 @@ function HabitDetailsPage() {
           </h2>
           <span className="lm-habit-details__card-hint">{translate('habits:details.heatmap.hint')}</span>
         </div>
-        <HabitHeatmap
-          days={data.days}
-          kind={habit.kind}
-          target={habit.targetValue != null && habit.targetUnit ? { value: habit.targetValue, unit: habit.targetUnit } : null}
-        />
+        <HabitHeatmap days={data.days} kind={habit.kind} target={target} />
       </section>
 
       <LedgerList

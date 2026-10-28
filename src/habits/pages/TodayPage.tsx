@@ -15,7 +15,13 @@ import RelapseDialog from '../components/RelapseDialog/RelapseDialog'
 import WelcomeBackBanner from '../components/WelcomeBackBanner/WelcomeBackBanner'
 import { useHabitsToday } from '../hooks/useHabitsToday'
 import type { HabitsOutletContext } from '../types/HabitsOutletContext'
-import type { HabitAvoidItemDto, HabitProgressEntryDto, HabitProgressResultDto, HabitTodayItemDto } from '../types/HabitTodayDtos'
+import type {
+  HabitAvoidItemDto,
+  HabitCheckInResultDto,
+  HabitProgressEntryDto,
+  HabitProgressResultDto,
+  HabitTodayItemDto,
+} from '../types/HabitTodayDtos'
 import { checkInHighlight, formatDayTitle, formatWalletChange, todayProgress } from '../utils/todayProgress'
 import { readWelcomeBackDismissed, shouldWelcomeBack, writeWelcomeBackDismissed } from '../utils/welcomeBack'
 import {
@@ -34,6 +40,26 @@ import StarterSuggestions from '../components/StarterSuggestions/StarterSuggesti
 import { HABIT_TEMPLATES } from '../utils/starterTemplates'
 import type { HabitsPageState } from './HabitsPage'
 import './TodayPage.css'
+
+/**
+ * Changed in another tab or device (a target set elsewhere included): the reloaded list already shows it as it is.
+ */
+const RELOAD_ONLY_CODES: ReadonlySet<string> = new Set([
+  HABIT_ALREADY_CHECKED_IN_CODE,
+  HABIT_CHECK_IN_NOT_FOUND_CODE,
+  HABIT_ALREADY_RELAPSED_CODE,
+  HABIT_RELAPSE_NOT_FOUND_CODE,
+  HABIT_PROGRESS_ENTRY_NOT_FOUND_CODE,
+  HABIT_PROGRESS_REQUIRED_CODE,
+])
+
+/** What a failed save explains; anything else gets the generic message. */
+const SAVE_ERROR_MESSAGES: Record<string, string> = {
+  [HABIT_CHECK_IN_OUTSIDE_WINDOW_CODE]: 'habits:today.errors.outsideWindow',
+  [HABIT_NOT_FOUND_CODE]: 'habits:today.errors.gone',
+  [HABIT_ARCHIVED_CODE]: 'habits:today.errors.gone',
+  [HABIT_TOO_MANY_PROGRESS_ENTRIES_CODE]: 'habits:today.errors.tooManyEntries',
+}
 
 /**
  * The Habits home: today's checklist, with yesterday's leftovers on top while they can still be checked in, then the
@@ -58,18 +84,21 @@ function TodayPage() {
     setWelcomeDismissedFor(habits.lastMissedOn)
   }
 
+  /** A day checked in or undone: the profile reloads and the toast tells what it earned or gave back. */
+  function showDayChange(saved: HabitCheckInResultDto, undoneMessage: string) {
+    reloadProfile()
+    const change = formatWalletChange(saved.wallet, translate)
+    if (saved.done) {
+      showToast(change || translate('habits:today.toasts.doneNoReward'), checkInHighlight(saved, translate))
+    } else {
+      showToast(translate(undoneMessage), change || undefined)
+    }
+  }
+
   async function handleToggle(item: HabitTodayItemDto, date: string) {
     try {
       const saved = await habits.toggle(item, date)
-      if (!saved) return
-
-      reloadProfile()
-      const change = formatWalletChange(saved.wallet, translate)
-      if (saved.done) {
-        showToast(change || translate('habits:today.toasts.doneNoReward'), checkInHighlight(saved, translate))
-      } else {
-        showToast(translate('habits:today.toasts.undone'), change || undefined)
-      }
+      if (saved) showDayChange(saved, 'habits:today.toasts.undone')
     } catch (err) {
       showSaveError(err)
     }
@@ -79,16 +108,7 @@ function TodayPage() {
   async function handleProgress(request: Promise<HabitProgressResultDto | undefined>) {
     try {
       const saved = await request
-      const wallet = saved?.wallet
-      if (!saved || !wallet) return
-
-      reloadProfile()
-      const change = formatWalletChange(wallet, translate)
-      if (saved.done) {
-        showToast(change || translate('habits:today.toasts.doneNoReward'), checkInHighlight({ ...saved, wallet }, translate))
-      } else {
-        showToast(translate('habits:today.toasts.progressUndone'), change || undefined)
-      }
+      if (saved?.wallet) showDayChange({ ...saved, wallet: saved.wallet }, 'habits:today.toasts.progressUndone')
     } catch (err) {
       showSaveError(err)
     }
@@ -132,29 +152,12 @@ function TodayPage() {
       showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       return
     }
-    // Changed in another tab or device: the reloaded list already shows it as it is.
-    if (
-      err.code === HABIT_ALREADY_CHECKED_IN_CODE ||
-      err.code === HABIT_CHECK_IN_NOT_FOUND_CODE ||
-      err.code === HABIT_ALREADY_RELAPSED_CODE ||
-      err.code === HABIT_RELAPSE_NOT_FOUND_CODE ||
-      err.code === HABIT_PROGRESS_ENTRY_NOT_FOUND_CODE ||
-      // A target set in another tab: the reloaded list shows the progress card.
-      err.code === HABIT_PROGRESS_REQUIRED_CODE
-    ) {
+    if (RELOAD_ONLY_CODES.has(err.code)) {
       habits.reload()
       return
     }
 
-    const message =
-      err.code === HABIT_CHECK_IN_OUTSIDE_WINDOW_CODE
-        ? 'habits:today.errors.outsideWindow'
-        : err.code === HABIT_NOT_FOUND_CODE || err.code === HABIT_ARCHIVED_CODE
-          ? 'habits:today.errors.gone'
-          : err.code === HABIT_TOO_MANY_PROGRESS_ENTRIES_CODE
-            ? 'habits:today.errors.tooManyEntries'
-            : 'common:errors.generic'
-    showErrorModal(translate('habits:today.errors.title'), translate(message))
+    showErrorModal(translate('habits:today.errors.title'), translate(SAVE_ERROR_MESSAGES[err.code] ?? 'common:errors.generic'))
     habits.reload()
   }
 
