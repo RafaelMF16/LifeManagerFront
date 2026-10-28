@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useOutletContext } from 'react-router-dom'
+import { Link, useOutletContext } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
 import { useCurrentUser } from '../../shared/hooks/useCurrentUser'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
@@ -9,6 +9,8 @@ import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
 import AppearanceDialog from '../components/AppearanceDialog/AppearanceDialog'
 import PlayerAvatar from '../components/PlayerAvatar/PlayerAvatar'
+import PlayerStatsGrid from '../components/PlayerStatsGrid/PlayerStatsGrid'
+import ProfileShowcase from '../components/ProfileShowcase/ProfileShowcase'
 import { useAchievements } from '../hooks/useAchievements'
 import { usePlayerStats } from '../hooks/usePlayerStats'
 import { updateAppearance } from '../services/playerProfileService'
@@ -86,6 +88,25 @@ function ProfilePage() {
             <span className="lm-profile-page__visually-hidden">{translate('habits:profile.identity.loading')}</span>
           </div>
         )}
+      </section>
+
+      <section className="lm-profile-page__section" aria-labelledby="lm-profile-stats" data-tour="profile.stats">
+        <h2 id="lm-profile-stats" className="lm-profile-page__section-title">
+          {translate('habits:profile.stats.title')}
+        </h2>
+        <PlayerStatsGrid stats={stats.data} totalXp={profile?.totalXp} status={stats.status} onRetry={stats.reload} />
+      </section>
+
+      <section className="lm-profile-page__section" aria-labelledby="lm-profile-showcase" data-tour="profile.showcase">
+        <div className="lm-profile-page__section-heading">
+          <h2 id="lm-profile-showcase" className="lm-profile-page__section-title">
+            {translate('habits:profile.showcase.title')}
+          </h2>
+          <Link to="/habits/achievements" className="lm-profile-page__section-link">
+            {translate('habits:profile.showcase.seeAll')}
+          </Link>
+        </div>
+        <ProfileShowcase achievements={achievements.data} status={achievements.status} onRetry={achievements.reload} />
       </section>
 
       {editing && profile ? (

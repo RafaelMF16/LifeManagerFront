@@ -1,0 +1,86 @@
+.lm-player-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-player-stats__tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.lm-player-stats__icon {
+  color: var(--accent);
+}
+
+.lm-player-stats__tile--longestStreakDays .lm-player-stats__icon {
+  color: var(--warning);
+}
+
+.lm-player-stats__tile--coinsEarned .lm-player-stats__icon,
+.lm-player-stats__tile--coinsSpent .lm-player-stats__icon {
+  color: var(--warning);
+}
+
+.lm-player-stats__tile--knockouts .lm-player-stats__icon {
+  color: var(--danger);
+}
+
+.lm-player-stats__value {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.lm-player-stats__placeholder {
+  display: block;
+  width: 56px;
+  height: 29px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+}
+
+.lm-player-stats__label {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-player-stats__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-5);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .lm-player-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .lm-player-stats__tile {
+    padding: var(--space-3);
+  }
+
+  .lm-player-stats__value {
+    font-size: var(--text-xl);
+  }
+}
