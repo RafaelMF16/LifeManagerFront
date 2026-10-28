@@ -654,7 +654,7 @@ export default {
       },
       list: {
         title: 'For today',
-        body: 'Tap a habit to mark it done and earn coins and XP. Tap again to undo.',
+        body: 'Tap a habit to mark it done and earn coins and XP. Tap again to undo. A habit with a daily target shows a bar instead: log amounts until you reach it.',
       },
       avoid: {
         title: 'Avoiding',

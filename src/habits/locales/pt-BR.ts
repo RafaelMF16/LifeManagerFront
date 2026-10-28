@@ -654,7 +654,7 @@ export default {
       },
       list: {
         title: 'Para hoje',
-        body: 'Toque num hábito para marcar como feito e ganhar moedas e XP. Toque de novo para desfazer.',
+        body: 'Toque num hábito para marcar como feito e ganhar moedas e XP. Toque de novo para desfazer. Um hábito com meta diária mostra uma barra: registre as quantidades até bater a meta.',
       },
       avoid: {
         title: 'Evitando',
