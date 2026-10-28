@@ -88,6 +88,13 @@
   color: var(--text-secondary);
 }
 
+.lm-habit-details__target {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
 .lm-habit-details__trigger {
   margin: 0;
   font-size: var(--text-sm);

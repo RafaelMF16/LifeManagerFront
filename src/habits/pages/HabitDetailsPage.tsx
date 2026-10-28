@@ -82,6 +82,14 @@ function HabitDetailsPage() {
           <span className="lm-habit-details__badge">{translate(`habits:habits.list.difficulty.${habit.difficulty}`)}</span>
           <span className="lm-habit-details__frequency">{formatFrequency(habit, translate, i18n.language)}</span>
         </div>
+        {habit.targetValue != null ? (
+          <p className="lm-habit-details__target">
+            {translate('habits:details.target', {
+              value: habit.targetValue.toLocaleString(i18n.language),
+              unit: habit.targetUnit,
+            })}
+          </p>
+        ) : null}
         {habit.trigger ? <p className="lm-habit-details__trigger">{habit.trigger}</p> : null}
       </div>
 
