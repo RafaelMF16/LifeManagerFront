@@ -37,6 +37,12 @@
   text-wrap: pretty;
 }
 
+/* Pulled up under the upload card: it belongs to it, not to the list below. */
+.lm-imports-page__holders {
+  display: flex;
+  margin-top: calc(-1 * var(--space-3));
+}
+
 @media (max-width: 768px) {
   .lm-imports-page {
     padding-top: var(--space-6);

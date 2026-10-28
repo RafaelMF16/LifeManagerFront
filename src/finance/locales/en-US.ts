@@ -668,6 +668,34 @@ export default {
       notFound: 'This recurring transaction no longer exists. The list has been refreshed.',
     },
   },
+  accountHolders: {
+    button: 'My accounts\' holders',
+    title: 'My accounts\' holders',
+    intro:
+      'Write the full name as it shows on the statement: yours, or that of a business or joint account. Transfers to these names come in left out of the import.',
+    registeredName: 'Your account name ({{name}}) is used too.',
+    registeredNameUnknown: 'Your account name is used too.',
+    loading: 'Loading…',
+    loadError: 'The holders couldn\'t be loaded.',
+    retry: 'Try again',
+    empty: 'No holders. Only your account name is used.',
+    nameLabel: 'Holder {{number}}',
+    namePlaceholder: 'E.g. Mary Ann Smith',
+    remove: 'Remove holder {{number}}',
+    add: 'Add holder',
+    limit: 'Up to {{max}} holders.',
+    save: 'Save',
+    saved: 'Holders saved. They apply to your next statements.',
+    validation: {
+      required: 'Type the name or remove the holder',
+      tooLong: 'Use at most 100 characters',
+      tooShort: 'Use the full name, with at least 2 names',
+      duplicate: 'This name is already on the list',
+    },
+    errors: {
+      tooMany: 'There can be at most 5 holders.',
+    },
+  },
   imports: {
     title: 'Import statement',
     intro:
@@ -968,6 +996,10 @@ export default {
       upload: {
         title: 'Send the file',
         body: 'Pick an OFX or CSV file from your bank. For a CSV you check the columns first; the app remembers them for next time.',
+      },
+      holders: {
+        title: 'Your accounts\' holders',
+        body: 'List the names the bank writes on transfers between your accounts (your full name, a business or joint account). Those transfers come in left out of the import.',
       },
       list: {
         title: 'Imports',

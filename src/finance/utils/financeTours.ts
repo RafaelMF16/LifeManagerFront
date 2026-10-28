@@ -75,6 +75,7 @@ export const FINANCE_TOURS: TourDefinition[] = [
     steps: [
       { id: 'intro' },
       { id: 'upload', target: 'imports.upload' },
+      { id: 'holders', target: 'imports.holders' },
       { id: 'list', target: 'imports.list' },
     ],
   },

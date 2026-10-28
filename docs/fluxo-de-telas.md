@@ -351,6 +351,14 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
 - Linhas com data futura, anterior a 2000 ou valor zero ficam de fora, com um aviso.
 - Ao terminar, aparece "Extrato pronto para revisar" e abre a tela [Revisar importação](#revisar-importação).
 
+**Titulares das minhas contas** (botão logo abaixo do extrato)
+- Abre a janela **Titulares das minhas contas**: os nomes, escritos como aparecem no extrato, das pessoas e empresas donas das suas contas (o seu nome completo, uma conta PJ, uma conta conjunta). Pix e transferências para esses nomes vêm fora da importação, com o selo **Entre contas**.
+- A janela lembra que o nome do cadastro também é usado ("Seu nome do cadastro (…) também é usado.").
+- Cada titular é um campo (**Titular 1**, **Titular 2**…) com o botão de lixeira para remover. **Adicionar titular** cria um campo novo, até 5 ("Até 5 titulares.").
+- **Salvar** grava a lista inteira e mostra "Titulares salvos. Valem para os próximos extratos.". As importações que já estão em revisão não mudam.
+- Os erros aparecem embaixo do nome: vazio ("Informe o nome ou remova o titular"), mais de 100 caracteres, nome curto demais ("Use o nome completo, com pelo menos 2 nomes") ou repetido ("Este nome já está na lista").
+- Se a lista não carregar, aparece "Não foi possível carregar os titulares." com **Tentar de novo**.
+
 **Importações**
 - Lista as importações: primeiro as **Em revisão**, depois as **Importado**, com o período, a quantidade de lançamentos e a data do envio.
 - **Continuar revisão:** volta a uma importação em revisão (ela fica salva, então dá para continuar depois ou em outro aparelho).
@@ -382,7 +390,7 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
 - Alguns lançamentos já vêm arquivados pelo próprio texto do banco, mesmo na primeira importação, com um selo:
   - **Investimento:** uma aplicação ("Aplicação RDB", "Dinheiro guardado…") vem como investimento, sem categoria;
   - **Resgate:** um resgate ("Resgate RDB", "Crédito Tesouro Direto…") vem fora da importação, porque não é receita;
-  - **Entre contas:** um Pix ou transferência com o nome do seu cadastro (dinheiro entre as suas contas) vem fora da importação. Só funciona quando o nome do cadastro tem pelo menos duas palavras e aparece no extrato: com duas palavras, elas precisam estar juntas no extrato; com três ou mais, o banco pode ter nomes a mais no meio.
+  - **Entre contas:** um Pix ou transferência com o nome do seu cadastro ou de um dos seus [titulares](#importar-extrato) (dinheiro entre as suas contas) vem fora da importação. Cada nome precisa ter pelo menos duas palavras e aparecer no extrato: com duas palavras, elas precisam estar juntas no extrato; com três ou mais, o banco pode ter nomes a mais no meio.
   - O que você já decidiu antes para o mesmo estabelecimento vale mais que esses selos. Incluir um desses lançamentos ensina a próxima importação.
 - **Possível duplicata:** o lançamento parece já estar nos seus meses (mesma linha de um extrato já importado, ou mesma data e valor de um lançamento feito à mão). Vem fora da importação; **Ver no mês** abre o mês do lançamento existente numa nova aba.
 - **Categoria** (em cada lançamento): escolher salva na hora. **+ Nova categoria…** abre o formulário de categoria e já usa a nova.
