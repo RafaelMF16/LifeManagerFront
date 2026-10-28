@@ -566,15 +566,15 @@ export default {
     ownReward: 'Create my own reward',
     habits: {
       water: {
-        name: 'Drink a glass of water',
+        name: 'Drink water',
         trigger: 'When I wake up',
       },
       read: {
-        name: 'Read 10 pages',
+        name: 'Read',
         trigger: 'Before bed',
       },
       walk: {
-        name: 'Walk for 10 minutes',
+        name: 'Walk',
         trigger: 'After lunch',
       },
     },
