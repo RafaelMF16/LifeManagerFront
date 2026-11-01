@@ -99,6 +99,8 @@ export interface RankingMeDto {
   gapToNext: number | null
   nextName: string | null
   days: WeeklyScoreDayDto[]
+  /** The weekly challenges' bonus, already in `points`. */
+  challengePoints: number
 }
 
 export interface RankingMemberRefDto {

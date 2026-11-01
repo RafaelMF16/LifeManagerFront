@@ -12,7 +12,20 @@ export const HABITS_TOURS: TourDefinition[] = [
       { id: 'empty', target: 'today.empty' },
       { id: 'yesterday', target: 'today.yesterday' },
       { id: 'list', target: 'today.list' },
+      { id: 'challenges', target: 'today.challenges' },
       { id: 'avoid', target: 'today.avoid' },
+    ],
+  },
+  {
+    id: 'challenges',
+    path: '/habits/challenges',
+    namespace: 'habits',
+    steps: [
+      { id: 'intro' },
+      { id: 'weeks', target: 'challenges.weeks' },
+      { id: 'create', target: 'challenges.create' },
+      { id: 'suggestions', target: 'challenges.suggestions' },
+      { id: 'history', target: 'challenges.history' },
     ],
   },
   {

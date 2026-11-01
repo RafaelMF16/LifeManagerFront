@@ -19,6 +19,7 @@ import HabitsPage from './habits/pages/HabitsPage'
 import AchievementsPage from './habits/pages/AchievementsPage'
 import ProfilePage from './habits/pages/ProfilePage'
 import InvitePage from './habits/pages/InvitePage'
+import ChallengesPage from './habits/pages/ChallengesPage'
 import RankingGroupPage from './habits/pages/RankingGroupPage'
 import RankingPage from './habits/pages/RankingPage'
 import HistoryPage from './habits/pages/HistoryPage'
@@ -74,6 +75,7 @@ const router = createBrowserRouter(
           <Route path="today" element={<TodayPage />} />
           <Route path="list" element={<HabitsPage />} />
           <Route path="list/:habitId" element={<HabitDetailsPage />} />
+          <Route path="challenges" element={<ChallengesPage />} />
           <Route path="achievements" element={<AchievementsPage />} />
           <Route path="ranking" element={<RankingPage />} />
           <Route path="ranking/:groupId" element={<RankingGroupPage />} />

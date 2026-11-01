@@ -13,6 +13,7 @@ import HabitCheckItem from '../components/HabitCheckItem/HabitCheckItem'
 import HabitProgressItem from '../components/HabitProgressItem/HabitProgressItem'
 import RelapseDialog from '../components/RelapseDialog/RelapseDialog'
 import WelcomeBackBanner from '../components/WelcomeBackBanner/WelcomeBackBanner'
+import ChallengeSection from '../components/ChallengeSection/ChallengeSection'
 import { useHabitsToday } from '../hooks/useHabitsToday'
 import type { HabitsOutletContext } from '../types/HabitsOutletContext'
 import type {
@@ -279,6 +280,8 @@ function TodayPage() {
             )}
           </section>
         ) : null}
+
+        <ChallengeSection challenges={habits.challenges} />
 
         {hasAvoiding ? (
           <section className="lm-today-page__section" aria-labelledby="lm-today-avoiding" data-tour="today.avoid">

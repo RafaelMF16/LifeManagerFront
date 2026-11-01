@@ -15,6 +15,7 @@ export type GameLedgerEntryKind =
   | 'LevelUp'
   | 'ItemPurchased'
   | 'AchievementUnlocked'
+  | 'ChallengeCompleted'
 
 /** One line of the player's statement (`GET /api/Habits/Ledger`). */
 export interface GameLedgerEntryDto {

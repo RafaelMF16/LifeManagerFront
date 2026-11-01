@@ -8,7 +8,7 @@ import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
 import RankingBoard from '../components/RankingBoard/RankingBoard'
-import RankingConfirmDialog from '../components/RankingConfirmDialog/RankingConfirmDialog'
+import ConfirmActionDialog from '../components/ConfirmActionDialog/ConfirmActionDialog'
 import RankingGroupFormModal from '../components/RankingGroupFormModal/RankingGroupFormModal'
 import RankingMembers from '../components/RankingMembers/RankingMembers'
 import RankingMyWeek from '../components/RankingMyWeek/RankingMyWeek'
@@ -244,7 +244,7 @@ function RankingGroupPage() {
             ) : null}
           </section>
 
-          <RankingMyWeek days={data.me.days} points={data.me.points} />
+          <RankingMyWeek days={data.me.days} points={data.me.points} challengePoints={data.me.challengePoints} />
         </>
       ) : ranking.status === 'error' ? (
         <div className="lm-ranking-group-page__state" role="alert">
@@ -274,7 +274,7 @@ function RankingGroupPage() {
         <RankingGroupFormModal name={details.name} onClose={() => setDialog(null)} onSubmit={handleRename} />
       ) : null}
       {dialog?.mode === 'regenerate' ? (
-        <RankingConfirmDialog
+        <ConfirmActionDialog
           title={translate('habits:ranking.invite.regenerateTitle')}
           message={translate('habits:ranking.invite.regenerateMessage')}
           confirmLabel={translate('habits:ranking.invite.regenerate')}
@@ -285,7 +285,7 @@ function RankingGroupPage() {
         />
       ) : null}
       {dialog?.mode === 'remove' ? (
-        <RankingConfirmDialog
+        <ConfirmActionDialog
           title={translate('habits:ranking.members.removeTitle')}
           message={translate('habits:ranking.members.removeMessage', { name: dialog.member.name })}
           confirmLabel={translate('habits:ranking.members.remove')}
@@ -295,7 +295,7 @@ function RankingGroupPage() {
         />
       ) : null}
       {dialog?.mode === 'leave' ? (
-        <RankingConfirmDialog
+        <ConfirmActionDialog
           title={translate('habits:ranking.leave.title')}
           message={translate(
             details && details.members.length === 1

@@ -32,6 +32,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   - [Hábitos (lista)](#hábitos-lista)
   - [Detalhe do hábito](#detalhe-do-hábito)
   - [Loja](#loja)
+  - [Desafios](#desafios)
   - [Conquistas](#conquistas)
   - [Ranking](#ranking)
   - [Ranking do grupo](#ranking-do-grupo)
@@ -62,6 +63,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   /habits/today             Hoje
   /habits/list              Hábitos
   /habits/list/:id          Detalhe do hábito
+  /habits/challenges        Desafios
   /habits/shop              → Recompensas
     /habits/shop/rewards         Recompensas
     /habits/shop/items           Itens
@@ -428,7 +430,7 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
 
 ## Hábitos
 
-Menu: **Hoje**, **Hábitos**, **Loja**, **Conquistas**, **Ranking**, **Perfil**, **Histórico**.
+Menu: **Hoje**, **Hábitos**, **Desafios**, **Loja**, **Conquistas**, **Ranking**, **Perfil**, **Histórico**.
 
 ### Barra do personagem
 
@@ -474,6 +476,10 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 - **Registros (N)** abre a lista do dia, com o horário e o valor de cada registro. O **X** remove um registro; se a soma cair abaixo da meta, o dia deixa de contar como feito e o ganho volta ("Abaixo da meta: o dia não conta mais como feito").
 - Um dia aceita até 50 registros. No 51º aparece "Esse dia já tem o máximo de 50 registros. Remova algum ou use um valor maior."
 - Um dia que não bateu a meta fecha como falha, igual a um dia sem nada.
+
+**Desafios da semana**
+- Os desafios da semana atual, só para acompanhar: hábito, meta, barra de progresso ("3 / 5 dias"), esforço, recompensa e o ritmo ("Faltam 2 em 3 dias", "≈ 500 ml por dia em 3 dias"), ou "Concluído!"/"Não deu desta vez".
+- **Ver desafios** (ou **Planejar**, sem nenhum) abre a tela Desafios.
 
 **Evitando** (hábitos para evitar)
 - Um cartão por hábito, com os dias limpos (ou as semanas no limite) e o recorde. No limite semanal, mostra "N de M nesta semana".
@@ -572,6 +578,20 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 - **Histórico de resgates**, do mais recente para o mais antigo, com o preço pago.
 - **Desfazer:** só aparece nos resgates de hoje que ainda não foram desfeitos. Devolve as moedas e mostra "Resgate desfeito: …". Resgates desfeitos ficam marcados como **Desfeito**.
 
+### Desafios
+
+**Rota:** `/habits/challenges` (item **Desafios** do menu, depois de Hábitos).
+
+Metas da semana para fazer um pouco mais que o normal num hábito: mais dias, ou mais quantidade num hábito com meta diária. Cumprir paga moedas e XP; não cumprir não custa nada.
+
+- **Esta semana / Próxima semana** escolhe a semana; o período aparece ao lado ("2–8 nov").
+- Cada desafio é um cartão: hábito, meta ("Meta: 5 dias"), esforço (**Leve**, **Firme** ou **Puxado**), recompensa ("+60 moedas · +120 XP"), barra de progresso e ritmo. **Desistir** pede confirmação: o desafio sai da semana sem custo e sem recompensa.
+- **Novo desafio** abre o formulário: **Hábito**, **Tipo** (**Dias feitos** ou **Quantidade**, só para hábitos com meta diária) e a meta, com o limite e o já feito ("Até 7 dias · já feito: 1 dia"). Antes de criar aparecem a sua média ("Sua média: 3 dias por semana"), o esforço e a recompensa. **Criar desafio** mostra "Desafio criado: Ler".
+  - O botão fica desligado com o motivo: depois de quarta na semana atual ("Os desafios desta semana só podem ser criados até quarta-feira. Planeje a próxima!"), com 3 desafios ou sem hábito disponível.
+- **Sugestões:** metas um pouco acima da sua média ("6 dias (sua média: 5 dias)"); **Aceitar** cria na hora.
+- **Semanas anteriores:** o histórico paginado, agrupado por semana, com como terminou cada desafio.
+- Ao bater a meta, o desafio é concluído e pago na hora, com uma comemoração (veja Momentos de jogo).
+
 ### Conquistas
 
 **Rota:** `/habits/achievements` (item **Conquistas** do menu, entre Loja e Histórico).
@@ -610,7 +630,7 @@ Grupos fechados com amigos para comparar a semana de hábitos, de segunda a domi
 - **Placar:** posição (🥇🥈🥉 no pódio), avatar, nome e título, pontos e dias perfeitos de cada um. A sua linha vem destacada com **Você**. Quem entrou no meio da semana aparece com **Entrou na semana**; quem saiu e ainda conta na semana, com **Saiu do grupo**.
   - "Esta semana não vale conquistas: são necessários 3 membros no grupo desde segunda." aparece quando o grupo é pequeno demais.
 - **Reações:** 👏 e 🔥 na linha de outra pessoa, na semana atual e na anterior (até o fechamento). Tocar de novo desfaz; tocar no outro troca. Na sua linha aparece "3 reações", que abre quem reagiu ("Ana aplaudiu", "Caio mandou fogo").
-- **Meus pontos:** a sua semana dia a dia (hábitos cumpridos de 5, ⭐ no dia perfeito, pontos). **Como funciona?** explica: 10 pontos por hábito cumprido no dia (feito ou dia limpo), até 5 por dia; +10 num dia perfeito; os dias limpos chegam até 2 dias depois; empate desempata por dias perfeitos e depois por hábitos cumpridos.
+- **Meus pontos:** a sua semana dia a dia (hábitos cumpridos de 5, ⭐ no dia perfeito, pontos) e, quando houver, "Desafios: +30". **Como funciona?** explica: 10 pontos por hábito cumprido no dia (feito ou dia limpo), até 5 por dia; +10 num dia perfeito; +15 por desafio Firme ou Puxado com a meta batida, até 3; os dias limpos chegam até 2 dias depois; empate desempata por dias perfeitos e depois por hábitos cumpridos.
 - **Membros:** a lista com a marca **Dono**. O dono pode **Remover** alguém (confirmação; as reações da pessoa somem, semanas fechadas continuam).
 - **Convite:** o código, **Copiar código** e **Copiar link**. O dono tem **Gerar novo código** (confirmação: o código e o link atuais param de funcionar).
 - **Sair do grupo:** pede confirmação. Se você é o dono, o membro mais antigo vira dono; se é o último, o grupo é apagado.
@@ -635,7 +655,7 @@ Quem você é no jogo e o caminho que já fez. Cada parte carrega sozinha: se um
 
 **Rota:** `/habits/history`.
 
-O **Extrato** completo, do mais recente para o mais antigo: tudo o que mexeu em moedas, XP e HP. Isso inclui hábito cumprido, falha, recaída, dia limpo, marco de ofensiva, resgate, resgate desfeito, item comprado ("Item comprado · Poção de HP"), compra desfeita, conquista ("Conquista · Constância"), nocaute, proteção usada e subida de nível. Cada linha mostra as variações ("+10 moedas", "−8 HP").
+O **Extrato** completo, do mais recente para o mais antigo: tudo o que mexeu em moedas, XP e HP. Isso inclui hábito cumprido, falha, recaída, dia limpo, marco de ofensiva, resgate, resgate desfeito, item comprado ("Item comprado · Poção de HP"), compra desfeita, conquista ("Conquista · Constância"), desafio concluído, nocaute, proteção usada e subida de nível. Cada linha mostra as variações ("+10 moedas", "−8 HP").
 
 ### Momentos de jogo
 
@@ -645,4 +665,7 @@ Em qualquer tela de Hábitos, uma janela comemora ou avisa um acontecimento que 
 - **Você foi nocauteado:** mostra as moedas perdidas e que o HP foi restaurado. Nível e XP continuam. Botão **Recomeçar**.
 - **Conquista desbloqueada!** Mostra o nome, o nível, o bônus e o título liberado. Com várias de uma vez (como na primeira visita), uma janela só: "Você desbloqueou N conquistas!", com a lista e o bônus total. Botões **Ver conquistas** (abre a página) e **Continuar**.
 
-A ordem é: nocaute, conquistas, nível (o bônus de uma conquista pode subir o nível logo depois). O nocaute e o nível aparecem uma vez por dispositivo; as conquistas, uma vez só em qualquer dispositivo.
+- **Desafio concluído!** Com vários, "N desafios concluídos!", com a lista e a recompensa total. Botão **Continuar**.
+- **Sua semana** (resumo, na primeira visita da semana, para quem jogou na anterior): o período, hábitos cumpridos, dias limpos, moedas ganhas e desafios concluídos, cada um com a diferença para a semana antes ("+3", "=", "−2"); como terminou cada desafio; e o **Ranking**: a posição em cada grupo ("🥈 Família · 2º de 5 · 180 pts · provisório"), que abre o grupo ao tocar. Botões **Planejar a semana** (abre Desafios) e **Continuar**. Aparece uma vez, em qualquer dispositivo.
+
+A ordem é: nocaute, conquistas, desafios, resumo da semana, nível (o bônus de uma conquista ou de um desafio pode subir o nível logo depois). O nocaute e o nível aparecem uma vez por dispositivo; as conquistas, os desafios e o resumo, uma vez só em qualquer dispositivo.

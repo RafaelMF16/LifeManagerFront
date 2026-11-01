@@ -6,6 +6,7 @@ export default {
   sidebar: {
     navAria: 'Habits module navigation',
     items: {
+      challenges: 'Challenges',
       today: 'Today',
       habits: 'Habits',
       shop: 'Shop',
@@ -789,6 +790,8 @@ export default {
       howTitle: 'How does it work?',
       howKept: '10 points per habit kept that day (done or a clean day), counting up to 5 habits a day.',
       howPerfect: '+10 for a perfect day ⭐: every due habit done and no relapse. Protected days and N-times-a-week habits stay out of it.',
+      challenges: 'Challenges: +{{points}}',
+      howChallenges: '+15 per Steady or Stretch challenge whose goal the week reached, up to 3 challenges. Undoing the check-in that reached the goal takes the points back.',
       howDelay: 'Clean days arrive with the day close, up to 2 days later.',
       howTie: 'A tie on points is broken by perfect days, then by habits kept.',
     },
@@ -856,6 +859,126 @@ export default {
       left: 'You left "{{name}}".',
       linkCopied: 'Invite link copied.',
       codeCopied: 'Code copied.',
+    },
+  },
+  challenges: {
+    title: 'Challenges',
+    intro: 'Weekly goals to do a little more than usual, one habit at a time. Meet one and the reward lands right away; miss it and nothing is taken.',
+    loading: 'Loading challenges…',
+    loadError: 'Could not load the challenges.',
+    retry: 'Try again',
+    newChallenge: 'New challenge',
+    weeks: {
+      aria: 'Week',
+      Current: 'This week',
+      Next: 'Next week',
+    },
+    empty: {
+      Current: 'No challenges this week.',
+      Next: 'No challenges planned for next week.',
+    },
+    why: {
+      closed: 'This week’s challenges can only be created until Wednesday. Plan the next one!',
+      full: 'This week already has 3 challenges, the most it can have.',
+      noHabits: 'No habit available: the ones that can have a challenge already have one this week.',
+    },
+    amount: {
+      days_one: '{{count}} day',
+      days_other: '{{count}} days',
+    },
+    progress: {
+      days_one: '{{progress}} / {{count}} day',
+      days_other: '{{progress}} / {{count}} days',
+    },
+    pace: {
+      completed: 'Completed!',
+      failed: 'Not this time',
+      reached: 'Goal reached!',
+      over: 'The week is over',
+      outOfReach_one: '{{count}} day left to do: more than the days left',
+      outOfReach_other: '{{count}} days left to do: more than the days left',
+      frequency_one: '{{count}} more in {{days}}',
+      frequency_other: '{{count}} more in {{days}}',
+      volume_one: '≈ {{amount}} today',
+      volume_other: '≈ {{amount}} a day for {{count}} days',
+    },
+    effort: {
+      Light: 'Light',
+      Steady: 'Steady',
+      Stretch: 'Stretch',
+    },
+    reward: '+{{coins}} coins · +{{xp}} XP',
+    card: {
+      goal: 'Goal: {{amount}}',
+      progressAria: 'Progress of the {{habit}} challenge',
+    },
+    cancel: {
+      button: 'Give up',
+      title: 'Give up the challenge?',
+      message: 'The {{habit}} challenge leaves the week. Nothing is taken, but no reward either.',
+      confirm: 'Give up',
+    },
+    section: {
+      title: 'This week’s challenges',
+      manage: 'See challenges',
+      plan: 'Plan',
+      empty: 'No challenges this week. Challenge yourself to do a little more than usual.',
+    },
+    suggestions: {
+      title: 'Suggestions',
+      goal: '{{amount}} (your average: {{usual}})',
+      accept: 'Accept',
+    },
+    form: {
+      title: 'New challenge for this week',
+      titleNext: 'New challenge for next week',
+      habit: 'Habit',
+      type: 'Type',
+      types: {
+        Frequency: 'Days done',
+        Volume: 'Amount',
+      },
+      targetFrequency: 'Days goal',
+      targetVolume: 'Weekly goal',
+      targetHint: 'Up to {{max}} · done so far: {{done}}',
+      noBaseline: 'No average yet: no closed week with this habit.',
+      baseline: 'Your average: {{amount}} a week',
+      previewHint: 'Pick the habit and the goal to see the reward.',
+      create: 'Create challenge',
+    },
+    validation: {
+      habit: {
+        required: 'Pick a habit.',
+        notEligible: 'This habit can’t have a challenge.',
+        alreadyExists: 'This habit already has a challenge this week.',
+      },
+      target: {
+        required: 'Enter the goal.',
+        range: 'The goal is out of this week’s range.',
+        alreadyReached: 'You already reached that goal: pick a higher one.',
+      },
+      type: {
+        notMeasurable: 'This habit has no daily target: use days done.',
+      },
+      weekLimit: 'The week already has 3 challenges.',
+      windowClosed: 'This week’s challenges can only be created until Wednesday.',
+    },
+    history: {
+      title: 'Past weeks',
+      empty: 'The challenges of past weeks show up here.',
+      loading: 'Loading the history…',
+      loadError: 'Could not load the history.',
+      range_one: '{{from}}–{{to}} of {{count}} challenge',
+      range_other: '{{from}}–{{to}} of {{count}} challenges',
+    },
+    toasts: {
+      created: 'Challenge created: {{habit}}',
+      cancelled: 'Challenge cancelled: {{habit}}',
+    },
+    errors: {
+      acceptFailed: 'Could not accept the suggestion.',
+      cancelFailed: 'Could not cancel the challenge.',
+      changed: 'The challenge changed meanwhile. The list was updated.',
     },
   },
   profile: {
@@ -982,6 +1105,7 @@ export default {
       FreezeUsed: 'Streak freeze used',
       LevelUp: 'Level up',
       AchievementUnlocked: 'Achievement',
+      ChallengeCompleted: 'Challenge completed',
     },
     deltas: {
       coins_one: '{{value}} coin',
@@ -1005,6 +1129,37 @@ export default {
       titleUnlocked: 'Title unlocked: {{title}}',
       titlesUnlocked: 'Each one unlocked a title for your profile. Keep it up!',
       see: 'See achievements',
+      confirm: 'Continue',
+    },
+    challenges: {
+      titleCompleted_one: 'Challenge completed!',
+      titleCompleted_other: '{{count}} challenges completed!',
+      titleMissed_one: 'The week’s challenge is over',
+      titleMissed_other: 'The week’s challenges are over',
+      status: {
+        Completed: 'Completed',
+        Failed: 'Missed',
+      },
+      message: 'The reward is already yours. Ready to plan next week?',
+      messageMissed: 'A missed one costs nothing: a slightly smaller goal may fit next week better.',
+      confirm: 'Continue',
+    },
+    summary: {
+      title: 'Your week',
+      figures: {
+        checkIns: 'Habits kept',
+        cleanDays: 'Clean days',
+        coins: 'Coins earned',
+        challengesCompleted: 'Challenges completed',
+      },
+      changeAria: '{{change}} compared with the week before ({{previous}})',
+      challenges: 'The week’s challenges',
+      ranking: 'Ranking',
+      place_one: '#{{position}} of {{count}} · {{points}} pts',
+      place_other: '#{{position}} of {{count}} · {{points}} pts',
+      provisional: 'provisional',
+      message: 'A new week has started. How about picking its challenges?',
+      plan: 'Plan the week',
       confirm: 'Continue',
     },
     levelUp: {
@@ -1081,6 +1236,28 @@ export default {
       invite: {
         title: 'Invite',
         body: 'Copy the link or the code and send it to anyone you want in the group. The owner can create a new code.',
+      },
+    },
+    challenges: {
+      intro: {
+        title: 'Challenges',
+        body: 'Up to 3 challenges a week, each on one habit: more days or more amount than your average. The harder, the bigger the reward.',
+      },
+      weeks: {
+        title: 'This week and the next',
+        body: 'This week’s challenges can be created until Wednesday; next week can be planned any time.',
+      },
+      create: {
+        title: 'New challenge',
+        body: 'Pick the habit, the type and the goal. The reward shows before you create it.',
+      },
+      suggestions: {
+        title: 'Suggestions',
+        body: 'Goals drawn from your average over the last weeks. Accept with one tap.',
+      },
+      history: {
+        title: 'Past weeks',
+        body: 'The challenges you met or missed, week by week.',
       },
     },
     rewards: {
@@ -1211,6 +1388,10 @@ export default {
       list: {
         title: 'For today',
         body: 'Tap a habit to mark it done and earn coins and XP. Tap again to undo. A habit with a daily target shows a bar instead: log amounts until you reach it.',
+      },
+      challenges: {
+        title: 'This week’s challenges',
+        body: 'Weekly goals to go a little beyond usual. Meet one and the reward lands right away.',
       },
       avoid: {
         title: 'Avoiding',
