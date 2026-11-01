@@ -18,6 +18,9 @@ import HabitDetailsPage from './habits/pages/HabitDetailsPage'
 import HabitsPage from './habits/pages/HabitsPage'
 import AchievementsPage from './habits/pages/AchievementsPage'
 import ProfilePage from './habits/pages/ProfilePage'
+import InvitePage from './habits/pages/InvitePage'
+import RankingGroupPage from './habits/pages/RankingGroupPage'
+import RankingPage from './habits/pages/RankingPage'
 import HistoryPage from './habits/pages/HistoryPage'
 import RedemptionsPage from './habits/pages/RedemptionsPage'
 import RewardsPage from './habits/pages/RewardsPage'
@@ -48,6 +51,8 @@ const router = createBrowserRouter(
       {/* Opened from e-mail links: no guard, so they work even in a browser signed in to another account */}
       <Route path="/auth/set-password" element={<SetPasswordPage />} />
       <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
+      {/* A ranking group's invite link: keeps the code, then the ranking (behind the guard) offers the group */}
+      <Route path="/invite/:code" element={<InvitePage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/home" element={<HomePage />} />
         <Route path="/finance" element={<FinanceLayout />}>
@@ -70,6 +75,8 @@ const router = createBrowserRouter(
           <Route path="list" element={<HabitsPage />} />
           <Route path="list/:habitId" element={<HabitDetailsPage />} />
           <Route path="achievements" element={<AchievementsPage />} />
+          <Route path="ranking" element={<RankingPage />} />
+          <Route path="ranking/:groupId" element={<RankingGroupPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="history" element={<HistoryPage />} />
           <Route path="shop" element={<ShopPage />}>
