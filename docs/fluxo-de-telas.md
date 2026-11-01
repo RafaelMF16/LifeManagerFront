@@ -33,6 +33,8 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   - [Detalhe do hábito](#detalhe-do-hábito)
   - [Loja](#loja)
   - [Conquistas](#conquistas)
+  - [Ranking](#ranking)
+  - [Ranking do grupo](#ranking-do-grupo)
   - [Perfil](#perfil)
   - [Histórico](#histórico)
   - [Momentos de jogo](#momentos-de-jogo)
@@ -45,6 +47,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
 /auth/set-password          Escolher a senha do cadastro (link do e-mail)
 /auth/reset-password        Escolher uma nova senha (link do e-mail)
 /home                       Escolha do módulo
+/invite/:código             Convite para um grupo de ranking (link)
 /finance                    → Painel
   /finance/dashboard        Painel
   /finance/months           Meses
@@ -64,6 +67,8 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
     /habits/shop/items           Itens
     /habits/shop/redemptions     Resgates
   /habits/achievements      Conquistas
+  /habits/ranking           Ranking (seus grupos)
+  /habits/ranking/:id       Ranking do grupo
   /habits/profile           Perfil
   /habits/history           Histórico
 ```
@@ -423,7 +428,7 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
 
 ## Hábitos
 
-Menu: **Hoje**, **Hábitos**, **Loja**, **Histórico**.
+Menu: **Hoje**, **Hábitos**, **Loja**, **Conquistas**, **Ranking**, **Perfil**, **Histórico**.
 
 ### Barra do personagem
 
@@ -571,13 +576,45 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 
 **Rota:** `/habits/achievements` (item **Conquistas** do menu, entre Loja e Histórico).
 
-**16 conquistas** em bronze, prata e ouro. Cada uma paga um bônus de moedas e XP uma vez só e libera um título. O que você fez antes de elas existirem também conta.
+**22 conquistas** em bronze, prata e ouro. Cada uma paga um bônus de moedas e XP uma vez só e libera um título. O que você fez antes de elas existirem também conta.
 
-- **Cabeçalho:** "N de 16 desbloqueadas".
+- **Cabeçalho:** "N de 22 desbloqueadas".
 - **Quase lá:** até 3 próximos objetivos (a próxima conquista de cada família), as mais perto de sair primeiro, com a barra e o que falta ("Faltam 3 check-ins"). Some quando todas estiverem desbloqueadas.
-- **Todas as conquistas**, por família: Check-ins, Ofensiva, Nível, Resgates, Dias limpos e Superação. Cada cartão mostra o nível (bronze, prata ou ouro), o nome, o que é preciso ("100 check-ins"), o bônus ("+100 moedas · +150 XP") e o título que libera.
+- **Todas as conquistas**, por família: Check-ins, Ofensiva, Nível, Resgates, Dias limpos, Superação e Ranking (vitórias: "5 semanas em 1º num grupo"; pódios: "3 semanas no pódio de um grupo"). Cada cartão mostra o nível (bronze, prata ou ouro), o nome, o que é preciso ("100 check-ins"), o bônus ("+100 moedas · +150 XP") e o título que libera.
   - **Bloqueada:** em cinza, com um cadeado e a barra de progresso ("37 / 100").
   - **Desbloqueada:** na cor da medalha, com a data. Uma conquista desbloqueada é para sempre, mesmo que um check-in seja desfeito.
+
+### Ranking
+
+**Rota:** `/habits/ranking` (item **Ranking** do menu, entre Conquistas e Perfil).
+
+Grupos fechados com amigos para comparar a semana de hábitos, de segunda a domingo. Não existe ranking público: só quem está no grupo vê o placar.
+
+- **Criar grupo** abre **Novo grupo**: só o **Nome do grupo** (até 40 caracteres). Quem cria é o dono. **Criar grupo** mostra "Grupo "…" criado. Agora é só convidar!" e abre o ranking do grupo.
+- **Entrar com código** abre **Entrar num grupo**: digite os 8 caracteres do **Código do convite** (ou cole o link inteiro) e **Continuar**. Aparece o grupo, o dono e quantos membros tem; **Entrar no grupo** confirma ("Você entrou em "…"") e **Outro código** volta. Erros: código inválido, nenhum grupo com o código, grupo cheio (20 membros), você já no grupo, já em 5 grupos ou muitas tentativas seguidas.
+- Cada pessoa participa de até **5 grupos**; no limite, os dois botões ficam desligados com "Você já está em 5 grupos, o máximo.".
+- **Seus grupos:** nome, membros, a marca **Dono** e "1º lugar · 120 pts nesta semana". Tocar abre o ranking do grupo. Sem grupos: "Nenhum grupo ainda".
+- **Link de convite** (`/invite/<código>`): abre esta tela com **Entrar num grupo** já preenchido. Sem sessão, pede o login (ou o cadastro) primeiro e depois oferece o grupo.
+
+### Ranking do grupo
+
+**Rota:** `/habits/ranking/:id` (tocando um grupo em Ranking).
+
+- **← Meus grupos** volta. O dono vê **Renomear grupo**.
+- **Semana:** as setas **Semana anterior**/**Próxima semana** e o período ("2–8 nov"), com a situação:
+  - **Ao vivo:** a semana atual. Os pontos de hábitos para evitar chegam até 2 dias depois, quando o dia limpo é registrado.
+  - **Fechando:** a semana acabou, mas ainda pode mudar até o fechamento do dia de todos (normalmente na terça).
+  - **Final:** o resultado gravado, que não muda mais.
+- **Avisos** (na semana atual): "Bia passou à sua frente desde ontem.", "Faltam 20 pts para alcançar Ana." ou "Mesmos pontos que Ana: o desempate é pelos dias perfeitos.".
+- **Semana passada:** o pódio da semana anterior e "Você ficou em 2º, com 180 pts.", marcado **provisório** enquanto ela não fecha.
+- **Placar:** posição (🥇🥈🥉 no pódio), avatar, nome e título, pontos e dias perfeitos de cada um. A sua linha vem destacada com **Você**. Quem entrou no meio da semana aparece com **Entrou na semana**; quem saiu e ainda conta na semana, com **Saiu do grupo**.
+  - "Esta semana não vale conquistas: são necessários 3 membros no grupo desde segunda." aparece quando o grupo é pequeno demais.
+- **Reações:** 👏 e 🔥 na linha de outra pessoa, na semana atual e na anterior (até o fechamento). Tocar de novo desfaz; tocar no outro troca. Na sua linha aparece "3 reações", que abre quem reagiu ("Ana aplaudiu", "Caio mandou fogo").
+- **Meus pontos:** a sua semana dia a dia (hábitos cumpridos de 5, ⭐ no dia perfeito, pontos). **Como funciona?** explica: 10 pontos por hábito cumprido no dia (feito ou dia limpo), até 5 por dia; +10 num dia perfeito; os dias limpos chegam até 2 dias depois; empate desempata por dias perfeitos e depois por hábitos cumpridos.
+- **Membros:** a lista com a marca **Dono**. O dono pode **Remover** alguém (confirmação; as reações da pessoa somem, semanas fechadas continuam).
+- **Convite:** o código, **Copiar código** e **Copiar link**. O dono tem **Gerar novo código** (confirmação: o código e o link atuais param de funcionar).
+- **Sair do grupo:** pede confirmação. Se você é o dono, o membro mais antigo vira dono; se é o último, o grupo é apagado.
+- **Conquistas de ranking:** terminar uma semana em 1º ou no pódio conta para as conquistas da família Ranking (1, 5 e 20 vitórias; 3, 10 e 30 pódios), desde que o grupo tivesse ao menos 3 membros desde segunda e você estivesse nele desde segunda.
 
 ### Perfil
 
@@ -588,7 +625,7 @@ Quem você é no jogo e o caminho que já fez. Cada parte carrega sozinha: se um
 - **Identidade:** avatar, nome, título (ou "Sem título"), nível e "jogando desde outubro de 2026".
   - **Editar** abre **Editar aparência**: os 12 avatares (todos liberados) e os títulos das conquistas desbloqueadas, mais "Sem título". Sem nenhuma conquista, a lista diz que cada conquista libera um título, com o link **Ver conquistas**. **Salvar** troca na hora, também na barra do personagem, e mostra "Aparência atualizada".
 - **Estatísticas:** 12 números do histórico inteiro, com os hábitos arquivados: check-ins feitos, dias limpos, dias ativos, XP total, melhor ofensiva, mais dias em um hábito, hábitos criados, conquistas, moedas ganhas, moedas gastas, recompensas resgatadas e nocautes superados. 4 por linha no computador, 2 no celular.
-- **Vitrine:** "N de 16 desbloqueadas", até 6 conquistas (as de ouro primeiro e, no mesmo nível, a mais recente) e o **Próximo objetivo** do "Quase lá", com o que falta. Sem conquistas: "Nenhuma conquista ainda. A primeira está logo ali:". O link **Ver todas** abre Conquistas.
+- **Vitrine:** "N de 22 desbloqueadas", até 6 conquistas (as de ouro primeiro e, no mesmo nível, a mais recente) e o **Próximo objetivo** do "Quase lá", com o que falta. Sem conquistas: "Nenhuma conquista ainda. A primeira está logo ali:". O link **Ver todas** abre Conquistas.
 - **Evolução:** um gráfico de linha do **XP** ou das **Moedas** ao fim de cada dia, nos últimos **30 dias**, **90 dias** (padrão) ou **1 ano**.
   - Acima, o dia escolhido e o valor; começa em hoje. Passar o mouse, tocar ou usar as setas do teclado escolhe outro dia.
   - Abaixo, "+340 XP no período" e "de 160 XP para 500 XP".

@@ -16,7 +16,13 @@ export type AchievementCode =
   | 'CleanDays200'
   | 'Comeback'
   | 'AutomaticHabit'
-export type AchievementFamily = 'CheckIns' | 'Streak' | 'Level' | 'Redemptions' | 'CleanDays' | 'Overcoming'
+  | 'RankingWins1'
+  | 'RankingWins5'
+  | 'RankingWins20'
+  | 'RankingPodiums3'
+  | 'RankingPodiums10'
+  | 'RankingPodiums30'
+export type AchievementFamily = 'CheckIns' | 'Streak' | 'Level' | 'Redemptions' | 'CleanDays' | 'Overcoming' | 'Ranking'
 export type AchievementTier = 'Bronze' | 'Silver' | 'Gold'
 
 // Espelha LifeManager.Application/Achievements/DTOs

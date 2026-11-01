@@ -83,6 +83,30 @@ export const HABITS_TOURS: TourDefinition[] = [
     ],
   },
   {
+    id: 'ranking',
+    path: '/habits/ranking',
+    namespace: 'habits',
+    steps: [
+      { id: 'intro' },
+      { id: 'actions', target: 'ranking.actions' },
+      { id: 'groups', target: 'ranking.groups' },
+    ],
+  },
+  {
+    id: 'rankingGroup',
+    path: '/habits/ranking/:groupId',
+    namespace: 'habits',
+    steps: [
+      { id: 'intro' },
+      { id: 'week', target: 'ranking.week' },
+      { id: 'previous', target: 'ranking.previous' },
+      { id: 'board', target: 'ranking.board' },
+      { id: 'me', target: 'ranking.me' },
+      { id: 'myWeek', target: 'ranking.myWeek' },
+      { id: 'invite', target: 'ranking.invite' },
+    ],
+  },
+  {
     id: 'profile',
     path: '/habits/profile',
     namespace: 'habits',
