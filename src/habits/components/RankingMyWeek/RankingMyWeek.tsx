@@ -6,13 +6,18 @@ import './RankingMyWeek.css'
 interface RankingMyWeekProps {
   days: WeeklyScoreDayDto[]
   points: number
+  /** The weekly challenges' bonus, already in `points`. */
+  challengePoints: number
 }
 
 // Espelha LifeManager.Domain/Ranking/RankingRules.MaxKeptHabitsPerDay.
 const MAX_KEPT_PER_DAY = 5
 
-/** My points day by day (Monday to Sunday): kept habits out of 5, ⭐ on a perfect day, and how the points work. */
-function RankingMyWeek({ days, points }: RankingMyWeekProps) {
+/**
+ * My points day by day (Monday to Sunday): kept habits out of 5, ⭐ on a perfect day, the challenges' bonus when there
+ * is one, and how the points work.
+ */
+function RankingMyWeek({ days, points, challengePoints }: RankingMyWeekProps) {
   const { t: translate, i18n } = useTranslation('habits')
 
   return (
@@ -50,11 +55,16 @@ function RankingMyWeek({ days, points }: RankingMyWeekProps) {
         ))}
       </ol>
 
+      {challengePoints > 0 ? (
+        <p className="lm-ranking-week__challenges">{translate('habits:ranking.myWeek.challenges', { points: challengePoints })}</p>
+      ) : null}
+
       <details className="lm-ranking-week__how">
         <summary>{translate('habits:ranking.myWeek.howTitle')}</summary>
         <ul>
           <li>{translate('habits:ranking.myWeek.howKept')}</li>
           <li>{translate('habits:ranking.myWeek.howPerfect')}</li>
+          <li>{translate('habits:ranking.myWeek.howChallenges')}</li>
           <li>{translate('habits:ranking.myWeek.howDelay')}</li>
           <li>{translate('habits:ranking.myWeek.howTie')}</li>
         </ul>

@@ -109,7 +109,7 @@ describe('patchReactions', () => {
     countsForAchievements: false,
     firstWeekStart: '2026-10-26',
     entries: [entry(1), entry(2)],
-    me: { position: 1, points: 0, gapToNext: null, nextName: null, days: [] },
+    me: { position: 1, points: 0, gapToNext: null, nextName: null, days: [], challengePoints: 0 },
     overtakenBy: [],
     previous: { weekStart: '2026-10-26', status: 'Final' as const, podium: [entry(2)], myPosition: 1, myPoints: 0 },
   }

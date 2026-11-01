@@ -6,6 +6,7 @@ export default {
   sidebar: {
     navAria: 'Navegação do módulo Hábitos',
     items: {
+      challenges: 'Desafios',
       today: 'Hoje',
       habits: 'Hábitos',
       shop: 'Loja',
@@ -789,6 +790,8 @@ export default {
       howTitle: 'Como funciona?',
       howKept: '10 pontos por hábito cumprido no dia (feito ou dia limpo), contando até 5 hábitos por dia.',
       howPerfect: '+10 de dia perfeito ⭐: todos os hábitos previstos feitos e nenhuma recaída. Dias protegidos e hábitos N× por semana ficam fora dessa conta.',
+      challenges: 'Desafios: +{{points}}',
+      howChallenges: '+15 por desafio Firme ou Puxado com a meta batida na semana, até 3 desafios. Desfazer o check-in que bateu a meta tira os pontos.',
       howDelay: 'Os dias limpos chegam com o fechamento do dia, até 2 dias depois.',
       howTie: 'Empate em pontos: desempata por dias perfeitos e depois por hábitos cumpridos.',
     },
@@ -856,6 +859,126 @@ export default {
       left: 'Você saiu de "{{name}}".',
       linkCopied: 'Link do convite copiado.',
       codeCopied: 'Código copiado.',
+    },
+  },
+  challenges: {
+    title: 'Desafios',
+    intro: 'Metas da semana para fazer um pouco mais que o normal, num hábito de cada vez. Cumprindo, a recompensa cai na hora; não cumprindo, nada é cobrado.',
+    loading: 'Carregando os desafios…',
+    loadError: 'Não foi possível carregar os desafios.',
+    retry: 'Tentar novamente',
+    newChallenge: 'Novo desafio',
+    weeks: {
+      aria: 'Semana',
+      Current: 'Esta semana',
+      Next: 'Próxima semana',
+    },
+    empty: {
+      Current: 'Nenhum desafio nesta semana.',
+      Next: 'Nenhum desafio planejado para a próxima semana.',
+    },
+    why: {
+      closed: 'Os desafios desta semana só podem ser criados até quarta-feira. Planeje a próxima!',
+      full: 'Esta semana já tem 3 desafios, o máximo.',
+      noHabits: 'Nenhum hábito disponível: os que podem ter desafio já têm um nesta semana.',
+    },
+    amount: {
+      days_one: '{{count}} dia',
+      days_other: '{{count}} dias',
+    },
+    progress: {
+      days_one: '{{progress}} / {{count}} dia',
+      days_other: '{{progress}} / {{count}} dias',
+    },
+    pace: {
+      completed: 'Concluído!',
+      failed: 'Não deu desta vez',
+      reached: 'Meta batida!',
+      over: 'A semana acabou',
+      outOfReach_one: 'Falta {{count}} dia: mais do que os dias que restam',
+      outOfReach_other: 'Faltam {{count}} dias: mais do que os dias que restam',
+      frequency_one: 'Falta {{count}} em {{days}}',
+      frequency_other: 'Faltam {{count}} em {{days}}',
+      volume_one: '≈ {{amount}} hoje',
+      volume_other: '≈ {{amount}} por dia em {{count}} dias',
+    },
+    effort: {
+      Light: 'Leve',
+      Steady: 'Firme',
+      Stretch: 'Puxado',
+    },
+    reward: '+{{coins}} moedas · +{{xp}} XP',
+    card: {
+      goal: 'Meta: {{amount}}',
+      progressAria: 'Progresso do desafio de {{habit}}',
+    },
+    cancel: {
+      button: 'Desistir',
+      title: 'Desistir do desafio?',
+      message: 'O desafio de {{habit}} sai da semana. Nada é cobrado, mas a recompensa também não vem.',
+      confirm: 'Desistir',
+    },
+    section: {
+      title: 'Desafios da semana',
+      manage: 'Ver desafios',
+      plan: 'Planejar',
+      empty: 'Nenhum desafio nesta semana. Desafie-se a fazer um pouco mais que o normal.',
+    },
+    suggestions: {
+      title: 'Sugestões',
+      goal: '{{amount}} (sua média: {{usual}})',
+      accept: 'Aceitar',
+    },
+    form: {
+      title: 'Novo desafio para esta semana',
+      titleNext: 'Novo desafio para a próxima semana',
+      habit: 'Hábito',
+      type: 'Tipo',
+      types: {
+        Frequency: 'Dias feitos',
+        Volume: 'Quantidade',
+      },
+      targetFrequency: 'Meta de dias',
+      targetVolume: 'Meta da semana',
+      targetHint: 'Até {{max}} · já feito: {{done}}',
+      noBaseline: 'Ainda sem média: nenhuma semana fechada com este hábito.',
+      baseline: 'Sua média: {{amount}} por semana',
+      previewHint: 'Escolha o hábito e a meta para ver a recompensa.',
+      create: 'Criar desafio',
+    },
+    validation: {
+      habit: {
+        required: 'Escolha um hábito.',
+        notEligible: 'Este hábito não pode ter desafio.',
+        alreadyExists: 'Este hábito já tem um desafio nesta semana.',
+      },
+      target: {
+        required: 'Informe a meta.',
+        range: 'A meta está fora do limite desta semana.',
+        alreadyReached: 'Você já chegou nessa meta: escolha uma maior.',
+      },
+      type: {
+        notMeasurable: 'Este hábito não tem meta diária: use dias feitos.',
+      },
+      weekLimit: 'A semana já tem 3 desafios.',
+      windowClosed: 'Os desafios desta semana só podem ser criados até quarta-feira.',
+    },
+    history: {
+      title: 'Semanas anteriores',
+      empty: 'Os desafios das semanas que passaram aparecem aqui.',
+      loading: 'Carregando o histórico…',
+      loadError: 'Não foi possível carregar o histórico.',
+      range_one: '{{from}}–{{to}} de {{count}} desafio',
+      range_other: '{{from}}–{{to}} de {{count}} desafios',
+    },
+    toasts: {
+      created: 'Desafio criado: {{habit}}',
+      cancelled: 'Desafio cancelado: {{habit}}',
+    },
+    errors: {
+      acceptFailed: 'Não foi possível aceitar a sugestão.',
+      cancelFailed: 'Não foi possível cancelar o desafio.',
+      changed: 'O desafio mudou enquanto isso. A lista foi atualizada.',
     },
   },
   profile: {
@@ -982,6 +1105,7 @@ export default {
       FreezeUsed: 'Proteção usada',
       LevelUp: 'Subiu de nível',
       AchievementUnlocked: 'Conquista',
+      ChallengeCompleted: 'Desafio concluído',
     },
     deltas: {
       coins_one: '{{value}} moeda',
@@ -1005,6 +1129,37 @@ export default {
       titleUnlocked: 'Título liberado: {{title}}',
       titlesUnlocked: 'Cada uma liberou um título para o seu perfil. Continue assim!',
       see: 'Ver conquistas',
+      confirm: 'Continuar',
+    },
+    challenges: {
+      titleCompleted_one: 'Desafio concluído!',
+      titleCompleted_other: '{{count}} desafios concluídos!',
+      titleMissed_one: 'O desafio da semana acabou',
+      titleMissed_other: 'Os desafios da semana acabaram',
+      status: {
+        Completed: 'Concluído',
+        Failed: 'Não deu',
+      },
+      message: 'A recompensa já está na sua conta. Bora planejar a próxima semana?',
+      messageMissed: 'O que não deu não custa nada: uma meta um pouco menor pode encaixar melhor na próxima.',
+      confirm: 'Continuar',
+    },
+    summary: {
+      title: 'Sua semana',
+      figures: {
+        checkIns: 'Hábitos cumpridos',
+        cleanDays: 'Dias limpos',
+        coins: 'Moedas ganhas',
+        challengesCompleted: 'Desafios concluídos',
+      },
+      changeAria: '{{change}} em relação à semana anterior ({{previous}})',
+      challenges: 'Desafios da semana',
+      ranking: 'Ranking',
+      place_one: '{{position}}º de {{count}} · {{points}} pts',
+      place_other: '{{position}}º de {{count}} · {{points}} pts',
+      provisional: 'provisório',
+      message: 'Uma semana nova começou. Que tal escolher os desafios dela?',
+      plan: 'Planejar a semana',
       confirm: 'Continuar',
     },
     levelUp: {
@@ -1081,6 +1236,28 @@ export default {
       invite: {
         title: 'Convidar',
         body: 'Copie o link ou o código e mande para quem quiser no grupo. O dono pode gerar um código novo.',
+      },
+    },
+    challenges: {
+      intro: {
+        title: 'Desafios',
+        body: 'Até 3 desafios por semana, cada um num hábito: fazer mais dias ou mais quantidade que a sua média. Quanto mais puxado, maior a recompensa.',
+      },
+      weeks: {
+        title: 'Esta semana e a próxima',
+        body: 'Os desafios desta semana podem ser criados até quarta-feira; a próxima pode ser planejada a qualquer momento.',
+      },
+      create: {
+        title: 'Novo desafio',
+        body: 'Escolha o hábito, o tipo e a meta. A recompensa aparece antes de criar.',
+      },
+      suggestions: {
+        title: 'Sugestões',
+        body: 'Metas tiradas da sua média das últimas semanas. Aceite com um toque.',
+      },
+      history: {
+        title: 'Semanas anteriores',
+        body: 'Os desafios que você cumpriu ou não, semana a semana.',
       },
     },
     rewards: {
@@ -1211,6 +1388,10 @@ export default {
       list: {
         title: 'Para hoje',
         body: 'Toque num hábito para marcar como feito e ganhar moedas e XP. Toque de novo para desfazer. Um hábito com meta diária mostra uma barra: registre as quantidades até bater a meta.',
+      },
+      challenges: {
+        title: 'Desafios da semana',
+        body: 'Metas da semana para ir um pouco além do normal. Cumprindo, a recompensa cai na hora.',
       },
       avoid: {
         title: 'Evitando',

@@ -1,3 +1,4 @@
+import type { ChallengeDto } from './ChallengeDtos'
 import type { AchievementCode, NewAchievementDto } from './AchievementDtos'
 
 // Espelha LifeManager.Domain/Habits/Enums/PlayerAvatar (binds by name).
@@ -35,6 +36,8 @@ export interface PlayerProfileDto {
   lastKnockout?: LastKnockoutDto | null
   /** Only on `GET Profile`: unlocks the player hasn't been shown yet, in catalog order; empty elsewhere. */
   newAchievements?: NewAchievementDto[]
+  /** Only on `GET Profile`: completed challenges the player hasn't seen celebrated yet, oldest first. */
+  newChallenges?: ChallengeDto[]
 }
 
 export interface LastKnockoutDto {
