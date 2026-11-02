@@ -7,8 +7,10 @@ import type { IconName } from '../../../shared/components/Icon/Icon'
 const NAV_ITEMS: { id: string; icon: IconName; path: string | null }[] = [
   { id: 'today', icon: 'calendar-check', path: '/habits/today' },
   { id: 'habits', icon: 'list-checks', path: '/habits/list' },
+  { id: 'challenges', icon: 'target', path: '/habits/challenges' },
   { id: 'shop', icon: 'store', path: '/habits/shop' },
   { id: 'achievements', icon: 'trophy', path: '/habits/achievements' },
+  { id: 'ranking', icon: 'users', path: '/habits/ranking' },
   { id: 'profile', icon: 'user-round', path: '/habits/profile' },
   { id: 'history', icon: 'history', path: '/habits/history' },
 ]

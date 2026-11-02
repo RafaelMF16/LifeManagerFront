@@ -45,6 +45,8 @@ const streak7 = achievement({ code: 'Streak7', family: 'Streak', threshold: 7 })
 const level5 = achievement({ code: 'Level5', family: 'Level', threshold: 5, progress: 1 })
 const comeback = achievement({ code: 'Comeback', family: 'Overcoming', tier: 'Silver', threshold: 10 })
 const automatic = achievement({ code: 'AutomaticHabit', family: 'Overcoming', tier: 'Gold', threshold: 66 })
+const wins5 = achievement({ code: 'RankingWins5', family: 'Ranking', tier: 'Silver', threshold: 5, progress: 4 })
+const podiums3 = achievement({ code: 'RankingPodiums3', family: 'Ranking', threshold: 3, progress: 1 })
 
 describe('achievement texts', () => {
   it('names the achievement and its title in both languages', () => {
@@ -60,6 +62,14 @@ describe('achievement texts', () => {
     expect(achievementCriterion(level5, en)).toBe('Reach level 5')
     expect(achievementCriterion(automatic, pt)).toBe('66 dias cumpridos de um mesmo hábito')
     expect(achievementCriterion(comeback, en)).toBe('10 days kept after a knockout')
+  })
+
+  it('tells the ranking wins from the podiums', () => {
+    expect(achievementName('RankingWins1', pt)).toBe('Primeira vitória')
+    expect(achievementCriterion(wins5, pt)).toBe('5 semanas em 1º num grupo')
+    expect(achievementCriterion(podiums3, en)).toBe('3 weeks on a group’s podium')
+    expect(achievementRemaining(wins5, pt)).toBe('Falta 1 vitória')
+    expect(achievementRemaining(podiums3, en)).toBe('2 podiums to go')
   })
 
   it('says what is missing, singular and plural', () => {

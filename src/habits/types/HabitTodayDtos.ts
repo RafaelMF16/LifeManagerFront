@@ -1,3 +1,4 @@
+import type { ChallengeDto } from './ChallengeDtos'
 import type { HabitDifficulty, HabitFrequencyType } from './HabitDtos'
 import type { PlayerProfileDto } from './PlayerProfileDtos'
 
@@ -17,6 +18,8 @@ export interface HabitTodayDto {
   avoiding: HabitAvoidItemDto[]
   /** Names of set-days habits to avoid whose day off is today. */
   freeToday: string[]
+  /** The current week's challenges, already settled by the backend. */
+  challenges: ChallengeDto[]
 }
 
 /** A habit to avoid on the day's checklist. */

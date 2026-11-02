@@ -27,6 +27,20 @@
   color: var(--accent-text);
 }
 
+/* Settled challenges: the target in the success tint; each one checked or crossed out. */
+.lm-game-moment--challenges .lm-game-moment__icon {
+  background: var(--positive-tint);
+  color: var(--success);
+}
+
+.lm-game-moment__item--completed {
+  --medal: var(--success);
+}
+
+.lm-game-moment__item--missed {
+  --medal: var(--text-tertiary);
+}
+
 /* An achievement takes its first medal's color: bronze, silver or gold. */
 .lm-game-moment--achievement {
   --medal: #b87333;
@@ -133,8 +147,9 @@
       lm-game-moment-glow 1.2s var(--ease-standard) var(--duration-slow) 2;
   }
 
-  /* An achievement glows like a new level. */
-  .lm-game-moment--achievement .lm-game-moment__icon {
+  /* An achievement or a met challenge glows like a new level. */
+  .lm-game-moment--achievement .lm-game-moment__icon,
+  .lm-game-moment--challenges .lm-game-moment__icon {
     animation:
       lm-game-moment-enter var(--duration-slow) var(--ease-out) both,
       lm-game-moment-glow 1.2s var(--ease-standard) var(--duration-slow) 2;

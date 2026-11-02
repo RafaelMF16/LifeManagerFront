@@ -5,9 +5,12 @@ import Header from '../../../shared/components/Header/Header'
 import TourButton from '../../../shared/components/Tour/TourButton'
 import { usePlayerProfile } from '../../hooks/usePlayerProfile'
 import { markAchievementsSeen } from '../../services/achievementService'
+import { getWeeklySummary, markChallengesSeen, markWeeklySummarySeen } from '../../services/challengeService'
+import type { WeeklySummaryDto } from '../../types/ChallengeDtos'
 import type { HabitsOutletContext } from '../../types/HabitsOutletContext'
 import {
   achievementsKey,
+  challengesKey,
   levelBaseline,
   pendingMoment,
   readSeenKnockout,
@@ -24,7 +27,7 @@ import './HabitsLayout.css'
 /**
  * Shell shared by every Habits screen: header, module sidebar, the player's character, and the routed page via
  * `<Outlet />`. It owns the profile so every tab shows the same one; pages reload it through the outlet context. It
- * also stops the player for a knockout, new achievements or a new level they haven't seen, whatever caused it and on
+ * also stops the player for a knockout, new achievements, settled challenges, last week's summary or a new level they haven't seen, whatever caused it and on
  * whichever tab.
  */
 function HabitsLayout() {
@@ -33,6 +36,9 @@ function HabitsLayout() {
   const [seenLevel, setSeenLevel] = useState(readSeenLevel)
   // The set of achievements just closed: hidden at once while the backend marks them as seen and the profile reloads.
   const [closedAchievements, setClosedAchievements] = useState<string | null>(null)
+  const [closedChallenges, setClosedChallenges] = useState<string | null>(null)
+  // Last week's summary, fetched once per visit; null when there is none to show (or after it was closed).
+  const [summary, setSummary] = useState<WeeklySummaryDto | null>(null)
   const navigate = useNavigate()
   const outletContext: HabitsOutletContext = { profile, reloadProfile: reload }
 
@@ -41,7 +47,19 @@ function HabitsLayout() {
   const baseline = profile ? levelBaseline(profile.level, seenLevel) : null
   if (baseline !== null) setSeenLevel(baseline)
 
-  const moment = profile ? pendingMoment(profile, seenKnockout, baseline ?? seenLevel, closedAchievements) : null
+  const moment = profile ? pendingMoment(profile, seenKnockout, baseline ?? seenLevel, closedAchievements, closedChallenges, summary) : null
+
+  useEffect(() => {
+    const controller = new AbortController()
+    // A failure just skips the summary this visit: it stays unseen on the backend and comes back on the next one.
+    getWeeklySummary(controller.signal).then(
+      (loaded) => {
+        if (!controller.signal.aborted) setSummary(loaded)
+      },
+      () => undefined,
+    )
+    return () => controller.abort()
+  }, [])
 
   // Keeps this device's storage in step, so the next visit starts from what was already seen.
   useEffect(() => {
@@ -57,6 +75,12 @@ function HabitsLayout() {
       setClosedAchievements(achievementsKey(moment.achievements))
       // A failure leaves them unseen on the backend, so the moment comes back on the next visit.
       markAchievementsSeen(moment.achievements.map((achievement) => achievement.code)).then(reload, () => undefined)
+    } else if (moment.kind === 'challenges') {
+      setClosedChallenges(challengesKey(moment.challenges))
+      markChallengesSeen(moment.challenges.map((challenge) => challenge.id)).then(reload, () => undefined)
+    } else if (moment.kind === 'summary') {
+      setSummary(null)
+      markWeeklySummarySeen(moment.summary.weekStart).catch(() => undefined)
     } else {
       setSeenLevel(moment.level)
     }
@@ -65,6 +89,16 @@ function HabitsLayout() {
   function seeAchievements() {
     closeMoment()
     navigate('/habits/achievements')
+  }
+
+  function planWeek() {
+    closeMoment()
+    navigate('/habits/challenges')
+  }
+
+  function openGroup(groupId: number) {
+    closeMoment()
+    navigate(`/habits/ranking/${groupId}`)
   }
 
   return (
@@ -83,7 +117,7 @@ function HabitsLayout() {
         </div>
       </div>
 
-      {moment ? <GameMomentDialog key={moment.kind} moment={moment} onClose={closeMoment} onSeeAchievements={seeAchievements} /> : null}
+      {moment ? <GameMomentDialog key={moment.kind} moment={moment} onClose={closeMoment} onSeeAchievements={seeAchievements} onPlanWeek={planWeek} onOpenGroup={openGroup} /> : null}
     </div>
   )
 }

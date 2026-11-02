@@ -1,3 +1,4 @@
+import { clearPendingInvite } from '../utils/pendingInvite'
 import { apiRequest } from './httpClient'
 import { emitSessionExpired } from './sessionEvents'
 import { clearAccessToken, getAccessToken, setAccessToken } from './tokenStorage'
@@ -7,7 +8,8 @@ const REFRESH_LOCK_NAME = 'lm-token-refresh'
 
 // Lives in shared/ (not auth/services) because it's triggered from the shared Header.
 // The backend revokes the refresh token and deletes its HttpOnly cookie (sent via `credentials: 'include'`);
-// the local access token is cleared even if that call fails, so the user can always sign out.
+// the local access token is cleared even if that call fails, so the user can always sign out. A pending invite goes
+// too, so it isn't offered to whoever signs in next on this browser.
 export async function logout(): Promise<void> {
   try {
     await apiRequest<void>('/api/Auth/Logout', { method: 'POST' })
@@ -15,6 +17,7 @@ export async function logout(): Promise<void> {
     // Ignored on purpose: signing out locally must not depend on the server.
   } finally {
     clearAccessToken()
+    clearPendingInvite()
   }
 }
 

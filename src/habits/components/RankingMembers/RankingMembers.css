@@ -1,0 +1,140 @@
+.lm-ranking-members {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+}
+
+.lm-ranking-members__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-ranking-members__title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-ranking-members__count {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-ranking-members__invite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+  background: var(--surface-raised);
+}
+
+.lm-ranking-members__invite-label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.lm-ranking-members__code {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.lm-ranking-members__code code {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-button);
+  background: var(--surface-sunken);
+  font-size: var(--text-base);
+  letter-spacing: 0.12em;
+  color: var(--text-primary);
+}
+
+.lm-ranking-members__invite-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.lm-ranking-members__invite-hint {
+  flex-basis: 100%;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-ranking-members__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-ranking-members__member {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.lm-ranking-members__who {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lm-ranking-members__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.lm-ranking-members__tag {
+  padding: 0 var(--space-2);
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+}
+
+.lm-ranking-members__tag--owner {
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.lm-ranking-members__title-line {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-ranking-members__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-3) var(--space-5);
+}
+
+@media (max-width: 768px) {
+  .lm-ranking-members__heading,
+  .lm-ranking-members__invite,
+  .lm-ranking-members__member,
+  .lm-ranking-members__footer {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+}

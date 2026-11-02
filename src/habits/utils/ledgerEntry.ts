@@ -25,6 +25,7 @@ const KIND_ICONS: Record<GameLedgerEntryKind, IconName> = {
   LevelUp: 'sparkles',
   ItemPurchased: 'store',
   AchievementUnlocked: 'trophy',
+  ChallengeCompleted: 'target',
 }
 
 /** A purchase shows its item's icon; every other line, its kind's. */

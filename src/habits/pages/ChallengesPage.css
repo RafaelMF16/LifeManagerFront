@@ -1,0 +1,127 @@
+.lm-challenges-page {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-6) var(--page-gutter) var(--space-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.lm-challenges-page__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.lm-challenges-page__eyebrow {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-challenges-page__title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+.lm-challenges-page__intro {
+  margin: 0;
+  max-width: 60ch;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-challenges-page__week,
+.lm-challenges-page__history,
+.lm-challenges-page__panel,
+.lm-challenges-page__history-week {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.lm-challenges-page__week-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.lm-challenges-page__weeks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 260px;
+}
+
+.lm-challenges-page__range,
+.lm-challenges-page__section-title {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-challenges-page__history-range {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+}
+
+.lm-challenges-page__panel--fetching {
+  opacity: 0.6;
+}
+
+.lm-challenges-page__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lm-challenges-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.lm-challenges-page__why,
+.lm-challenges-page__state {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-challenges-page__state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.lm-challenges-page__state p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .lm-challenges-page {
+    padding-bottom: var(--space-8);
+    gap: var(--space-5);
+  }
+
+  .lm-challenges-page__weeks {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .lm-challenges-page__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

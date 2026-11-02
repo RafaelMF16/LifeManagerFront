@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import type { PlayerProfileDto } from '../types/PlayerProfileDtos'
 import type { NewAchievementDto } from '../types/AchievementDtos'
-import { achievementsKey, levelBaseline, pendingMoment } from './gameMoments'
+import type { ChallengeDto, WeeklySummaryDto } from '../types/ChallengeDtos'
+import { achievementsKey, challengesKey, levelBaseline, pendingMoment, summaryChange } from './gameMoments'
 
 const profile: PlayerProfileDto = {
   level: 3,
@@ -23,6 +24,26 @@ const knockout = { id: 12, occurredOn: '2026-10-06', coinsLost: 10 }
 const unlocks: NewAchievementDto[] = [
   { code: 'CheckIns10', tier: 'Bronze', coinsBonus: 25, xpBonus: 50, unlockedAt: '2026-10-28T12:00:00Z' },
   { code: 'Streak7', tier: 'Bronze', coinsBonus: 25, xpBonus: 50, unlockedAt: '2026-10-28T12:00:00Z' },
+]
+
+const settled: ChallengeDto[] = [
+  {
+    id: 4,
+    habitId: 7,
+    habitName: 'Ler',
+    type: 'Frequency',
+    target: 5,
+    unit: null,
+    progress: 5,
+    daysLeft: 0,
+    weekStart: '2026-10-26',
+    baseline: 3,
+    effort: 'Stretch',
+    rewardCoins: 60,
+    rewardXp: 120,
+    status: 'Completed',
+    completedAt: '2026-10-30T12:00:00Z',
+  },
 ]
 
 describe('levelBaseline', () => {
@@ -83,5 +104,40 @@ describe('pendingMoment', () => {
 
   it('has no achievements moment without new ones', () => {
     expect(pendingMoment({ ...profile, newAchievements: [] }, null, 3)).toBeNull()
+  })
+
+  it('shows the settled challenges after the achievements and before the level', () => {
+    expect(pendingMoment({ ...profile, newChallenges: settled }, null, 3)).toEqual({ kind: 'challenges', challenges: settled })
+    expect(pendingMoment({ ...profile, newAchievements: unlocks, newChallenges: settled }, null, 3)?.kind).toBe('achievements')
+    expect(pendingMoment({ ...profile, level: 4, newChallenges: settled }, null, 3)?.kind).toBe('challenges')
+  })
+
+  it('skips the challenges the layout just closed', () => {
+    expect(pendingMoment({ ...profile, level: 4, newChallenges: settled }, null, 3, null, challengesKey(settled))).toEqual({
+      kind: 'levelUp',
+      level: 4,
+    })
+  })
+
+  it('shows the weekly summary after the challenges and before the level', () => {
+    const summary: WeeklySummaryDto = {
+      weekStart: '2026-10-26',
+      weekEnd: '2026-11-01',
+      week: { checkIns: 12, cleanDays: 0, coins: 90, challengesCompleted: 1 },
+      previousWeek: { checkIns: 9, cleanDays: 0, coins: 40, challengesCompleted: 0 },
+      challenges: settled,
+      ranking: [],
+    }
+    expect(pendingMoment({ ...profile, level: 4 }, null, 3, null, null, summary)).toEqual({ kind: 'summary', summary })
+    expect(pendingMoment({ ...profile, newChallenges: settled }, null, 3, null, null, summary)?.kind).toBe('challenges')
+    expect(pendingMoment({ ...profile, level: 4 }, null, 3, null, null, null)?.kind).toBe('levelUp')
+  })
+})
+
+describe('summaryChange', () => {
+  it('signs the change from the week before', () => {
+    expect(summaryChange(12, 9)).toBe('+3')
+    expect(summaryChange(7, 9)).toBe('−2')
+    expect(summaryChange(4, 4)).toBe('=')
   })
 })

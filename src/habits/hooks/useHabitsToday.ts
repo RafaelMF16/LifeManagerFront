@@ -222,6 +222,7 @@ export function useHabitsToday() {
     date: data?.date,
     /** The latest recent miss (`yyyy-MM-dd`), to welcome the player back; null when none. */
     lastMissedOn: data?.lastMissedOn ?? null,
+    challenges: data?.challenges ?? [],
     yesterday,
     today: data ? withOverrides(data.today, data.date) : [],
     yesterdayPending: data ? withOverrides(data.yesterdayPending, yesterday) : [],

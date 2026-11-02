@@ -1,0 +1,118 @@
+.lm-ranking-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.lm-ranking-groups--fetching {
+  opacity: 0.55;
+}
+
+/* The whole card is the link (stretched), so the meta lines stay plain text. */
+.lm-ranking-groups__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--elevation-1);
+  transition: var(--transition-control);
+}
+
+@media (hover: hover) {
+  .lm-ranking-groups__card:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-hover);
+  }
+}
+
+.lm-ranking-groups__link {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.lm-ranking-groups__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.lm-ranking-groups__link:focus-visible {
+  outline: none;
+}
+
+.lm-ranking-groups__card:has(.lm-ranking-groups__link:focus-visible) {
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.lm-ranking-groups__name {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.lm-ranking-groups__meta,
+.lm-ranking-groups__place {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-ranking-groups__place {
+  color: var(--text-primary);
+}
+
+.lm-ranking-groups__position {
+  font-weight: var(--weight-semibold);
+}
+
+.lm-ranking-groups__owner {
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-pill, 999px);
+  background: var(--accent-tint);
+  color: var(--accent-text);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+}
+
+.lm-ranking-groups__state,
+.lm-ranking-groups__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-8) var(--space-4);
+  border: var(--border-width) dashed var(--border);
+  border-radius: var(--radius-card);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.lm-ranking-groups__state p {
+  margin: 0;
+}
+
+.lm-ranking-groups__empty-title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-ranking-groups__empty-text {
+  margin: 0;
+  max-width: 48ch;
+}

@@ -1,0 +1,67 @@
+.lm-ranking-page,
+.lm-ranking-group-page {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-6) var(--page-gutter) var(--space-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.lm-ranking-page__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.lm-ranking-page__eyebrow {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-ranking-page__title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.lm-ranking-page__intro {
+  margin: 0;
+  max-width: 60ch;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-ranking-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.lm-ranking-page__limit {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .lm-ranking-page,
+  .lm-ranking-group-page {
+    padding-bottom: var(--space-8);
+    gap: var(--space-4);
+  }
+
+  .lm-ranking-page__title {
+    font-size: var(--text-xl);
+  }
+
+  .lm-ranking-page__actions > button {
+    flex: 1 1 auto;
+  }
+}

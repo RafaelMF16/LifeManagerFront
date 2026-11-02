@@ -10,6 +10,7 @@ const FAMILY_ICONS: Record<AchievementFamily, IconName> = {
   Redemptions: 'gift',
   CleanDays: 'sparkles',
   Overcoming: 'trophy',
+  Ranking: 'users',
 }
 
 export const achievementFamilyIcon = (family: AchievementFamily): IconName => FAMILY_ICONS[family]
@@ -25,10 +26,12 @@ export const isUnlocked = (achievement: AchievementDto) => achievement.unlockedA
 
 /**
  * The family's tiers share one number, so its texts are keyed by family; the two one-off feats of `Overcoming` count
- * different things, so theirs are keyed by code.
+ * different things, so theirs are keyed by code, and `Ranking` counts two numbers (wins and podiums), each its own key.
  */
 function criterionKey(achievement: Pick<AchievementDto, 'code' | 'family'>) {
-  return achievement.family === 'Overcoming' ? achievement.code : achievement.family
+  if (achievement.family === 'Overcoming') return achievement.code
+  if (achievement.family === 'Ranking') return achievement.code.startsWith('RankingWins') ? 'RankingWins' : 'RankingPodiums'
+  return achievement.family
 }
 
 /** What it takes: "100 check-ins", "Reach level 5". */
