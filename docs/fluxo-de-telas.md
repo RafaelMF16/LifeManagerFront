@@ -586,7 +586,7 @@ Metas da semana para fazer um pouco mais que o normal num hábito: mais dias, ou
 
 - **Esta semana / Próxima semana** escolhe a semana; o período aparece ao lado ("2–8 nov").
 - Cada desafio é um cartão: hábito, meta ("Meta: 5 dias"), esforço (**Leve**, **Firme** ou **Puxado**), recompensa ("+60 moedas · +120 XP"), barra de progresso e ritmo. **Desistir** pede confirmação: o desafio sai da semana sem custo e sem recompensa.
-- **Novo desafio** abre o formulário: **Hábito**, **Tipo** (**Dias feitos** ou **Quantidade**, só para hábitos com meta diária) e a meta, com o limite e o já feito ("Até 7 dias · já feito: 1 dia"). Antes de criar aparecem a sua média ("Sua média: 3 dias por semana"), o esforço e a recompensa. **Criar desafio** mostra "Desafio criado: Ler".
+- **Novo desafio** abre o formulário: **Hábito**, **Tipo** (**Dias feitos** ou **Quantidade**, só para hábitos com meta diária) e a meta, com o limite e o já feito ("Até 7 dias · já feito: 1 dia"). Antes de criar aparecem a sua média ("Sua média: 3 dias por semana"), o esforço e a recompensa. Sem nenhuma semana inteira fechada com o hábito, não há média e o desafio vale como **Leve**. **Criar desafio** mostra "Desafio criado: Ler".
   - O botão fica desligado com o motivo: depois de quarta na semana atual ("Os desafios desta semana só podem ser criados até quarta-feira. Planeje a próxima!"), com 3 desafios ou sem hábito disponível.
 - **Sugestões:** metas um pouco acima da sua média ("6 dias (sua média: 5 dias)"); **Aceitar** cria na hora.
 - **Semanas anteriores:** o histórico paginado, agrupado por semana, com como terminou cada desafio.
@@ -614,7 +614,7 @@ Grupos fechados com amigos para comparar a semana de hábitos, de segunda a domi
 - **Entrar com código** abre **Entrar num grupo**: digite os 8 caracteres do **Código do convite** (ou cole o link inteiro) e **Continuar**. Aparece o grupo, o dono e quantos membros tem; **Entrar no grupo** confirma ("Você entrou em "…"") e **Outro código** volta. Erros: código inválido, nenhum grupo com o código, grupo cheio (20 membros), você já no grupo, já em 5 grupos ou muitas tentativas seguidas.
 - Cada pessoa participa de até **5 grupos**; no limite, os dois botões ficam desligados com "Você já está em 5 grupos, o máximo.".
 - **Seus grupos:** nome, membros, a marca **Dono** e "1º lugar · 120 pts nesta semana". Tocar abre o ranking do grupo. Sem grupos: "Nenhum grupo ainda".
-- **Link de convite** (`/invite/<código>`): abre esta tela com **Entrar num grupo** já preenchido. Sem sessão, pede o login (ou o cadastro) primeiro e depois oferece o grupo.
+- **Link de convite** (`/invite/<código>`): abre esta tela com **Entrar num grupo** já preenchido. Sem sessão, pede o login (ou o cadastro) primeiro e depois oferece o grupo. O convite guardado vale por 24 horas e some ao sair da conta, para não aparecer a outra pessoa que entrar no mesmo navegador.
 
 ### Ranking do grupo
 
@@ -665,7 +665,7 @@ Em qualquer tela de Hábitos, uma janela comemora ou avisa um acontecimento que 
 - **Você foi nocauteado:** mostra as moedas perdidas e que o HP foi restaurado. Nível e XP continuam. Botão **Recomeçar**.
 - **Conquista desbloqueada!** Mostra o nome, o nível, o bônus e o título liberado. Com várias de uma vez (como na primeira visita), uma janela só: "Você desbloqueou N conquistas!", com a lista e o bônus total. Botões **Ver conquistas** (abre a página) e **Continuar**.
 
-- **Desafio concluído!** Com vários, "N desafios concluídos!", com a lista e a recompensa total. Botão **Continuar**.
+- **Desafio concluído!** Com vários, "N desafios concluídos!", com a lista (hábito e esforço) e a recompensa total. Botão **Continuar**. Desafio que não deu não tem janela: não custa nada.
 - **Sua semana** (resumo, na primeira visita da semana, para quem jogou na anterior): o período, hábitos cumpridos, dias limpos, moedas ganhas e desafios concluídos, cada um com a diferença para a semana antes ("+3", "=", "−2"); como terminou cada desafio; e o **Ranking**: a posição em cada grupo ("🥈 Família · 2º de 5 · 180 pts · provisório"), que abre o grupo ao tocar. Botões **Planejar a semana** (abre Desafios) e **Continuar**. Aparece uma vez, em qualquer dispositivo.
 
 A ordem é: nocaute, conquistas, desafios, resumo da semana, nível (o bônus de uma conquista ou de um desafio pode subir o nível logo depois). O nocaute e o nível aparecem uma vez por dispositivo; as conquistas, os desafios e o resumo, uma vez só em qualquer dispositivo.

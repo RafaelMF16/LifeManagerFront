@@ -941,7 +941,7 @@ export default {
       targetFrequency: 'Meta de dias',
       targetVolume: 'Meta da semana',
       targetHint: 'Até {{max}} · já feito: {{done}}',
-      noBaseline: 'Ainda sem média: nenhuma semana fechada com este hábito.',
+      noBaseline: 'Ainda sem média (nenhuma semana inteira fechada com este hábito): o desafio vale como Leve.',
       baseline: 'Sua média: {{amount}} por semana',
       previewHint: 'Escolha o hábito e a meta para ver a recompensa.',
       create: 'Criar desafio',
@@ -1132,16 +1132,9 @@ export default {
       confirm: 'Continuar',
     },
     challenges: {
-      titleCompleted_one: 'Desafio concluído!',
-      titleCompleted_other: '{{count}} desafios concluídos!',
-      titleMissed_one: 'O desafio da semana acabou',
-      titleMissed_other: 'Os desafios da semana acabaram',
-      status: {
-        Completed: 'Concluído',
-        Failed: 'Não deu',
-      },
+      title_one: 'Desafio concluído!',
+      title_other: '{{count}} desafios concluídos!',
       message: 'A recompensa já está na sua conta. Bora planejar a próxima semana?',
-      messageMissed: 'O que não deu não custa nada: uma meta um pouco menor pode encaixar melhor na próxima.',
       confirm: 'Continuar',
     },
     summary: {

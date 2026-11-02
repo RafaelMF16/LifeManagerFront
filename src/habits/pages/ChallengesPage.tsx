@@ -21,6 +21,9 @@ import './ChallengesPage.css'
 
 const WEEKS: ChallengeWeek[] = ['Current', 'Next']
 
+// Espelha LifeManager.Domain/Habits/GameRules.MaxChallengesPerWeek.
+const MAX_CHALLENGES_PER_WEEK = 3
+
 /** `/habits/challenges`: plan this week and the next (create, accept a suggestion, give up) and look back at past weeks. */
 function ChallengesPage() {
   const { t: translate, i18n } = useTranslation(['habits', 'common'])
@@ -219,7 +222,7 @@ function ChallengesPage() {
 /** Why the week takes no new challenge: closed (after Wednesday), full, or no habit left to pick. */
 function whyClosed(week: ChallengeWeekDto) {
   if (!week.isOpen) return 'habits:challenges.why.closed'
-  if (week.challenges.length >= 3) return 'habits:challenges.why.full'
+  if (week.challenges.length >= MAX_CHALLENGES_PER_WEEK) return 'habits:challenges.why.full'
   return 'habits:challenges.why.noHabits'
 }
 

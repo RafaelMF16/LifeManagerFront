@@ -6,7 +6,7 @@ import Icon from '../../../shared/components/Icon/Icon'
 import type { NewAchievementDto } from '../../types/AchievementDtos'
 import type { ChallengeDto } from '../../types/ChallengeDtos'
 import { achievementBonus, achievementName, achievementTierName, achievementTitle } from '../../utils/achievements'
-import { challengeReward } from '../../utils/challenges'
+import { challengeReward, effortKey } from '../../utils/challenges'
 import type { GameMoment } from '../../utils/gameMoments'
 import WeeklySummary from '../WeeklySummary/WeeklySummary'
 import './GameMomentDialog.css'
@@ -26,7 +26,7 @@ interface GameMomentDialogProps {
 /**
  * Stops the player for what a toast would bury: a knockout (often caused by the day close while they were away), said
  * plainly with a way forward; new achievements, with their bonus and title (one moment for many, as on a first visit);
- * last week's summary, with a shortcut to plan the new one; the week's settled challenges (the ones met with their reward, the missed ones said gently); or a new level,
+ * last week's summary, with a shortcut to plan the new one; the challenges completed, with their reward; or a new level,
  * celebrated.
  */
 function GameMomentDialog({ moment, onClose, onSeeAchievements, onPlanWeek, onOpenGroup }: GameMomentDialogProps) {
@@ -135,11 +135,11 @@ function GameMomentDialog({ moment, onClose, onSeeAchievements, onPlanWeek, onOp
     )
   }
 
+  /** The profile only lists completed challenges (a missed one costs nothing and isn't celebrated). */
   function renderChallenges(challenges: ChallengeDto[]) {
-    const completed = challenges.filter((challenge) => challenge.status === 'Completed')
     const total = {
-      rewardCoins: completed.reduce((sum, challenge) => sum + challenge.rewardCoins, 0),
-      rewardXp: completed.reduce((sum, challenge) => sum + challenge.rewardXp, 0),
+      rewardCoins: challenges.reduce((sum, challenge) => sum + challenge.rewardCoins, 0),
+      rewardXp: challenges.reduce((sum, challenge) => sum + challenge.rewardXp, 0),
     }
 
     return (
@@ -148,26 +148,19 @@ function GameMomentDialog({ moment, onClose, onSeeAchievements, onPlanWeek, onOp
           <Icon name="target" size={32} />
         </span>
         <h2 id={titleId} className="lm-game-moment__title">
-          {translate(completed.length > 0 ? 'habits:moments.challenges.titleCompleted' : 'habits:moments.challenges.titleMissed', {
-            count: completed.length > 0 ? completed.length : challenges.length,
-          })}
+          {translate('habits:moments.challenges.title', { count: challenges.length })}
         </h2>
         <ul className="lm-game-moment__list">
           {challenges.map((challenge) => (
-            <li
-              key={challenge.id}
-              className={`lm-game-moment__item lm-game-moment__item--${challenge.status === 'Completed' ? 'completed' : 'missed'}`}
-            >
-              <Icon name={challenge.status === 'Completed' ? 'check' : 'x'} size={16} aria-hidden="true" />
+            <li key={challenge.id} className="lm-game-moment__item lm-game-moment__item--completed">
+              <Icon name="check" size={16} aria-hidden="true" />
               <span>{challenge.habitName}</span>
-              <span className="lm-game-moment__item-tier">{translate(`habits:moments.challenges.status.${challenge.status}`)}</span>
+              <span className="lm-game-moment__item-tier">{translate(effortKey(challenge.effort))}</span>
             </li>
           ))}
         </ul>
-        {completed.length > 0 ? <p className="lm-game-moment__loss">{challengeReward(total, translate)}</p> : null}
-        <p className="lm-game-moment__message">
-          {translate(completed.length === challenges.length ? 'habits:moments.challenges.message' : 'habits:moments.challenges.messageMissed')}
-        </p>
+        <p className="lm-game-moment__loss">{challengeReward(total, translate)}</p>
+        <p className="lm-game-moment__message">{translate('habits:moments.challenges.message')}</p>
       </div>
     )
   }

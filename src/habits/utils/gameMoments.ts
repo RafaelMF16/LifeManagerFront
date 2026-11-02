@@ -7,7 +7,7 @@ const SEEN_LEVEL_KEY = 'lm-habits-seen-level'
 
 /**
  * A moment worth stopping the player for, shown once: a knockout or a level is marked as seen on this device, new
- * achievements, settled challenges and the weekly summary on the backend (any device).
+ * achievements, completed challenges and the weekly summary on the backend (any device).
  */
 export type GameMoment =
   | { kind: 'knockout'; knockout: LastKnockoutDto }
@@ -19,7 +19,7 @@ export type GameMoment =
 /** Names a set of unlocks, so the layout can tell the ones it already closed (and is marking as seen) from new ones. */
 export const achievementsKey = (achievements: readonly NewAchievementDto[]) => achievements.map((achievement) => achievement.code).join(',')
 
-/** Same as {@link achievementsKey}, for a set of settled challenges. */
+/** Same as {@link achievementsKey}, for a set of completed challenges. */
 export const challengesKey = (challenges: readonly ChallengeDto[]) => challenges.map((challenge) => challenge.id).join(',')
 
 function readNumber(key: string): number | null {
@@ -62,7 +62,7 @@ export function levelBaseline(level: number, seenLevel: number | null): number |
 /**
  * What to show the player now, most important first: a knockout they haven't seen (whether a check-in or the day close
  * caused it), then the achievements they haven't been shown (unless the layout just closed that same set), then the
- * challenges settled since they last looked (same rule), then last week's summary (the layout fetches it, null when
+ * challenges completed since they last looked (same rule), then last week's summary (the layout fetches it, null when
  * there is none to show), then a level reached since the last one they saw (often one an achievement's bonus or a
  * challenge's reward paid for). Null when there is nothing new.
  */

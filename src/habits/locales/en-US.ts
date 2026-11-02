@@ -941,7 +941,7 @@ export default {
       targetFrequency: 'Days goal',
       targetVolume: 'Weekly goal',
       targetHint: 'Up to {{max}} · done so far: {{done}}',
-      noBaseline: 'No average yet: no closed week with this habit.',
+      noBaseline: 'No average yet (no whole closed week with this habit): the challenge counts as Light.',
       baseline: 'Your average: {{amount}} a week',
       previewHint: 'Pick the habit and the goal to see the reward.',
       create: 'Create challenge',
@@ -1132,16 +1132,9 @@ export default {
       confirm: 'Continue',
     },
     challenges: {
-      titleCompleted_one: 'Challenge completed!',
-      titleCompleted_other: '{{count}} challenges completed!',
-      titleMissed_one: 'The week’s challenge is over',
-      titleMissed_other: 'The week’s challenges are over',
-      status: {
-        Completed: 'Completed',
-        Failed: 'Missed',
-      },
+      title_one: 'Challenge completed!',
+      title_other: '{{count}} challenges completed!',
       message: 'The reward is already yours. Ready to plan next week?',
-      messageMissed: 'A missed one costs nothing: a slightly smaller goal may fit next week better.',
       confirm: 'Continue',
     },
     summary: {
