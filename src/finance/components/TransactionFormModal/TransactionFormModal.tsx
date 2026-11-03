@@ -21,6 +21,7 @@ import { toFormAmount } from '../../validation/amountSchema'
 import { transactionErrorFieldMap } from '../../validation/transactionErrorMap'
 import { TRANSACTION_DESCRIPTION_MAX_LENGTH, createTransactionSchema, monthDateRange } from '../../validation/transactionSchema'
 import type { TransactionFormValues } from '../../validation/transactionSchema'
+import MoneyInput from '../MoneyInput/MoneyInput'
 import './TransactionFormModal.css'
 
 const TYPES: MoneyFlowType[] = ['Expense', 'Income', 'Investment']
@@ -176,13 +177,10 @@ function TransactionFormModal({
             />
 
             <div className="lm-transaction-form__row">
-              <Input
+              <MoneyInput
                 label={translate('finance:transactions.form.amountLabel')}
                 prefix={translate('finance:transactions.form.amountPrefix')}
                 placeholder={translate('finance:transactions.form.amountPlaceholder')}
-                inputMode="decimal"
-                autoComplete="off"
-                numeric
                 error={fieldError(errors.amount?.message)}
                 {...register('amount')}
               />

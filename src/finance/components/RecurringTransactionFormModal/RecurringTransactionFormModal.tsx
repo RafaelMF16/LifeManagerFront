@@ -31,6 +31,7 @@ import {
 import type { RecurringTransactionFormValues } from '../../validation/recurringTransactionSchema'
 import { TRANSACTION_DESCRIPTION_MAX_LENGTH } from '../../validation/transactionSchema'
 import MonthYearSelect from '../MonthYearSelect/MonthYearSelect'
+import MoneyInput from '../MoneyInput/MoneyInput'
 import './RecurringTransactionFormModal.css'
 
 const TYPES: MoneyFlowType[] = ['Income', 'Expense', 'Investment']
@@ -188,13 +189,10 @@ function RecurringTransactionFormModal({
             />
 
             <div className="lm-recurring-form__row">
-              <Input
+              <MoneyInput
                 label={translate('finance:recurring.form.amountLabel')}
                 prefix={translate('finance:recurring.form.amountPrefix')}
                 placeholder={translate('finance:recurring.form.amountPlaceholder')}
-                inputMode="decimal"
-                autoComplete="off"
-                numeric
                 error={fieldError(errors.amount?.message)}
                 {...register('amount')}
               />

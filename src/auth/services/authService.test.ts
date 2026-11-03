@@ -7,26 +7,12 @@ import {
   verifyPasswordReset,
   verifyRegistration,
 } from './authService'
-
-function createStorage(): Storage {
-  const items = new Map<string, string>()
-  return {
-    get length() {
-      return items.size
-    },
-    clear: () => items.clear(),
-    getItem: (key) => items.get(key) ?? null,
-    key: (index) => [...items.keys()][index] ?? null,
-    removeItem: (key) => void items.delete(key),
-    setItem: (key, value) => void items.set(key, value),
-  }
-}
+import { getAccessToken, setAccessToken } from '../../shared/services/tokenStorage'
 
 describe('register', () => {
   const fetchMock = vi.fn<typeof fetch>()
 
   beforeEach(() => {
-    vi.stubGlobal('sessionStorage', createStorage())
     vi.stubGlobal('fetch', fetchMock)
     fetchMock.mockResolvedValue(new Response(null, { status: 202 }))
   })
@@ -57,7 +43,6 @@ describe('confirmation link', () => {
   const fetchMock = vi.fn<typeof fetch>()
 
   beforeEach(() => {
-    vi.stubGlobal('sessionStorage', createStorage())
     vi.stubGlobal('fetch', fetchMock)
   })
 
@@ -93,7 +78,6 @@ describe('password reset', () => {
   const fetchMock = vi.fn<typeof fetch>()
 
   beforeEach(() => {
-    vi.stubGlobal('sessionStorage', createStorage())
     vi.stubGlobal('fetch', fetchMock)
   })
 
@@ -126,13 +110,13 @@ describe('password reset', () => {
 
   it('resets the password with the token and the password only', async () => {
     fetchMock.mockResolvedValue(new Response(null, { status: 204 }))
-    sessionStorage.setItem('lm.accessToken', 'old-session')
+    setAccessToken('old-session')
 
     await resetPassword('tok_en', { password: 'password123', confirmPassword: 'password123' })
 
     const [input, init] = fetchMock.mock.calls[0]
     expect(String(input)).toMatch(/\/api\/Auth\/ResetPassword$/)
     expect(JSON.parse(String(init?.body))).toEqual({ token: 'tok_en', password: 'password123' })
-    expect(sessionStorage.getItem('lm.accessToken')).toBeNull()
+    expect(getAccessToken()).toBeNull()
   })
 })

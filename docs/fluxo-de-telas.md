@@ -125,6 +125,7 @@ As listas (meses, lançamentos, categorias, recorrências, hábitos, recompensas
 - Uma ação concluída mostra um aviso rápido na parte de baixo ("Categoria criada").
 - Um erro que não é de um campo específico abre uma janela de erro. Sem conexão com o servidor, aparece **Erro de conexão**.
 - Erros de um campo (nome repetido, valor inválido) aparecem embaixo do próprio campo.
+- Campos de valor em R$ (transação, recorrência, linha de importação, total do orçamento e o **Valor** do valor exato) se preenchem da direita para a esquerda, centavos primeiro, como no app do banco: digitar 5, 0, 0 mostra 5,00, com o separador de milhar do idioma. Apagar tira o último dígito, e apagar tudo deixa o campo vazio. O celular abre o teclado só de números.
 
 ### Sessão
 

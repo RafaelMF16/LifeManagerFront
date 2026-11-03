@@ -4,29 +4,49 @@ import { z } from 'zod'
 // fits numeric(14, 2). Every money field of the Finance forms is typed as text and read by `parseAmount`.
 export const AMOUNT_MAX_DECIMALS = 2
 export const AMOUNT_MAX_VALUE = 999_999_999_999.99
+/** Digits of AMOUNT_MAX_VALUE, cents included: the most a money field takes while typing. */
+export const AMOUNT_MAX_DIGITS = 14
 
 const AMOUNT_PATTERN = /^\d+(\.\d+)?$/
 
 /**
- * Reads what the user typed as money: "1234,56", "1.234,56" and "1234.56" are all 1234.56.
- * With a comma present, dots are thousands separators. Returns null when it isn't a plain number.
+ * The decimal separator of a typed amount: with both a comma and a dot, the last one ("1.234,56", "1,234.56"),
+ * otherwise a comma when there is one. The other separator groups thousands.
+ */
+function decimalSeparator(compact: string) {
+  return compact.lastIndexOf(',') > compact.lastIndexOf('.') ? ',' : '.'
+}
+
+/**
+ * Reads what the user typed as money: "1234,56", "1.234,56", "1,234.56" and "1234.56" are all 1234.56.
+ * Returns null when it isn't a plain number.
  */
 export function parseAmount(value: string): number | null {
   const compact = value.replace(/\s/g, '')
-  const normalized = compact.includes(',') ? compact.replace(/\./g, '').replace(',', '.') : compact
+  const normalized = decimalSeparator(compact) === ',' ? compact.replace(/\./g, '').replace(',', '.') : compact.replace(/,/g, '')
   return AMOUNT_PATTERN.test(normalized) ? Number(normalized) : null
 }
 
 function decimalPlaces(value: string) {
   const compact = value.replace(/\s/g, '')
-  const separator = compact.includes(',') ? ',' : '.'
-  const index = compact.lastIndexOf(separator)
+  const index = compact.lastIndexOf(decimalSeparator(compact))
   return index === -1 ? 0 : compact.length - index - 1
 }
 
-/** A stored amount as the form shows it to be edited: "1234,56" in pt-BR, no grouping. */
+/** A stored amount as the form shows it to be edited: "1.234,56" in pt-BR. */
 export function toFormAmount(amount: number, language: string) {
-  return new Intl.NumberFormat(language, { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false }).format(amount)
+  return new Intl.NumberFormat(language, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount)
+}
+
+/**
+ * What a money field shows while typing: digits fill from the right, cents first (Banco Inter style), so
+ * "5" is "0,05" and "1234567" is "12.345,67". Erasing the last character drops the last digit. Only zeros → ""
+ * (erasing everything ends on the placeholder, not stuck on "0,00"); digits past AMOUNT_MAX_DIGITS are ignored.
+ */
+export function formatAmountInput(value: string, language: string) {
+  const digits = value.replace(/\D/g, '').replace(/^0+/, '').slice(0, AMOUNT_MAX_DIGITS)
+  // At most 14 digits, so the division stays exact to the cent.
+  return digits === '' ? '' : toFormAmount(Number(digits) / 100, language)
 }
 
 /**

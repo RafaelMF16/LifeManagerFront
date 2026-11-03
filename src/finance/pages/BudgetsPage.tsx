@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useBlocker, useSearchParams } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
-import Input from '../../shared/components/Input/Input'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
@@ -17,6 +16,7 @@ import DeleteBudgetPlanModal from '../components/DeleteBudgetPlanModal/DeleteBud
 import ExactValueDialog from '../components/ExactValueDialog/ExactValueDialog'
 import LeaveBudgetDialog from '../components/LeaveBudgetDialog/LeaveBudgetDialog'
 import MonthNavigator from '../components/MonthNavigator/MonthNavigator'
+import MoneyInput from '../components/MoneyInput/MoneyInput'
 import UnsavedChangesBar from '../components/UnsavedChangesBar/UnsavedChangesBar'
 import { useBudgetPlan } from '../hooks/useBudgetPlan'
 import { useBudgetTotalField } from '../hooks/useBudgetTotalField'
@@ -212,13 +212,10 @@ function BudgetsPage() {
               <span className="lm-budget-plan__total-value lm-numeric">{money(draft.total ?? 0)}</span>
             </div>
           ) : (
-            <Input
+            <MoneyInput
               label={translate('finance:budgetPlan.total')}
               prefix={translate('finance:budgetPlan.totalPrefix')}
               placeholder={translate('finance:budgetPlan.totalPlaceholder')}
-              inputMode="decimal"
-              autoComplete="off"
-              numeric
               value={totalField.text}
               error={totalField.error ? translate(totalField.error) : undefined}
               onChange={(event) => totalField.change(event.target.value)}
