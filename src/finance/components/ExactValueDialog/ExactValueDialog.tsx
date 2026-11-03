@@ -9,6 +9,7 @@ import SegmentedControl from '../../../shared/components/SegmentedControl/Segmen
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import { percentFromAmount, sliceAmount } from '../../utils/budgetPlan'
 import { parseAmount, toFormAmount } from '../../validation/amountSchema'
+import MoneyInput from '../MoneyInput/MoneyInput'
 
 type Unit = 'percent' | 'amount'
 
@@ -39,6 +40,11 @@ function ExactValueDialog({ name, percent, max, total, onApply, onClose }: Exact
     setError(null)
   }
 
+  function changeText(next: string) {
+    setText(next)
+    setError(null)
+  }
+
   function submit(event: FormEvent) {
     event.preventDefault()
     const value = parseAmount(text)
@@ -50,6 +56,8 @@ function ExactValueDialog({ name, percent, max, total, onApply, onClose }: Exact
     onApply(unit === 'percent' ? value : percentFromAmount(total, value))
     onClose()
   }
+
+  const hint = translate('finance:budgetPlan.exact.hint', { max: sharePercent(max), amount: money(sliceAmount(total, max)) })
 
   return (
     <Dialog labelledBy={titleId} onClose={onClose}>
@@ -74,22 +82,31 @@ function ExactValueDialog({ name, percent, max, total, onApply, onClose }: Exact
               onChange={changeUnit}
             />
           ) : null}
-          <Input
-            label={translate(unit === 'percent' ? 'finance:budgetPlan.exact.percentLabel' : 'finance:budgetPlan.exact.amountLabel')}
-            prefix={unit === 'amount' ? translate('finance:budgetPlan.exact.unitAmount') : undefined}
-            suffix={unit === 'percent' ? translate('finance:budgetPlan.exact.unitPercent') : undefined}
-            inputMode="decimal"
-            autoComplete="off"
-            numeric
-            autoFocus
-            value={text}
-            hint={translate('finance:budgetPlan.exact.hint', { max: sharePercent(max), amount: money(sliceAmount(total, max)) })}
-            error={error ?? undefined}
-            onChange={(event) => {
-              setText(event.target.value)
-              setError(null)
-            }}
-          />
+          {unit === 'amount' ? (
+            // Money fills from the right, cents first; a percentage is typed freely.
+            <MoneyInput
+              label={translate('finance:budgetPlan.exact.amountLabel')}
+              prefix={translate('finance:budgetPlan.exact.unitAmount')}
+              autoFocus
+              value={text}
+              hint={hint}
+              error={error ?? undefined}
+              onChange={(event) => changeText(event.target.value)}
+            />
+          ) : (
+            <Input
+              label={translate('finance:budgetPlan.exact.percentLabel')}
+              suffix={translate('finance:budgetPlan.exact.unitPercent')}
+              inputMode="decimal"
+              autoComplete="off"
+              numeric
+              autoFocus
+              value={text}
+              hint={hint}
+              error={error ?? undefined}
+              onChange={(event) => changeText(event.target.value)}
+            />
+          )}
         </div>
 
         <div className="lm-dialog__footer">

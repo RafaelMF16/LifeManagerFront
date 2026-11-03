@@ -24,6 +24,7 @@ import { IMPORT_ROW_MIN_DATE, createImportRowSchema } from '../../validation/imp
 import type { ImportRowFormValues } from '../../validation/importRowSchema'
 import { importRowErrorFieldMap } from '../../validation/statementImportErrorMap'
 import { TRANSACTION_DESCRIPTION_MAX_LENGTH } from '../../validation/transactionSchema'
+import MoneyInput from '../MoneyInput/MoneyInput'
 import './ImportRowFormModal.css'
 
 const TYPES: MoneyFlowType[] = ['Expense', 'Income', 'Investment']
@@ -134,12 +135,9 @@ function ImportRowFormModal({ row, categories, onClose, onSubmit }: ImportRowFor
             />
 
             <div className="lm-import-row-form__row">
-              <Input
+              <MoneyInput
                 label={translate('finance:transactions.form.amountLabel')}
                 prefix={translate('finance:transactions.form.amountPrefix')}
-                inputMode="decimal"
-                autoComplete="off"
-                numeric
                 error={fieldError(errors.amount?.message)}
                 {...register('amount')}
               />
