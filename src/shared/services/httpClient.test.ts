@@ -7,20 +7,6 @@ function jsonResponse(status: number, body?: unknown): Response {
   return new Response(body === undefined ? null : JSON.stringify(body), { status })
 }
 
-function createStorage(): Storage {
-  const items = new Map<string, string>()
-  return {
-    get length() {
-      return items.size
-    },
-    clear: () => items.clear(),
-    getItem: (key) => items.get(key) ?? null,
-    key: (index) => [...items.keys()][index] ?? null,
-    removeItem: (key) => void items.delete(key),
-    setItem: (key, value) => void items.set(key, value),
-  }
-}
-
 const isRefreshCall = (input: RequestInfo | URL) => String(input).endsWith('/api/Auth/Refresh')
 const authHeaderOf = (init?: RequestInit) => (init?.headers as Record<string, string> | undefined)?.Authorization
 
@@ -28,7 +14,6 @@ describe('apiRequest (renovação do access token)', () => {
   const fetchMock = vi.fn<typeof fetch>()
 
   beforeEach(() => {
-    vi.stubGlobal('sessionStorage', createStorage())
     vi.stubGlobal('fetch', fetchMock)
     setAccessToken('expired-token')
   })
