@@ -11,9 +11,11 @@ const FAMILY_ICONS: Record<AchievementFamily, IconName> = {
   CleanDays: 'sparkles',
   Overcoming: 'trophy',
   Ranking: 'users',
+  Finance: 'piggy-bank',
 }
 
-export const achievementFamilyIcon = (family: AchievementFamily): IconName => FAMILY_ICONS[family]
+/** A family the API added before this frontend knew it still gets an icon, instead of breaking the page. */
+export const achievementFamilyIcon = (family: AchievementFamily): IconName => FAMILY_ICONS[family] ?? 'trophy'
 
 export const achievementName = (code: AchievementCode, translate: Translate) => translate(`habits:achievements.names.${code}`)
 
@@ -26,11 +28,13 @@ export const isUnlocked = (achievement: AchievementDto) => achievement.unlockedA
 
 /**
  * The family's tiers share one number, so its texts are keyed by family; the two one-off feats of `Overcoming` count
- * different things, so theirs are keyed by code, and `Ranking` counts two numbers (wins and podiums), each its own key.
+ * different things, so theirs are keyed by code, and `Ranking` (wins, podiums) and `Finance` (budget, investment and
+ * savings months) count several numbers, each its own key.
  */
 function criterionKey(achievement: Pick<AchievementDto, 'code' | 'family'>) {
   if (achievement.family === 'Overcoming') return achievement.code
   if (achievement.family === 'Ranking') return achievement.code.startsWith('RankingWins') ? 'RankingWins' : 'RankingPodiums'
+  if (achievement.family === 'Finance') return achievement.code.replace(/\d+$/, '')
   return achievement.family
 }
 
