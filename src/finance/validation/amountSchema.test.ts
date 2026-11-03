@@ -62,7 +62,7 @@ describe('formatAmountInput', () => {
     ['5', '0,05'],
     ['50', '0,50'],
     ['500', '5,00'],
-    ['0', '0,00'],
+    ['0', ''],
     ['005', '0,05'],
     ['0,050', '0,50'],
     ['1234567', '12.345,67'],
@@ -84,7 +84,8 @@ describe('formatAmountInput', () => {
 
   it('drops the last digit when the last character is erased', () => {
     expect(formatAmountInput('12.345,6', 'pt-BR')).toBe('1.234,56')
-    expect(formatAmountInput('0,0', 'pt-BR')).toBe('0,00')
+    // Erasing the last cent empties the field, so the placeholder comes back.
+    expect(formatAmountInput('0,0', 'pt-BR')).toBe('')
   })
 
   it('reads back as the amount shown', () => {

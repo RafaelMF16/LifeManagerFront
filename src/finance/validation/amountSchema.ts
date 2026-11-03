@@ -40,11 +40,11 @@ export function toFormAmount(amount: number, language: string) {
 
 /**
  * What a money field shows while typing: digits fill from the right, cents first (Banco Inter style), so
- * "5" is "0,05" and "1234567" is "12.345,67". Erasing the last character drops the last digit. No digits → ""
- * so the field's placeholder shows; digits past AMOUNT_MAX_DIGITS are ignored.
+ * "5" is "0,05" and "1234567" is "12.345,67". Erasing the last character drops the last digit. Only zeros → ""
+ * (erasing everything ends on the placeholder, not stuck on "0,00"); digits past AMOUNT_MAX_DIGITS are ignored.
  */
 export function formatAmountInput(value: string, language: string) {
-  const digits = value.replace(/\D/g, '').replace(/^0+(?=\d)/, '').slice(0, AMOUNT_MAX_DIGITS)
+  const digits = value.replace(/\D/g, '').replace(/^0+/, '').slice(0, AMOUNT_MAX_DIGITS)
   // At most 14 digits, so the division stays exact to the cent.
   return digits === '' ? '' : toFormAmount(Number(digits) / 100, language)
 }
