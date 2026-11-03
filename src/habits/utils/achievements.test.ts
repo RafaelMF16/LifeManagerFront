@@ -6,6 +6,7 @@ import type { AchievementDto } from '../types/AchievementDtos'
 import {
   achievementBonus,
   achievementCriterion,
+  achievementFamilyIcon,
   achievementName,
   achievementPercent,
   achievementProgressLabel,
@@ -47,6 +48,28 @@ const comeback = achievement({ code: 'Comeback', family: 'Overcoming', tier: 'Si
 const automatic = achievement({ code: 'AutomaticHabit', family: 'Overcoming', tier: 'Gold', threshold: 66 })
 const wins5 = achievement({ code: 'RankingWins5', family: 'Ranking', tier: 'Silver', threshold: 5, progress: 4 })
 const podiums3 = achievement({ code: 'RankingPodiums3', family: 'Ranking', threshold: 3, progress: 1 })
+
+const budget3 = achievement({ code: 'BudgetMonths3', family: 'Finance', tier: 'Silver', threshold: 3, progress: 1 })
+const savings1 = achievement({ code: 'SavingsMonths1', family: 'Finance', threshold: 1 })
+
+describe('Finance achievements', () => {
+  it('has an icon, names and texts for each of its numbers', () => {
+    expect(achievementFamilyIcon('Finance')).toBe('piggy-bank')
+    expect(achievementName('InvestmentMonths12', pt)).toBe('Um ano investindo')
+    expect(achievementTitle('SavingsMonths12', en)).toBe('Full vault')
+    expect(achievementCriterion(budget3, pt)).toBe('3 meses fechados dentro do orçamento')
+    expect(achievementRemaining(budget3, en)).toBe('2 months within the budget to go')
+    expect(achievementCriterion(savings1, pt)).toBe('1 mês fechado poupando 20% da renda')
+  })
+
+  it('counts each of its numbers as its own next goal', () => {
+    expect(nearestAchievements([budget3, savings1], 5)).toEqual([budget3, savings1])
+  })
+
+  it('falls back to an icon for a family this frontend does not know', () => {
+    expect(achievementFamilyIcon('Unknown' as AchievementDto['family'])).toBe('trophy')
+  })
+})
 
 describe('achievement texts', () => {
   it('names the achievement and its title in both languages', () => {

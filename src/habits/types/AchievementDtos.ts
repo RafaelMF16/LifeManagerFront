@@ -22,7 +22,16 @@ export type AchievementCode =
   | 'RankingPodiums3'
   | 'RankingPodiums10'
   | 'RankingPodiums30'
-export type AchievementFamily = 'CheckIns' | 'Streak' | 'Level' | 'Redemptions' | 'CleanDays' | 'Overcoming' | 'Ranking'
+  | 'BudgetMonths1'
+  | 'BudgetMonths3'
+  | 'BudgetMonths6'
+  | 'InvestmentMonths2'
+  | 'InvestmentMonths6'
+  | 'InvestmentMonths12'
+  | 'SavingsMonths1'
+  | 'SavingsMonths3'
+  | 'SavingsMonths12'
+export type AchievementFamily = 'CheckIns' | 'Streak' | 'Level' | 'Redemptions' | 'CleanDays' | 'Overcoming' | 'Ranking' | 'Finance'
 export type AchievementTier = 'Bronze' | 'Silver' | 'Gold'
 
 // Espelha LifeManager.Application/Achievements/DTOs

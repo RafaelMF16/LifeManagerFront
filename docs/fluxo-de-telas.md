@@ -601,7 +601,7 @@ Metas da semana para fazer um pouco mais que o normal num hábito: mais dias, ou
 
 - **Cabeçalho:** "N de 22 desbloqueadas".
 - **Quase lá:** até 3 próximos objetivos (a próxima conquista de cada família), as mais perto de sair primeiro, com a barra e o que falta ("Faltam 3 check-ins"). Some quando todas estiverem desbloqueadas.
-- **Todas as conquistas**, por família: Check-ins, Ofensiva, Nível, Resgates, Dias limpos, Superação e Ranking (vitórias: "5 semanas em 1º num grupo"; pódios: "3 semanas no pódio de um grupo"). Cada cartão mostra o nível (bronze, prata ou ouro), o nome, o que é preciso ("100 check-ins"), o bônus ("+100 moedas · +150 XP") e o título que libera.
+- **Todas as conquistas**, por família: Check-ins, Ofensiva, Nível, Resgates, Dias limpos, Superação, Ranking (vitórias: "5 semanas em 1º num grupo"; pódios: "3 semanas no pódio de um grupo") e Finanças (meses fechados dentro do orçamento, com a meta de investimento batida ou poupando 20% da renda). Cada cartão mostra o nível (bronze, prata ou ouro), o nome, o que é preciso ("100 check-ins"), o bônus ("+100 moedas · +150 XP") e o título que libera.
   - **Bloqueada:** em cinza, com um cadeado e a barra de progresso ("37 / 100").
   - **Desbloqueada:** na cor da medalha, com a data. Uma conquista desbloqueada é para sempre, mesmo que um check-in seja desfeito.
 
