@@ -30,6 +30,7 @@ import ShopPage from './habits/pages/ShopPage'
 import TodayPage from './habits/pages/TodayPage'
 import HomePage from './home/pages/HomePage'
 import { ErrorModalProvider } from './shared/components/ErrorModal/ErrorModalProvider'
+import { LoginTransitionProvider } from './shared/components/LoginTransition/LoginTransitionProvider'
 import ProtectedRoute from './shared/components/ProtectedRoute/ProtectedRoute'
 import PublicOnlyRoute from './shared/components/PublicOnlyRoute/PublicOnlyRoute'
 import { ToastProvider } from './shared/components/Toast/ToastProvider'
@@ -99,7 +100,9 @@ function App() {
   return (
     <ToastProvider>
       <ErrorModalProvider>
-        <RouterProvider router={router} />
+        <LoginTransitionProvider>
+          <RouterProvider router={router} />
+        </LoginTransitionProvider>
       </ErrorModalProvider>
     </ToastProvider>
   )
