@@ -18,6 +18,7 @@ import type {
   TransactionTypeFilter,
 } from '../../types/TransactionDtos'
 import Amount from '../Amount/Amount'
+import TransactionListSkeleton from './TransactionListSkeleton'
 import './TransactionList.css'
 
 const ALL_CATEGORIES = 'all'
@@ -112,9 +113,7 @@ function TransactionList({
   )
 
   function renderRows() {
-    if (status === 'loading') {
-      return <div className="lm-transaction-list__state">{translate('finance:transactions.list.loading')}</div>
-    }
+    if (status === 'loading') return <TransactionListSkeleton />
 
     if (status === 'error' || !data) {
       return (
