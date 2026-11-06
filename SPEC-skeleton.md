@@ -25,6 +25,11 @@ Trocar os textos "Carregando…" por **esqueletos com a mesma forma do conteúdo
 | Hábitos | `HabitList`, `RewardList`, `RedemptionList`, `LedgerList` | 4–5 linhas no formato real |
 | Hábitos | `HabitDetailsPage` | stats e heatmap (bloco) |
 | Hábitos | `PlayerHeader` | já tem placeholder. Migrar para os primitivos novos, sem mudar o tamanho |
+| Finanças | `DailySpendingCalendar` | grade do calendário (blocos dos dias) |
+| Hábitos | `AchievementGrid`, `GameItemList` | grade de cards no formato real |
+| Hábitos | `ChallengesPage` | 3 cards de desafio |
+| Hábitos | `ProfilePage`, `ProfileShowcase`, `EvolutionChart` | vitrine do perfil e bloco do gráfico |
+| Hábitos | `RankingGroupList`, `RankingGroupPage` | 4 linhas de grupo e 5 linhas de ranking |
 
 ### O que **não** vira skeleton
 

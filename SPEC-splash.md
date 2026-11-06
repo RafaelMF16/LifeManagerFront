@@ -80,7 +80,7 @@ src/shared/utils/
 
 ### Pontos de contato
 
-- **`App.tsx`:** o `LoginTransitionProvider` envolve as `<Routes>`, dentro do `BrowserRouter` e ao lado dos providers de Toast e ErrorModal.
+- **`App.tsx`:** o `LoginTransitionProvider` envolve o `<RouterProvider>`, ao lado dos providers de Toast e ErrorModal. O `App` agora usa data router, e a camada não depende do router.
 - **`ProtectedRoute.tsx`:** `return null` → `return <SplashScreen />`.
 - **`LoginForm.tsx`:** depois das preferências, `await playLoginTransition()`, depois o `navigate(...)`. O toast fica só no caminho com movimento reduzido.
 - **`AuthPage.tsx`:** pré-carrega o sprite da transição.

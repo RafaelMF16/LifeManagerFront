@@ -10,7 +10,7 @@ Quando a tela `/auth` abre, ela começa **quase escura e clareia** (como luzes a
 
 ### Véu (escuro → claro)
 
-- Um pseudo-elemento `::before` em `.lm-auth-page` cobre a tela inteira (`position: fixed; inset: 0`). Ele tem `pointer-events: none` e fica por cima do conteúdo.
+- Um pseudo-elemento `::before` em `.lm-auth-page--entrance` cobre a tela inteira (`position: fixed; inset: 0`). Ele tem `pointer-events: none` e fica por cima do conteúdo.
 - Começa em `rgb(2 6 23 / 0.88)` (`--slate-950` a 88%) e vai a opacidade 0 em **600ms** com `--ease-out`.
 - É igual nos dois temas. No tema escuro o efeito sai mais sutil, como esperado.
 
@@ -38,14 +38,15 @@ Quando a tela `/auth` abre, ela começa **quase escura e clareia** (como luzes a
 
 ## Design técnico
 
-- **`AuthPage.css`:** o véu (`::before` + `@keyframes lm-auth-veil`) e a regra genérica `.lm-auth-page [data-enter]` com `@keyframes lm-auth-rise` e `lm-auth-drop`. Tudo dentro de `@media (prefers-reduced-motion: no-preference)`.
-- **`AuthPage.tsx`, `AuthTabs.tsx`, `LoginForm.tsx` e `RegisterForm.tsx`:** só recebem `data-enter` e `style={{ '--enter-index': n }}` nos blocos da tabela. Nenhuma lógica nova, nenhum estado.
+- **`AuthLayout`** (o frame compartilhado com as telas de senha): ganha a prop `entrance?: boolean` (padrão `false`), que adiciona a classe `lm-auth-page--entrance`. **Só o `AuthPage` passa `true`**, então esqueci a senha, definir senha e redefinir senha não animam.
+- **`AuthLayout.css`:** o véu (`::before` + `@keyframes lm-auth-veil`) e a regra genérica `.lm-auth-page--entrance [data-enter]` com `@keyframes lm-auth-rise` e `lm-auth-drop`. Tudo dentro de `@media (prefers-reduced-motion: no-preference)`.
+- **`AuthLayout.tsx` (cabeçalho), `AuthTabs.tsx`, `LoginForm.tsx` e `RegisterForm.tsx`:** só recebem `data-enter` e `style={{ '--enter-index': n }}` nos blocos da tabela. Nenhuma lógica nova, nenhum estado.
 - **`motion.css`, tokens novos:** `--duration-reveal: 600ms`, `--duration-enter: 420ms`, `--stagger-step: 70ms`.
 - **Tipagem:** se `'--enter-index'` em `style` acusar erro no TS, usar um cast local (`as CSSProperties`) ou declarar a propriedade custom. Nunca usar `@ts-ignore`.
 
 ```css
 @media (prefers-reduced-motion: no-preference) {
-  .lm-auth-page::before {
+  .lm-auth-page--entrance::before {
     content: '';
     position: fixed;
     inset: 0;
@@ -55,12 +56,12 @@ Quando a tela `/auth` abre, ela começa **quase escura e clareia** (como luzes a
     animation: lm-auth-veil var(--duration-reveal) var(--ease-out) both;
   }
 
-  .lm-auth-page [data-enter] {
+  .lm-auth-page--entrance [data-enter] {
     animation: lm-auth-rise var(--duration-enter) var(--ease-out) both;
     animation-delay: calc(var(--enter-index, 0) * var(--stagger-step));
   }
 
-  .lm-auth-page [data-enter='drop'] {
+  .lm-auth-page--entrance [data-enter='drop'] {
     animation-name: lm-auth-drop;
   }
 }
