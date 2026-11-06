@@ -11,6 +11,8 @@
   --duration-reveal: 600ms;
   --duration-enter: 420ms;
   --stagger-step: 70ms;
+  /* One breath of a loading skeleton block. */
+  --duration-pulse: 1400ms;
   --transition-control: background-color var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard),
