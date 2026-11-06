@@ -3,6 +3,8 @@ import type { KeyboardEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import IconButton from '../../../shared/components/IconButton/IconButton'
+import Skeleton from '../../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../../shared/components/Skeleton/SkeletonGroup'
 import { useDashboardDays } from '../../hooks/useDashboardDays'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import { usePrivacyMode } from '../../hooks/usePrivacyMode'
@@ -12,6 +14,37 @@ import { dayHeatLevel } from '../../utils/dayHeatLevel'
 import { parseYearMonth, toIsoDate, toYearMonth } from '../../utils/yearMonth'
 import DayExpensesPanel from '../DayExpensesPanel/DayExpensesPanel'
 import './DailySpendingCalendar.css'
+
+const SKELETON_WEEKDAYS = [0, 1, 2, 3, 4, 5, 6]
+const SKELETON_WEEKS = [0, 1, 2, 3, 4]
+
+/** The month's first load: the calendar grid (weekday row and five weeks of day blocks) in its own classes. */
+function CalendarSkeleton({ label }: { label: string }) {
+  return (
+    <SkeletonGroup label={label} className="lm-daily-calendar__body">
+      <div className="lm-daily-calendar__calendar">
+        <div className="lm-daily-calendar__grid">
+          <div className="lm-daily-calendar__row">
+            {SKELETON_WEEKDAYS.map((weekday) => (
+              <span key={weekday} className="lm-daily-calendar__weekday">
+                <Skeleton width="50%" />
+              </span>
+            ))}
+          </div>
+          {SKELETON_WEEKS.map((week) => (
+            <div key={week} className="lm-daily-calendar__row">
+              {SKELETON_WEEKDAYS.map((weekday) => (
+                <span key={weekday} className="lm-daily-calendar__cell">
+                  <Skeleton shape="block" width="100%" height={56} />
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </SkeletonGroup>
+  )
+}
 
 /** The legend's swatches, from no spending to the month's biggest days. */
 const LEGEND_LEVELS = [0, 1, 2, 3, 4] as const
@@ -95,9 +128,7 @@ function DailySpendingCalendar({ months }: DailySpendingCalendarProps) {
       )
     }
 
-    if (!data) {
-      return <div className="lm-daily-calendar__state">{translate('finance:dashboard.days.loading')}</div>
-    }
+    if (!data) return <CalendarSkeleton label={translate('finance:dashboard.days.loading')} />
 
     return (
       <div
