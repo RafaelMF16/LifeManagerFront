@@ -6,6 +6,7 @@ import Input from '../../../shared/components/Input/Input'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
 import { useToast } from '../../../shared/hooks/useToast'
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
+import { useLoginTransition } from '../../../shared/hooks/useLoginTransition'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
 import { isApiError } from '../../../shared/types/ApiError'
 import { loadAndApplyUserPreferences } from '../../../shared/services/userPreferencesService'
@@ -28,6 +29,7 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   } = useZodForm(loginSchema)
   const { show: showToast } = useToast()
   const { show: showErrorModal } = useErrorModal()
+  const { play: playLoginTransition } = useLoginTransition()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -45,7 +47,10 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
 
     // A failure here must not block the login: the locally stored preferences stay applied.
     await loadAndApplyUserPreferences().catch(() => {})
-    showToast(translate('auth:login.successToast'))
+    // After the preferences, so the cover already has the user's theme. The wallet is the success feedback; the toast
+    // only stands in for it when the user prefers reduced motion.
+    const played = await playLoginTransition(translate('auth:login.entering'))
+    if (!played) showToast(translate('auth:login.successToast'))
     // Back to the screen ProtectedRoute bounced the user from; `replace` so "back" doesn't return to /auth.
     const from = (location.state as { from?: Location } | null)?.from
     navigate(from ? `${from.pathname}${from.search}` : '/home', { replace: true })
