@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
 import Icon from '../../shared/components/Icon/Icon'
+import Skeleton from '../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../shared/components/Skeleton/SkeletonGroup'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
@@ -41,6 +43,35 @@ import StarterSuggestions from '../components/StarterSuggestions/StarterSuggesti
 import { HABIT_TEMPLATES } from '../utils/starterTemplates'
 import type { HabitsPageState } from './HabitsPage'
 import './TodayPage.css'
+
+const SKELETON_ITEMS = [0, 1, 2, 3]
+
+/** The day's first load: a checklist of items in the check item's own classes (box, name and details, streak). */
+function TodaySkeleton({ label }: { label: string }) {
+  return (
+    <SkeletonGroup label={label} className="lm-today-page__section">
+      <div className="lm-today-page__section-header">
+        <Skeleton width={120} height={18} />
+      </div>
+      <div className="lm-today-page__list">
+        {SKELETON_ITEMS.map((item) => (
+          <div key={item} className="lm-habit-check">
+            <span className="lm-habit-item">
+              <Skeleton shape="block" width={28} height={28} />
+              <span className="lm-habit-item__main">
+                <Skeleton width={item % 2 === 0 ? '55%' : '40%'} />
+                <Skeleton width="30%" />
+              </span>
+              <span className="lm-habit-item__side">
+                <Skeleton width={32} />
+              </span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </SkeletonGroup>
+  )
+}
 
 /**
  * Changed in another tab or device (a target set elsewhere included): the reloaded list already shows it as it is.
@@ -189,9 +220,7 @@ function TodayPage() {
   }
 
   function renderContent() {
-    if (habits.status === 'loading') {
-      return <p className="lm-today-page__state">{translate('habits:today.loading')}</p>
-    }
+    if (habits.status === 'loading') return <TodaySkeleton label={translate('habits:today.loading')} />
 
     if (habits.status === 'error' || !habits.date) {
       return (

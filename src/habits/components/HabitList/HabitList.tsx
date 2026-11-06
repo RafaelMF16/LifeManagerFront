@@ -14,6 +14,7 @@ import { formatFrequency } from '../../utils/formatFrequency'
 import { HABIT_TEMPLATES } from '../../utils/starterTemplates'
 import type { HabitTemplateId } from '../../utils/starterTemplates'
 import StarterSuggestions from '../StarterSuggestions/StarterSuggestions'
+import HabitListSkeleton from './HabitListSkeleton'
 import './HabitList.css'
 
 const STATUS_FILTERS: HabitStatusFilter[] = ['Active', 'Archived']
@@ -130,9 +131,7 @@ function HabitList({
   }
 
   function renderRows() {
-    if (status === 'loading') {
-      return <div className="lm-habit-list__state">{translate('habits:habits.list.loading')}</div>
-    }
+    if (status === 'loading') return <HabitListSkeleton />
 
     if (status === 'error' || !data) {
       return (
