@@ -214,34 +214,6 @@
   }
 }
 
-/* Loading: same footprint as the loaded card, so nothing jumps when the profile arrives. */
-.lm-player-header__placeholder {
-  display: block;
-  border-radius: var(--radius-sm);
-  background: var(--surface-sunken);
-}
-
-.lm-player-header__placeholder--avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-}
-
-.lm-player-header__placeholder--badge {
-  width: 64px;
-  height: 22px;
-  border-radius: var(--radius-pill);
-}
-
-.lm-player-header__placeholder--stats {
-  width: 96px;
-  height: 18px;
-}
-
-.lm-player-header__placeholder--bar {
-  height: 30px;
-}
-
 .lm-player-header__visually-hidden {
   position: absolute;
   width: 1px;
