@@ -84,7 +84,8 @@
   }
 
   .lm-auth-page--entrance [data-enter] {
-    animation: lm-auth-rise var(--duration-enter) var(--ease-out) both;
+    /* backwards: hidden during its delay, then hands transform back (e.g. a button's pressed state) when done. */
+    animation: lm-auth-rise var(--duration-enter) var(--ease-out) backwards;
     animation-delay: calc(var(--enter-index, 0) * var(--stagger-step));
   }
 

@@ -13,6 +13,7 @@ import { loadAndApplyUserPreferences } from '../../../shared/services/userPrefer
 import { login } from '../../services/authService'
 import { loginErrorFieldMap, loginFallbackMessage } from '../../validation/userErrorMap'
 import { loginSchema } from '../../validation/userSchemas'
+import { enterStyle } from '../../utils/enterStyle'
 import '../AuthForm.css'
 
 interface LoginFormProps {
@@ -58,12 +59,12 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
 
   return (
     <form className="lm-auth-tabs__panel" onSubmit={onSubmit} noValidate>
-      <div className="lm-auth-form__header">
+      <div className="lm-auth-form__header" data-enter="" style={enterStyle(2)}>
         <h1 className="lm-auth-form__title">{translate('auth:login.title')}</h1>
         <p className="lm-auth-form__subtitle">{translate('auth:login.subtitle')}</p>
       </div>
 
-      <div className="lm-auth-form__fields">
+      <div className="lm-auth-form__fields" data-enter="" style={enterStyle(3)}>
         <Input
           label={translate('auth:fields.email.label')}
           type="email"
@@ -82,7 +83,7 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
         />
       </div>
 
-      <div className="lm-auth-form__forgot">
+      <div className="lm-auth-form__forgot" data-enter="" style={enterStyle(4)}>
         <Link to="/auth/forgot-password">{translate('auth:login.forgotPassword')}</Link>
       </div>
 
@@ -92,11 +93,19 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
         </p>
       ) : null}
 
-      <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
+      <Button
+        type="submit"
+        variant="primary"
+        size="lg"
+        fullWidth
+        loading={isSubmitting}
+        data-enter=""
+        style={enterStyle(4)}
+      >
         {translate('auth:login.submit')}
       </Button>
 
-      <p className="lm-auth-form__footer">
+      <p className="lm-auth-form__footer" data-enter="" style={enterStyle(5)}>
         {translate('auth:login.noAccount')}{' '}
         <a
           href="#"

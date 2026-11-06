@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { AuthMode } from '../../types/AuthMode'
+import { enterStyle } from '../../utils/enterStyle'
 import './AuthTabs.css'
 
 interface AuthTabsProps {
@@ -36,7 +37,7 @@ function AuthTabs({ active, onChange, loginPanel, signupPanel }: AuthTabsProps) 
   const isSignup = active === 'signup'
 
   return (
-    <div className="lm-auth-tabs">
+    <div className="lm-auth-tabs" data-enter="" style={enterStyle(1)}>
       <div className="lm-auth-tabs__bar">
         <button
           type="button"
