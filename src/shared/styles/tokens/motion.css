@@ -7,6 +7,10 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   /* The session splash waits this long before fading in, so a quick session restore never flashes it. */
   --splash-reveal-delay: 200ms;
+  /* The sign-in screen's entrance: the dark veil lifting, each block rising, and the gap between blocks. */
+  --duration-reveal: 600ms;
+  --duration-enter: 420ms;
+  --stagger-step: 70ms;
   --transition-control: background-color var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard),

@@ -22,7 +22,7 @@ function AuthPage() {
   }, [])
 
   return (
-    <AuthLayout>
+    <AuthLayout entrance>
       {({ theme, language }) => (
         <AuthTabs
           active={mode}
