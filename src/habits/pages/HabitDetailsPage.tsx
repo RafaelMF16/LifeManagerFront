@@ -1,7 +1,10 @@
+import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
 import Icon from '../../shared/components/Icon/Icon'
+import Skeleton from '../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../shared/components/Skeleton/SkeletonGroup'
 import HabitHeatmap from '../components/HabitHeatmap/HabitHeatmap'
 import HabitStatsSummary from '../components/HabitStatsSummary/HabitStatsSummary'
 import LedgerList from '../components/LedgerList/LedgerList'
@@ -10,6 +13,42 @@ import { useLedger } from '../hooks/useLedger'
 import { formatFrequency } from '../utils/formatFrequency'
 import { formatAmount } from '../utils/habitProgress'
 import './HabitDetailsPage.css'
+
+const SKELETON_TILES = [0, 1, 2]
+
+/** The habit's first load: heading, stat tiles and the heatmap card, in the page's own layout classes. */
+function HabitDetailsSkeleton({ backLink, label }: { backLink: ReactNode; label: string }) {
+  return (
+    <main className="lm-habit-details">
+      <div className="lm-habit-details__heading">
+        {backLink}
+        <div className="lm-habit-details__title-row">
+          <Skeleton width={200} height={26} />
+        </div>
+        <div className="lm-habit-details__meta">
+          <Skeleton shape="block" width={56} height={18} />
+          <Skeleton shape="block" width={48} height={18} />
+          <Skeleton width={96} />
+        </div>
+      </div>
+      <SkeletonGroup label={label} className="lm-habit-stats">
+        {SKELETON_TILES.map((tile) => (
+          <div key={tile} className="lm-habit-stats__tile">
+            <Skeleton width={72} />
+            <Skeleton width="50%" height={24} />
+            <Skeleton width="70%" />
+          </div>
+        ))}
+      </SkeletonGroup>
+      <div className="lm-habit-details__card">
+        <div className="lm-habit-details__card-header">
+          <Skeleton width={140} height={18} />
+        </div>
+        <Skeleton shape="block" height={140} />
+      </div>
+    </main>
+  )
+}
 
 const LEDGER_PAGE_SIZE = 10
 
@@ -46,21 +85,19 @@ function HabitDetailsPage() {
 
   const data = stats.data
 
+  if (!data && stats.status !== 'error') {
+    return <HabitDetailsSkeleton backLink={backLink} label={translate('habits:details.loading')} />
+  }
+
   if (!data) {
     return (
       <main className="lm-habit-details">
         {backLink}
         <div className="lm-habit-details__state">
-          {stats.status === 'error' ? (
-            <>
-              <span>{translate('habits:details.loadError')}</span>
-              <Button variant="secondary" size="sm" onClick={stats.reload}>
-                {translate('habits:history.retry')}
-              </Button>
-            </>
-          ) : (
-            <span>{translate('habits:details.loading')}</span>
-          )}
+          <span>{translate('habits:details.loadError')}</span>
+          <Button variant="secondary" size="sm" onClick={stats.reload}>
+            {translate('habits:history.retry')}
+          </Button>
         </div>
       </main>
     )
