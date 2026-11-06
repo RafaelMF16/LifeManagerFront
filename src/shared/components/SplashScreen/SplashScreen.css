@@ -1,0 +1,29 @@
+.lm-splash {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--page-gutter);
+  background: var(--background);
+}
+
+.lm-splash__label {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lm-splash {
+    animation: lm-splash-in var(--duration-slow) var(--ease-out) var(--splash-reveal-delay) both;
+  }
+}
+
+@keyframes lm-splash-in {
+  from {
+    opacity: 0;
+  }
+}

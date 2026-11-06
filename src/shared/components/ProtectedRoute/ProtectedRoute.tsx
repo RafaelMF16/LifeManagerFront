@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useErrorModal } from '../../hooks/useErrorModal'
 import { restoreSession } from '../../services/authSession'
 import { getAccessToken } from '../../services/tokenStorage'
+import SplashScreen from '../SplashScreen/SplashScreen'
 
 type SessionStatus = 'checking' | 'authenticated' | 'anonymous'
 
@@ -37,7 +38,7 @@ function ProtectedRoute() {
     }
   }, [status, showErrorModal, translate])
 
-  if (status === 'checking') return null
+  if (status === 'checking') return <SplashScreen />
   if (status === 'anonymous') return <Navigate to="/auth" replace state={{ from: location }} />
 
   return <Outlet />
