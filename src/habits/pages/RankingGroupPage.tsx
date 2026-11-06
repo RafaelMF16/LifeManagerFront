@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
+import Skeleton from '../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../shared/components/Skeleton/SkeletonGroup'
 import IconButton from '../../shared/components/IconButton/IconButton'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
@@ -28,6 +30,40 @@ import { RANKING_GROUP_NOT_FOUND_CODE, RANKING_MEMBER_NOT_FOUND_CODE, RANKING_NO
 import type { RankingGroupFormValues } from '../validation/rankingGroupSchema'
 import './RankingPage.css'
 import './RankingGroupPage.css'
+
+const SKELETON_ROWS = [0, 1, 2, 3, 4]
+
+/** The week's first load: the week bar and the board's rows (place, avatar, player, points) in their real classes. */
+function RankingWeekSkeleton({ label }: { label: string }) {
+  return (
+    <SkeletonGroup label={label} className="lm-ranking-group-page__skeleton">
+      <div className="lm-ranking-group-page__week">
+        <Skeleton shape="block" width="var(--control-height-sm)" height="var(--control-height-sm)" />
+        <Skeleton width={140} />
+        <Skeleton shape="block" width="var(--control-height-sm)" height="var(--control-height-sm)" />
+        <Skeleton shape="pill" width={72} />
+      </div>
+      <div className="lm-ranking-group-page__board">
+        <div className="lm-ranking-board">
+          {SKELETON_ROWS.map((row) => (
+            <div key={row} className="lm-ranking-board__row">
+              <Skeleton width={20} />
+              <Skeleton shape="circle" width={28} />
+              <div className="lm-ranking-board__who">
+                <Skeleton width={row % 2 === 0 ? '55%' : '40%'} />
+                <Skeleton width="30%" />
+              </div>
+              <div className="lm-ranking-board__score">
+                <Skeleton width={56} />
+                <Skeleton width={72} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </SkeletonGroup>
+  )
+}
 
 type DialogState =
   | { mode: 'rename' }
@@ -254,9 +290,7 @@ function RankingGroupPage() {
           </Button>
         </div>
       ) : (
-        <p className="lm-ranking-group-page__state" role="status">
-          {translate('habits:ranking.group.loading')}
-        </p>
+        <RankingWeekSkeleton label={translate('habits:ranking.group.loading')} />
       )}
 
       {details ? (
