@@ -6,6 +6,7 @@ import type { PagedResponse } from '../../../shared/types/Paging'
 import type { RedemptionsStatus } from '../../hooks/useRedemptions'
 import type { RewardRedemptionDto } from '../../types/RewardDtos'
 import { rewardIcon } from '../../utils/rewardIcons'
+import RedemptionListSkeleton from './RedemptionListSkeleton'
 import './RedemptionList.css'
 
 interface RedemptionListProps {
@@ -48,9 +49,7 @@ function RedemptionList({ data, status, isFetching, onPageChange, onRetry, onUnd
   }
 
   function renderRows() {
-    if (status === 'loading') {
-      return <div className="lm-redemption-list__state">{translate('habits:shop.redemptions.loading')}</div>
-    }
+    if (status === 'loading') return <RedemptionListSkeleton />
 
     if (status === 'error' || !data) {
       return (
