@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useOutletContext } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
+import Skeleton from '../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../shared/components/Skeleton/SkeletonGroup'
 import { useCurrentUser } from '../../shared/hooks/useCurrentUser'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
@@ -92,9 +94,14 @@ function ProfilePage() {
             </Button>
           </>
         ) : (
-          <div className="lm-profile-identity__placeholder" aria-busy="true">
-            <span className="lm-profile-page__visually-hidden">{translate('habits:profile.identity.loading')}</span>
-          </div>
+          <SkeletonGroup label={translate('habits:profile.identity.loading')} className="lm-profile-identity__skeleton">
+            <Skeleton shape="circle" width={80} />
+            <div className="lm-profile-identity__info">
+              <Skeleton width={160} height={28} />
+              <Skeleton width={120} />
+              <Skeleton width={180} />
+            </div>
+          </SkeletonGroup>
         )}
       </section>
 

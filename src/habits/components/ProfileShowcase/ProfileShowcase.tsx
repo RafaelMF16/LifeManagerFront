@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
+import SkeletonGroup from '../../../shared/components/Skeleton/SkeletonGroup'
+import AchievementCardSkeleton from '../AchievementGrid/AchievementCardSkeleton'
 import type { AchievementsStatus } from '../../hooks/useAchievements'
 import type { AchievementsResponseDto } from '../../types/AchievementDtos'
 import { nearestAchievements } from '../../utils/achievements'
@@ -7,6 +9,8 @@ import { showcase } from '../../utils/playerProfile'
 import AchievementCard from '../AchievementGrid/AchievementCard'
 import '../AchievementGrid/AchievementGrid.css'
 import './ProfileShowcase.css'
+
+const SKELETON_CARDS = [0, 1, 2]
 
 interface ProfileShowcaseProps {
   achievements: AchievementsResponseDto | undefined
@@ -18,20 +22,28 @@ interface ProfileShowcaseProps {
 function ProfileShowcase({ achievements, status, onRetry }: ProfileShowcaseProps) {
   const { t: translate } = useTranslation('habits')
 
+  if (!achievements && status !== 'error') {
+    return (
+      <div className="lm-achievement-grid lm-profile-showcase">
+        <SkeletonGroup label={translate('habits:achievements.loading')} className="lm-achievement-grid__body">
+          <div className="lm-achievement-grid__cards">
+            {SKELETON_CARDS.map((card) => (
+              <AchievementCardSkeleton key={card} index={card} />
+            ))}
+          </div>
+        </SkeletonGroup>
+      </div>
+    )
+  }
+
   if (!achievements) {
     return (
       <div className="lm-achievement-grid">
         <div className="lm-achievement-grid__state">
-          {status === 'error' ? (
-            <>
-              {translate('habits:achievements.loadError')}
-              <Button variant="secondary" size="sm" onClick={onRetry}>
-                {translate('habits:profile.retry')}
-              </Button>
-            </>
-          ) : (
-            translate('habits:achievements.loading')
-          )}
+          {translate('habits:achievements.loadError')}
+          <Button variant="secondary" size="sm" onClick={onRetry}>
+            {translate('habits:profile.retry')}
+          </Button>
         </div>
       </div>
     )

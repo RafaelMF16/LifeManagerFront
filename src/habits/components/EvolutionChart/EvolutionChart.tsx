@@ -3,6 +3,8 @@ import type { KeyboardEvent, PointerEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { niceMax } from '../../../finance/utils/chartScale'
 import Button from '../../../shared/components/Button/Button'
+import Skeleton from '../../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../../shared/components/Skeleton/SkeletonGroup'
 import SegmentedControl from '../../../shared/components/SegmentedControl/SegmentedControl'
 import { usePlayerEvolution } from '../../hooks/usePlayerEvolution'
 import type { EvolutionRange } from '../../types/PlayerProfileDtos'
@@ -65,19 +67,24 @@ function EvolutionChart() {
   }
 
   function renderPlot() {
+    if (!evolution.data && evolution.status !== 'error') {
+      return (
+        <SkeletonGroup label={translate('habits:profile.evolution.loading')} className="lm-evolution__plot">
+          <div className="lm-evolution__canvas">
+            <Skeleton shape="block" height="100%" />
+          </div>
+          <Skeleton width="60%" />
+        </SkeletonGroup>
+      )
+    }
+
     if (!evolution.data) {
       return (
         <div className="lm-evolution__state">
-          {evolution.status === 'error' ? (
-            <>
-              {translate('habits:profile.evolution.loadError')}
-              <Button variant="secondary" size="sm" onClick={evolution.reload}>
-                {translate('habits:profile.retry')}
-              </Button>
-            </>
-          ) : (
-            translate('habits:profile.evolution.loading')
-          )}
+          {translate('habits:profile.evolution.loadError')}
+          <Button variant="secondary" size="sm" onClick={evolution.reload}>
+            {translate('habits:profile.retry')}
+          </Button>
         </div>
       )
     }
