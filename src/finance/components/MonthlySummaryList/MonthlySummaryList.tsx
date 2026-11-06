@@ -11,6 +11,7 @@ import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import type { MonthlySummariesStatus } from '../../hooks/useMonthlySummaries'
 import type { BalanceFilter, MonthlySummaryResponseDto, MonthlySummarySortBy } from '../../types/MonthlySummaryDtos'
 import Amount from '../Amount/Amount'
+import MonthlySummaryListSkeleton from './MonthlySummaryListSkeleton'
 import './MonthlySummaryList.css'
 
 const ALL_YEARS = 'all'
@@ -88,9 +89,7 @@ function MonthlySummaryList({
   const sortedLabel = translate(sortDirection === 'Asc' ? 'finance:months.list.sort.ascending' : 'finance:months.list.sort.descending')
 
   function renderRows() {
-    if (status === 'loading') {
-      return <div className="lm-month-list__state">{translate('finance:months.list.loading')}</div>
-    }
+    if (status === 'loading') return <MonthlySummaryListSkeleton />
 
     if (status === 'error' || !data) {
       return (

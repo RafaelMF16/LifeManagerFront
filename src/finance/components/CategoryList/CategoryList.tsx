@@ -7,6 +7,7 @@ import Pagination from '../../../shared/components/Pagination/Pagination'
 import type { PagedResponse, SortDirection } from '../../../shared/types/Paging'
 import type { CategoriesStatus } from '../../hooks/useCategories'
 import type { CategoryResponseDto } from '../../types/CategoryDtos'
+import CategoryListSkeleton from './CategoryListSkeleton'
 import './CategoryList.css'
 
 interface CategoryListProps {
@@ -46,9 +47,7 @@ function CategoryList({
   const hasSearch = appliedSearch !== ''
 
   function renderRows() {
-    if (status === 'loading') {
-      return <div className="lm-category-list__state">{translate('finance:categories.list.loading')}</div>
-    }
+    if (status === 'loading') return <CategoryListSkeleton />
 
     if (status === 'error' || !data) {
       return (
