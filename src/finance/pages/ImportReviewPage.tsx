@@ -1,8 +1,11 @@
 import { useCallback, useState } from 'react'
+import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
 import Icon from '../../shared/components/Icon/Icon'
+import Skeleton from '../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../shared/components/Skeleton/SkeletonGroup'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
@@ -31,6 +34,37 @@ import {
   STATEMENT_IMPORT_UNCATEGORIZED_ROWS_CODE,
 } from '../validation/statementImportErrorMap'
 import './ImportReviewPage.css'
+
+const SKELETON_CHIPS = [0, 1, 2, 3]
+const SKELETON_MONTHS = [0, 1, 2]
+
+/** The review's first load: header, summary chips and month cards, in the page's own layout classes. */
+function ImportReviewSkeleton({ backLink, label }: { backLink: ReactNode; label: string }) {
+  return (
+    <main className="lm-import-review">
+      <div className="lm-import-review__header">
+        <div className="lm-import-review__heading">
+          {backLink}
+          <Skeleton width={220} height={22} />
+          <Skeleton width={120} />
+        </div>
+      </div>
+      <SkeletonGroup label={label} className="lm-import-review__summary">
+        {SKELETON_CHIPS.map((chip) => (
+          <Skeleton key={chip} shape="pill" width={chip === 0 ? 96 : 120} height={28} />
+        ))}
+      </SkeletonGroup>
+      <div className="lm-import-months">
+        <Skeleton width={140} />
+        <div className="lm-import-months__grid">
+          {SKELETON_MONTHS.map((month) => (
+            <Skeleton key={month} shape="block" height={72} />
+          ))}
+        </div>
+      </div>
+    </main>
+  )
+}
 
 const NO_SELECTION: ReadonlySet<number> = new Set()
 
@@ -261,21 +295,19 @@ function ImportReviewPage() {
 
   const data = details.data
 
+  if (!data && details.status !== 'error') {
+    return <ImportReviewSkeleton backLink={backLink} label={translate('finance:imports.review.loading')} />
+  }
+
   if (!data) {
     return (
       <main className="lm-import-review">
         {backLink}
         <div className="lm-import-review__state">
-          {details.status === 'error' ? (
-            <>
-              <span>{translate('finance:imports.review.loadError')}</span>
-              <Button variant="secondary" size="sm" onClick={details.reload}>
-                {translate('finance:imports.review.retry')}
-              </Button>
-            </>
-          ) : (
-            <span>{translate('finance:imports.review.loading')}</span>
-          )}
+          <span>{translate('finance:imports.review.loadError')}</span>
+          <Button variant="secondary" size="sm" onClick={details.reload}>
+            {translate('finance:imports.review.retry')}
+          </Button>
         </div>
       </main>
     )
