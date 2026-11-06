@@ -1,10 +1,38 @@
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
+import Skeleton from '../../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../../shared/components/Skeleton/SkeletonGroup'
 import type { AchievementsStatus } from '../../hooks/useAchievements'
 import type { AchievementDto } from '../../types/AchievementDtos'
 import { groupAchievementsByFamily } from '../../utils/achievements'
 import AchievementCard from './AchievementCard'
 import './AchievementGrid.css'
+
+const SKELETON_CARDS = [0, 1, 2, 3]
+
+/** The achievements' first load: one family of cards in the real card classes (medal, tier and name, progress). */
+function AchievementGridSkeleton({ label }: { label: string }) {
+  return (
+    <SkeletonGroup label={label} className="lm-achievement-grid__family">
+      <Skeleton width={120} height={16} />
+      <div className="lm-achievement-grid__cards">
+        {SKELETON_CARDS.map((card) => (
+          <div key={card} className="lm-achievement-card">
+            <div className="lm-achievement-card__top">
+              <Skeleton shape="circle" width={40} />
+              <div className="lm-achievement-card__info">
+                <Skeleton width={48} />
+                <Skeleton width={card % 2 === 0 ? '70%' : '55%'} />
+                <Skeleton width="85%" />
+              </div>
+            </div>
+            <Skeleton shape="block" height={6} />
+          </div>
+        ))}
+      </div>
+    </SkeletonGroup>
+  )
+}
 
 interface AchievementGridProps {
   achievements: AchievementDto[] | undefined
@@ -29,7 +57,7 @@ function AchievementGrid({ achievements, status, isFetching, onRetry }: Achievem
           </div>
         )
       }
-      return <div className="lm-achievement-grid__state">{translate('habits:achievements.loading')}</div>
+      return <AchievementGridSkeleton label={translate('habits:achievements.loading')} />
     }
 
     return groupAchievementsByFamily(achievements).map((group) => (

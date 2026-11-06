@@ -1,11 +1,40 @@
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import Icon from '../../../shared/components/Icon/Icon'
+import Skeleton from '../../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../../shared/components/Skeleton/SkeletonGroup'
 import type { GameItemsStatus } from '../../hooks/useGameItems'
 import type { GameItemDto } from '../../types/GameItemDtos'
 import type { PlayerProfileDto } from '../../types/PlayerProfileDtos'
 import { gameItemBlockedReason, gameItemEffect, gameItemIcon, gameItemName, gameItemUsage } from '../../utils/gameItems'
 import './GameItemList.css'
+
+const SKELETON_CARDS = [0, 1, 2]
+
+/** The items' first load: cards in the real grid and card classes (icon, name and effect, price). */
+function GameItemListSkeleton({ label }: { label: string }) {
+  return (
+    <SkeletonGroup label={label} className="lm-game-item-list__grid">
+      {SKELETON_CARDS.map((card) => (
+        <div key={card} className="lm-game-item-list__card">
+          <div className="lm-game-item-list__top">
+            <Skeleton shape="block" width={40} height={40} />
+            <div className="lm-game-item-list__info">
+              <Skeleton width="55%" />
+              <Skeleton width="75%" />
+              <Skeleton width="90%" />
+            </div>
+          </div>
+          <div className="lm-game-item-list__meta">
+            <Skeleton width={64} />
+            <Skeleton width={96} />
+          </div>
+          <Skeleton shape="block" height="var(--control-height-sm)" />
+        </div>
+      ))}
+    </SkeletonGroup>
+  )
+}
 
 interface GameItemListProps {
   items: GameItemDto[] | undefined
@@ -33,7 +62,7 @@ function GameItemList({ items, status, isFetching, profile, onRetry, onBuy }: Ga
           </div>
         )
       }
-      return <div className="lm-game-item-list__state">{translate('habits:shop.items.loading')}</div>
+      return <GameItemListSkeleton label={translate('habits:shop.items.loading')} />
     }
 
     return (
