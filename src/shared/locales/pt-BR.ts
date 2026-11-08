@@ -14,6 +14,9 @@ export default {
   logout: 'Sair',
   logoutSuccessToast: 'Você saiu da sua conta.',
   sessionExpiredToast: 'Sua sessão expirou. Entre novamente.',
+  splash: {
+    loading: 'Carregando…',
+  },
   pagination: {
     navAria: 'Paginação',
     previous: 'Página anterior',

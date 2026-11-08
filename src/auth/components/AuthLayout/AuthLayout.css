@@ -68,3 +68,48 @@
   flex-direction: column;
   gap: var(--space-5);
 }
+
+/* Entrance (the sign-in screen only, `entrance` prop): the page starts under a near-black veil that lifts while the
+   `[data-enter]` blocks arrive one after another (`--enter-index`, set with `utils/enterStyle.ts`). Only opacity and
+   transform animate, and nothing blocks the form: it can be typed into from the first frame. */
+@media (prefers-reduced-motion: no-preference) {
+  .lm-auth-page--entrance::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: rgb(2 6 23 / 0.88);
+    animation: lm-auth-veil var(--duration-reveal) var(--ease-out) both;
+  }
+
+  .lm-auth-page--entrance [data-enter] {
+    /* backwards: hidden during its delay, then hands transform back (e.g. a button's pressed state) when done. */
+    animation: lm-auth-rise var(--duration-enter) var(--ease-out) backwards;
+    animation-delay: calc(var(--enter-index, 0) * var(--stagger-step));
+  }
+
+  .lm-auth-page--entrance [data-enter='drop'] {
+    animation-name: lm-auth-drop;
+  }
+}
+
+@keyframes lm-auth-veil {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes lm-auth-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes lm-auth-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}

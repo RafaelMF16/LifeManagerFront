@@ -5,6 +5,7 @@ import Icon from '../../../shared/components/Icon/Icon'
 import type { RankingDataStatus } from '../../hooks/useRankingData'
 import type { RankingGroupListItemDto } from '../../types/RankingDtos'
 import { medal } from '../../utils/ranking'
+import RankingGroupListSkeleton from './RankingGroupListSkeleton'
 import './RankingGroupList.css'
 
 interface RankingGroupListProps {
@@ -27,9 +28,7 @@ function RankingGroupList({ groups, status, isFetching, onRetry }: RankingGroupL
         </Button>
       </div>
     ) : (
-      <p className="lm-ranking-groups__state" role="status">
-        {translate('habits:ranking.list.loading')}
-      </p>
+      <RankingGroupListSkeleton />
     )
   }
 

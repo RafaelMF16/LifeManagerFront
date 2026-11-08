@@ -1,9 +1,12 @@
 import { useCallback, useState } from 'react'
+import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
 import Icon from '../../shared/components/Icon/Icon'
 import IconButton from '../../shared/components/IconButton/IconButton'
+import Skeleton from '../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../shared/components/Skeleton/SkeletonGroup'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
@@ -21,6 +24,36 @@ import type { MoneyFlowType, TransactionResponseDto } from '../types/Transaction
 import { TRANSACTION_NOT_FOUND_CODE } from '../validation/transactionErrorMap'
 import type { TransactionFormValues } from '../validation/transactionSchema'
 import './MonthDetailsPage.css'
+
+const SKELETON_TOTALS = [0, 1, 2, 3]
+
+/** The month's first load: title, totals and the transactions card, in the page's own layout classes. */
+function MonthDetailsSkeleton({ backLink, label }: { backLink: ReactNode; label: string }) {
+  return (
+    <main className="lm-month-details">
+      <div className="lm-month-details__header">
+        <div className="lm-month-details__heading">
+          {backLink}
+          <div className="lm-month-details__title-row">
+            <Skeleton width={180} height={26} />
+          </div>
+        </div>
+      </div>
+      <SkeletonGroup label={label} className="lm-month-details__totals">
+        <div className="lm-month-totals">
+          {SKELETON_TOTALS.map((card) => (
+            <div key={card} className="lm-month-totals__card">
+              <Skeleton width={72} />
+              <Skeleton width="70%" height={24} />
+              <Skeleton width="45%" />
+            </div>
+          ))}
+        </div>
+      </SkeletonGroup>
+      <Skeleton shape="block" height={320} />
+    </main>
+  )
+}
 
 type FormTarget = { mode: 'create' } | { mode: 'edit'; transaction: TransactionResponseDto }
 
@@ -111,21 +144,19 @@ function MonthDetailsPage() {
 
   const data = month.data
 
+  if (!data && month.status !== 'error') {
+    return <MonthDetailsSkeleton backLink={backLink} label={translate('finance:monthDetails.loading')} />
+  }
+
   if (!data) {
     return (
       <main className="lm-month-details">
         {backLink}
         <div className="lm-month-details__state">
-          {month.status === 'error' ? (
-            <>
-              <span>{translate('finance:monthDetails.loadError')}</span>
-              <Button variant="secondary" size="sm" onClick={month.reload}>
-                {translate('finance:monthDetails.retry')}
-              </Button>
-            </>
-          ) : (
-            <span>{translate('finance:monthDetails.loading')}</span>
-          )}
+          <span>{translate('finance:monthDetails.loadError')}</span>
+          <Button variant="secondary" size="sm" onClick={month.reload}>
+            {translate('finance:monthDetails.retry')}
+          </Button>
         </div>
       </main>
     )

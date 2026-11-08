@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import Icon from '../../../shared/components/Icon/Icon'
 import type { IconName } from '../../../shared/components/Icon/Icon'
+import Skeleton from '../../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../../shared/components/Skeleton/SkeletonGroup'
 import type { PlayerProfileStatus } from '../../hooks/usePlayerProfile'
 import type { PlayerProfileDto } from '../../types/PlayerProfileDtos'
 import { achievementTitle } from '../../utils/achievements'
@@ -95,20 +97,19 @@ function PlayerHeader({ profile, status }: PlayerHeaderProps) {
 
   if (!profile) {
     return (
-      <section className="lm-player-header lm-player-header--loading" aria-busy="true">
-        <span className="lm-player-header__visually-hidden">{translate('habits:player.loading')}</span>
-        <div className="lm-player-header__top" aria-hidden="true">
+      <SkeletonGroup label={translate('habits:player.loading')} className="lm-player-header lm-player-header--loading">
+        <div className="lm-player-header__top">
           <span className="lm-player-header__identity">
-            <span className="lm-player-header__placeholder lm-player-header__placeholder--avatar" />
-            <span className="lm-player-header__placeholder lm-player-header__placeholder--badge" />
+            <Skeleton shape="circle" width={28} />
+            <Skeleton shape="pill" width={64} height={22} />
           </span>
-          <span className="lm-player-header__placeholder lm-player-header__placeholder--stats" />
+          <Skeleton shape="block" width={96} height={18} />
         </div>
-        <div className="lm-player-header__bars" aria-hidden="true">
-          <span className="lm-player-header__placeholder lm-player-header__placeholder--bar" />
-          <span className="lm-player-header__placeholder lm-player-header__placeholder--bar" />
+        <div className="lm-player-header__bars">
+          <Skeleton shape="block" height={30} />
+          <Skeleton shape="block" height={30} />
         </div>
-      </section>
+      </SkeletonGroup>
     )
   }
 

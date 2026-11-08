@@ -6,6 +6,7 @@ import type { PagedResponse } from '../../../shared/types/Paging'
 import type { LedgerStatus } from '../../hooks/useLedger'
 import type { GameLedgerEntryDto } from '../../types/LedgerDtos'
 import { ledgerDeltas, ledgerIcon, ledgerTitle, signedValue } from '../../utils/ledgerEntry'
+import LedgerListSkeleton from './LedgerListSkeleton'
 import './LedgerList.css'
 
 interface LedgerListProps {
@@ -31,9 +32,7 @@ function LedgerList({ data, status, isFetching, onPageChange, onRetry, title, hi
   }
 
   function renderRows() {
-    if (status === 'loading') {
-      return <div className="lm-ledger-list__state">{translate('habits:history.loading')}</div>
-    }
+    if (status === 'loading') return <LedgerListSkeleton />
 
     if (status === 'error' || !data) {
       return (

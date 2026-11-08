@@ -7,26 +7,32 @@ import { useTheme } from '../../../shared/hooks/useTheme'
 import type { Theme } from '../../../shared/hooks/useTheme'
 import { useLanguage } from '../../../shared/hooks/useLanguage'
 import type { SupportedLanguage } from '../../../shared/i18n/languages'
+import { enterStyle } from '../../utils/enterStyle'
 import './AuthLayout.css'
 
 interface AuthLayoutProps {
   // A function when the page needs the screen's theme and language (the sign-up sends them)
   children: ReactNode | ((preferences: { theme: Theme; language: SupportedLanguage }) => ReactNode)
+  /**
+   * Plays the entrance on mount: the screen lifts from a dark veil while the header and the page's `[data-enter]`
+   * blocks arrive in turn. Only the sign-in screen asks for it.
+   */
+  entrance?: boolean
 }
 
 /**
  * The signed-out screens' frame: brand, language and theme switches, and the page's card below. It owns the theme and
  * language hooks, so a page that needs their values takes them from `children` instead of calling the hooks again.
  */
-function AuthLayout({ children }: AuthLayoutProps) {
+function AuthLayout({ children, entrance = false }: AuthLayoutProps) {
   const { t: translate } = useTranslation('common')
   const { theme, toggleTheme } = useTheme()
   const { language, setLanguage } = useLanguage()
 
   return (
-    <div className="lm-auth-page">
+    <div className={`lm-auth-page${entrance ? ' lm-auth-page--entrance' : ''}`}>
       <div className="lm-auth-page__content">
-        <div className="lm-auth-page__header">
+        <div className="lm-auth-page__header" data-enter="drop" style={enterStyle(0)}>
           <span className="lm-auth-page__header-spacer" />
           <div className="lm-auth-page__brand">
             <Icon name="wallet" size={20} />

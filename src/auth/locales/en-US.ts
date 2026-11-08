@@ -11,6 +11,7 @@ export default {
     noAccount: "Don't have an account?",
     createAccount: 'Create account',
     successToast: 'Logged in successfully',
+    entering: 'Signing in…',
   },
   register: {
     title: 'Create your account',

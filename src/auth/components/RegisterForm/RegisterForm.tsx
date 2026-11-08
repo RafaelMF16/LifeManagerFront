@@ -7,6 +7,7 @@ import { register as registerUser } from '../../services/authService'
 import { registerErrorFieldMap } from '../../validation/userErrorMap'
 import { registerSchema } from '../../validation/userSchemas'
 import EmailSentNotice from '../EmailSentNotice/EmailSentNotice'
+import { enterStyle } from '../../utils/enterStyle'
 import '../AuthForm.css'
 
 interface RegisterFormProps {
@@ -43,12 +44,12 @@ function RegisterForm({ preferences, onSwitchToLogin }: RegisterFormProps) {
 
   return (
     <form className="lm-auth-tabs__panel" onSubmit={onSubmit} noValidate>
-      <div className="lm-auth-form__header">
+      <div className="lm-auth-form__header" data-enter="" style={enterStyle(2)}>
         <h1 className="lm-auth-form__title">{translate('auth:register.title')}</h1>
         <p className="lm-auth-form__subtitle">{translate('auth:register.subtitle')}</p>
       </div>
 
-      <div className="lm-auth-form__fields">
+      <div className="lm-auth-form__fields" data-enter="" style={enterStyle(3)}>
         <Input
           label={translate('auth:fields.name.label')}
           type="text"
@@ -73,11 +74,19 @@ function RegisterForm({ preferences, onSwitchToLogin }: RegisterFormProps) {
         </p>
       ) : null}
 
-      <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}>
+      <Button
+        type="submit"
+        variant="primary"
+        size="lg"
+        fullWidth
+        loading={isSubmitting}
+        data-enter=""
+        style={enterStyle(4)}
+      >
         {translate('auth:register.submit')}
       </Button>
 
-      <p className="lm-auth-form__footer">
+      <p className="lm-auth-form__footer" data-enter="" style={enterStyle(5)}>
         {translate('auth:register.hasAccount')}{' '}
         <a
           href="#"

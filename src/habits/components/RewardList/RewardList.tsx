@@ -14,6 +14,7 @@ import { coinsMissing, daysOfHabits } from '../../utils/rewardPace'
 import { REWARD_TEMPLATES } from '../../utils/starterTemplates'
 import type { RewardTemplateId } from '../../utils/starterTemplates'
 import StarterSuggestions from '../StarterSuggestions/StarterSuggestions'
+import RewardListSkeleton from './RewardListSkeleton'
 import './RewardList.css'
 
 const STATUS_FILTERS: RewardStatusFilter[] = ['Active', 'Archived']
@@ -191,9 +192,7 @@ function RewardList({
   }
 
   function renderBody() {
-    if (status === 'loading') {
-      return <div className="lm-reward-list__state">{translate('habits:shop.list.loading')}</div>
-    }
+    if (status === 'loading') return <RewardListSkeleton />
 
     if (status === 'error' || !data) {
       return (

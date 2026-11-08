@@ -8,6 +8,7 @@ import type { PagedResponse } from '../../../shared/types/Paging'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import type { StatementImportsStatus } from '../../hooks/useStatementImports'
 import type { StatementImportResponseDto } from '../../types/StatementImportDtos'
+import StatementImportListSkeleton from './StatementImportListSkeleton'
 import './StatementImportList.css'
 
 interface StatementImportListProps {
@@ -69,7 +70,7 @@ function StatementImportList({ data, status, isFetching, onPageChange, onRetry, 
   }
 
   function renderBody() {
-    if (status === 'loading') return <div className="lm-import-list__state">{translate('finance:imports.list.loading')}</div>
+    if (status === 'loading') return <StatementImportListSkeleton />
 
     if (status === 'error' || !data) {
       return (

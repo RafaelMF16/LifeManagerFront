@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useBlocker, useSearchParams } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
+import Skeleton from '../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../shared/components/Skeleton/SkeletonGroup'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
@@ -28,6 +30,38 @@ import type { DraftSlice } from '../utils/budgetPlan'
 import { parseYearMonth, toYearMonth } from '../utils/yearMonth'
 import { BUDGET_PLAN_NOT_FOUND_CODE, budgetPlanSaveErrors, budgetPlanTotalErrors } from '../validation/budgetPlanErrorMap'
 import './BudgetsPage.css'
+
+const SKELETON_SLICES = [0, 1, 2, 3]
+
+/** The plan's first load: the overview (total and donut) and slice rows, in the editor's own layout classes. */
+function BudgetPlanSkeleton({ label }: { label: string }) {
+  return (
+    <SkeletonGroup label={label} className="lm-budget-plan">
+      <div className="lm-budget-plan__overview">
+        <Skeleton width={96} />
+        <Skeleton shape="block" height="var(--control-height-md)" />
+        <Skeleton shape="circle" className="lm-budget-donut" />
+      </div>
+      <div className="lm-budget-plan__slices">
+        <div className="lm-budget-slices">
+          {SKELETON_SLICES.map((slice) => (
+            <div key={slice} className="lm-budget-slice">
+              <div className="lm-budget-slice__head">
+                <span className="lm-budget-slice__select">
+                  <Skeleton shape="circle" width={12} />
+                  <Skeleton width={slice % 2 === 0 ? '45%' : '30%'} />
+                </span>
+                <Skeleton width={40} />
+              </div>
+              <Skeleton shape="block" height={6} />
+              <Skeleton width="55%" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </SkeletonGroup>
+  )
+}
 
 /** How many `--chart-slice-N` colors there are; later expense slices share `--chart-slice-extra`. */
 const SLICE_COLOR_COUNT = 6
@@ -318,9 +352,7 @@ function BudgetsPage() {
       )
     }
 
-    if (!plan.data) {
-      return <div className="lm-budgets-page__state">{translate('finance:budgetPlan.loading')}</div>
-    }
+    if (!plan.data) return <BudgetPlanSkeleton label={translate('finance:budgetPlan.loading')} />
 
     return (
       <div className={`lm-budgets-page__content${plan.isFetching ? ' lm-budgets-page__content--fetching' : ''}`} aria-busy={plan.isFetching}>

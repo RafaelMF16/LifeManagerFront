@@ -19,6 +19,7 @@ import { monthShiftBadge, showsExcludedBadge, suggestionBadge } from '../../util
 import type { DetectionSource } from '../../utils/statementImport/rowBadges'
 import { parseYearMonth } from '../../utils/yearMonth'
 import Amount from '../Amount/Amount'
+import ImportRowListSkeleton from './ImportRowListSkeleton'
 import './ImportRowList.css'
 
 const FILTERS: StatementImportRowFilter[] = ['All', 'Uncategorized', 'Suggested', 'Duplicates', 'Excluded']
@@ -270,7 +271,7 @@ function ImportRowList({
   }
 
   function renderBody() {
-    if (status === 'loading') return <div className="lm-import-rows__state">{translate('finance:imports.rows.loading')}</div>
+    if (status === 'loading') return <ImportRowListSkeleton />
 
     if (status === 'error' || !data) {
       return (

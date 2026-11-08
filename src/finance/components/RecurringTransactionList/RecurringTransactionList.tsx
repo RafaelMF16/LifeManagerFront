@@ -18,6 +18,7 @@ import type {
 import type { MoneyFlowType, TransactionTypeFilter } from '../../types/TransactionDtos'
 import { parseYearMonth } from '../../utils/yearMonth'
 import Amount from '../Amount/Amount'
+import RecurringTransactionListSkeleton from './RecurringTransactionListSkeleton'
 import './RecurringTransactionList.css'
 
 const TYPE_FILTERS: TransactionTypeFilter[] = ['All', 'Income', 'Expense', 'Investment']
@@ -116,9 +117,7 @@ function RecurringTransactionList({
   }
 
   function renderRows() {
-    if (status === 'loading') {
-      return <div className="lm-recurring-list__state">{translate('finance:recurring.list.loading')}</div>
-    }
+    if (status === 'loading') return <RecurringTransactionListSkeleton />
 
     if (status === 'error' || !data) {
       return (

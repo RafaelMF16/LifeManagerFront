@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Button from '../../shared/components/Button/Button'
 import Pagination from '../../shared/components/Pagination/Pagination'
+import Skeleton from '../../shared/components/Skeleton/Skeleton'
+import SkeletonGroup from '../../shared/components/Skeleton/SkeletonGroup'
 import SegmentedControl from '../../shared/components/SegmentedControl/SegmentedControl'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
@@ -18,6 +20,32 @@ import { groupByWeek } from '../utils/challenges'
 import { formatWeekRange, weekEndOf } from '../utils/ranking'
 import { challengeWeekErrorKey, CHALLENGE_NOT_ACTIVE_CODE, CHALLENGE_NOT_FOUND_CODE } from '../validation/challengeErrorMap'
 import './ChallengesPage.css'
+
+const SKELETON_CHALLENGES = [0, 1, 2]
+
+/** The week's first load: challenge cards in the real card classes (icon, habit and goal, progress bar). */
+function ChallengesSkeleton({ label }: { label: string }) {
+  return (
+    <SkeletonGroup label={label} className="lm-challenges-page__list">
+      {SKELETON_CHALLENGES.map((challenge) => (
+        <div key={challenge} className="lm-challenge-card">
+          <div className="lm-challenge-card__header">
+            <Skeleton shape="block" width={36} height={36} />
+            <div className="lm-challenge-card__titles">
+              <Skeleton width={challenge % 2 === 0 ? '60%' : '45%'} />
+              <Skeleton width="75%" />
+            </div>
+            <Skeleton shape="pill" width={56} height={20} />
+          </div>
+          <Skeleton shape="block" height={8} />
+          <div className="lm-challenge-card__footer">
+            <Skeleton width={120} />
+          </div>
+        </div>
+      ))}
+    </SkeletonGroup>
+  )
+}
 
 const WEEKS: ChallengeWeek[] = ['Current', 'Next']
 
@@ -143,7 +171,7 @@ function ChallengesPage() {
           </div>
         )
       }
-      return <p className="lm-challenges-page__state">{translate('habits:challenges.loading')}</p>
+      return <ChallengesSkeleton label={translate('habits:challenges.loading')} />
     }
 
     const data = current.data

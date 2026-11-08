@@ -11,6 +11,7 @@ export default {
     noAccount: 'Não tem conta?',
     createAccount: 'Criar conta',
     successToast: 'Login realizado com sucesso',
+    entering: 'Entrando…',
   },
   register: {
     title: 'Criar sua conta',
