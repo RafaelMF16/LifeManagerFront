@@ -17,6 +17,12 @@ export default {
   splash: {
     loading: 'Carregando…',
   },
+  routeError: {
+    title: 'Algo deu errado',
+    chunkMessage: 'Saiu uma versão nova do app enquanto ele estava aberto. Recarregue para continuar.',
+    message: 'Não deu para abrir esta tela. Recarregue para tentar de novo.',
+    reload: 'Recarregar',
+  },
   pagination: {
     navAria: 'Paginação',
     previous: 'Página anterior',

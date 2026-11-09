@@ -4,6 +4,7 @@ import { ErrorModalProvider } from './shared/components/ErrorModal/ErrorModalPro
 import { LoginTransitionProvider } from './shared/components/LoginTransition/LoginTransitionProvider'
 import ProtectedRoute from './shared/components/ProtectedRoute/ProtectedRoute'
 import PublicOnlyRoute from './shared/components/PublicOnlyRoute/PublicOnlyRoute'
+import RouteError from './shared/components/RouteError/RouteError'
 import SplashScreen from './shared/components/SplashScreen/SplashScreen'
 import { ToastProvider } from './shared/components/Toast/ToastProvider'
 import { useSessionExpiredRedirect } from './shared/hooks/useSessionExpiredRedirect'
@@ -25,7 +26,7 @@ function RootLayout() {
 // A data router (rather than <BrowserRouter>) so screens can use useBlocker, e.g. the budget's "leave without saving?".
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<RootLayout />} hydrateFallbackElement={<SplashScreen />}>
+    <Route element={<RootLayout />} hydrateFallbackElement={<SplashScreen />} errorElement={<RouteError />}>
       <Route element={<PublicOnlyRoute />}>
         <Route path="/auth" lazy={page(() => import('./auth/pages/AuthPage'))} />
         <Route path="/auth/forgot-password" lazy={page(() => import('./auth/pages/ForgotPasswordPage'))} />

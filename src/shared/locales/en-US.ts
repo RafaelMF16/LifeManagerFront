@@ -17,6 +17,12 @@ export default {
   splash: {
     loading: 'Loading…',
   },
+  routeError: {
+    title: 'Something went wrong',
+    chunkMessage: 'A new version of the app came out while it was open. Reload to continue.',
+    message: 'This screen could not open. Reload to try again.',
+    reload: 'Reload',
+  },
   pagination: {
     navAria: 'Pagination',
     previous: 'Previous page',
