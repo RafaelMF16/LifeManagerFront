@@ -14,6 +14,7 @@ import {
   achievementTitle,
   groupAchievementsByFamily,
   initiallyOpenFamilies,
+  unseenFamilies,
   nearestAchievements,
 } from './achievements'
 
@@ -178,5 +179,18 @@ describe('initiallyOpenFamilies', () => {
 
   it('opens nothing on compact screens when nothing is near or unseen', () => {
     expect(initiallyOpenFamilies(catalog, [], true, [])).toEqual(new Set())
+  })
+})
+
+describe('unseenFamilies', () => {
+  it('returns the families of the unseen unlocks, once each', () => {
+    const catalog = [
+      achievement({ code: 'CheckIns10', family: 'CheckIns' }),
+      achievement({ code: 'CheckIns100', family: 'CheckIns' }),
+      achievement({ code: 'Level5', family: 'Level' }),
+    ]
+
+    expect(unseenFamilies(catalog, ['CheckIns10', 'CheckIns100'])).toEqual(new Set(['CheckIns']))
+    expect(unseenFamilies(catalog, [])).toEqual(new Set())
   })
 })

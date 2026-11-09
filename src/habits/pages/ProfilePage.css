@@ -158,6 +158,9 @@
 
   .lm-profile-identity > .lm-profile-identity__skeleton {
     grid-area: 1 / 1 / -1 / -1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
   }
 
   .lm-profile-identity__info {

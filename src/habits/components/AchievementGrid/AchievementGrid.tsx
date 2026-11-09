@@ -12,6 +12,7 @@ import {
   initiallyOpenFamilies,
   isUnlocked,
   nearestAchievements,
+  unseenFamilies,
 } from '../../utils/achievements'
 import AchievementCard from './AchievementCard'
 import AchievementCardSkeleton from './AchievementCardSkeleton'
@@ -60,13 +61,24 @@ interface AchievementFamiliesProps {
 
 /**
  * One native `<details>` per family: the summary shows the family's icon, name, "3 of 5" and the medals won. Which
- * ones start open is decided once, on mount (`initiallyOpenFamilies`); after that, the player opens and closes them.
+ * ones start open is decided on mount (`initiallyOpenFamilies`), plus the families of unseen unlocks that arrive later;
+ * otherwise the player opens and closes them.
  */
 function AchievementFamilies({ achievements, unseen }: AchievementFamiliesProps) {
   const { t: translate } = useTranslation('habits')
   const [openFamilies, setOpenFamilies] = useState(() =>
     initiallyOpenFamilies(achievements, nearestAchievements(achievements, 1), isCompactScreen(), unseen),
   )
+
+  // Unseen unlocks can arrive after the mount (the profile loading late, or an unlock read meanwhile): their families
+  // open too, adjusted during render. Only opens, never closes what the player opened.
+  const unseenKey = unseen.join(',')
+  const [openedForUnseen, setOpenedForUnseen] = useState(unseenKey)
+  if (unseenKey !== openedForUnseen) {
+    setOpenedForUnseen(unseenKey)
+    const arrived = unseenFamilies(achievements, unseen)
+    setOpenFamilies((current) => new Set([...current, ...arrived]))
+  }
 
   function setOpen(family: AchievementFamily, open: boolean) {
     setOpenFamilies((current) => {

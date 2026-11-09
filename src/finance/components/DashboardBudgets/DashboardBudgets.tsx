@@ -11,6 +11,12 @@ import './DashboardBudgets.css'
 
 const GOALS_PATH = '/finance/planning/goals'
 
+/** The message for an empty column: no category has a goal at all, or (expenses) none went past its limit. */
+function emptyCategoriesKey(isExpense: boolean, categoriesWithGoal: number) {
+  if (categoriesWithGoal > 0) return 'finance:dashboard.budgets.noOverspent'
+  return isExpense ? 'finance:dashboard.budgets.noExpenseCategories' : 'finance:dashboard.budgets.noInvestmentCategories'
+}
+
 interface DashboardBudgetsProps {
   budgets: DashboardBudgetsDto
 }
@@ -94,12 +100,7 @@ function DashboardBudgets({ budgets }: DashboardBudgetsProps) {
     const isExpense = type === 'Expense'
     // Expenses list only the categories past their limit; a category within it is not news.
     const shown = isExpense ? overspentCategories(categories) : categories
-    const emptyKey =
-      categories.length === 0
-        ? isExpense
-          ? 'finance:dashboard.budgets.noExpenseCategories'
-          : 'finance:dashboard.budgets.noInvestmentCategories'
-        : 'finance:dashboard.budgets.noOverspent'
+    const emptyKey = emptyCategoriesKey(isExpense, categories.length)
 
     return (
       <div className="lm-dashboard-budgets__categories">

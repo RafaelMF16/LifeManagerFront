@@ -109,6 +109,12 @@ export function nearestAchievements(achievements: readonly AchievementDto[], lim
     .map(({ achievement }) => achievement)
 }
 
+/** The families of the unlocks the player hasn't seen yet (the profile's `newAchievements`). */
+export function unseenFamilies(achievements: readonly AchievementDto[], unseen: readonly AchievementCode[]): Set<AchievementFamily> {
+  const unseenCodes = new Set(unseen)
+  return new Set(achievements.filter((achievement) => unseenCodes.has(achievement.code)).map((achievement) => achievement.family))
+}
+
 /**
  * Which families start open in the grid. On wide screens every one. On compact screens the 22 cards would make a very
  * long page, so only what is news starts open: the families of unlocks the player hasn't seen yet (`unseen`, the
@@ -122,8 +128,7 @@ export function initiallyOpenFamilies(
 ): Set<AchievementFamily> {
   if (!isCompact) return new Set(achievements.map((achievement) => achievement.family))
 
-  const unseenCodes = new Set(unseen)
-  const open = new Set(achievements.filter((achievement) => unseenCodes.has(achievement.code)).map((achievement) => achievement.family))
+  const open = unseenFamilies(achievements, unseen)
   if (near[0]) open.add(near[0].family)
   return open
 }
