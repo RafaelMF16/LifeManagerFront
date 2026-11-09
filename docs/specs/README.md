@@ -80,22 +80,18 @@ Pontos fortes que **não** precisam de ação: toda rota do back tem `[Authorize
 
 | Module id | Responsabilidade | Repo(s) | Depende de | Tamanho |
 |---|---|---|---|---|
-| `clock-fixes` | P1 + P2: todo "agora/hoje" passa pelo `TimeProvider`/`AppClock`, com teste da virada de ano | back | — | XS |
-| `test-hygiene` | P4 + P5: remover `LifeManager.Tests` e zerar os CS8602 | back | — | XS |
-| `integration-tests` | P3: projeto de testes com Testcontainers (Postgres real) cobrindo migrations, totais do mês, commit da importação e lock da carteira | back | `test-hygiene` | M |
-| `front-shell` | P6 + P7: rotas carregadas sob demanda (code splitting) e metadados do `index.html` | front | — | S |
-| `pt-plurals` | V1: o zero no plural em pt-BR em todas as chaves `_one`, com teste que impede regressão | front | — | XS |
-| `mobile-polish` | V2 + V3 + V4: cartão do Perfil empilhado, Conquistas compacta, título do orçamento no Painel | front | — | S |
-| `quick-transaction` | M1: lançar sem criar o mês antes e liberar o ano anterior | back + front | `clock-fixes` | M |
+| `review-fixes` | P1 + P2 + P4 + P5 + P6 + P7 + V1–V4: as correções da revisão, juntas (relógio no fuso do negócio, higiene dos testes, rotas sob demanda e metadados, zero no plural, ajustes de celular) | back + front | — | M |
+| `integration-tests` | P3: projeto de testes com Testcontainers (Postgres real) cobrindo migrations, totais do mês, commit da importação e lock da carteira | back | `review-fixes` | M |
+| `quick-transaction` | M1: lançar sem criar o mês antes e liberar o ano anterior | back + front | `review-fixes` | M |
 | `category-picker` | M2/P8: combobox de categoria com busca | front | — | S |
 | `home-overview` | M3: resumo do dia na Home | back (endpoint agregado) + front | — | M |
 | `account-settings` | N1: Minha conta (nome, senha, sessões, exportar, excluir) | back + front | — | L |
-| `pwa` | N2: manifest, ícones, service worker do shell, CSP revisada | front | `front-shell` | S |
+| `pwa` | N2: manifest, ícones, service worker do shell, CSP revisada | front | `review-fixes` | S |
 | `habit-reminders` | N3: push de lembretes | back + front | `pwa` | L |
 | `savings-goals` | N4: objetivos de economia | back + front | — | L |
 | `transactions-export` | N5: CSV de um período | back + front | — | S |
 
-**Ordem de execução proposta:** `clock-fixes`, `test-hygiene`, `front-shell`, `pt-plurals` (correções rápidas) → `mobile-polish` → `integration-tests` → `quick-transaction`, `category-picker` → `home-overview` → `account-settings` → `pwa` → `habit-reminders` / `savings-goals` / `transactions-export` (à escolha).
+**Ordem de execução:** `review-fixes` → `integration-tests` → `quick-transaction`, `category-picker` → `home-overview` → `account-settings` → `pwa` → `habit-reminders` / `savings-goals` / `transactions-export` (à escolha).
 
 `N6` (fuso por usuário) fica fora do mapa por enquanto: ele mexe no `AppClock` de todos os fluxos e merece uma decisão própria.
 
@@ -105,26 +101,22 @@ Cada spec fica em `docs/specs/` do repo onde está o trabalho. Um módulo que me
 - o do back traz o **contrato da API**;
 - o do front traz a tela e aponta para o do back.
 
+A exceção é o `review-fixes`: um spec só, aqui, que junta as correções dos dois repos.
+
 | Ordem | Módulo | Back (`LifeManager/docs/specs/`) | Front (`LifeManagerFront/docs/specs/`) | Branch (a partir da `dev`) | Status |
 |---|---|---|---|---|---|
-| 1 | `clock-fixes` | [clock-fixes](../../../LifeManager/docs/specs/clock-fixes.md) | — | `fix/clock-fixes` | aprovado |
-| 2 | `test-hygiene` | [test-hygiene](../../../LifeManager/docs/specs/test-hygiene.md) | — | `chore/test-hygiene` | aprovado |
-| 3 | `front-shell` | — | [front-shell](front-shell.md) | `perf/front-shell` | aprovado |
-| 4 | `pt-plurals` | — | [pt-plurals](pt-plurals.md) | `fix/pt-plurals` | aprovado |
-| 5 | `mobile-polish` | — | [mobile-polish](mobile-polish.md) | `fix/mobile-polish` | aprovado |
-| 6 | `integration-tests` | [integration-tests](../../../LifeManager/docs/specs/integration-tests.md) | — | `test/integration-tests` | aprovado · dependência em discussão |
-| 7 | `quick-transaction` | [quick-transaction](../../../LifeManager/docs/specs/quick-transaction.md) | [quick-transaction](quick-transaction.md) | `feature/quick-transaction` | aprovado |
-| 7 | `category-picker` | — | [category-picker](category-picker.md) | `feature/category-picker` | aprovado |
-| 8 | `home-overview` | [home-overview](../../../LifeManager/docs/specs/home-overview.md) | [home-overview](home-overview.md) | `feature/home-overview` | aprovado |
-| 9 | `account-settings` | [account-settings](../../../LifeManager/docs/specs/account-settings.md) | [account-settings](account-settings.md) | `feature/account-settings` | aprovado |
-| 10 | `pwa` | — | [pwa](pwa.md) | `feature/pwa` | aprovado · dependência em discussão |
-| 11 | `habit-reminders` | [habit-reminders](../../../LifeManager/docs/specs/habit-reminders.md) | [habit-reminders](habit-reminders.md) | `feature/habit-reminders` | aprovado · dependência em discussão |
-| 11 | `savings-goals` | [savings-goals](../../../LifeManager/docs/specs/savings-goals.md) | [savings-goals](savings-goals.md) | `feature/savings-goals` | aprovado |
-| 11 | `transactions-export` | [transactions-export](../../../LifeManager/docs/specs/transactions-export.md) | [transactions-export](transactions-export.md) | `feature/transactions-export` | aprovado |
+| 1 | `review-fixes` | (no spec do front) | [review-fixes](review-fixes.md) | `fix/review-fixes` (nos dois repos) | aguardando aprovação (junção dos cinco specs aprovados) |
+| 2 | `integration-tests` | [integration-tests](../../../LifeManager/docs/specs/integration-tests.md) | — | `test/integration-tests` | aprovado · dependência em discussão |
+| 3 | `quick-transaction` | [quick-transaction](../../../LifeManager/docs/specs/quick-transaction.md) | [quick-transaction](quick-transaction.md) | `feature/quick-transaction` | aprovado |
+| 3 | `category-picker` | — | [category-picker](category-picker.md) | `feature/category-picker` | aprovado |
+| 4 | `home-overview` | [home-overview](../../../LifeManager/docs/specs/home-overview.md) | [home-overview](home-overview.md) | `feature/home-overview` | aprovado |
+| 5 | `account-settings` | [account-settings](../../../LifeManager/docs/specs/account-settings.md) | [account-settings](account-settings.md) | `feature/account-settings` | aprovado |
+| 6 | `pwa` | — | [pwa](pwa.md) | `feature/pwa` | aprovado · dependência em discussão |
+| 7 | `habit-reminders` | [habit-reminders](../../../LifeManager/docs/specs/habit-reminders.md) | [habit-reminders](habit-reminders.md) | `feature/habit-reminders` | aprovado · dependência em discussão |
+| 7 | `savings-goals` | [savings-goals](../../../LifeManager/docs/specs/savings-goals.md) | [savings-goals](savings-goals.md) | `feature/savings-goals` | aprovado |
+| 7 | `transactions-export` | [transactions-export](../../../LifeManager/docs/specs/transactions-export.md) | [transactions-export](transactions-export.md) | `feature/transactions-export` | aprovado |
 
-São **14 módulos e 20 branches**:
-- 9 no back: 3 só de back e 6 de módulos que mexem nos dois repos;
-- 11 no front: 5 só de front e os mesmos 6.
+São **10 módulos e 17 branches**: 8 no back e 9 no front.
 
 **Spec implementado e mergeado na `dev` sai da pasta.** O histórico fica no git, e as regras passam para o `CLAUDE.md` e as docs. Os specs de loadings (`splash`, `auth-entrance`, `skeleton` e o mapa `loadings`), implementados no PR #38, já saíram.
 
@@ -193,15 +185,16 @@ public static Result<MonthlySummaryYear> Create(int value, int currentYear) { ..
 - **M1:** liberar a criação manual de meses do **ano anterior**.
 - **N1:** a exclusão de conta tem **prazo de arrependimento**. Entrar de novo dentro do prazo cancela; passado o prazo, a conta é apagada de vez.
 - **Git:** uma branch por funcionalidade ou correção, criada a partir da `dev`. A `dev` não existia em nenhum dos dois repos e foi criada localmente a partir da `main` (`5b21345` no back, `fb5fd91` no front). Os PRs vão para a `dev`.
-  - Nomes: `fix/clock-fixes`, `chore/test-hygiene`, `test/integration-tests`, `perf/front-shell`, `fix/pt-plurals`, `fix/mobile-polish`, `feature/<id>` para as funcionalidades.
+  - Nomes: `fix/review-fixes` (as correções), `test/integration-tests` e `feature/<id>` para as funcionalidades.
 
 - **Specs** organizados em `docs/specs/` de cada repo. Os de loadings, já implementados, foram removidos.
 - **Módulos acrescentados ao mapa depois da revisão visual:** `pt-plurals` e `mobile-polish`.
-- **Os 14 specs foram aprovados**, com estas decisões:
+- **Os specs foram aprovados**, com estas decisões:
   - prazo de exclusão de **7 dias**;
   - lembrete de hábito em **hora cheia**, com o agendador atual;
   - usar o dinheiro de um objetivo **não** baixa o objetivo neste módulo.
 - **Commits dos specs:** branch `docs/specs` a partir da `dev`, em cada repo.
+- **As cinco correções viraram um módulo só:** `clock-fixes`, `test-hygiene`, `front-shell`, `pt-plurals` e `mobile-polish` agora são o `review-fixes`, com um spec só ([review-fixes.md](review-fixes.md)) e uma branch só, `fix/review-fixes`, a partir da `dev`, com o mesmo nome nos dois repos.
 
 ## Perguntas em aberto
 

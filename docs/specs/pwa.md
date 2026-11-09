@@ -1,6 +1,6 @@
 # Spec: `pwa`
 
-Módulo do mapa [`README.md`](README.md) (N2). Branch `feature/pwa`, a partir da `dev`, **depois** do `front-shell`. Só front, e base do `habit-reminders`.
+Módulo do mapa [`README.md`](README.md) (N2). Branch `feature/pwa`, a partir da `dev`, **depois** do `review-fixes` (rotas lazy). Só front, e base do `habit-reminders`.
 
 ## Objetivo
 
@@ -22,7 +22,7 @@ Instalar o LifeManager na tela inicial do celular, com ícone, tela cheia e aber
    - **`/api/**` nunca passa pelo cache** (`NetworkOnly`). Dados financeiros não ficam guardados no aparelho, e o refresh token continua só no cookie.
    - **Navegação:** `NavigationRoute` para o `index.html`, só para rotas do app, nunca para `/api`.
    - **Atualização:** `registerType: 'prompt'`. Quando há versão nova, um toast fixo, "Nova versão disponível", com o botão "Atualizar" (`updateSW(true)`). Assim nada troca no meio de um formulário.
-     - Isso substitui com vantagem o reload por erro de chunk do `front-shell`, que fica como rede de segurança.
+     - Isso substitui com vantagem o reload por erro de chunk do `review-fixes`, que fica como rede de segurança.
 3. **Instalar:**
    - No menu do `Header`, o item "Instalar app" aparece só quando o navegador disparou `beforeinstallprompt` (Android/desktop Chrome e Edge). O hook novo é `shared/hooks/useInstallPrompt.ts`.
    - **iOS (Safari):** não tem esse evento. O mesmo item abre um `Dialog` com o passo a passo: "Compartilhar → Adicionar à Tela de Início". Ele só aparece em Safari iOS fora do modo standalone.

@@ -9,7 +9,7 @@ Uma tela "Minha conta" para editar o nome, trocar a senha, sair de todos os apar
 ## Rota e módulo
 
 - **Módulo novo:** `src/account/`, com namespace `account` registrado em `i18n.ts`, e as pastas `pages/`, `components/`, `services/`, `hooks/`, `validation/` e `locales/`.
-- **Rota:** `/account` (protegida, dentro do `ProtectedRoute`, com rota `lazy` se o `front-shell` já estiver na `dev`), com `Header` e `Footer` como a Home.
+- **Rota:** `/account` (protegida, dentro do `ProtectedRoute`, com rota `lazy` do `review-fixes`), com `Header` e `Footer` como a Home.
 - **Acesso:** item "Minha conta" no menu do `Header`, entre o nome do usuário e Tema.
 
 ## Seções da página (uma coluna; cada seção é um cartão)
