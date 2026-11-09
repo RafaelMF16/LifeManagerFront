@@ -4,25 +4,19 @@ import authEnUS from '../auth/locales/en-US'
 import authPtBR from '../auth/locales/pt-BR'
 import homeEnUS from '../home/locales/en-US'
 import homePtBR from '../home/locales/pt-BR'
-import financeEnUS from '../finance/locales/en-US'
-import financePtBR from '../finance/locales/pt-BR'
-import habitsEnUS from '../habits/locales/en-US'
-import habitsPtBR from '../habits/locales/pt-BR'
-import { withZeroPlurals } from './withZeroPlurals'
-
-export const NAMESPACES = ['common', 'auth', 'home', 'finance', 'habits'] as const
+import { namespaceBundles } from './namespaceBundles'
 
 /**
- * pt-BR goes through `withZeroPlurals` because its plural rule reads 0 as singular ("0 dia"); en-US already reads
- * 0 as plural. A namespace added here must be wrapped the same way.
+ * The namespaces in the entry bundle: the shared texts and the screens anyone may open first (sign-in, home). The
+ * Finance and Habits namespaces load with their module (`registerNamespace`), so `/auth` never downloads them.
  */
+export const EAGER_NAMESPACES = ['common', 'auth', 'home'] as const
+
+const common = namespaceBundles(commonEnUS, commonPtBR)
+const auth = namespaceBundles(authEnUS, authPtBR)
+const home = namespaceBundles(homeEnUS, homePtBR)
+
 export const resources = {
-  'en-US': { common: commonEnUS, auth: authEnUS, home: homeEnUS, finance: financeEnUS, habits: habitsEnUS },
-  'pt-BR': {
-    common: withZeroPlurals(commonPtBR),
-    auth: withZeroPlurals(authPtBR),
-    home: withZeroPlurals(homePtBR),
-    finance: withZeroPlurals(financePtBR),
-    habits: withZeroPlurals(habitsPtBR),
-  },
+  'en-US': { common: common['en-US'], auth: auth['en-US'], home: home['en-US'] },
+  'pt-BR': { common: common['pt-BR'], auth: auth['pt-BR'], home: home['pt-BR'] },
 }

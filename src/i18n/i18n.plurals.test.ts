@@ -1,8 +1,22 @@
 import i18next from 'i18next'
 import { beforeAll, describe, expect, it } from 'vitest'
-import { NAMESPACES, resources } from './resources'
+import financeEnUS from '../finance/locales/en-US'
+import financePtBR from '../finance/locales/pt-BR'
+import habitsEnUS from '../habits/locales/en-US'
+import habitsPtBR from '../habits/locales/pt-BR'
+import { namespaceBundles } from './namespaceBundles'
+import { EAGER_NAMESPACES, resources as eagerResources } from './resources'
 
 type Resource = { [key: string]: unknown }
+
+// Every namespace as the app gets it: the eager ones from `resources`, the module ones through `namespaceBundles`.
+const finance = namespaceBundles(financeEnUS, financePtBR)
+const habits = namespaceBundles(habitsEnUS, habitsPtBR)
+const NAMESPACES = [...EAGER_NAMESPACES, 'finance', 'habits'] as const
+const resources = {
+  'en-US': { ...eagerResources['en-US'], finance: finance['en-US'], habits: habits['en-US'] },
+  'pt-BR': { ...eagerResources['pt-BR'], finance: finance['pt-BR'], habits: habits['pt-BR'] },
+}
 
 /** Every `_one` key whose text differs from its `_other`, as the path `t()` takes (`summary.days`). */
 function pluralKeys(resource: Resource, prefix = ''): string[] {
