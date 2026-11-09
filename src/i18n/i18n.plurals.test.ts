@@ -10,6 +10,7 @@ import { EAGER_NAMESPACES, resources as eagerResources } from './resources'
 type Resource = { [key: string]: unknown }
 
 // Every namespace as the app gets it: the eager ones from `resources`, the module ones through `namespaceBundles`.
+// A new module namespace (one with its own `locales/register.ts`) must be added here too, or its plurals go unchecked.
 const finance = namespaceBundles(financeEnUS, financePtBR)
 const habits = namespaceBundles(habitsEnUS, habitsPtBR)
 const NAMESPACES = [...EAGER_NAMESPACES, 'finance', 'habits'] as const
