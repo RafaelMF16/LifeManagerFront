@@ -44,7 +44,7 @@ Em 31/12, das 21h à meia-noite de Brasília, criar "Dezembro" cria **dezembro d
 
 **Aceite:**
 - Com o `FakeTimeProvider` em **31/12/2026 às 22h de Brasília** (01/01/2027 01:00 UTC), `POST MonthlySummaries { month: 12 }` cria **dezembro de 2026**.
-- Em 01/01/2027 às 10h de Brasília, criar dezembro devolve `MonthlySummary.YearNotCurrent`: a regra atual não muda, e o ano anterior só é liberado no `quick-transaction`.
+- Em 01/01/2027 às 10h de Brasília (13:00 UTC), criar dezembro cria **dezembro de 2027**: o ano vem sempre de "hoje" no fuso do negócio, e o ano anterior só é liberado no `quick-transaction`.
 - `grep -rn "UtcNow\|DateTime.Now" LifeManager.Application LifeManager.Domain` só encontra `_timeProvider.GetUtcNow()` e o `AppClock`.
 - Os códigos de erro e as respostas da API não mudam.
 
