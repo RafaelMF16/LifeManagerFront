@@ -5,7 +5,7 @@ import Icon from '../../../shared/components/Icon/Icon'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import type { BudgetSliceType } from '../../types/BudgetPlanDtos'
 import type { DashboardBudgetCategoryDto, DashboardBudgetSummaryDto, DashboardBudgetsDto } from '../../types/DashboardDtos'
-import { closedMonthsScore, isMonthOpen } from '../../utils/budgetStatus'
+import { closedMonthsScore, isMonthOpen, overspentCategories } from '../../utils/budgetStatus'
 import BudgetProgress from '../BudgetProgress/BudgetProgress'
 import './DashboardBudgets.css'
 
@@ -17,7 +17,7 @@ interface DashboardBudgetsProps {
 
 /**
  * How the period went against the goals: the month-total limit and target (summed over the months that had them,
- * and how many closed months met them), then the categories furthest from their goals.
+ * and how many closed months met them), then the expense categories that went past their limit.
  */
 function DashboardBudgets({ budgets }: DashboardBudgetsProps) {
   const { t: translate } = useTranslation('finance')
@@ -92,19 +92,25 @@ function DashboardBudgets({ budgets }: DashboardBudgetsProps) {
 
   function renderCategories(type: BudgetSliceType, categories: DashboardBudgetCategoryDto[]) {
     const isExpense = type === 'Expense'
+    // Expenses list only the categories past their limit; a category within it is not news.
+    const shown = isExpense ? overspentCategories(categories) : categories
+    const emptyKey =
+      categories.length === 0
+        ? isExpense
+          ? 'finance:dashboard.budgets.noExpenseCategories'
+          : 'finance:dashboard.budgets.noInvestmentCategories'
+        : 'finance:dashboard.budgets.noOverspent'
 
     return (
       <div className="lm-dashboard-budgets__categories">
         <h3 className="lm-dashboard-budgets__categories-title">
           {translate(isExpense ? 'finance:dashboard.budgets.expenseCategoriesTitle' : 'finance:dashboard.budgets.investmentCategoriesTitle')}
         </h3>
-        {categories.length === 0 ? (
-          <p className="lm-dashboard-budgets__muted">
-            {translate(isExpense ? 'finance:dashboard.budgets.noExpenseCategories' : 'finance:dashboard.budgets.noInvestmentCategories')}
-          </p>
+        {shown.length === 0 ? (
+          <p className="lm-dashboard-budgets__muted">{translate(emptyKey)}</p>
         ) : (
           <ul className="lm-dashboard-budgets__list">
-            {categories.map((category) => {
+            {shown.map((category) => {
               const missed = category.gap > 0
               return (
                 <li key={category.categoryId} className="lm-dashboard-budgets__category">

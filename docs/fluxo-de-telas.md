@@ -235,7 +235,7 @@ A escolha fica salva neste dispositivo e vale para todas as abas abertas.
 - **Gastos por categoria** e **Investimentos por categoria:** as 8 maiores categorias e "Outras". Clicar numa categoria abre o detalhe **Por mês**.
 - **Orçamento do período:**
   - Limite de gastos e alvo de investimento do mês, com "Dentro do limite em X de N meses fechados". O mês atual fica fora da contagem. O limite de gastos de um mês é o total do orçamento menos a fatia de Investimentos; o alvo de investimento é essa fatia.
-  - **Categorias que mais estouraram**.
+  - **Categorias que mais estouraram:** só as categorias que passaram do limite no período, da que mais passou para a que menos passou, com "Passou R$ X". Se nenhuma passou, aparece "Nenhuma categoria passou do limite no período."
   - **Criar orçamento** (sem orçamento no período) ou **Ver orçamento** abrem a tela de Orçamento.
 - Se o painel não carregar: **Tentar de novo**.
 

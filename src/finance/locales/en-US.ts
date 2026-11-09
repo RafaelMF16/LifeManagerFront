@@ -129,6 +129,7 @@ export default {
       investmentCategoriesTitle: 'Investments by target',
       noExpenseCategories: 'No category with a spending limit.',
       noInvestmentCategories: 'No category with an investment target.',
+      noOverspent: 'No category went over its limit in this period.',
       over: '{{amount}} over',
       short: '{{amount}} short',
       withinLimit: 'Within the limit',
