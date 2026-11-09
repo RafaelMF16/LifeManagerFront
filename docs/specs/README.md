@@ -80,7 +80,7 @@ Pontos fortes que **não** precisam de ação: toda rota do back tem `[Authorize
 
 | Module id | Responsabilidade | Repo(s) | Depende de | Tamanho |
 |---|---|---|---|---|
-| `review-fixes` | P1 + P2 + P4 + P5 + P6 + P7 + V1–V4: as correções da revisão, juntas (relógio no fuso do negócio, higiene dos testes, rotas sob demanda e metadados, zero no plural, ajustes de celular) | back + front | — | M |
+| `review-fixes` | P1 + P2 + P4 + P5 + P6 + P7 + V1–V4: as correções da revisão, juntas (relógio no fuso do negócio, higiene dos testes, rotas sob demanda e metadados, zero no plural, ajustes de celular, ícone da carteira, CI nos PRs para a `dev`) | back + front | — | M |
 | `integration-tests` | P3: projeto de testes com Testcontainers (Postgres real) cobrindo migrations, totais do mês, commit da importação e lock da carteira | back | `review-fixes` | M |
 | `quick-transaction` | M1: lançar sem criar o mês antes e liberar o ano anterior | back + front | `review-fixes` | M |
 | `category-picker` | M2/P8: combobox de categoria com busca | front | — | S |
@@ -106,12 +106,12 @@ A exceção é o `review-fixes`: um spec só, aqui, que junta as correções dos
 | Ordem | Módulo | Back (`LifeManager/docs/specs/`) | Front (`LifeManagerFront/docs/specs/`) | Branch (a partir da `dev`) | Status |
 |---|---|---|---|---|---|
 | 1 | `review-fixes` | (no spec do front) | [review-fixes](review-fixes.md) | `fix/review-fixes` (nos dois repos) | aguardando aprovação (junção dos cinco specs aprovados) |
-| 2 | `integration-tests` | [integration-tests](../../../LifeManager/docs/specs/integration-tests.md) | — | `test/integration-tests` | aprovado · dependência em discussão |
+| 2 | `integration-tests` | [integration-tests](../../../LifeManager/docs/specs/integration-tests.md) | — | `test/integration-tests` | aprovado |
 | 3 | `quick-transaction` | [quick-transaction](../../../LifeManager/docs/specs/quick-transaction.md) | [quick-transaction](quick-transaction.md) | `feature/quick-transaction` | aprovado |
 | 3 | `category-picker` | — | [category-picker](category-picker.md) | `feature/category-picker` | aprovado |
 | 4 | `home-overview` | [home-overview](../../../LifeManager/docs/specs/home-overview.md) | [home-overview](home-overview.md) | `feature/home-overview` | aprovado |
 | 5 | `account-settings` | [account-settings](../../../LifeManager/docs/specs/account-settings.md) | [account-settings](account-settings.md) | `feature/account-settings` | aprovado |
-| 6 | `pwa` | — | [pwa](pwa.md) | `feature/pwa` | aprovado · dependência em discussão |
+| 6 | `pwa` | — | [pwa](pwa.md) | `feature/pwa` | aprovado |
 | 7 | `habit-reminders` | [habit-reminders](../../../LifeManager/docs/specs/habit-reminders.md) | [habit-reminders](habit-reminders.md) | `feature/habit-reminders` | aprovado · dependência em discussão |
 | 7 | `savings-goals` | [savings-goals](../../../LifeManager/docs/specs/savings-goals.md) | [savings-goals](savings-goals.md) | `feature/savings-goals` | aprovado |
 | 7 | `transactions-export` | [transactions-export](../../../LifeManager/docs/specs/transactions-export.md) | [transactions-export](transactions-export.md) | `feature/transactions-export` | aprovado |
@@ -194,12 +194,13 @@ public static Result<MonthlySummaryYear> Create(int value, int currentYear) { ..
   - lembrete de hábito em **hora cheia**, com o agendador atual;
   - usar o dinheiro de um objetivo **não** baixa o objetivo neste módulo.
 - **Commits dos specs:** branch `docs/specs` a partir da `dev`, em cada repo.
+- **Pipeline:** os testes com banco (Testcontainers) entram no pipeline, e um workflow `ci.yml` novo roda os testes de cada repo em todo PR para a `dev` (e a `main`). Fica no `review-fixes`.
+- **PWA aprovado**, com o `vite-plugin-pwa` e o ajuste da CSP.
+- **Ícone:** a carteira do sprite de carregamento substitui o ícone padrão do Vite (favicon e `apple-touch-icon`). Fica no `review-fixes`, e o `pwa` reaproveita o mesmo frame.
 - **As cinco correções viraram um módulo só:** `clock-fixes`, `test-hygiene`, `front-shell`, `pt-plurals` e `mobile-polish` agora são o `review-fixes`, com um spec só ([review-fixes.md](review-fixes.md)) e uma branch só, `fix/review-fixes`, a partir da `dev`, com o mesmo nome nos dois repos.
 
 ## Perguntas em aberto
 
 1. **V6:** as conquistas de Finanças devem contar só meses criados depois do cadastro? Fora de todos os módulos até haver decisão.
-2. **Dependências e CSP: em discussão.** Os três módulos abaixo só começam depois dessa conversa:
-   - `Testcontainers.PostgreSql` (`integration-tests`);
-   - `vite-plugin-pwa` e `worker-src`/`manifest-src` na CSP (`pwa`);
+2. **Dependência ainda em discussão:** o `habit-reminders` só começa depois dessa conversa.
    - `WebPush` (NuGet) e as chaves VAPID no deploy (`habit-reminders`).

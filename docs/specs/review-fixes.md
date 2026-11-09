@@ -15,7 +15,9 @@ Tirar os bugs e o ruído que a revisão encontrou antes de começar as funcional
 - warnings escondendo warnings;
 - 1 MB de JS no primeiro acesso;
 - "0 dia" no lugar de "0 dias";
-- três telas que não ficam bem no celular.
+- três telas que não ficam bem no celular;
+- o ícone padrão do Vite;
+- PRs para a `dev` sem nenhum teste automático.
 
 Nenhuma regra de negócio muda e nenhuma migration é criada.
 
@@ -88,15 +90,33 @@ Em 31/12, das 21h à meia-noite de Brasília, criar "Dezembro" cria **dezembro d
 - `<title>LifeManager</title>`;
 - `meta description`;
 - `theme-color` claro e escuro (`media="(prefers-color-scheme: …)"`, a partir dos tokens de fundo);
-- `apple-touch-icon` de 180px em `public/`, gerado a partir do `favicon.svg`;
 - o `lang` inicial não muda, porque o `i18n.ts` já o corrige em tempo de execução.
+
+**Ícone do app: a carteira, no lugar do raio do Vite.**
+- **Origem:** o ícone sai de **um frame** da faixa `src/assets/wallet/wallet-loop.png`, o mesmo sprite do splash e do login.
+  - É o frame 12, com a nota entrando na carteira. O frame é 64×64, com o fundo redondo claro e os cantos transparentes.
+  - O frame final é escolhido na implementação, olhando os 24, e o usuário confirma.
+- **Arquivos gerados**, sempre com **escala inteira e vizinho mais próximo**, para o pixel art não borrar:
+
+| Arquivo | Tamanho | Como |
+|---|---|---|
+| `public/favicon.png` | 64×64 | o frame, sem mudar |
+| `public/favicon-32.png` | 32×32 | o frame reduzido pela metade, para aba e favoritos (conferir se fica legível; senão fica só o de 64) |
+| `public/apple-touch-icon.png` | 180×180 | o frame ×2 (128px), centralizado num fundo sólido da cor `--surface` clara. O iOS pinta de preto o que for transparente, então nada de transparência aqui. |
+
+- **No `index.html`:** `<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">`, o de 32 e `<link rel="apple-touch-icon" href="/apple-touch-icon.png">`.
+- **Saem os restos do template do Vite:** `public/favicon.svg` (o raio roxo) e `public/icons.svg` (ícones de Bluesky, Discord e GitHub, que nada usa).
+- **Como gerar:** os PNGs são gerados uma vez e commitados, sem passo novo no build. O `CLAUDE.md` registra de qual frame vieram, para refazer se o sprite mudar.
+- O `pwa` reaproveita o mesmo frame para os ícones de 192 (×3) e 512 (×8).
 
 **Aceite:**
 - `npm run build` **sem** o aviso "chunks larger than 500 kB".
 - Chunk de entrada **≤ 300 kB** minificado, com o antes e o depois no PR. Finanças e Hábitos em chunks próprios.
 - Navegar não mostra tela branca, e um reload em `/finance/dashboard` mostra o splash e depois a tela.
 - O "sair sem salvar?" do orçamento (`useBlocker`) continua funcionando.
-- A aba mostra "LifeManager".
+- A aba mostra "LifeManager" com a carteira.
+- No iPhone, "Adicionar à Tela de Início" mostra a carteira nítida, sem borda preta.
+- Nada no repo aponta para `favicon.svg` ou `icons.svg`.
 
 ### 4. Zero no plural em pt-BR (V1)
 
@@ -146,10 +166,36 @@ O `i18n.ts` aplica a função só aos namespaces pt-BR.
 
 ---
 
+## Os dois repos
+
+### 6. Testes em todo PR para a `dev` (CI)
+
+**Hoje** os testes só rodam no `deploy.yml`, em push na `main`. Um PR para a `dev` entra sem nenhuma verificação, e um erro só aparece na hora do deploy.
+
+Um workflow novo, **`.github/workflows/ci.yml`, em cada repo:**
+- **Gatilho:** `pull_request` para `dev` e `main`, e `workflow_dispatch`.
+- **Permissões:** `permissions: contents: read`. Nenhum segredo, porque testes não publicam nada.
+- **Concorrência:** `group: ci-${{ github.ref }}` com `cancel-in-progress: true`. Um push novo no PR cancela a execução antiga.
+- **Back:** `actions/setup-dotnet` (10.0.x) e `dotnet test LifeManager.slnx`.
+  - Com o `integration-tests`, isso inclui os testes com Postgres real. O runner `ubuntu-latest` já tem Docker, então nada muda no workflow.
+- **Front:** Node do `.nvmrc`, `npm ci`, `npm run lint`, `npm test` e `npm run build`, os mesmos passos de verificação do `deploy.yml`.
+- **`timeout-minutes: 15`**, como no deploy.
+- **Quem trava o merge:** para um PR com teste vermelho **não poder** ser mergeado, é preciso uma regra de proteção da `dev` (e da `main`) no GitHub exigindo o check `CI`. Isso é uma configuração da conta. **O usuário faz em Settings → Branches**, e o PR explica o passo.
+
+**Aceite:**
+- O PR do próprio `review-fixes` para a `dev` já mostra o check `CI` rodando e verde, nos dois repos. O workflow vale no PR que o cria.
+- Um commit de teste com um teste quebrado deixa o check vermelho. Isso é conferido uma vez e descrito no PR.
+
+**Docs:** `docs/deploy.md` do back, na seção "Deploy automático (GitHub Actions)", ganha o `ci.yml` e a regra de proteção. Os dois `CLAUDE.md` citam o workflow.
+
+---
+
 ## Ordem dos commits
 
-- **Back:** `test-hygiene` → relógio. Com o portão de warnings ligado primeiro, o relógio já nasce sem warnings.
-- **Front:** plural → celular → carregamento sob demanda. O último mexe no `App.tsx` inteiro, e ir por último evita conflito com o resto.
+- **Back:** CI → `test-hygiene` → relógio.
+  - Com o CI primeiro, o resto já passa por ele.
+  - Com o portão de warnings ligado antes do relógio, o relógio já nasce sem warnings.
+- **Front:** CI → plural → celular → carregamento sob demanda com o ícone. O último mexe no `App.tsx` inteiro, e ir por último evita conflito com o resto.
 
 ## Portão (cada commit)
 
@@ -167,7 +213,9 @@ O `i18n.ts` aplica a função só aos namespaces pt-BR.
    - entrar e navegar Home → Finanças → Hábitos;
    - dar reload numa tela interna;
    - alterar o orçamento e tentar sair.
-6. A aba mostra "LifeManager", e o tema escuro funciona nas telas mexidas.
+6. A aba mostra "LifeManager" com a carteira, e o tema escuro funciona nas telas mexidas.
+7. No iPhone, "Adicionar à Tela de Início" mostra a carteira.
+8. No GitHub, o PR mostra o check `CI` verde. Depois disso, o usuário cria a regra de proteção da `dev`.
 
 ## Docs
 

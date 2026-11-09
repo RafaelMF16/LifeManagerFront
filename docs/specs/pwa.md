@@ -14,10 +14,10 @@ Instalar o LifeManager na tela inicial do celular, com ícone, tela cheia e aber
    - `display` `standalone`;
    - `background_color` e `theme_color` dos tokens claros;
    - `lang` `pt-BR`;
-   - ícones 192 e 512 (`any`) e 512 `maskable`, gerados a partir do `favicon.svg` (PNG em `public/icons/`);
+   - ícones 192 e 512 (`any`) e 512 `maskable`, gerados do **mesmo frame da carteira** usado no favicon do `review-fixes`, com escala inteira e vizinho mais próximo: 192 = frame ×3, 512 = frame ×8, e `maskable` 512 = frame ×6 centralizado num fundo sólido, dentro da área segura de 80% (PNG em `public/icons/`);
    - `shortcuts`: "Hoje" (`/habits/today`) e "Novo lançamento" (`/finance/months?new=1`, depois do `quick-transaction`).
    - O `index.html` ganha o `<link rel="manifest">`.
-2. **Service worker:** com `vite-plugin-pwa` (dependência nova, **em discussão**), na estratégia **`injectManifest`**, com um `src/sw.ts` nosso, para o `habit-reminders` acrescentar o `push` depois.
+2. **Service worker:** com `vite-plugin-pwa` (dependência nova, aprovada em 09/11/2026), na estratégia **`injectManifest`**, com um `src/sw.ts` nosso, para o `habit-reminders` acrescentar o `push` depois.
    - **Precache** do shell: `index.html`, o JS e o CSS gerados e as fontes locais.
    - **`/api/**` nunca passa pelo cache** (`NetworkOnly`). Dados financeiros não ficam guardados no aparelho, e o refresh token continua só no cookie.
    - **Navegação:** `NavigationRoute` para o `index.html`, só para rotas do app, nunca para `/api`.
@@ -30,7 +30,7 @@ Instalar o LifeManager na tela inicial do celular, com ícone, tela cheia e aber
    - `Cache-Control: no-cache` para `/sw.js` e `/manifest.webmanifest`;
    - `Content-Type: application/manifest+json` para o manifest.
    - **CSP:** o `default-src 'self'` já cobre `worker-src` e `manifest-src`. Mesmo assim, ficam explícitos `worker-src 'self'` e `manifest-src 'self'`, para documentar.
-   - Essa mudança na CSP está **em discussão** junto com a dependência.
+   - Essa mudança na CSP foi aprovada junto com o PWA (09/11/2026).
 
 Fora do escopo: funcionar offline com dados (cache da API) e sincronização em segundo plano.
 
