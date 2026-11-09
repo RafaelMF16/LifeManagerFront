@@ -196,7 +196,7 @@ public static Result<MonthlySummaryYear> Create(int value, int currentYear) { ..
 - **Commits dos specs:** branch `docs/specs` a partir da `dev`, em cada repo.
 - **Pipeline:** os testes com banco (Testcontainers) entram no pipeline, e um workflow `ci.yml` novo roda os testes de cada repo em todo PR para a `dev` (e a `main`). Fica no `review-fixes`.
 - **PWA aprovado**, com o `vite-plugin-pwa` e o ajuste da CSP.
-- **Ícone:** a carteira do sprite de carregamento substitui o ícone padrão do Vite (favicon e `apple-touch-icon`). Fica no `review-fixes`, e o `pwa` reaproveita o mesmo frame.
+- **Ícone:** a roda das áreas da vida (quatro fatias, Finanças e Hábitos com os seus ícones) substitui o ícone padrão do Vite (favicon e `apple-touch-icon`), a partir de `public/favicon.svg`. Fica no `review-fixes`, e o `pwa` gera os seus ícones do mesmo SVG. A animação de carregamento continua com a carteira.
 - **As cinco correções viraram um módulo só:** `clock-fixes`, `test-hygiene`, `front-shell`, `pt-plurals` e `mobile-polish` agora são o `review-fixes`, com um spec só ([review-fixes.md](review-fixes.md)) e uma branch só, `fix/review-fixes`, a partir da `dev`, com o mesmo nome nos dois repos.
 
 ## Perguntas em aberto

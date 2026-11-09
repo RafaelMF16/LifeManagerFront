@@ -1,50 +1,47 @@
-# Generates the app icons from one frame of the wallet sprite (src/assets/wallet/wallet-loop.png, 24 frames of 64 px).
-# Run once and commit the PNGs; the build doesn't run it. Redo it if the sprite changes:
-#   powershell -ExecutionPolicy Bypass -File scripts/generate-icons.ps1 [-Frame 12]
-# Pixel art: every resize is nearest neighbor, so no pixel gets blurred.
-param(
-    [int]$Frame = 12
-)
-
+# Generates the PNG app icons from public/favicon.svg, rendered by headless Microsoft Edge (or Chrome), so the PNGs
+# match the SVG exactly. Run once and commit the PNGs; the build doesn't run it. Redo it if the SVG changes:
+#   powershell -ExecutionPolicy Bypass -File scripts/generate-icons.ps1
 $ErrorActionPreference = 'Stop'
-Add-Type -AssemblyName System.Drawing
 
 $root = Split-Path -Parent $PSScriptRoot
-$spritePath = Join-Path $root 'src/assets/wallet/wallet-loop.png'
 $publicDir = Join-Path $root 'public'
-$frameSize = 64
-# The light theme's --surface (--white): iOS paints a transparent apple-touch-icon black, so that one is opaque.
-$surface = [System.Drawing.Color]::FromArgb(255, 255, 255, 255)
+$svg = Get-Content -Raw -Encoding UTF8 (Join-Path $publicDir 'favicon.svg')
 
-$sprite = [System.Drawing.Bitmap]::FromFile($spritePath)
+$browser = @(
+    "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe",
+    "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe",
+    "$env:ProgramFiles\Google\Chrome\Application\chrome.exe"
+) | Where-Object { Test-Path $_ } | Select-Object -First 1
+if (-not $browser) { throw 'Microsoft Edge or Google Chrome is needed to render the SVG.' }
+
+$work = Join-Path ([System.IO.Path]::GetTempPath()) ("lm-icons-" + [guid]::NewGuid())
+New-Item -ItemType Directory -Path $work | Out-Null
+
+# Draws the SVG at $drawn px, centered on a $canvas px page: transparent, or on the light theme's --surface (white),
+# since iOS paints a transparent apple-touch-icon black.
+function Save-Icon([int]$canvas, [int]$drawn, [bool]$opaque, [string]$name) {
+    $background = if ($opaque) { '#ffffff' } else { 'transparent' }
+    $page = Join-Path $work "$name.html"
+    $html = "<!doctype html><html><head><style>html,body{margin:0;width:${canvas}px;height:${canvas}px;overflow:hidden;" +
+        "background:$background;display:grid;place-items:center}svg{width:${drawn}px;height:${drawn}px;display:block}" +
+        "</style></head><body>$svg</body></html>"
+    Set-Content -Path $page -Value $html -Encoding UTF8
+    $output = Join-Path $publicDir $name
+    $arguments = @(
+        '--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
+        '--default-background-color=00000000', "--user-data-dir=$work\profile",
+        "--window-size=$canvas,$canvas", "--screenshot=$output", ([System.Uri]$page).AbsoluteUri
+    )
+    $process = Start-Process -FilePath $browser -ArgumentList $arguments -Wait -PassThru -WindowStyle Hidden
+    if ($process.ExitCode -ne 0 -or -not (Test-Path $output)) { throw "Rendering $name failed." }
+    Write-Output "$name ($canvas x $canvas)"
+}
+
 try {
-    $frameCount = [int]($sprite.Width / $frameSize)
-    if ($Frame -lt 0 -or $Frame -ge $frameCount) { throw "Frame $Frame is out of range (0..$($frameCount - 1))." }
-    $source = New-Object System.Drawing.Rectangle(($Frame * $frameSize), 0, $frameSize, $frameSize)
-
-    function Save-Icon([int]$canvas, [int]$drawn, [bool]$opaque, [string]$name) {
-        $bitmap = New-Object System.Drawing.Bitmap($canvas, $canvas, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
-        $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
-        try {
-            $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
-            $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::Half
-            $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::None
-            if ($opaque) { $graphics.Clear($surface) } else { $graphics.Clear([System.Drawing.Color]::Transparent) }
-            $offset = [int](($canvas - $drawn) / 2)
-            $target = New-Object System.Drawing.Rectangle($offset, $offset, $drawn, $drawn)
-            $graphics.DrawImage($sprite, $target, $source, [System.Drawing.GraphicsUnit]::Pixel)
-            $path = Join-Path $publicDir $name
-            $bitmap.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
-            Write-Output "$name ($canvas x $canvas)"
-        } finally {
-            $graphics.Dispose()
-            $bitmap.Dispose()
-        }
-    }
-
     Save-Icon 64 64 $false 'favicon.png'
     Save-Icon 32 32 $false 'favicon-32.png'
-    Save-Icon 180 128 $true 'apple-touch-icon.png'
+    # 144 of 180: the wheel's margin on the home screen, like the other app icons.
+    Save-Icon 180 144 $true 'apple-touch-icon.png'
 } finally {
-    $sprite.Dispose()
+    Remove-Item -Recurse -Force $work -ErrorAction SilentlyContinue
 }

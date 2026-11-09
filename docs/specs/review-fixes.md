@@ -92,31 +92,35 @@ Em 31/12, das 21h à meia-noite de Brasília, criar "Dezembro" cria **dezembro d
 - `theme-color` claro e escuro (`media="(prefers-color-scheme: …)"`, a partir dos tokens de fundo);
 - o `lang` inicial não muda, porque o `i18n.ts` já o corrige em tempo de execução.
 
-**Ícone do app: a carteira, no lugar do raio do Vite.**
-- **Origem:** o ícone sai de **um frame** da faixa `src/assets/wallet/wallet-loop.png`, o mesmo sprite do splash e do login.
-  - É o frame 12, com a nota entrando na carteira. O frame é 64×64, com o fundo redondo claro e os cantos transparentes.
-  - O frame final é escolhido na implementação, olhando os 24, e o usuário confirma.
-- **Arquivos gerados**, sempre com **escala inteira e vizinho mais próximo**, para o pixel art não borrar:
+**Ícone do app: a roda das áreas da vida, no lugar do raio do Vite.**
+- **Desenho** (escolhido pelo usuário em 09/11/2026, opção "Quatro fatias, duas com módulo"): um anel em **quatro fatias iguais**, uma por área da vida, separadas por um vão de 9°.
+  - Finanças (fatia da esquerda, teal 700) leva o ícone `wallet` do lucide, e Hábitos (fatia da direita, teal 600) leva o `check`, os mesmos ícones da Home, em branco.
+  - As duas fatias claras (teal 200 e 300) ficam vazias, à espera dos próximos módulos. Um módulo novo ganha o seu ícone numa delas.
+  - Só tons de teal da marca: verde, vermelho e roxo ficam de fora, porque o app os reserva para valores.
+  - O mesmo desenho vale em todos os tamanhos. Em 16 e 32px os ícones dos módulos não se leem, mas a roda continua reconhecível.
+- **Fonte:** `public/favicon.svg`, com o desenho em SVG (viewBox 100). Ele também é o favicon dos navegadores que aceitam SVG.
+- **Arquivos gerados** a partir do SVG, renderizado pelo Edge (ou Chrome) headless:
 
 | Arquivo | Tamanho | Como |
 |---|---|---|
-| `public/favicon.png` | 64×64 | o frame, sem mudar |
-| `public/favicon-32.png` | 32×32 | o frame reduzido pela metade, para aba e favoritos (conferir se fica legível; senão fica só o de 64) |
-| `public/apple-touch-icon.png` | 180×180 | o frame ×2 (128px), centralizado num fundo sólido da cor `--surface` clara. O iOS pinta de preto o que for transparente, então nada de transparência aqui. |
+| `public/favicon.png` | 64×64 | a roda, com fundo transparente |
+| `public/favicon-32.png` | 32×32 | a roda, com fundo transparente, para aba e favoritos |
+| `public/apple-touch-icon.png` | 180×180 | a roda em 144px, centralizada num fundo branco (`--surface` clara). O iOS pinta de preto o que for transparente, então nada de transparência aqui. |
 
-- **No `index.html`:** `<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">`, o de 32 e `<link rel="apple-touch-icon" href="/apple-touch-icon.png">`.
-- **Saem os restos do template do Vite:** `public/favicon.svg` (o raio roxo) e `public/icons.svg` (ícones de Bluesky, Discord e GitHub, que nada usa).
-- **Como gerar:** os PNGs são gerados uma vez e commitados, sem passo novo no build. O `CLAUDE.md` registra de qual frame vieram, para refazer se o sprite mudar.
-- O `pwa` reaproveita o mesmo frame para os ícones de 192 (×3) e 512 (×8).
+- **No `index.html`:** `<link rel="icon" type="image/svg+xml" href="/favicon.svg">`, os PNGs de 64 e 32 e `<link rel="apple-touch-icon" href="/apple-touch-icon.png">`.
+- **Sai o resto do template do Vite:** `public/icons.svg` (ícones de Bluesky, Discord e GitHub, que nada usa). O `favicon.svg` do Vite (o raio roxo) dá lugar ao da roda.
+- **Como gerar:** `scripts/generate-icons.ps1` gera os PNGs uma vez, e eles são commitados, sem passo novo no build. Se o SVG mudar, roda de novo.
+- O `pwa` gera do mesmo SVG os ícones de 192 e 512.
+- A animação de carregamento (splash e login) continua com a carteira.
 
 **Aceite:**
 - `npm run build` **sem** o aviso "chunks larger than 500 kB".
 - Chunk de entrada **≤ 300 kB** minificado, com o antes e o depois no PR. Finanças e Hábitos em chunks próprios.
 - Navegar não mostra tela branca, e um reload em `/finance/dashboard` mostra o splash e depois a tela.
 - O "sair sem salvar?" do orçamento (`useBlocker`) continua funcionando.
-- A aba mostra "LifeManager" com a carteira.
-- No iPhone, "Adicionar à Tela de Início" mostra a carteira nítida, sem borda preta.
-- Nada no repo aponta para `favicon.svg` ou `icons.svg`.
+- A aba mostra "LifeManager" com a roda.
+- No iPhone, "Adicionar à Tela de Início" mostra a roda nítida, sem borda preta.
+- Nada no repo aponta para `icons.svg`.
 
 ### 4. Zero no plural em pt-BR (V1)
 

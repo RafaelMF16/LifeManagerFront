@@ -14,7 +14,7 @@ Instalar o LifeManager na tela inicial do celular, com ícone, tela cheia e aber
    - `display` `standalone`;
    - `background_color` e `theme_color` dos tokens claros;
    - `lang` `pt-BR`;
-   - ícones 192 e 512 (`any`) e 512 `maskable`, gerados do **mesmo frame da carteira** usado no favicon do `review-fixes`, com escala inteira e vizinho mais próximo: 192 = frame ×3, 512 = frame ×8, e `maskable` 512 = frame ×6 centralizado num fundo sólido, dentro da área segura de 80% (PNG em `public/icons/`);
+   - ícones 192 e 512 (`any`) e 512 `maskable`, gerados do **mesmo SVG da roda** (`public/favicon.svg`) usado no favicon do `review-fixes`, pelo `scripts/generate-icons.ps1`: 192 e 512 com fundo transparente, e `maskable` 512 com a roda em 360px centralizada num fundo branco, dentro da área segura de 80% (PNG em `public/icons/`);
    - `shortcuts`: "Hoje" (`/habits/today`) e "Novo lançamento" (`/finance/months?new=1`, depois do `quick-transaction`).
    - O `index.html` ganha o `<link rel="manifest">`.
 2. **Service worker:** com `vite-plugin-pwa` (dependência nova, aprovada em 09/11/2026), na estratégia **`injectManifest`**, com um `src/sw.ts` nosso, para o `habit-reminders` acrescentar o `push` depois.
