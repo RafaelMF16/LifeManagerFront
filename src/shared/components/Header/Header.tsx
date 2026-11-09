@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import AppLogo from '../AppLogo/AppLogo'
 import Icon from '../Icon/Icon'
 import SegmentedControl from '../SegmentedControl/SegmentedControl'
 import { useTheme } from '../../hooks/useTheme'
@@ -50,7 +51,7 @@ function Header({ actions }: HeaderProps) {
   return (
     <header className="lm-header">
       <div className="lm-header__brand">
-        <Icon name="wallet" size={18} />
+        <AppLogo size={24} />
         <span>LifeManager</span>
       </div>
 

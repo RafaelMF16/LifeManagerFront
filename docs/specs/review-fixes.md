@@ -111,7 +111,8 @@ Em 31/12, das 21h à meia-noite de Brasília, criar "Dezembro" cria **dezembro d
 - **Sai o resto do template do Vite:** `public/icons.svg` (ícones de Bluesky, Discord e GitHub, que nada usa). O `favicon.svg` do Vite (o raio roxo) dá lugar ao da roda.
 - **Como gerar:** `scripts/generate-icons.ps1` gera os PNGs uma vez, e eles são commitados, sem passo novo no build. Se o SVG mudar, roda de novo.
 - O `pwa` gera do mesmo SVG os ícones de 192 e 512.
-- A animação de carregamento (splash e login) continua com a carteira.
+- **Na tela:** o `shared/components/AppLogo/` desenha a mesma roda em SVG inline, com as cores dos tokens teal, ao lado do nome "LifeManager" no `Header` (24px) e no topo das telas de login e cadastro (`AuthLayout`, 28px), no lugar do ícone da carteira.
+- A animação de carregamento (splash e transição do login) continua com a carteira.
 
 **Aceite:**
 - `npm run build` **sem** o aviso "chunks larger than 500 kB".

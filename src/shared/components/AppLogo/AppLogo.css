@@ -1,0 +1,26 @@
+/* The brand's teal in both themes, like public/favicon.svg: the mark doesn't change with the theme. */
+.lm-app-logo {
+  flex: none;
+  display: block;
+}
+
+.lm-app-logo__slice--habits {
+  fill: var(--teal-600);
+}
+
+.lm-app-logo__slice--finance {
+  fill: var(--teal-700);
+}
+
+.lm-app-logo__slice--free-1 {
+  fill: var(--teal-200);
+}
+
+.lm-app-logo__slice--free-2 {
+  fill: var(--teal-300);
+}
+
+.lm-app-logo__icons {
+  fill: none;
+  stroke: var(--white);
+}
