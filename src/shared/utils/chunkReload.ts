@@ -1,5 +1,11 @@
-/** `sessionStorage` key marking that this tab already reloaded once for a missing chunk. */
+/** `sessionStorage` key holding when this tab last reloaded for a missing chunk (ms since the epoch). */
 export const CHUNK_RELOAD_KEY = 'lm-chunk-reload'
+
+/**
+ * How long a reload counts as "just done". Within it a chunk that still fails is really gone and the error screen
+ * shows; after it, a new chunk error is a later deploy (a tab left open for days) and reloads again.
+ */
+export const CHUNK_RELOAD_WINDOW_MS = 5 * 60 * 1000
 
 /** What the browsers say when a lazy route's chunk can't be fetched (Chrome, Safari, Firefox). */
 const CHUNK_ERROR_MESSAGES = [
@@ -23,16 +29,18 @@ export function isChunkLoadError(error: unknown): boolean {
 }
 
 /**
- * Whether to reload the page for `error`: only a chunk error, and only once per tab session, marked in `storage`
- * (`sessionStorage`). A reload fetches the new `index.html` and its chunks; if the chunk still fails, the error screen
- * shows instead of reloading in a loop. Storage that can't be read or written means no reload, for the same reason.
+ * Whether to reload the page for `error`: only a chunk error, and at most once per `CHUNK_RELOAD_WINDOW_MS`, marked in
+ * `storage` (`sessionStorage`). A reload fetches the new `index.html` and its chunks; if the chunk still fails right
+ * after, the error screen shows instead of reloading in a loop. Storage that can't be read or written means no reload,
+ * for the same reason; a mark that isn't a time counts as old.
  */
-export function shouldReloadOnce(error: unknown, storage: MarkStorage): boolean {
+export function shouldReloadOnce(error: unknown, storage: MarkStorage, now = Date.now()): boolean {
   if (!isChunkLoadError(error)) return false
 
   try {
-    if (storage.getItem(CHUNK_RELOAD_KEY) !== null) return false
-    storage.setItem(CHUNK_RELOAD_KEY, String(Date.now()))
+    const lastReload = Number(storage.getItem(CHUNK_RELOAD_KEY) ?? Number.NaN)
+    if (Number.isFinite(lastReload) && now - lastReload < CHUNK_RELOAD_WINDOW_MS) return false
+    storage.setItem(CHUNK_RELOAD_KEY, String(now))
     return true
   } catch {
     return false

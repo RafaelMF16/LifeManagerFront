@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CHUNK_RELOAD_KEY, isChunkLoadError, shouldReloadOnce } from './chunkReload'
+import { CHUNK_RELOAD_KEY, CHUNK_RELOAD_WINDOW_MS, isChunkLoadError, shouldReloadOnce } from './chunkReload'
 
 function memoryStorage(initial: Record<string, string> = {}) {
   const values = new Map(Object.entries(initial))
@@ -45,11 +45,25 @@ describe('shouldReloadOnce', () => {
     expect(storage.values.has(CHUNK_RELOAD_KEY)).toBe(true)
   })
 
-  it('does not reload a second time in the same session', () => {
+  it('does not reload again while the last reload is recent, so a chunk that is really gone cannot loop', () => {
     const storage = memoryStorage()
-    shouldReloadOnce(chunkError, storage)
+    shouldReloadOnce(chunkError, storage, 1_000_000)
 
-    expect(shouldReloadOnce(chunkError, storage)).toBe(false)
+    expect(shouldReloadOnce(chunkError, storage, 1_000_000 + CHUNK_RELOAD_WINDOW_MS - 1)).toBe(false)
+  })
+
+  it('reloads again once the last reload is old, e.g. a later deploy in a tab left open', () => {
+    const storage = memoryStorage()
+    shouldReloadOnce(chunkError, storage, 1_000_000)
+
+    expect(shouldReloadOnce(chunkError, storage, 1_000_000 + CHUNK_RELOAD_WINDOW_MS)).toBe(true)
+    expect(storage.values.get(CHUNK_RELOAD_KEY)).toBe(String(1_000_000 + CHUNK_RELOAD_WINDOW_MS))
+  })
+
+  it('treats a mark it cannot read as old', () => {
+    const storage = memoryStorage({ [CHUNK_RELOAD_KEY]: 'not-a-time' })
+
+    expect(shouldReloadOnce(chunkError, storage, 1_000_000)).toBe(true)
   })
 
   it('never reloads for an error that is not a chunk error', () => {
