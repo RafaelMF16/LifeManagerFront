@@ -239,6 +239,7 @@ Uma coluna de cartões, com o tour da tela no cabeçalho.
 - **Perfil:**
   - o **nome**, com **Editar**: abre uma janela com o campo Nome (obrigatório, até 100 caracteres). **Salvar** mostra "Nome atualizado." e o nome novo aparece na hora no cabeçalho, na saudação da Home e no Perfil dos Hábitos;
   - o **e-mail**, só para leitura: é o seu login e não pode ser trocado.
+  - Enquanto carrega, o cartão mostra um esqueleto; se falhar, "Não deu para carregar seus dados." com **Tentar de novo**.
 - **Segurança:**
   - **Trocar senha:** janela com **Senha atual**, **Nova senha** (de 8 a 50 caracteres) e **Confirme a nova senha**. Senha atual errada: "Senha atual incorreta", no campo. Deu certo: "Senha alterada. Os outros aparelhos foram desconectados." Este aparelho continua conectado; os outros caem para o login na próxima vez que o app renovar a sessão.
   - **Sair de todos os aparelhos:** pede confirmação ("Você vai sair da conta em todos os aparelhos, este incluído…") e, ao confirmar, volta para o login com "Você saiu de todos os aparelhos."

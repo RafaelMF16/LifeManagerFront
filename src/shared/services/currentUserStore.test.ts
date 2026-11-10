@@ -39,6 +39,20 @@ describe('currentUserStore', () => {
     expect(getCurrentUserSnapshot()).toEqual({ user: ana, failed: false })
   })
 
+  it('volta a carregar (sem a falha) enquanto tenta de novo', async () => {
+    getCurrentUserMock.mockRejectedValueOnce(new Error('offline'))
+    await loadCurrentUser()
+    let answer: (user: typeof ana) => void = () => {}
+    getCurrentUserMock.mockReturnValueOnce(new Promise((resolve) => (answer = resolve)))
+
+    const retry = loadCurrentUser()
+
+    expect(getCurrentUserSnapshot()).toEqual({ user: null, failed: false })
+    answer(ana)
+    await retry
+    expect(getCurrentUserSnapshot()).toEqual({ user: ana, failed: false })
+  })
+
   it('avisa os assinantes quando o nome muda', async () => {
     getCurrentUserMock.mockResolvedValue(ana)
     await loadCurrentUser()

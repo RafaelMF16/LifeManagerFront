@@ -6,6 +6,7 @@ export default {
     close: 'Close',
     save: 'Save',
     edit: 'Edit',
+    retry: 'Try again',
   },
   profile: {
     title: 'Profile',
@@ -13,7 +14,7 @@ export default {
     emailLabel: 'E-mail',
     emailHint: 'Your e-mail is your sign-in and can’t be changed.',
     loading: 'Loading your profile…',
-    loadError: 'We couldn’t load your details. Reload the page.',
+    loadError: 'We couldn’t load your details.',
     edit: {
       title: 'Edit name',
       label: 'Name',

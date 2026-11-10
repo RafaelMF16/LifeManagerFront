@@ -39,6 +39,8 @@ export function loadCurrentUser(): Promise<void> {
   if (state.user || loading) return loading ?? Promise.resolve()
 
   const loadGeneration = generation
+  // A retry after a failure shows as loading again (a skeleton), not as the old error.
+  if (state.failed) setState(EMPTY)
   loading = getCurrentUser()
     .then(
       (user) => {

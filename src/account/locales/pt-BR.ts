@@ -6,6 +6,7 @@ export default {
     close: 'Fechar',
     save: 'Salvar',
     edit: 'Editar',
+    retry: 'Tentar de novo',
   },
   profile: {
     title: 'Perfil',
@@ -13,7 +14,7 @@ export default {
     emailLabel: 'E-mail',
     emailHint: 'O e-mail é o seu login e não pode ser trocado.',
     loading: 'Carregando seu perfil…',
-    loadError: 'Não deu para carregar seus dados. Recarregue a página.',
+    loadError: 'Não deu para carregar seus dados.',
     edit: {
       title: 'Editar nome',
       label: 'Nome',

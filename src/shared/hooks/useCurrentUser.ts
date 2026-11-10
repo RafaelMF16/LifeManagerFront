@@ -13,5 +13,6 @@ export function useCurrentUser() {
     void loadCurrentUser()
   }, [])
 
-  return { name: user?.name ?? null, email: user?.email ?? null, failed }
+  // `retry`: after a failure, asks again (the screen shows it loading meanwhile).
+  return { name: user?.name ?? null, email: user?.email ?? null, failed, retry: loadCurrentUser }
 }

@@ -10,15 +10,18 @@ import EditNameDialog from '../EditNameDialog/EditNameDialog'
 /** The name (editable) and the e-mail (the sign-in, read only). */
 function ProfileSection() {
   const { t: translate } = useTranslation('account')
-  const { name, email, failed } = useCurrentUser()
+  const { name, email, failed, retry } = useCurrentUser()
   const [editing, setEditing] = useState(false)
 
   return (
     <AccountSection title={translate('account:profile.title')} icon="user" tourTarget="account.profile">
       {failed ? (
-        <p className="lm-account-row__hint" role="alert">
-          {translate('account:profile.loadError')}
-        </p>
+        <div className="lm-account-row" role="alert">
+          <p className="lm-account-row__hint">{translate('account:profile.loadError')}</p>
+          <Button variant="secondary" size="sm" icon="refresh-cw" onClick={() => void retry()}>
+            {translate('account:actions.retry')}
+          </Button>
+        </div>
       ) : name === null || email === null ? (
         <SkeletonGroup label={translate('account:profile.loading')} className="lm-account-section__body">
           <div className="lm-account-row">
