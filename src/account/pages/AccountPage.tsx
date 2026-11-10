@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import Footer from '../../shared/components/Footer/Footer'
 import Header from '../../shared/components/Header/Header'
 import ProfileSection from '../components/ProfileSection/ProfileSection'
+import SecuritySection from '../components/SecuritySection/SecuritySection'
 import './AccountPage.css'
 
 /** "My account": the name, the password and sessions, the data export and the account deletion. */
@@ -20,6 +21,7 @@ function AccountPage() {
         </div>
 
         <ProfileSection />
+        <SecuritySection />
       </main>
 
       <Footer />

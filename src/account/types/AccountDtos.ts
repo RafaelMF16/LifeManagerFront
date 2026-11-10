@@ -5,3 +5,8 @@ export interface UpdateCurrentUserDto {
 export interface UpdatedUserNameResponseDto {
   name: string
 }
+
+export interface ChangePasswordDto {
+  currentPassword: string
+  newPassword: string
+}
