@@ -1,4 +1,9 @@
 import {
+  Bell,
+  Download,
+  Settings,
+  ShieldCheck,
+  TriangleAlert,
   Archive,
   ArchiveRestore,
   ArrowDownLeft,
@@ -169,6 +174,11 @@ const ICONS = {
   rocket: Rocket,
   mountain: Mountain,
   bot: Bot,
+  download: Download,
+  'shield-check': ShieldCheck,
+  bell: Bell,
+  'triangle-alert': TriangleAlert,
+  settings: Settings,
 } as const
 
 export type IconName = keyof typeof ICONS

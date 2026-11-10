@@ -11,6 +11,7 @@ export default {
   preferences: {
     saveError: 'Could not save your preferences.',
   },
+  account: 'My account',
   logout: 'Log out',
   logoutSuccessToast: 'You have been signed out.',
   sessionExpiredToast: 'Your session has expired. Please sign in again.',

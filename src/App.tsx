@@ -38,6 +38,7 @@ const router = createBrowserRouter(
       <Route path="/invite/:code" lazy={page(() => import('./habits/pages/InvitePage'))} />
       <Route element={<ProtectedRoute />}>
         <Route path="/home" lazy={page(() => import('./home/pages/HomePage'))} />
+        <Route path="/account" lazy={page(() => import('./account/pages/AccountPage'))} />
         <Route path="/finance" lazy={page(() => import('./finance/components/FinanceLayout/FinanceLayout'))}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" lazy={page(() => import('./finance/pages/DashboardPage'))} />
