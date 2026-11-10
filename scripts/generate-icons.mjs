@@ -3,9 +3,9 @@
 //   node scripts/generate-icons.mjs
 // Set CHROME_PATH to use a browser this script doesn't find on its own.
 import { execFileSync } from 'node:child_process'
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { dirname, join } from 'node:path'
+import { basename, dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const publicDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'public')
@@ -33,7 +33,7 @@ const work = mkdtempSync(join(tmpdir(), 'lm-icons-'))
  */
 function saveIcon(canvas, drawn, opaque, name) {
   const background = opaque ? '#ffffff' : 'transparent'
-  const page = join(work, `${name}.html`)
+  const page = join(work, `${basename(name)}.html`)
   writeFileSync(
     page,
     `<!doctype html><html><head><style>html,body{margin:0;width:${canvas}px;height:${canvas}px;overflow:hidden;` +
@@ -61,6 +61,12 @@ try {
   saveIcon(32, 32, false, 'favicon-32.png')
   // 144 of 180: the helm's margin on the home screen, like the other app icons.
   saveIcon(180, 144, true, 'apple-touch-icon.png')
+  // The PWA's (public/manifest.webmanifest): "any" on a transparent page, and the maskable one with the helm at 360 of
+  // 512 on white, inside the 80% safe zone the launcher may crop to a circle or a squircle.
+  mkdirSync(join(publicDir, 'icons'), { recursive: true })
+  saveIcon(192, 192, false, 'icons/icon-192.png')
+  saveIcon(512, 512, false, 'icons/icon-512.png')
+  saveIcon(512, 360, true, 'icons/icon-maskable-512.png')
 } finally {
   rmSync(work, { recursive: true, force: true })
 }
