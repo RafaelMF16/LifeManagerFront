@@ -40,6 +40,11 @@ export default {
     expand: 'Expand menu',
     close: 'Close menu',
   },
+  privacy: {
+    hide: 'Hide amounts',
+    show: 'Show amounts',
+    hiddenValue: 'Hidden amount',
+  },
   tour: {
     start: 'Tour of this screen',
     step: 'Step {{current}} of {{total}}',

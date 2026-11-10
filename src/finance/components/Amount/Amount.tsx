@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
-import { usePrivacyMode } from '../../hooks/usePrivacyMode'
+import { usePrivacyMode } from '../../../shared/hooks/usePrivacyMode'
 import './Amount.css'
 
 type AmountTone = 'positive' | 'negative' | 'signed' | 'investment'
@@ -38,7 +38,7 @@ function Amount({ value, tone, notation = 'standard', emphasis = false, classNam
     return (
       <span className={classes}>
         <span aria-hidden="true">{money(value)}</span>
-        <span className="lm-amount__visually-hidden">{translate('finance:privacy.hiddenValue')}</span>
+        <span className="lm-amount__visually-hidden">{translate('common:privacy.hiddenValue')}</span>
       </span>
     )
   }

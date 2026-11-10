@@ -40,6 +40,11 @@ export default {
     expand: 'Expandir menu',
     close: 'Fechar menu',
   },
+  privacy: {
+    hide: 'Ocultar valores',
+    show: 'Mostrar valores',
+    hiddenValue: 'Valor oculto',
+  },
   tour: {
     start: 'Tour desta tela',
     step: 'Passo {{current}} de {{total}}',

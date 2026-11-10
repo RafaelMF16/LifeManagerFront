@@ -23,7 +23,7 @@ import UnsavedChangesBar from '../components/UnsavedChangesBar/UnsavedChangesBar
 import { useBudgetPlan } from '../hooks/useBudgetPlan'
 import { useBudgetTotalField } from '../hooks/useBudgetTotalField'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
-import { usePrivacyMode } from '../hooks/usePrivacyMode'
+import { usePrivacyMode } from '../../shared/hooks/usePrivacyMode'
 import { assignColorSlots, freeAmount, freePercent, maxPercentFor, sliceAmount, sliceKey, sliceRatio } from '../utils/budgetPlan'
 import type { DraftSlice } from '../utils/budgetPlan'
 import { parseYearMonth, toYearMonth } from '../utils/yearMonth'

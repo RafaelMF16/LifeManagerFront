@@ -1,11 +1,9 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { usePrivacyMode } from './usePrivacyMode'
+import { usePrivacyMode } from '../../shared/hooks/usePrivacyMode'
+import { createMoneyFormat, MINUS_SIGN } from '../../shared/utils/money'
 
 const CURRENCY = 'BRL'
-const MINUS_SIGN = '−'
-const MONEY_MASK = '••••••'
-const PERCENT_MASK = '••'
 /** Changes beyond ±999% read as noise; they show capped (">+999%"). */
 const CHANGE_RATIO_CAP = 9.99
 /** A tiny income (a cashback before the salary) sends the savings rate to thousands of percent; below this it shows capped ("<−100%"). */
@@ -22,23 +20,12 @@ function parseYearMonth(value: string) {
 }
 
 /**
- * The formatter's own layout (symbol, spacing, `%`) with the digits replaced by `mask`,
- * e.g. "R$ ••••••" in pt-BR and "$••••••" in en-US — so a hidden value reveals nothing, not even its length.
- */
-function maskedLayout(formatter: Intl.NumberFormat, mask: string) {
-  return formatter.formatToParts(0).reduce((text, part) => {
-    if (part.type === 'currency' || part.type === 'percentSign' || part.type === 'literal') return text + part.value
-    return text.endsWith(mask) ? text : text + mask
-  }, '')
-}
-
-/**
  * Month names and money in the given language. With `hidden` (privacy mode), every amount and
  * percentage comes out masked: this is the one place money becomes text, so masking here covers every screen.
  */
 export function createFinanceFormat(language: string, hidden: boolean) {
   const monthFormatter = new Intl.DateTimeFormat(language, { month: 'long', timeZone: 'UTC' })
-  const moneyFormatter = new Intl.NumberFormat(language, { style: 'currency', currency: CURRENCY })
+  const { maskedMoney, maskedPercent, money, signedMoney, percent } = createMoneyFormat(language, hidden)
 
   const dayMonthFormatter = new Intl.DateTimeFormat(language, { day: 'numeric', month: 'short', timeZone: 'UTC' })
   const percentFormatter = new Intl.NumberFormat(language, { style: 'percent', maximumFractionDigits: 1 })
@@ -57,8 +44,6 @@ export function createFinanceFormat(language: string, hidden: boolean) {
     narrow: new Intl.DateTimeFormat(language, { weekday: 'narrow', timeZone: 'UTC' }),
   }
 
-  const maskedMoney = maskedLayout(moneyFormatter, MONEY_MASK)
-  const maskedPercent = maskedLayout(percentFormatter, PERCENT_MASK)
 
   const monthName = (month: number) => capitalize(monthFormatter.format(Date.UTC(2000, month - 1, 1)))
   const shortMonthName = (month: number) =>
@@ -82,16 +67,15 @@ export function createFinanceFormat(language: string, hidden: boolean) {
       return capitalize(fullDayFormatter.format(Date.UTC(year, month - 1, day)))
     },
     /** A 0–1 ratio as a percentage, e.g. 0.623 → "62,3%". */
-    percent: (ratio: number) => (hidden ? maskedPercent : percentFormatter.format(ratio)),
+    percent,
     /** A budget share already in percent (0–100, 2 places), e.g. 33.33 → "33,33%". */
     sharePercent: (percent: number) => (hidden ? maskedPercent : sharePercentFormatter.format(percent / 100)),
     /** "Setembro 2026" / "September 2026". */
     periodLabel: (month: number, year: number) => `${monthName(month)} ${year}`,
-    /** Unsigned amount, e.g. "R$ 1.200,00". */
-    money: (value: number) => (hidden ? maskedMoney : moneyFormatter.format(Math.abs(value))),
+    /** Unsigned amount, e.g. "R$ 1.200,00" (`shared/utils/money.ts`). */
+    money,
     /** Signed amount with a true minus sign (U+2212) for negatives; masked without a sign, so it doesn't leak. */
-    signedMoney: (value: number) =>
-      hidden ? maskedMoney : `${value < 0 ? MINUS_SIGN : ''}${moneyFormatter.format(Math.abs(value))}`,
+    signedMoney,
     /** Short unsigned amount for tight spots (chart axes), e.g. "R$ 1,2 mil" / "R$1.2K". */
     compactMoney,
     /** `compactMoney` with a true minus sign for negatives. */

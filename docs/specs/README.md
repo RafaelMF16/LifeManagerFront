@@ -109,7 +109,7 @@ A exceção foi o `review-fixes`: um spec só, no front, que juntou as correçõ
 | 2 | `integration-tests` | — (removido) | — | `test/integration-tests` | **mergeado na `dev`** em 10/11/2026 (PR RafaelMF16/LifeManager#43) |
 | 3 | `quick-transaction` | — (removido) | — (removido) | `feature/quick-transaction` | **mergeado na `dev`** em 10/11/2026 (PRs RafaelMF16/LifeManager#45 e RafaelMF16/LifeManagerFront#43) |
 | 3 | `category-picker` | — | — (removido) | `feature/category-picker` | **mergeado na `dev`** em 10/11/2026 (PR RafaelMF16/LifeManagerFront#42) |
-| 4 | `home-overview` | [home-overview](../../../LifeManager/docs/specs/home-overview.md) | [home-overview](home-overview.md) | `feature/home-overview` | aprovado |
+| 4 | `home-overview` | [home-overview](../../../LifeManager/docs/specs/home-overview.md) | [home-overview](home-overview.md) | `feature/home-overview` | implementado nos dois repos, aguardando PR |
 | 5 | `account-settings` | [account-settings](../../../LifeManager/docs/specs/account-settings.md) | [account-settings](account-settings.md) | `feature/account-settings` | aprovado |
 | 6 | `pwa` | — | [pwa](pwa.md) | `feature/pwa` | aprovado |
 | 7 | `habit-reminders` | [habit-reminders](../../../LifeManager/docs/specs/habit-reminders.md) | [habit-reminders](habit-reminders.md) | `feature/habit-reminders` | aprovado · dependência em discussão |

@@ -1,16 +1,16 @@
 import { useTranslation } from 'react-i18next'
-import IconButton from '../../../shared/components/IconButton/IconButton'
 import { usePrivacyMode } from '../../hooks/usePrivacyMode'
+import IconButton from '../IconButton/IconButton'
 
-/** Header button that hides (or shows) every amount in the Finance module, for using it in public. */
+/** Header button that hides (or shows) every amount (Finance and the Home), for using the app in public. */
 function PrivacyToggle() {
-  const { t: translate } = useTranslation('finance')
+  const { t: translate } = useTranslation('common')
   const { hidden, toggleHidden } = usePrivacyMode()
 
   return (
     <IconButton
       icon={hidden ? 'eye-off' : 'eye'}
-      label={translate(hidden ? 'finance:privacy.show' : 'finance:privacy.hide')}
+      label={translate(hidden ? 'common:privacy.show' : 'common:privacy.hide')}
       aria-pressed={hidden}
       onClick={toggleHidden}
     />

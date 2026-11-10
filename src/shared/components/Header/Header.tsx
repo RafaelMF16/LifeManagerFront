@@ -15,15 +15,21 @@ import './Header.css'
 interface HeaderProps {
   /** Module-specific controls shown next to the user menu (e.g. Finance's privacy toggle). */
   actions?: ReactNode
+  /**
+   * The user's name, when the page already loads it (the Home's greeting): the header then doesn't ask for it again.
+   * Left out, the header loads it itself.
+   */
+  userName?: string | null
 }
 
-function Header({ actions }: HeaderProps) {
+function Header({ actions, userName: givenUserName }: HeaderProps) {
   const { t: translate } = useTranslation('common')
   const { theme, toggleTheme } = useTheme()
   const { language, setLanguage } = useLanguage()
   const { flush: flushPreferences } = useUserPreferencesSync(theme, language)
   const { logout, isLoggingOut } = useLogout()
-  const { name: userName } = useCurrentUser()
+  const { name: loadedUserName } = useCurrentUser({ enabled: givenUserName === undefined })
+  const userName = givenUserName === undefined ? loadedUserName : givenUserName
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 

@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
-import { usePrivacyMode } from '../../hooks/usePrivacyMode'
+import { usePrivacyMode } from '../../../shared/hooks/usePrivacyMode'
 import type { BudgetSliceType } from '../../types/BudgetPlanDtos'
 import { budgetStatus } from '../../utils/budgetStatus'
 import './BudgetProgress.css'

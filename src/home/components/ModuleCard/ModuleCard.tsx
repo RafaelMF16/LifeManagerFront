@@ -6,11 +6,13 @@ import './ModuleCard.css'
 interface ModuleCardProps {
   module: HomeModule
   onClick?: () => void
+  /** Icon and name only, on one line (the Home's shortcuts below the summary). */
+  compact?: boolean
 }
 
-function ModuleCard({ module, onClick }: ModuleCardProps) {
+function ModuleCard({ module, onClick, compact = false }: ModuleCardProps) {
   const { t: translate } = useTranslation('home')
-  const classes = `lm-module-card${module.ready ? '' : ' lm-module-card--disabled'}`
+  const classes = `lm-module-card${compact ? ' lm-module-card--compact' : ''}${module.ready ? '' : ' lm-module-card--disabled'}`
 
   return (
     <button
@@ -31,7 +33,7 @@ function ModuleCard({ module, onClick }: ModuleCardProps) {
         {!module.ready ? <span className="lm-module-card__badge">{translate('moduleCard.comingSoon')}</span> : null}
       </span>
 
-      <span className="lm-module-card__description">{translate(`modules.${module.id}.description`)}</span>
+      {compact ? null : <span className="lm-module-card__description">{translate(`modules.${module.id}.description`)}</span>}
     </button>
   )
 }
