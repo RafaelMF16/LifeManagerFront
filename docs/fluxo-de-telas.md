@@ -20,6 +20,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
 - [Financeiro](#financeiro)
   - [Painel](#painel)
   - [Meses](#meses)
+  - [Lançamento rápido](#lançamento-rápido)
   - [Detalhe do mês](#detalhe-do-mês)
   - [Planejamento: Orçamento](#planejamento-orçamento)
   - [Planejamento: Recorrentes](#planejamento-recorrentes)
@@ -122,7 +123,7 @@ As listas (meses, lançamentos, categorias, recorrências, hábitos, recompensas
 ### Janelas e avisos
 
 - Formulários e confirmações abrem numa janela sobre a tela. No celular, ela sobe da parte de baixo. **Cancelar** ou **Fechar** fecha sem salvar.
-- Uma ação concluída mostra um aviso rápido na parte de baixo ("Categoria criada").
+- Uma ação concluída mostra um aviso rápido na parte de baixo ("Categoria criada"). Alguns avisos trazem um botão ("Ver mês"); esses ficam mais tempo na tela.
 - Um erro que não é de um campo específico abre uma janela de erro. Sem conexão com o servidor, aparece **Erro de conexão**.
 - Erros de um campo (nome repetido, valor inválido) aparecem embaixo do próprio campo.
 - **Campos de categoria** (lançamento, recorrência, filtro da lista de lançamentos, adicionar ao orçamento e a importação) têm **busca**: ao tocar, abre logo abaixo do campo uma lista com as 20 primeiras categorias em ordem alfabética; digitar busca entre todas, ignorando acentos e maiúsculas ("mer" acha "Mercado"), e **Ver mais** traz as próximas. No teclado: ↑/↓ andam pela lista, Enter escolhe, Esc fecha. Sair do campo sem escolher volta à categoria que estava: o texto digitado nunca vira categoria. Sem resultado, aparece "Nenhuma categoria encontrada"; se a busca falhar, **Tentar de novo**.
@@ -225,6 +226,7 @@ A escolha fica salva neste dispositivo e vale para todas as abas abertas.
 
 **Rota:** `/finance/dashboard` (é a tela inicial do Financeiro).
 
+- **Novo lançamento:** abre o [lançamento rápido](#lançamento-rápido); ao salvar, o painel recarrega o período.
 - **Período:** Este mês, Últimos 3 meses, **Últimos 6 meses** (padrão), Últimos 12 meses, Este ano e cada ano anterior em que você tem meses. Ao lado aparece "Comparado com …", o período usado na comparação.
 - **Totais do período:** Receitas, Gastos, Investido e **Poupado**, cada um com a variação ("Subiu 12% em relação a …"). Poupado é o que sobrou das receitas depois dos gastos: investir conta como guardar, não como gastar. Ao lado do nome vem a **taxa de poupança** (a parte das receitas que foi poupada; não aparece sem receitas, e abaixo de −100% aparece como "<−100%") e embaixo a divisão: quanto foi **investido** e quanto ficou **em conta** (o mesmo Saldo da tela do mês, que pode ser negativo quando você investiu dinheiro de meses anteriores).
 - **Gastos por dia:** um calendário do mês com o total de gastos de cada dia (só despesas; receitas e investimentos ficam de fora). Quanto mais vermelho o dia, mais se gastou, sempre em relação ao **maior dia daquele mês** (legenda **Menos** … **Mais**). Abre no mês mais recente do período; as setas **Mês anterior** e **Próximo mês** andam só pelos meses do período. Hoje tem contorno e os dias futuros ficam apagados, sem clique.
@@ -249,13 +251,23 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
 - **Filtros:** **Ano** (Todos ou um ano) e **Saldo** (Todos, Positivo, Negativo).
 - **Ordenação:** Mês (padrão: mais recente primeiro), Receitas, Gastos, Investido ou Saldo.
 - **Clicar numa linha** abre o [Detalhe do mês](#detalhe-do-mês).
+- **Novo lançamento** (o botão principal; no celular, o primeiro, numa linha só dele): abre o [lançamento rápido](#lançamento-rápido); ao salvar, a lista recarrega. O endereço `/finance/months?new=1` abre a tela já com ele aberto (e tira o `?new=1` do endereço).
 - **Novo mês:** abre a janela "Novo mês".
   - **Mês:** escolha de janeiro a dezembro.
-  - **Ano:** fixo no ano atual e desabilitado ("Meses são criados no ano atual").
+  - **Ano:** o atual (padrão) ou o anterior. Assim, em janeiro ainda dá para criar dezembro. Outro ano: "Só dá para criar meses deste ano ou do anterior".
   - **Criar mês:** cria e mostra "Mês criado". Se o mês já existe: "Esse mês já foi criado".
 - **Importar extrato:** abre a tela [Importar extrato](#importar-extrato).
 
-> Meses de lançamentos recorrentes são criados sozinhos quando a recorrência é lançada. Meses de anos anteriores entram pela [importação de extrato](#importar-extrato).
+> Meses de lançamentos recorrentes são criados sozinhos quando a recorrência é lançada. Meses de anos mais antigos entram pela [importação de extrato](#importar-extrato).
+
+### Lançamento rápido
+
+Abre com **Novo lançamento** em [Meses](#meses) ou no [Painel](#painel). É o [formulário de lançamento](#detalhe-do-mês) sem um mês escolhido antes:
+
+- **Data:** começa em hoje e pode ser qualquer dia de 01/01/2000 até o fim deste ano ("Use uma data de 2000 até o fim deste ano"). O topo da janela mostra o mês da data.
+- O lançamento vai para o mês da data. Se esse mês ainda não existe, ele é **criado junto**, desde que seja deste ano ou do anterior; senão a data mostra "Só dá para criar meses deste ano ou do anterior". Um mês que já existe aceita lançamentos de qualquer ano.
+- **Salvar lançamento** mostra "Lançamento salvo em novembro de 2026" (ou "… · mês criado") com o botão **Ver mês**, que abre o mês do lançamento.
+- Os outros campos e regras são os do formulário de lançamento.
 
 ### Detalhe do mês
 

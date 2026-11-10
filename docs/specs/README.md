@@ -107,8 +107,8 @@ A exceção foi o `review-fixes`: um spec só, no front, que juntou as correçõ
 |---|---|---|---|---|---|
 | 1 | `review-fixes` | — | — (removido) | `fix/review-fixes` (nos dois repos) | **mergeado na `dev`** em 10/11/2026 (PRs RafaelMF16/LifeManager#41 e RafaelMF16/LifeManagerFront#39) |
 | 2 | `integration-tests` | — (removido) | — | `test/integration-tests` | **mergeado na `dev`** em 10/11/2026 (PR RafaelMF16/LifeManager#43) |
-| 3 | `quick-transaction` | [quick-transaction](../../../LifeManager/docs/specs/quick-transaction.md) | [quick-transaction](quick-transaction.md) | `feature/quick-transaction` | aprovado |
-| 3 | `category-picker` | — | [category-picker](category-picker.md) | `feature/category-picker` | aprovado |
+| 3 | `quick-transaction` | [quick-transaction](../../../LifeManager/docs/specs/quick-transaction.md) | [quick-transaction](quick-transaction.md) | `feature/quick-transaction` | implementado nos dois repos, aguardando PR |
+| 3 | `category-picker` | — | — (removido) | `feature/category-picker` | **mergeado na `dev`** em 10/11/2026 (PR RafaelMF16/LifeManagerFront#42) |
 | 4 | `home-overview` | [home-overview](../../../LifeManager/docs/specs/home-overview.md) | [home-overview](home-overview.md) | `feature/home-overview` | aprovado |
 | 5 | `account-settings` | [account-settings](../../../LifeManager/docs/specs/account-settings.md) | [account-settings](account-settings.md) | `feature/account-settings` | aprovado |
 | 6 | `pwa` | — | [pwa](pwa.md) | `feature/pwa` | aprovado |
@@ -118,7 +118,7 @@ A exceção foi o `review-fixes`: um spec só, no front, que juntou as correçõ
 
 São **10 módulos e 17 branches**: 8 no back e 9 no front.
 
-**Spec implementado e mergeado na `dev` sai da pasta.** O histórico fica no git, e as regras passam para o `CLAUDE.md` e as docs. Os specs de loadings (`splash`, `auth-entrance`, `skeleton` e o mapa `loadings`), implementados no PR #38, já saíram. Também saíram o `review-fixes` (PRs #41 do back e #39 do front) e o `integration-tests` (PR #43 do back).
+**Spec implementado e mergeado na `dev` sai da pasta.** O histórico fica no git, e as regras passam para o `CLAUDE.md` e as docs. Os specs de loadings (`splash`, `auth-entrance`, `skeleton` e o mapa `loadings`), implementados no PR #38, já saíram. Também saíram o `review-fixes` (PRs #41 do back e #39 do front) o `integration-tests` (PR #43 do back) e o `category-picker` (PR #42 do front).
 
 ## Comandos
 

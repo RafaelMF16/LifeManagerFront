@@ -1,6 +1,11 @@
 import { apiRequest } from '../../shared/services/httpClient'
 import type { PagedResponse } from '../../shared/types/Paging'
-import type { TransactionListQuery, TransactionRequestDto, TransactionResponseDto } from '../types/TransactionDtos'
+import type {
+  QuickTransactionResponseDto,
+  TransactionListQuery,
+  TransactionRequestDto,
+  TransactionResponseDto,
+} from '../types/TransactionDtos'
 import { parseAmount } from '../validation/amountSchema'
 import type { TransactionFormValues } from '../validation/transactionSchema'
 
@@ -40,6 +45,14 @@ export function getTransactions(
 
 export function createTransaction(monthlySummaryId: number, values: TransactionFormValues): Promise<TransactionResponseDto> {
   return apiRequest<TransactionResponseDto>(transactionsPath(monthlySummaryId), {
+    method: 'POST',
+    body: toRequestDto(values),
+  })
+}
+
+/** Creates a transaction without picking its month: the backend puts it in the month of its date, opening it when missing. */
+export function createQuickTransaction(values: TransactionFormValues): Promise<QuickTransactionResponseDto> {
+  return apiRequest<QuickTransactionResponseDto>('/api/Transactions', {
     method: 'POST',
     body: toRequestDto(values),
   })

@@ -188,7 +188,6 @@ export default {
       title: 'New month',
       monthLabel: 'Month',
       yearLabel: 'Year',
-      yearHint: 'Months are created in the current year',
       create: 'Create month',
     },
     toasts: {
@@ -198,8 +197,10 @@ export default {
       month: {
         required: 'Choose a month',
         invalid: 'Choose a month from January to December',
-        yearNotCurrent: 'Months can only be created in the current year',
         taken: 'This month already exists',
+      },
+      year: {
+        notAllowed: 'Months can only be created in this year or the previous one',
       },
     },
   },
@@ -294,6 +295,11 @@ export default {
       create: 'Save transaction',
       save: 'Save',
     },
+    quick: {
+      saved: 'Transaction saved in {{period}}',
+      savedMonthCreated: 'Transaction saved in {{period}} · month created',
+      viewMonth: 'View month',
+    },
     delete: {
       title: 'Delete transaction',
       message: 'Delete “{{description}}” of {{amount}}? This can’t be undone.',
@@ -325,6 +331,8 @@ export default {
       date: {
         required: 'Enter the date',
         outsideMonth: 'The date must be in {{period}}',
+        outOfRange: 'Use a date from 2000 to the end of this year',
+        yearNotCurrent: 'Months can only be created in this year or the previous one',
       },
       category: {
         required: 'Choose a category',
@@ -1121,6 +1129,10 @@ export default {
         title: 'Period',
         body: 'Pick the months the dashboard looks at. Next to it is the period the totals are compared with.',
       },
+      newTransaction: {
+        title: 'New transaction',
+        body: 'Record income, an expense or an investment without leaving the dashboard. It goes to the month of its date, which is created if it doesn’t exist yet.',
+      },
       totals: {
         title: 'Period totals',
         body: 'Income, expenses, invested and saved, with the change from the comparison period and your savings rate.',
@@ -1166,8 +1178,8 @@ export default {
         body: 'Each month gathers your income, expenses and investments. Here you see every balance and open a month to add and review transactions.',
       },
       actions: {
-        title: 'Create or import',
-        body: 'New month creates a month of the current year. Import statement brings in a bank file and creates any missing months.',
+        title: 'Add, create or import',
+        body: 'New transaction records income, an expense or an investment on any date and creates its month if it doesn’t exist yet. New month creates a month of this year or the previous one. Import statement brings in a bank file and creates any missing months.',
       },
       filters: {
         title: 'Filter the list',

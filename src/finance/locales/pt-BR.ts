@@ -188,7 +188,6 @@ export default {
       title: 'Novo mês',
       monthLabel: 'Mês',
       yearLabel: 'Ano',
-      yearHint: 'Meses são criados no ano atual',
       create: 'Criar mês',
     },
     toasts: {
@@ -198,8 +197,10 @@ export default {
       month: {
         required: 'Escolha o mês',
         invalid: 'Escolha um mês entre janeiro e dezembro',
-        yearNotCurrent: 'Só é possível criar meses do ano atual',
         taken: 'Esse mês já foi criado',
+      },
+      year: {
+        notAllowed: 'Só dá para criar meses deste ano ou do anterior',
       },
     },
   },
@@ -294,6 +295,11 @@ export default {
       create: 'Salvar lançamento',
       save: 'Salvar',
     },
+    quick: {
+      saved: 'Lançamento salvo em {{period}}',
+      savedMonthCreated: 'Lançamento salvo em {{period}} · mês criado',
+      viewMonth: 'Ver mês',
+    },
     delete: {
       title: 'Excluir lançamento',
       message: 'Excluir “{{description}}” de {{amount}}? Essa ação não pode ser desfeita.',
@@ -325,6 +331,8 @@ export default {
       date: {
         required: 'Informe a data',
         outsideMonth: 'A data precisa estar em {{period}}',
+        outOfRange: 'Use uma data de 2000 até o fim deste ano',
+        yearNotCurrent: 'Só dá para criar meses deste ano ou do anterior',
       },
       category: {
         required: 'Escolha uma categoria',
@@ -1121,6 +1129,10 @@ export default {
         title: 'Período',
         body: 'Escolha os meses que o painel analisa. Ao lado aparece o período usado na comparação dos totais.',
       },
+      newTransaction: {
+        title: 'Novo lançamento',
+        body: 'Registre uma receita, um gasto ou um investimento sem sair do painel. O lançamento vai para o mês da data, que é criado se ainda não existir.',
+      },
       totals: {
         title: 'Totais do período',
         body: 'Receitas, gastos, investido e poupado, com a variação em relação ao período de comparação e a sua taxa de poupança.',
@@ -1166,8 +1178,8 @@ export default {
         body: 'Cada mês reúne suas receitas, gastos e investimentos. Aqui você vê o saldo de todos e abre um mês para lançar e revisar transações.',
       },
       actions: {
-        title: 'Criar ou importar',
-        body: 'Novo mês cria um mês do ano atual. Importar extrato traz os lançamentos de um arquivo do banco e cria os meses que faltarem.',
+        title: 'Lançar, criar ou importar',
+        body: 'Novo lançamento registra uma receita, um gasto ou um investimento em qualquer data e cria o mês dela se ainda não existir. Novo mês cria um mês deste ano ou do anterior. Importar extrato traz os lançamentos de um arquivo do banco e cria os meses que faltarem.',
       },
       filters: {
         title: 'Filtrar a lista',

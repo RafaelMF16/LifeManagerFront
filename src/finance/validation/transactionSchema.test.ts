@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { createTransactionSchema, monthDateRange } from './transactionSchema'
+import {
+  createQuickTransactionSchema,
+  createTransactionSchema,
+  monthDateRange,
+  QUICK_TRANSACTION_MIN_DATE,
+  quickTransactionMaxDate,
+} from './transactionSchema'
 
 const schema = createTransactionSchema(2026, 3)
 
@@ -70,5 +76,37 @@ describe('createTransactionSchema', () => {
     expect(messagesFor({ ...valid, description: 'a'.repeat(81) }, 'description')).toEqual([
       'finance:transactions.validation.description.tooLong',
     ])
+  })
+})
+
+describe('createQuickTransactionSchema', () => {
+  const quick = createQuickTransactionSchema(QUICK_TRANSACTION_MIN_DATE, quickTransactionMaxDate(2026))
+
+  function dateMessages(date: string) {
+    const result = quick.safeParse({ ...valid, date })
+    if (result.success) return []
+    return result.error.issues.filter((issue) => issue.path[0] === 'date').map((issue) => issue.message)
+  }
+
+  it.each(['2000-01-01', '2024-07-15', '2026-12-31'])('accepts the date %s, in any month', (date) => {
+    expect(dateMessages(date)).toEqual([])
+  })
+
+  it.each(['1999-12-31', '2027-01-01', '15/03/2026'])('rejects the date %s', (date) => {
+    expect(dateMessages(date)).toEqual(['finance:transactions.validation.date.outOfRange'])
+  })
+
+  it('requires the date', () => {
+    expect(dateMessages('')).toContain('finance:transactions.validation.date.required')
+  })
+
+  it('keeps the other rules of a transaction', () => {
+    const result = quick.safeParse({ ...valid, description: ' ', categoryId: '' })
+
+    expect(result.success).toBe(false)
+  })
+
+  it('ends on the last day of the current year', () => {
+    expect(quickTransactionMaxDate(2027)).toBe('2027-12-31')
   })
 })
