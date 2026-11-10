@@ -331,6 +331,8 @@ export default {
       date: {
         required: 'Informe a data',
         outsideMonth: 'A data precisa estar em {{period}}',
+        outOfRange: 'Use uma data de 2000 até o fim deste ano',
+        yearNotCurrent: 'Só dá para criar meses deste ano ou do anterior',
       },
       category: {
         required: 'Escolha uma categoria',

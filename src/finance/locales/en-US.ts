@@ -331,6 +331,8 @@ export default {
       date: {
         required: 'Enter the date',
         outsideMonth: 'The date must be in {{period}}',
+        outOfRange: 'Use a date from 2000 to the end of this year',
+        yearNotCurrent: 'Months can only be created in this year or the previous one',
       },
       category: {
         required: 'Choose a category',
