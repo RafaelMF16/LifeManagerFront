@@ -5,6 +5,7 @@ import Pagination from '../../shared/components/Pagination/Pagination'
 import Skeleton from '../../shared/components/Skeleton/Skeleton'
 import SkeletonGroup from '../../shared/components/Skeleton/SkeletonGroup'
 import SegmentedControl from '../../shared/components/SegmentedControl/SegmentedControl'
+import ConfirmDialog from '../../shared/components/ConfirmDialog/ConfirmDialog'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
@@ -12,7 +13,6 @@ import { isApiError } from '../../shared/types/ApiError'
 import ChallengeCard from '../components/ChallengeCard/ChallengeCard'
 import ChallengeFormDialog from '../components/ChallengeFormDialog/ChallengeFormDialog'
 import ChallengeSuggestionList from '../components/ChallengeSuggestionList/ChallengeSuggestionList'
-import ConfirmActionDialog from '../components/ConfirmActionDialog/ConfirmActionDialog'
 import { useChallengeHistory, useChallengeWeek } from '../hooks/useChallenges'
 import { createChallenge, deleteChallenge } from '../services/challengeService'
 import type { ChallengeDto, ChallengeSuggestionDto, ChallengeWeek, ChallengeWeekDto } from '../types/ChallengeDtos'
@@ -147,7 +147,7 @@ function ChallengesPage() {
         <ChallengeFormDialog week={current.data} onClose={() => setFormOpen(false)} onCreated={handleCreated} />
       ) : null}
       {cancelling ? (
-        <ConfirmActionDialog
+        <ConfirmDialog
           title={translate('habits:challenges.cancel.title')}
           message={translate('habits:challenges.cancel.message', { habit: cancelling.habitName })}
           confirmLabel={translate('habits:challenges.cancel.confirm')}

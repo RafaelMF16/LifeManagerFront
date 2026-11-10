@@ -2,13 +2,13 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../shared/components/Button/Button'
+import ConfirmDialog from '../../../shared/components/ConfirmDialog/ConfirmDialog'
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { useToast } from '../../../shared/hooks/useToast'
 import { logoutAll } from '../../../shared/services/authSession'
 import { isSessionExpiredError } from '../../../shared/services/httpClient'
 import AccountSection from '../AccountSection/AccountSection'
 import ChangePasswordDialog from '../ChangePasswordDialog/ChangePasswordDialog'
-import ConfirmDialog from '../ConfirmDialog/ConfirmDialog'
 
 type OpenDialog = 'password' | 'logoutAll' | null
 

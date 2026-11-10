@@ -12,6 +12,9 @@ export default {
     saveError: 'Não foi possível salvar suas preferências.',
   },
   account: 'Minha conta',
+  actions: {
+    cancel: 'Cancelar',
+  },
   logout: 'Sair',
   logoutSuccessToast: 'Você saiu da sua conta.',
   sessionExpiredToast: 'Sua sessão expirou. Entre novamente.',
