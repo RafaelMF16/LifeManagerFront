@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Button from '../../shared/components/Button/Button'
 import { useToast } from '../../shared/hooks/useToast'
 import MonthlySummaryFormModal from '../components/MonthlySummaryFormModal/MonthlySummaryFormModal'
 import MonthlySummaryList from '../components/MonthlySummaryList/MonthlySummaryList'
+import QuickTransactionModal from '../components/QuickTransactionModal/QuickTransactionModal'
 import { useMonthlySummaries } from '../hooks/useMonthlySummaries'
 import type { MonthlySummaryFormValues } from '../validation/monthlySummarySchema'
 import './MonthsPage.css'
@@ -15,6 +16,21 @@ function MonthsPage() {
   const navigate = useNavigate()
   const months = useMonthlySummaries()
   const [isFormOpen, setIsFormOpen] = useState(false)
+  // `?new=1` (the app's "New transaction" shortcut) opens the quick entry right away.
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [isQuickOpen, setIsQuickOpen] = useState(() => searchParams.get('new') === '1')
+
+  // Drop `?new=1` once read, so a reload or going back doesn't open the entry again.
+  useEffect(() => {
+    if (!searchParams.has('new')) return
+    setSearchParams(
+      (params) => {
+        params.delete('new')
+        return params
+      },
+      { replace: true },
+    )
+  }, [searchParams, setSearchParams])
 
   async function handleCreate(values: MonthlySummaryFormValues) {
     await months.createMonthlySummary(values)
@@ -33,8 +49,11 @@ function MonthsPage() {
           <Button variant="secondary" icon="upload" onClick={() => navigate('/finance/imports')}>
             {translate('finance:imports.monthsButton')}
           </Button>
-          <Button variant="primary" icon="plus" onClick={() => setIsFormOpen(true)}>
+          <Button variant="secondary" icon="calendar" onClick={() => setIsFormOpen(true)}>
             {translate('finance:months.newButton')}
+          </Button>
+          <Button variant="primary" icon="plus" className="lm-months-page__quick" onClick={() => setIsQuickOpen(true)}>
+            {translate('finance:transactions.newButton')}
           </Button>
         </div>
       </div>
@@ -61,6 +80,7 @@ function MonthsPage() {
       />
 
       {isFormOpen ? <MonthlySummaryFormModal onClose={() => setIsFormOpen(false)} onSubmit={handleCreate} /> : null}
+      {isQuickOpen ? <QuickTransactionModal onClose={() => setIsQuickOpen(false)} onSaved={months.reload} /> : null}
     </main>
   )
 }
