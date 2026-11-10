@@ -1,4 +1,6 @@
-import { apiRequest } from '../../shared/services/httpClient'
+import { apiDownload, apiRequest } from '../../shared/services/httpClient'
+import { fileNameFromContentDisposition, saveBlob } from '../../shared/utils/downloadBlob'
+import { exportFallbackFileName } from '../utils/exportFileName'
 import type { ChangePasswordDto, UpdateCurrentUserDto, UpdatedUserNameResponseDto } from '../types/AccountDtos'
 
 /** Renames the signed-in user; the answer is the stored (trimmed) name. */
@@ -9,4 +11,10 @@ export function renameCurrentUser(dto: UpdateCurrentUserDto): Promise<UpdatedUse
 /** Changes the password and ends every other session; this one (the cookie's) stays signed in. */
 export function changePassword(dto: ChangePasswordDto): Promise<void> {
   return apiRequest<void>('/api/Auth/ChangePassword', { method: 'POST', body: dto })
+}
+
+/** Downloads every piece of the user's data as one JSON file, named by the backend (`lifemanager-yyyy-MM-dd.json`). */
+export async function downloadAccountData(signal?: AbortSignal): Promise<void> {
+  const { blob, contentDisposition } = await apiDownload('/api/Users/Me/Export', signal)
+  saveBlob(blob, fileNameFromContentDisposition(contentDisposition, exportFallbackFileName(new Date())))
 }

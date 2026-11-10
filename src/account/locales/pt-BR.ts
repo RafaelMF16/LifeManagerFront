@@ -47,4 +47,13 @@ export default {
       success: 'Você saiu de todos os aparelhos.',
     },
   },
+  data: {
+    title: 'Meus dados',
+    label: 'Baixar meus dados',
+    description: 'Um arquivo JSON com tudo o que você registrou: finanças, hábitos, jogo e preferências.',
+    action: 'Baixar meus dados (JSON)',
+    preparing: 'Preparando…',
+    tooManyRequests: 'Você já baixou há pouco. Tente de novo em alguns minutos.',
+    errorTitle: 'Não deu para baixar',
+  },
 }

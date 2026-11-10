@@ -47,4 +47,13 @@ export default {
       success: 'You signed out of all devices.',
     },
   },
+  data: {
+    title: 'My data',
+    label: 'Download my data',
+    description: 'A JSON file with everything you recorded: finances, habits, game and preferences.',
+    action: 'Download my data (JSON)',
+    preparing: 'Preparing…',
+    tooManyRequests: 'You downloaded it a moment ago. Try again in a few minutes.',
+    errorTitle: 'Couldn’t download',
+  },
 }
