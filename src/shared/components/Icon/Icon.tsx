@@ -2,7 +2,9 @@ import {
   Bell,
   Download,
   Settings,
+  Share,
   ShieldCheck,
+  SquarePlus,
   TriangleAlert,
   Archive,
   ArchiveRestore,
@@ -179,6 +181,8 @@ const ICONS = {
   bell: Bell,
   'triangle-alert': TriangleAlert,
   settings: Settings,
+  share: Share,
+  'square-plus': SquarePlus,
 } as const
 
 export type IconName = keyof typeof ICONS

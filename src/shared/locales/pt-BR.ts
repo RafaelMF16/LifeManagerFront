@@ -21,6 +21,14 @@ export default {
   splash: {
     loading: 'Carregando…',
   },
+  install: {
+    action: 'Instalar app',
+    iosTitle: 'Instalar o LifeManager',
+    iosStepShare: 'Toque em Compartilhar, na barra do Safari.',
+    iosStepAdd: 'Escolha "Adicionar à Tela de Início".',
+    iosStepConfirm: 'Toque em Adicionar. O app abre direto da tela de início, em tela cheia.',
+    iosClose: 'Entendi',
+  },
   update: {
     available: 'Nova versão disponível',
     action: 'Atualizar',
