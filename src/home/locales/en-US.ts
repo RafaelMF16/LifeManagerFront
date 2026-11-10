@@ -1,4 +1,42 @@
 export default {
+  greeting: {
+    morning: 'Good morning',
+    afternoon: 'Good afternoon',
+    evening: 'Good evening',
+    withName: '{{greeting}}, {{name}}',
+  },
+  card: {
+    error: "Couldn't load the summary.",
+    retry: 'Try again',
+  },
+  habits: {
+    title: 'Habits',
+    loading: "Loading today's habits",
+    progress_one: '{{done}} of {{count}} done today',
+    progress_other: '{{done}} of {{count}} done today',
+    progressLabel: 'Habits done today',
+    onlyAvoiding: 'Today is just about keeping your habits to avoid.',
+    yesterdayPending_one: '{{count}} pending from yesterday',
+    yesterdayPending_other: '{{count}} pending from yesterday',
+    bestStreak_one: '{{name}} · {{count}}-day streak',
+    bestStreak_other: '{{name}} · {{count}}-day streak',
+    relapses_one: '{{count}} relapse today',
+    relapses_other: '{{count}} relapses today',
+    nothingToday: 'No habits for today. Enjoy the rest.',
+    player: {
+      level: 'Level {{level}}',
+      hp: '{{hp}}/{{maxHp}} HP',
+      coins_one: '{{count}} coin',
+      coins_other: '{{count}} coins',
+    },
+    goToToday: 'Go to Today',
+    new: {
+      title: 'Start with your first habit',
+      body: 'Pick a small routine and check it in every day to earn coins and XP.',
+      action: 'Create first habit',
+    },
+  },
+  modulesTitle: 'Modules',
   modules: {
     financas: {
       name: 'Finance',
