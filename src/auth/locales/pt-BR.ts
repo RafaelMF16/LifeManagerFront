@@ -11,6 +11,7 @@ export default {
     noAccount: 'Não tem conta?',
     createAccount: 'Criar conta',
     successToast: 'Login realizado com sucesso',
+    deletionCancelledToast: 'Bem-vindo de volta! A exclusão da sua conta foi cancelada.',
     entering: 'Entrando…',
   },
   register: {
@@ -82,22 +83,9 @@ export default {
     },
   },
   validation: {
-    name: {
-      required: 'Nome é obrigatório',
-      tooLong: 'Nome não pode ter mais de 100 caracteres',
-    },
     email: {
       required: 'E-mail é obrigatório',
       invalid: 'E-mail inválido',
-    },
-    password: {
-      required: 'Senha é obrigatória',
-      tooShort: 'Senha deve ter no mínimo 8 caracteres',
-      tooLong: 'Senha não pode ter mais de 50 caracteres',
-    },
-    confirmPassword: {
-      required: 'Confirme sua senha',
-      mismatch: 'As senhas não coincidem',
     },
   },
 } as const

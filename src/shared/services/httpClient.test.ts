@@ -77,6 +77,18 @@ describe('apiRequest (renovação do access token)', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 
+  it('renova o token num 401 dos endpoints de Auth que exigem login (Minha conta)', async () => {
+    fetchMock.mockImplementation(async (input, init) => {
+      if (isRefreshCall(input)) return jsonResponse(200, { accessToken: 'new-token' })
+      return authHeaderOf(init) === 'Bearer new-token' ? jsonResponse(204) : jsonResponse(401)
+    })
+
+    await apiRequest('/api/Auth/ChangePassword', { method: 'POST', body: {} })
+    await apiRequest('/api/Auth/LogoutAll', { method: 'POST' })
+
+    expect(fetchMock.mock.calls.filter(([input]) => isRefreshCall(input))).toHaveLength(1)
+  })
+
   it('não desloga quando o refresh falha por erro de rede', async () => {
     fetchMock.mockImplementation(async (input) => {
       if (isRefreshCall(input)) throw new TypeError('Failed to fetch')

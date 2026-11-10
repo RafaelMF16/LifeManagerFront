@@ -5,12 +5,12 @@ import Button from '../../shared/components/Button/Button'
 import Skeleton from '../../shared/components/Skeleton/Skeleton'
 import SkeletonGroup from '../../shared/components/Skeleton/SkeletonGroup'
 import IconButton from '../../shared/components/IconButton/IconButton'
+import ConfirmDialog from '../../shared/components/ConfirmDialog/ConfirmDialog'
 import { useErrorModal } from '../../shared/hooks/useErrorModal'
 import { useToast } from '../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../shared/services/httpClient'
 import { isApiError } from '../../shared/types/ApiError'
 import RankingBoard from '../components/RankingBoard/RankingBoard'
-import ConfirmActionDialog from '../components/ConfirmActionDialog/ConfirmActionDialog'
 import RankingGroupFormModal from '../components/RankingGroupFormModal/RankingGroupFormModal'
 import RankingMembers from '../components/RankingMembers/RankingMembers'
 import RankingMyWeek from '../components/RankingMyWeek/RankingMyWeek'
@@ -308,7 +308,7 @@ function RankingGroupPage() {
         <RankingGroupFormModal name={details.name} onClose={() => setDialog(null)} onSubmit={handleRename} />
       ) : null}
       {dialog?.mode === 'regenerate' ? (
-        <ConfirmActionDialog
+        <ConfirmDialog
           title={translate('habits:ranking.invite.regenerateTitle')}
           message={translate('habits:ranking.invite.regenerateMessage')}
           confirmLabel={translate('habits:ranking.invite.regenerate')}
@@ -319,7 +319,7 @@ function RankingGroupPage() {
         />
       ) : null}
       {dialog?.mode === 'remove' ? (
-        <ConfirmActionDialog
+        <ConfirmDialog
           title={translate('habits:ranking.members.removeTitle')}
           message={translate('habits:ranking.members.removeMessage', { name: dialog.member.name })}
           confirmLabel={translate('habits:ranking.members.remove')}
@@ -329,7 +329,7 @@ function RankingGroupPage() {
         />
       ) : null}
       {dialog?.mode === 'leave' ? (
-        <ConfirmActionDialog
+        <ConfirmDialog
           title={translate('habits:ranking.leave.title')}
           message={translate(
             details && details.members.length === 1

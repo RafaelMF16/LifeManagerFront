@@ -110,7 +110,7 @@ A exceção foi o `review-fixes`: um spec só, no front, que juntou as correçõ
 | 3 | `quick-transaction` | — (removido) | — (removido) | `feature/quick-transaction` | **mergeado na `dev`** em 10/11/2026 (PRs RafaelMF16/LifeManager#45 e RafaelMF16/LifeManagerFront#43) |
 | 3 | `category-picker` | — | — (removido) | `feature/category-picker` | **mergeado na `dev`** em 10/11/2026 (PR RafaelMF16/LifeManagerFront#42) |
 | 4 | `home-overview` | — (removido) | — (removido) | `feature/home-overview` | **mergeado na `dev`** em 10/11/2026 (PRs RafaelMF16/LifeManager#47 e RafaelMF16/LifeManagerFront#45) |
-| 5 | `account-settings` | [account-settings](../../../LifeManager/docs/specs/account-settings.md) | [account-settings](account-settings.md) | `feature/account-settings` | aprovado |
+| 5 | `account-settings` | [account-settings](../../../LifeManager/docs/specs/account-settings.md) | [account-settings](account-settings.md) | `feature/account-settings` | **implementado** na branch (10/11/2026), falta o roteiro manual e o PR para a `dev` |
 | 6 | `pwa` | — | [pwa](pwa.md) | `feature/pwa` | aprovado |
 | 7 | `habit-reminders` | [habit-reminders](../../../LifeManager/docs/specs/habit-reminders.md) | [habit-reminders](habit-reminders.md) | `feature/habit-reminders` | aprovado · dependência em discussão |
 | 7 | `savings-goals` | [savings-goals](../../../LifeManager/docs/specs/savings-goals.md) | [savings-goals](savings-goals.md) | `feature/savings-goals` | aprovado |

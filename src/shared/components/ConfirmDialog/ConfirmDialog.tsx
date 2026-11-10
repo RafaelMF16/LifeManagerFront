@@ -1,23 +1,27 @@
 import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Button from '../../../shared/components/Button/Button'
-import Dialog from '../../../shared/components/Dialog/Dialog'
-import type { IconName } from '../../../shared/components/Icon/Icon'
+import Button from '../Button/Button'
+import Dialog from '../Dialog/Dialog'
+import type { IconName } from '../Icon/Icon'
 
-interface ConfirmActionDialogProps {
+interface ConfirmDialogProps {
   title: string
   message: string
   confirmLabel: string
   confirmIcon: IconName
-  /** Destructive for leaving, removing or giving up; primary for a new invite code. */
+  /** Destructive (the default) for what can't be taken back; primary for a harmless one, e.g. a new invite code. */
   variant?: 'destructive' | 'primary'
   onClose: () => void
+  /** The action; the dialog shows it running, and the caller closes it or shows the failure. */
   onConfirm: () => Promise<void>
 }
 
-/** Confirms an action that can't be taken back from here: leaving a group, removing someone, a new invite code, giving up a challenge. */
-function ConfirmActionDialog({ title, message, confirmLabel, confirmIcon, variant = 'destructive', onClose, onConfirm }: ConfirmActionDialogProps) {
-  const { t: translate } = useTranslation('habits')
+/**
+ * Asks before an action that can't be undone from where it starts: leaving a ranking group, removing a member, giving
+ * up a challenge, signing out of every device. An `alertdialog` with the message and Cancel / the action.
+ */
+function ConfirmDialog({ title, message, confirmLabel, confirmIcon, variant = 'destructive', onClose, onConfirm }: ConfirmDialogProps) {
+  const { t: translate } = useTranslation('common')
   const titleId = useId()
   const [busy, setBusy] = useState(false)
 
@@ -44,7 +48,7 @@ function ConfirmActionDialog({ title, message, confirmLabel, confirmIcon, varian
 
       <div className="lm-dialog__footer">
         <Button variant="secondary" onClick={onClose}>
-          {translate('habits:actions.cancel')}
+          {translate('common:actions.cancel')}
         </Button>
         <Button variant={variant} icon={confirmIcon} loading={busy} onClick={() => void confirm()}>
           {confirmLabel}
@@ -54,4 +58,4 @@ function ConfirmActionDialog({ title, message, confirmLabel, confirmIcon, varian
   )
 }
 
-export default ConfirmActionDialog
+export default ConfirmDialog

@@ -1,10 +1,6 @@
 import { apiRequest } from '../../shared/services/httpClient'
-import type {
-  ForgotPasswordFormValues,
-  LoginFormValues,
-  NewPasswordFormValues,
-  RegisterFormValues,
-} from '../validation/userSchemas'
+import type { NewPasswordFormValues } from '../../shared/validation/userFields'
+import type { ForgotPasswordFormValues, LoginFormValues, RegisterFormValues } from '../validation/userSchemas'
 import type {
   CompleteRegistrationRequestDto,
   EmailTokenRequestDto,
@@ -16,17 +12,23 @@ import type {
   RegisterRequestDto,
   ResetPasswordRequestDto,
 } from '../types/AuthDtos'
+import { resetCurrentUser } from '../../shared/services/currentUserStore'
 import { clearAccessToken, setAccessToken } from '../../shared/services/tokenStorage'
 import type { UserPreferences } from '../../shared/types/UserPreferences'
 import { toUserPreferencesDto } from '../../shared/utils/userPreferencesMapper'
 
-export async function login(data: LoginFormValues): Promise<void> {
+/** Signs in; `deletionCancelled` says the sign-in cancelled the account's scheduled deletion. */
+export async function login(data: LoginFormValues): Promise<{ deletionCancelled: boolean }> {
   const response = await apiRequest<LoginResponseDto>('/api/Auth/Login', {
     method: 'POST',
     body: { email: data.email, password: data.password } satisfies LoginRequestDto,
   })
 
   setAccessToken(response.accessToken)
+  // A new session: whoever was loaded before (another account on this browser) is forgotten.
+  resetCurrentUser()
+
+  return { deletionCancelled: response.deletionCancelled === true }
 }
 
 export async function register(data: RegisterFormValues, preferences: UserPreferences): Promise<void> {

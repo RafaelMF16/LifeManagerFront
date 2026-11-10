@@ -1,0 +1,105 @@
+.lm-account-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-5);
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+}
+
+.lm-account-section--danger {
+  border-color: var(--danger);
+}
+
+.lm-account-section__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.lm-account-section__icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-card);
+  background: var(--accent-tint);
+  color: var(--accent-text);
+}
+
+.lm-account-section--danger .lm-account-section__icon {
+  background: var(--money-out-tint);
+  color: var(--danger);
+}
+
+.lm-account-section__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-account-section__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+/* A row of the section: what it is on the left, its action on the right (stacked on narrow phones). */
+.lm-account-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.lm-account-row__text {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.lm-account-row__label {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-account-row__value {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.lm-account-row__hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-account-form__server-error {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+  color: var(--danger);
+}
+
+.lm-account-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}

@@ -11,6 +11,7 @@ export default {
     noAccount: "Don't have an account?",
     createAccount: 'Create account',
     successToast: 'Logged in successfully',
+    deletionCancelledToast: 'Welcome back! Your account’s deletion was cancelled.',
     entering: 'Signing in…',
   },
   register: {
@@ -82,22 +83,9 @@ export default {
     },
   },
   validation: {
-    name: {
-      required: 'Name is required',
-      tooLong: 'Name cannot be more than 100 characters',
-    },
     email: {
       required: 'Email is required',
       invalid: 'Invalid email',
-    },
-    password: {
-      required: 'Password is required',
-      tooShort: 'Password must be at least 8 characters',
-      tooLong: 'Password cannot be more than 50 characters',
-    },
-    confirmPassword: {
-      required: 'Confirm your password',
-      mismatch: "Passwords don't match",
     },
   },
 } as const

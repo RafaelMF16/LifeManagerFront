@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import AppLogo from '../AppLogo/AppLogo'
 import Icon from '../Icon/Icon'
 import SegmentedControl from '../SegmentedControl/SegmentedControl'
@@ -15,21 +16,17 @@ import './Header.css'
 interface HeaderProps {
   /** Module-specific controls shown next to the user menu (e.g. Finance's privacy toggle). */
   actions?: ReactNode
-  /**
-   * The user's name, when the page already loads it (the Home's greeting): the header then doesn't ask for it again.
-   * Left out, the header loads it itself.
-   */
-  userName?: string | null
 }
 
-function Header({ actions, userName: givenUserName }: HeaderProps) {
+function Header({ actions }: HeaderProps) {
   const { t: translate } = useTranslation('common')
   const { theme, toggleTheme } = useTheme()
   const { language, setLanguage } = useLanguage()
   const { flush: flushPreferences } = useUserPreferencesSync(theme, language)
   const { logout, isLoggingOut } = useLogout()
-  const { name: loadedUserName } = useCurrentUser({ enabled: givenUserName === undefined })
-  const userName = givenUserName === undefined ? loadedUserName : givenUserName
+  // Shared with the page (the Home's greeting, My account): loaded once, a new name shows here at once.
+  const { name: userName } = useCurrentUser()
+  const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -86,9 +83,23 @@ function Header({ actions, userName: givenUserName }: HeaderProps) {
                     </span>
                   </div>
 
-                  <div className="lm-header__menu-divider" />
                 </>
               ) : null}
+
+              <button
+                type="button"
+                role="menuitem"
+                className="lm-header__menu-item"
+                onClick={() => {
+                  setMenuOpen(false)
+                  navigate('/account')
+                }}
+              >
+                <Icon name="settings" size={16} />
+                {translate('account')}
+              </button>
+
+              <div className="lm-header__menu-divider" />
 
               <div className="lm-header__menu-row">
                 <span className="lm-header__menu-row-label">

@@ -11,6 +11,10 @@ export default {
   preferences: {
     saveError: 'Could not save your preferences.',
   },
+  account: 'My account',
+  actions: {
+    cancel: 'Cancel',
+  },
   logout: 'Log out',
   logoutSuccessToast: 'You have been signed out.',
   sessionExpiredToast: 'Your session has expired. Please sign in again.',
@@ -44,6 +48,21 @@ export default {
     hide: 'Hide amounts',
     show: 'Show amounts',
     hiddenValue: 'Hidden amount',
+  },
+  validation: {
+    name: {
+      required: 'Name is required',
+      tooLong: 'Name cannot be more than 100 characters',
+    },
+    password: {
+      required: 'Password is required',
+      tooShort: 'Password must be at least 8 characters',
+      tooLong: 'Password cannot be more than 50 characters',
+    },
+    confirmPassword: {
+      required: 'Confirm your password',
+      mismatch: "Passwords don't match",
+    },
   },
   tour: {
     start: 'Tour of this screen',
