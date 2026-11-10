@@ -1,23 +1,26 @@
 import { useEffect, useRef } from 'react'
-import walletLoopUrl from '../../../assets/wallet/wallet-loop.png'
-import walletReceiveUrl from '../../../assets/wallet/wallet-receive.png'
+import helmLoopUrl from '../../../assets/helm/helm-loop.png'
+import helmReceiveUrl from '../../../assets/helm/helm-receive.png'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
-import { WALLET_LOOP_FRAMES, WALLET_RECEIVE_FRAMES, buildSpriteTimeline } from '../../utils/spriteTimeline'
-import './WalletSprite.css'
+import { HELM_LOOP_FRAMES, HELM_RECEIVE_FRAMES, buildSpriteTimeline } from '../../utils/spriteTimeline'
+import './HelmSprite.css'
 
-export type WalletSpriteVariant = 'loop' | 'receive'
+export type HelmSpriteVariant = 'loop' | 'receive'
 
-const SPRITES: Record<WalletSpriteVariant, { url: string; frames: readonly number[] }> = {
-  loop: { url: walletLoopUrl, frames: WALLET_LOOP_FRAMES },
-  receive: { url: walletReceiveUrl, frames: WALLET_RECEIVE_FRAMES },
+const SPRITES: Record<HelmSpriteVariant, { url: string; frames: readonly number[] }> = {
+  loop: { url: helmLoopUrl, frames: HELM_LOOP_FRAMES },
+  receive: { url: helmReceiveUrl, frames: HELM_RECEIVE_FRAMES },
 }
 
 /** The sign-in animation's sprite sheet, so a page can preload it before the transition shows it. */
-export const WALLET_RECEIVE_URL = walletReceiveUrl
+export const HELM_RECEIVE_URL = helmReceiveUrl
 
-interface WalletSpriteProps {
-  /** `loop`: bills flying into the wallet, forever. `receive`: one bill goes in and sparkles, once. */
-  variant: WalletSpriteVariant
+interface HelmSpriteProps {
+  /**
+   * `loop`: the helm steers while coins fly into its hub, forever. `receive`: one coin goes in, the helm turns a full
+   * circle and sparkles, once.
+   */
+  variant: HelmSpriteVariant
   /** Side in px; a multiple of the sheet's 64 px frames keeps the pixel art sharp. */
   size?: 128 | 192 | 256
   /** `receive` only: called once, when the last frame has played (right away with reduced motion). */
@@ -25,10 +28,10 @@ interface WalletSpriteProps {
 }
 
 /**
- * The pixel-art wallet: a clipped window over the whole sprite strip, which moves one frame at a time with the Web
+ * The pixel-art helm (`scripts/generate-helm-sprites.mjs`): a clipped window over the whole sprite strip, which moves one frame at a time with the Web
  * Animations API (a `transform`, so it runs on the compositor). Decorative: the caller labels what it means.
  */
-function WalletSprite({ variant, size = 192, onEnd }: WalletSpriteProps) {
+function HelmSprite({ variant, size = 192, onEnd }: HelmSpriteProps) {
   const stripRef = useRef<HTMLImageElement>(null)
   const onEndRef = useRef(onEnd)
   // Survives StrictMode's second effect run, so `onEnd` fires once even when the first run already ended.
@@ -67,14 +70,14 @@ function WalletSprite({ variant, size = 192, onEnd }: WalletSpriteProps) {
     return () => animation.cancel()
   }, [variant, frames, size, reduceMotion])
 
-  // Without motion, a still frame: the wallet for the loop, the finished sparkle for `receive`.
+  // Without motion, a still frame: the helm for the loop, the finished sparkle for `receive`.
   const stillFrame = reduceMotion && variant === 'receive' ? frames.length - 1 : 0
 
   return (
-    <span className="lm-wallet-sprite" style={{ width: size, height: size }} aria-hidden="true">
+    <span className="lm-helm-sprite" style={{ width: size, height: size }} aria-hidden="true">
       <img
         ref={stripRef}
-        className="lm-wallet-sprite__strip"
+        className="lm-helm-sprite__strip"
         src={url}
         alt=""
         width={size * frames.length}
@@ -86,4 +89,4 @@ function WalletSprite({ variant, size = 192, onEnd }: WalletSpriteProps) {
   )
 }
 
-export default WalletSprite
+export default HelmSprite

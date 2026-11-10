@@ -92,35 +92,37 @@ Em 31/12, das 21h à meia-noite de Brasília, criar "Dezembro" cria **dezembro d
 - `theme-color` claro e escuro (`media="(prefers-color-scheme: …)"`, a partir dos tokens de fundo);
 - o `lang` inicial não muda, porque o `i18n.ts` já o corrige em tempo de execução.
 
-**Ícone do app: a roda das áreas da vida, no lugar do raio do Vite.**
-- **Desenho** (escolhido pelo usuário em 09/11/2026, opção "Quatro fatias, duas com módulo"): um anel em **quatro fatias iguais**, uma por área da vida, separadas por um vão de 9°.
-  - Finanças (fatia da esquerda, teal 700) leva o ícone `wallet` do lucide, e Hábitos (fatia da direita, teal 600) leva o `check`, os mesmos ícones da Home, em branco.
-  - As duas fatias claras (teal 200 e 300) ficam vazias, à espera dos próximos módulos. Um módulo novo ganha o seu ícone numa delas.
-  - Só tons de teal da marca: verde, vermelho e roxo ficam de fora, porque o app os reserva para valores.
-  - O mesmo desenho vale em todos os tamanhos. Em 16 e 32px os ícones dos módulos não se leem, mas a roda continua reconhecível.
-- **Fonte:** `public/favicon.svg`, com o desenho em SVG (viewBox 100). Ele também é o favicon dos navegadores que aceitam SVG.
-- **Arquivos gerados** a partir do SVG, renderizado pelo Edge (ou Chrome) headless:
+**Ícone do app e animação de carregamento: o leme, no lugar do raio do Vite e da carteira.**
+- **Ideia** (escolhida pelo usuário em 10/11/2026): um leme de barco, "você no leme da sua vida". O app deixa de falar só de finanças: a carteira dava a ideia de app de finanças. Ele substitui a roda das áreas da vida, a primeira versão deste spec.
+- **Desenho:** oito pegadores com ponta redonda, o aro com um brilho no alto à esquerda, raios finos por dentro e um cubo claro no centro. Só tons de teal da marca, com contorno em teal 800: verde, vermelho e roxo ficam de fora, porque o app os reserva para valores. É o mesmo leme em dois traços:
+  - **vetor** (`public/favicon.svg`, viewBox 100) na logo e nos ícones;
+  - **pixel art** nas animações de carregamento, dentro do mesmo selo claro que a carteira usava.
+- **Arquivos gerados** a partir do SVG, renderizado pelo Chrome (ou Edge) headless:
 
 | Arquivo | Tamanho | Como |
 |---|---|---|
-| `public/favicon.png` | 64×64 | a roda, com fundo transparente |
-| `public/favicon-32.png` | 32×32 | a roda, com fundo transparente, para aba e favoritos |
-| `public/apple-touch-icon.png` | 180×180 | a roda em 144px, centralizada num fundo branco (`--surface` clara). O iOS pinta de preto o que for transparente, então nada de transparência aqui. |
+| `public/favicon.png` | 64×64 | o leme, com fundo transparente |
+| `public/favicon-32.png` | 32×32 | o leme, com fundo transparente, para aba e favoritos |
+| `public/apple-touch-icon.png` | 180×180 | o leme em 144px, centralizado num fundo branco (`--surface` clara). O iOS pinta de preto o que for transparente, então nada de transparência aqui. |
 
 - **No `index.html`:** `<link rel="icon" type="image/svg+xml" href="/favicon.svg">`, os PNGs de 64 e 32 e `<link rel="apple-touch-icon" href="/apple-touch-icon.png">`.
-- **Sai o resto do template do Vite:** `public/icons.svg` (ícones de Bluesky, Discord e GitHub, que nada usa). O `favicon.svg` do Vite (o raio roxo) dá lugar ao da roda.
-- **Como gerar:** `scripts/generate-icons.ps1` gera os PNGs uma vez, e eles são commitados, sem passo novo no build. Se o SVG mudar, roda de novo.
+- **Sai o resto do template do Vite:** `public/icons.svg` (ícones de Bluesky, Discord e GitHub, que nada usa). O `favicon.svg` do Vite (o raio roxo) dá lugar ao do leme.
+- **Como gerar:** `node scripts/generate-icons.mjs` gera os PNGs uma vez (acha o Chrome ou o Edge no macOS, no Windows e no Linux, ou usa `CHROME_PATH`), e eles são commitados, sem passo novo no build. Se o SVG mudar, roda de novo.
 - O `pwa` gera do mesmo SVG os ícones de 192 e 512.
-- **Na tela:** o `shared/components/AppLogo/` desenha a mesma roda em SVG inline, com as cores dos tokens teal, ao lado do nome "LifeManager" no `Header` (24px) e no topo das telas de login e cadastro (`AuthLayout`, 28px), no lugar do ícone da carteira.
-- A animação de carregamento (splash e transição do login) continua com a carteira.
+- **Na tela:** o `shared/components/AppLogo/` desenha o mesmo leme em SVG inline, com as cores dos tokens teal, ao lado do nome "LifeManager" no `Header` (24px) e no topo das telas de login e cadastro (`AuthLayout`, 28px).
+- **Animação de carregamento:** o `shared/components/HelmSprite/` substitui o `WalletSprite`, com o mesmo funcionamento (faixa de 24 quadros de 64px, Web Animations, `prefers-reduced-motion`, `onEnd`). As moedas douradas, as mesmas do jogo de hábitos, fazem o papel das notas que entravam na carteira:
+  - `loop` (splash ao restaurar a sessão, primeira carga de uma tela, recarga depois de um deploy): o leme vira um raio enquanto duas moedas entram no cubo, uma de cada lado, e o cubo acende a cada uma. Com 8 raios, o fim emenda no começo. 1,68 s por volta.
+  - `receive` (depois do login): uma moeda entra em arco, o cubo acende, o leme dá uma volta inteira e trava, e aparecem brilhos. 1,63 s, os mesmos tempos da carteira.
+  - As faixas (`src/assets/helm/`) saem de `node scripts/generate-helm-sprites.mjs`, sem dependência, e são commitadas. Se o desenho mudar, roda de novo.
 
 **Aceite:**
 - `npm run build` **sem** o aviso "chunks larger than 500 kB".
-- Chunk de entrada **≤ 300 kB** minificado, com o antes e o depois no PR. Finanças e Hábitos em chunks próprios.
+- Chunk de entrada **≤ 350 kB** minificado (a meta era 300; os 350 kB, de 1.077 kB antes, foram aceitos pelo usuário em 10/11/2026), com o antes e o depois no PR. Finanças e Hábitos em chunks próprios.
 - Navegar não mostra tela branca, e um reload em `/finance/dashboard` mostra o splash e depois a tela.
 - O "sair sem salvar?" do orçamento (`useBlocker`) continua funcionando.
-- A aba mostra "LifeManager" com a roda.
-- No iPhone, "Adicionar à Tela de Início" mostra a roda nítida, sem borda preta.
+- A aba mostra "LifeManager" com o leme.
+- No iPhone, "Adicionar à Tela de Início" mostra o leme nítido, sem borda preta.
+- O splash e a transição do login mostram o leme, e com "reduzir movimento" ligado ele fica parado.
 - Nada no repo aponta para `icons.svg`.
 
 ### 4. Zero no plural em pt-BR (V1)
@@ -218,9 +220,10 @@ Um workflow novo, **`.github/workflows/ci.yml`, em cada repo:**
    - entrar e navegar Home → Finanças → Hábitos;
    - dar reload numa tela interna;
    - alterar o orçamento e tentar sair.
-6. A aba mostra "LifeManager" com a carteira, e o tema escuro funciona nas telas mexidas.
-7. No iPhone, "Adicionar à Tela de Início" mostra a carteira.
-8. No GitHub, o PR mostra o check `CI` verde. Depois disso, o usuário cria a regra de proteção da `dev`.
+6. A aba mostra "LifeManager" com o leme, e o tema escuro funciona nas telas mexidas.
+7. No iPhone, "Adicionar à Tela de Início" mostra o leme.
+8. Recarregar uma tela interna mostra o leme girando com as moedas, e entrar mostra a moeda chegando no leme.
+9. No GitHub, o PR mostra o check `CI` verde. Depois disso, o usuário cria a regra de proteção da `dev`.
 
 ## Docs
 

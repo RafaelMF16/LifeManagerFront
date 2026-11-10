@@ -1,16 +1,9 @@
 import './AppLogo.css'
 
-// The right slice of the ring: 49.5° to 130.5° (a 9° gap between slices), radii 12 to 47, in a 100 × 100 box. The other
-// three are this one rotated around the center.
-const SLICE_PATH = 'M85.74 19.48A47 47 0 0 1 85.74 80.52L59.12 57.79A12 12 0 0 0 59.12 42.21Z'
+// The eight handles and spokes, one every 45°, each drawn pointing right and rotated around the center (50, 50).
+const ANGLES = [0, 45, 90, 135, 180, 225, 270, 315] as const
 
-// Clockwise from the right: Habits, an empty slice, Finance, an empty slice. A new module takes an empty one.
-const SLICES = [
-  { rotation: 0, tone: 'habits' },
-  { rotation: 90, tone: 'free-1' },
-  { rotation: 180, tone: 'finance' },
-  { rotation: 270, tone: 'free-2' },
-] as const
+const rotate = (angle: number) => (angle === 0 ? undefined : `rotate(${angle} 50 50)`)
 
 interface AppLogoProps {
   /** Width and height in px. */
@@ -18,29 +11,51 @@ interface AppLogoProps {
 }
 
 /**
- * The app's mark, the same drawing as `public/favicon.svg`: four equal slices of a ring, one per area of life, with
- * Finance's wallet and Habits' check (lucide's paths). Decorative: it always sits next to the "LifeManager" name.
+ * The app's mark, the same drawing as `public/favicon.svg`: a ship's helm ("you at the helm of your life"), whose
+ * pixel-art twin is the loading animation (`HelmSprite`). Decorative: it always sits next to the "LifeManager" name.
  */
 function AppLogo({ size = 24 }: AppLogoProps) {
   return (
     <svg className="lm-app-logo" width={size} height={size} viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-      {SLICES.map(({ rotation, tone }) => (
-        <path
-          key={tone}
-          className={`lm-app-logo__slice lm-app-logo__slice--${tone}`}
-          d={SLICE_PATH}
-          transform={rotation === 0 ? undefined : `rotate(${rotation} 50 50)`}
-        />
-      ))}
-      <g className="lm-app-logo__icons" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
-        {/* lucide "check", 24 → 21 units, centered on the right slice (80, 50). */}
-        <path transform="translate(69.5 39.5) scale(.875)" d="M20 6 9 17l-5-5" />
-        {/* lucide "wallet", centered on the left slice (20, 50). */}
-        <g transform="translate(9.5 39.5) scale(.875)">
-          <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
-          <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
-        </g>
+      {/* Outline under the handles and the rim. */}
+      <g className="lm-app-logo__outline">
+        {ANGLES.map((angle) => (
+          <g key={angle} transform={rotate(angle)}>
+            <path d="M78 50H91" strokeWidth={9} strokeLinecap="round" />
+            <circle cx={91} cy={50} r={7} />
+          </g>
+        ))}
+        <circle className="lm-app-logo__ring" cx={50} cy={50} r={27.5} strokeWidth={11} />
       </g>
+      <g className="lm-app-logo__handles">
+        {ANGLES.map((angle) => (
+          <g key={angle} transform={rotate(angle)}>
+            <path d="M78 50H91" strokeWidth={6} strokeLinecap="round" />
+            <circle cx={91} cy={50} r={5.5} />
+          </g>
+        ))}
+      </g>
+      <g className="lm-app-logo__spokes" strokeWidth={4} strokeLinecap="round">
+        {ANGLES.map((angle) => (
+          <path key={angle} d="M58 50H74" transform={rotate(angle)} />
+        ))}
+      </g>
+      {/* The rim, lit from the top left. */}
+      <circle className="lm-app-logo__rim" cx={50} cy={50} r={27} strokeWidth={9} />
+      <circle
+        className="lm-app-logo__shine"
+        cx={50}
+        cy={50}
+        r={25}
+        strokeWidth={3.5}
+        strokeLinecap="round"
+        pathLength={360}
+        strokeDasharray="70 290"
+        transform="rotate(190 50 50)"
+      />
+      <circle className="lm-app-logo__hub" cx={50} cy={50} r={10} />
+      <circle className="lm-app-logo__hub-face" cx={50} cy={50} r={6.5} />
+      <circle className="lm-app-logo__hub-pin" cx={50} cy={50} r={3} />
     </svg>
   )
 }

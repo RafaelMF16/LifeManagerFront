@@ -1,22 +1,52 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- The app icon: four equal slices of a ring (a "wheel of life"), one per area of life. Finance (left, wallet) and
-       Habits (right, check) carry their module's lucide icon; the two light slices wait for the next modules.
-       Source of the PNG icons: scripts/generate-icons.ps1. -->
+  <!-- The app icon: a ship's helm, "you at the helm of your life", in the brand's teal. The same drawing as the
+       pixel-art loading helm (scripts/generate-helm-sprites.mjs) and as shared/components/AppLogo/; change them
+       together. Source of the PNG icons: scripts/generate-icons.mjs. -->
   <defs>
-    <!-- The right slice: 49.5° to 130.5° (a 9° gap between slices), radii 12 to 47. The others are this one rotated. -->
-    <path id="slice" d="M85.74 19.48A47 47 0 0 1 85.74 80.52L59.12 57.79A12 12 0 0 0 59.12 42.21Z"/>
-  </defs>
-  <use href="#slice" fill="#0d9488"/>
-  <use href="#slice" fill="#99f6e4" transform="rotate(90 50 50)"/>
-  <use href="#slice" fill="#0f766e" transform="rotate(180 50 50)"/>
-  <use href="#slice" fill="#5eead4" transform="rotate(270 50 50)"/>
-  <g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-    <!-- lucide "check" (24 × 24) at 21 units, centered on the right slice (80, 50). -->
-    <path transform="translate(69.5 39.5) scale(.875)" d="M20 6 9 17l-5-5"/>
-    <!-- lucide "wallet" at 21 units, centered on the left slice (20, 50). -->
-    <g transform="translate(9.5 39.5) scale(.875)">
-      <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/>
-      <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>
+    <!-- One handle with its round grip, pointing right; the other seven are this one rotated by 45°. -->
+    <g id="outline-arm">
+      <path d="M78 50H91" stroke="#115e59" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="91" cy="50" r="7" fill="#115e59"/>
     </g>
-  </g>
+    <g id="arm">
+      <path d="M78 50H91" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="91" cy="50" r="5.5" fill="#0d9488"/>
+    </g>
+    <path id="spoke" d="M58 50H74" stroke="#115e59" stroke-width="4" stroke-linecap="round"/>
+  </defs>
+  <!-- Outline under the handles and the rim. -->
+  <use href="#outline-arm"/>
+  <use href="#outline-arm" transform="rotate(45 50 50)"/>
+  <use href="#outline-arm" transform="rotate(90 50 50)"/>
+  <use href="#outline-arm" transform="rotate(135 50 50)"/>
+  <use href="#outline-arm" transform="rotate(180 50 50)"/>
+  <use href="#outline-arm" transform="rotate(225 50 50)"/>
+  <use href="#outline-arm" transform="rotate(270 50 50)"/>
+  <use href="#outline-arm" transform="rotate(315 50 50)"/>
+  <circle cx="50" cy="50" r="27.5" fill="none" stroke="#115e59" stroke-width="11"/>
+  <use href="#arm"/>
+  <use href="#arm" transform="rotate(45 50 50)"/>
+  <use href="#arm" transform="rotate(90 50 50)"/>
+  <use href="#arm" transform="rotate(135 50 50)"/>
+  <use href="#arm" transform="rotate(180 50 50)"/>
+  <use href="#arm" transform="rotate(225 50 50)"/>
+  <use href="#arm" transform="rotate(270 50 50)"/>
+  <use href="#arm" transform="rotate(315 50 50)"/>
+  <!-- Spokes inside the rim. -->
+  <use href="#spoke"/>
+  <use href="#spoke" transform="rotate(45 50 50)"/>
+  <use href="#spoke" transform="rotate(90 50 50)"/>
+  <use href="#spoke" transform="rotate(135 50 50)"/>
+  <use href="#spoke" transform="rotate(180 50 50)"/>
+  <use href="#spoke" transform="rotate(225 50 50)"/>
+  <use href="#spoke" transform="rotate(270 50 50)"/>
+  <use href="#spoke" transform="rotate(315 50 50)"/>
+  <!-- The rim, lit from the top left. -->
+  <circle cx="50" cy="50" r="27" fill="none" stroke="#14b8a6" stroke-width="9"/>
+  <circle cx="50" cy="50" r="25" fill="none" stroke="#5eead4" stroke-width="3.5" stroke-linecap="round"
+          pathLength="360" stroke-dasharray="70 290" transform="rotate(190 50 50)"/>
+  <!-- The hub. -->
+  <circle cx="50" cy="50" r="10" fill="#0d9488"/>
+  <circle cx="50" cy="50" r="6.5" fill="#f0fdfa"/>
+  <circle cx="50" cy="50" r="3" fill="#0f766e"/>
 </svg>

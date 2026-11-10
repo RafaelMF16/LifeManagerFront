@@ -4,23 +4,42 @@
   display: block;
 }
 
-.lm-app-logo__slice--habits {
+.lm-app-logo__outline {
+  fill: var(--teal-800);
+  stroke: var(--teal-800);
+}
+
+.lm-app-logo__handles {
+  fill: var(--teal-600);
+  stroke: var(--teal-600);
+}
+
+.lm-app-logo__spokes {
+  stroke: var(--teal-800);
+}
+
+.lm-app-logo__ring,
+.lm-app-logo__rim,
+.lm-app-logo__shine {
+  fill: none;
+}
+
+.lm-app-logo__rim {
+  stroke: var(--teal-500);
+}
+
+.lm-app-logo__shine {
+  stroke: var(--teal-300);
+}
+
+.lm-app-logo__hub {
   fill: var(--teal-600);
 }
 
-.lm-app-logo__slice--finance {
+.lm-app-logo__hub-face {
+  fill: var(--teal-50);
+}
+
+.lm-app-logo__hub-pin {
   fill: var(--teal-700);
-}
-
-.lm-app-logo__slice--free-1 {
-  fill: var(--teal-200);
-}
-
-.lm-app-logo__slice--free-2 {
-  fill: var(--teal-300);
-}
-
-.lm-app-logo__icons {
-  fill: none;
-  stroke: var(--white);
 }

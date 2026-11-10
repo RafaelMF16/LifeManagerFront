@@ -130,7 +130,7 @@ As listas (meses, lançamentos, categorias, recorrências, hábitos, recompensas
 ### Sessão
 
 - A sessão se renova sozinha enquanto você usa o app.
-- Ao abrir uma nova aba ou recarregar a página, o app recupera a sessão sem pedir login. Enquanto isso, se demorar, aparece a carteira animada com "Carregando…".
+- Ao abrir uma nova aba ou recarregar a página, o app recupera a sessão sem pedir login. Enquanto isso, se demorar, aparece o leme animado, com moedas chegando, e "Carregando…".
 - Quando a sessão expira, aparece "Sua sessão expirou. Entre novamente." e o app volta para o login.
 - Quem abre um link sem estar logado vai para o login e, depois de entrar, **volta para a tela que tentou abrir**.
 
@@ -147,7 +147,7 @@ A tela tem duas abas: **Entrar** e **Criar conta**.
 | E-mail | Obrigatório, formato `algo@algo.algo` |
 | Senha | Obrigatória |
 
-- **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra a carteira recebendo uma nota (cerca de 1,6 segundo) e abre a Home (ou a tela que você tentou abrir antes). Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
+- **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra uma moeda chegando no leme, que dá uma volta (cerca de 1,6 segundo), e abre a Home (ou a tela que você tentou abrir antes). Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
 - **Não tem conta? Criar conta:** troca para a aba de cadastro.
 - **Esqueceu a senha?:** abre a tela [Esqueceu a senha?](#esqueceu-a-senha).
 

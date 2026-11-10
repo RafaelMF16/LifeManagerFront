@@ -80,7 +80,7 @@ Pontos fortes que **não** precisam de ação: toda rota do back tem `[Authorize
 
 | Module id | Responsabilidade | Repo(s) | Depende de | Tamanho |
 |---|---|---|---|---|
-| `review-fixes` | P1 + P2 + P4 + P5 + P6 + P7 + V1–V4: as correções da revisão, juntas (relógio no fuso do negócio, higiene dos testes, rotas sob demanda e metadados, zero no plural, ajustes de celular, ícone da carteira, CI nos PRs para a `dev`) | back + front | — | M |
+| `review-fixes` | P1 + P2 + P4 + P5 + P6 + P7 + V1–V4: as correções da revisão, juntas (relógio no fuso do negócio, higiene dos testes, rotas sob demanda e metadados, zero no plural, ajustes de celular, ícone e animação do leme, CI nos PRs para a `dev`) | back + front | — | M |
 | `integration-tests` | P3: projeto de testes com Testcontainers (Postgres real) cobrindo migrations, totais do mês, commit da importação e lock da carteira | back | `review-fixes` | M |
 | `quick-transaction` | M1: lançar sem criar o mês antes e liberar o ano anterior | back + front | `review-fixes` | M |
 | `category-picker` | M2/P8: combobox de categoria com busca | front | — | S |
@@ -196,7 +196,8 @@ public static Result<MonthlySummaryYear> Create(int value, int currentYear) { ..
 - **Commits dos specs:** branch `docs/specs` a partir da `dev`, em cada repo.
 - **Pipeline:** os testes com banco (Testcontainers) entram no pipeline, e um workflow `ci.yml` novo roda os testes de cada repo em todo PR para a `dev` (e a `main`). Fica no `review-fixes`.
 - **PWA aprovado**, com o `vite-plugin-pwa` e o ajuste da CSP.
-- **Ícone:** a roda das áreas da vida (quatro fatias, Finanças e Hábitos com os seus ícones) substitui o ícone padrão do Vite (favicon e `apple-touch-icon`), a partir de `public/favicon.svg`. Fica no `review-fixes`, e o `pwa` gera os seus ícones do mesmo SVG. A animação de carregamento continua com a carteira.
+- **Ícone:** a roda das áreas da vida (quatro fatias, Finanças e Hábitos com os seus ícones) substitui o ícone padrão do Vite (favicon e `apple-touch-icon`), a partir de `public/favicon.svg`. Fica no `review-fixes`, e o `pwa` gera os seus ícones do mesmo SVG.
+- **Ícone e animação (10/11/2026):** o leme substitui a roda na logo e nos ícones, e a carteira nas animações de carregamento (em pixel art, com moedas chegando no lugar das notas). A carteira dava a ideia de app de finanças, e o leme fala de controle da vida.
 - **As cinco correções viraram um módulo só:** `clock-fixes`, `test-hygiene`, `front-shell`, `pt-plurals` e `mobile-polish` agora são o `review-fixes`, com um spec só ([review-fixes.md](review-fixes.md)) e uma branch só, `fix/review-fixes`, a partir da `dev`, com o mesmo nome nos dois repos.
 
 ## Perguntas em aberto
