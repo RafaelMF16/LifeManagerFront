@@ -295,6 +295,11 @@ export default {
       create: 'Salvar lançamento',
       save: 'Salvar',
     },
+    quick: {
+      saved: 'Lançamento salvo em {{period}}',
+      savedMonthCreated: 'Lançamento salvo em {{period}} · mês criado',
+      viewMonth: 'Ver mês',
+    },
     delete: {
       title: 'Excluir lançamento',
       message: 'Excluir “{{description}}” de {{amount}}? Essa ação não pode ser desfeita.',

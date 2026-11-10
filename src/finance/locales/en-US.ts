@@ -295,6 +295,11 @@ export default {
       create: 'Save transaction',
       save: 'Save',
     },
+    quick: {
+      saved: 'Transaction saved in {{period}}',
+      savedMonthCreated: 'Transaction saved in {{period}} · month created',
+      viewMonth: 'View month',
+    },
     delete: {
       title: 'Delete transaction',
       message: 'Delete “{{description}}” of {{amount}}? This can’t be undone.',
