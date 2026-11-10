@@ -5,6 +5,10 @@ import { getAccessToken } from './tokenStorage'
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 const CONNECTION_ERROR_MESSAGE = 'Não foi possível se comunicar com o servidor.'
 const AUTH_PATH_PREFIX = '/api/Auth/'
+// The /api/Auth endpoints that need the access token (My account; there because only /api/Auth gets the refresh
+// cookie): a 401 there is an expired access token, renewed like anywhere else. Any other 401 under /api/Auth is the
+// answer itself (wrong credentials, a dead refresh token).
+const AUTHENTICATED_AUTH_PATHS = new Set(['/api/Auth/ChangePassword', '/api/Auth/LogoutAll'])
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -62,11 +66,15 @@ async function tryRefreshAccessToken(): Promise<boolean> {
   }
 }
 
+function canRenewOn401(path: string): boolean {
+  return !path.startsWith(AUTH_PATH_PREFIX) || AUTHENTICATED_AUTH_PATHS.has(path)
+}
+
 /** Sends the request, renewing the access token once on a 401 outside /api/Auth, and throws on an error status. */
 async function sendChecked(path: string, options: RequestOptions): Promise<Response> {
   let response = await send(path, options)
 
-  if (response.status === 401 && !path.startsWith(AUTH_PATH_PREFIX)) {
+  if (response.status === 401 && canRenewOn401(path)) {
     if (!(await tryRefreshAccessToken())) throw new SessionExpiredError()
 
     response = await send(path, options)
