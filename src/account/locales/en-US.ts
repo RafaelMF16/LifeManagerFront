@@ -12,6 +12,7 @@ export default {
     nameLabel: 'Name',
     emailLabel: 'E-mail',
     emailHint: 'Your e-mail is your sign-in and can’t be changed.',
+    loading: 'Loading your profile…',
     loadError: 'We couldn’t load your details. Reload the page.',
     edit: {
       title: 'Edit name',

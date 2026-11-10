@@ -12,6 +12,7 @@ export default {
     nameLabel: 'Nome',
     emailLabel: 'E-mail',
     emailHint: 'O e-mail é o seu login e não pode ser trocado.',
+    loading: 'Carregando seu perfil…',
     loadError: 'Não deu para carregar seus dados. Recarregue a página.',
     edit: {
       title: 'Editar nome',
