@@ -15,6 +15,14 @@ export function localDateKey(now: Date): string {
   return `${now.getFullYear()}-${month}-${day}`
 }
 
+/**
+ * Whether the summary loaded on `loadedOn` (a `localDateKey`) is from another local day than `now`: the tab came
+ * back after midnight. Before the first load (`null`) there's nothing stale to replace.
+ */
+export function shouldReloadForNewDay(loadedOn: string | null, now: Date): boolean {
+  return loadedOn !== null && loadedOn !== localDateKey(now)
+}
+
 /** "Segunda-feira, 9 de novembro" / "Monday, November 9" from the backend's `yyyy-MM-dd` today. */
 export function todayLabel(isoDate: string, language: string): string {
   const [year, month, day] = isoDate.split('-').map(Number)

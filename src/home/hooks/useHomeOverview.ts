@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { getHomeOverview } from '../services/homeService'
 import type { HomeOverviewDto } from '../types/HomeOverview'
-import { localDateKey } from '../utils/greeting'
+import { localDateKey, shouldReloadForNewDay } from '../utils/greeting'
 
 export type HomeOverviewStatus = 'loading' | 'ready' | 'error'
 
@@ -37,7 +37,7 @@ export function useHomeOverview() {
   useEffect(() => {
     function onVisibilityChange() {
       if (document.visibilityState !== 'visible') return
-      if (loadedOn.current !== null && loadedOn.current !== localDateKey(new Date())) setReloadKey((key) => key + 1)
+      if (shouldReloadForNewDay(loadedOn.current, new Date())) setReloadKey((key) => key + 1)
     }
 
     document.addEventListener('visibilitychange', onVisibilityChange)

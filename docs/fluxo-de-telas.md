@@ -217,7 +217,7 @@ O resumo do dia, com atalhos para agir. Uma coluna no celular, duas no computado
   - **Ir para Hoje** abre a tela Hoje. Sem nenhum hábito ainda, o botão é **Criar primeiro hábito**, que abre a lista de Hábitos.
 - **Cartão Finanças (o mês corrente):**
   - saldo em destaque, receitas e despesas;
-  - com orçamento no mês: quanto já foi gasto do limite ("R$ 3.120,50 de R$ 4.510,00 do orçamento"), com uma barra que fica amarela a partir de 85% e vermelha passando do limite, e a categoria mais apertada ("Mais apertada: Mercado · 92%").
+  - com orçamento no mês: quanto já foi gasto do limite ("R$ 3.120,50 de R$ 4.510,00 do orçamento"), com uma barra que fica amarela a partir de 80% (como na tela Orçamento) e vermelha passando do limite, e a categoria mais apertada ("Mais apertada: Mercado · 92%").
   - Sem o mês criado: "Novembro ainda não tem lançamentos."
   - O **olho** esconde os valores aqui e em Finanças (e vice-versa), inclusive em outras abas.
   - **Novo lançamento** abre o formulário de lançamento na tela Meses. **Ver mês** abre o detalhe do mês, ou **Ir para Finanças** quando o mês ainda não existe.

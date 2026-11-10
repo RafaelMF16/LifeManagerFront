@@ -19,13 +19,30 @@ interface HomeCardProps {
   headerAction?: ReactNode
   /** The card's buttons, below its content. */
   actions?: ReactNode
+  /**
+   * Whether the error is announced (`role="alert"`). Both cards fail together (one request), so only one of them
+   * announces it; the other just shows it.
+   */
+  announceError?: boolean
   /** `data-tour` of the card, for the Home's tour. */
   tourTarget?: string
   children?: ReactNode
 }
 
 /** One of the Home's summary cards: title, then a skeleton, an error with "Try again", or the content and its buttons. */
-function HomeCard({ id, icon, title, status, loadingLabel, onRetry, headerAction, actions, tourTarget, children }: HomeCardProps) {
+function HomeCard({
+  id,
+  icon,
+  title,
+  status,
+  loadingLabel,
+  onRetry,
+  headerAction,
+  actions,
+  announceError = true,
+  tourTarget,
+  children,
+}: HomeCardProps) {
   const { t: translate } = useTranslation('home')
   const titleId = `lm-home-card-${id}`
 
@@ -49,7 +66,7 @@ function HomeCard({ id, icon, title, status, loadingLabel, onRetry, headerAction
           <Skeleton width="70%" />
         </SkeletonGroup>
       ) : status === 'error' ? (
-        <div className="lm-home-card__body lm-home-card__error" role="alert">
+        <div className="lm-home-card__body lm-home-card__error" role={announceError ? 'alert' : undefined}>
           <p>{translate('card.error')}</p>
           <Button variant="secondary" icon="refresh-cw" onClick={onRetry}>
             {translate('card.retry')}

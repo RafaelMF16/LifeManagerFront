@@ -44,6 +44,7 @@ export default {
     income: 'Receitas',
     expense: 'Despesas',
     budget: '{{spent}} de {{limit}} do orçamento',
+    budgetHidden: 'Orçamento do mês: valores ocultos',
     budgetLabel: 'Orçamento do mês usado',
     tightest: 'Mais apertada: {{name}} · {{percent}}',
     noMonth: '{{month}} ainda não tem lançamentos.',

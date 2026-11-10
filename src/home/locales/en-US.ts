@@ -44,6 +44,7 @@ export default {
     income: 'Income',
     expense: 'Expenses',
     budget: '{{spent}} of {{limit}} budget',
+    budgetHidden: "Month's budget: amounts hidden",
     budgetLabel: "Month's budget used",
     tightest: 'Tightest: {{name}} · {{percent}}',
     noMonth: '{{month}} has no transactions yet.',

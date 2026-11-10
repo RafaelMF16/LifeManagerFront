@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import { getCurrentUser } from '../services/currentUserService'
 
-/** Loads the signed-in user's name; stays `null` while loading or if the request fails (`failed` tells them apart). */
-export function useCurrentUser() {
+/**
+ * Loads the signed-in user's name; stays `null` while loading or if the request fails (`failed` tells them apart).
+ * With `enabled: false` it fetches nothing: a parent that already loads the name passes it down instead.
+ */
+export function useCurrentUser({ enabled = true }: { enabled?: boolean } = {}) {
   const [name, setName] = useState<string | null>(null)
   const [failed, setFailed] = useState(false)
 
   useEffect(() => {
+    if (!enabled) return
+
     // Aborted on unmount, which also fires the backend's CancellationToken.
     const controller = new AbortController()
 
@@ -21,7 +26,7 @@ export function useCurrentUser() {
     )
 
     return () => controller.abort()
-  }, [])
+  }, [enabled])
 
   return { name, failed }
 }

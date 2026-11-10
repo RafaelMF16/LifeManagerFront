@@ -9,10 +9,14 @@ import type { HomeOverviewStatus } from '../../hooks/useHomeOverview'
 import type { HomeOverviewDto } from '../../types/HomeOverview'
 import { financeCardState, monthName } from '../../utils/overviewCopy'
 import HomeCard from '../HomeCard/HomeCard'
+import PrivateText from '../PrivateText/PrivateText'
 import './FinanceMonthCard.css'
 
-/** From this share of the limit on, the budget bar warns. */
-const NEAR_LIMIT_RATIO = 0.85
+/**
+ * From this share of the limit on, the budget bar warns: the same as the budget screen's `NEAR_LIMIT_RATIO`
+ * (`finance/utils/budgetStatus.ts`), which `home/` can't import. Change both together.
+ */
+const NEAR_LIMIT_RATIO = 0.8
 
 interface FinanceMonthCardProps {
   overview: HomeOverviewDto | null
@@ -28,7 +32,7 @@ function FinanceMonthCard({ overview, status, onRetry }: FinanceMonthCardProps) 
   const format = useMemo(() => createMoneyFormat(i18n.language, hidden), [i18n.language, hidden])
   const state = overview ? financeCardState(overview.finance) : null
   const month = overview ? monthName(overview.finance.month, i18n.language) : ''
-  const hiddenLabel = hidden ? <span className="lm-finance-month-card__visually-hidden">{translate('common:privacy.hiddenValue')}</span> : null
+  const hiddenValue = translate('common:privacy.hiddenValue')
 
   const actions = (
     <>
@@ -61,6 +65,7 @@ function FinanceMonthCard({ overview, status, onRetry }: FinanceMonthCardProps) 
       onRetry={onRetry}
       headerAction={<PrivacyToggle />}
       actions={actions}
+      announceError={false}
       tourTarget="home.finance"
     >
       {state?.kind === 'noMonth' ? (
@@ -70,8 +75,9 @@ function FinanceMonthCard({ overview, status, onRetry }: FinanceMonthCardProps) 
           <div className="lm-finance-month-card__balance">
             <span className="lm-finance-month-card__label">{translate('finance.balance')}</span>
             <span className="lm-finance-month-card__balance-value">
-              {format.signedMoney(state.balance)}
-              {hiddenLabel}
+              <PrivateText hidden={hidden} hiddenLabel={hiddenValue}>
+                {format.signedMoney(state.balance)}
+              </PrivateText>
             </span>
           </div>
 
@@ -79,15 +85,17 @@ function FinanceMonthCard({ overview, status, onRetry }: FinanceMonthCardProps) 
             <div>
               <dt>{translate('finance.income')}</dt>
               <dd className={hidden ? undefined : 'lm-finance-month-card__income'}>
-                {format.money(state.income)}
-                {hiddenLabel}
+                <PrivateText hidden={hidden} hiddenLabel={hiddenValue}>
+                  {format.money(state.income)}
+                </PrivateText>
               </dd>
             </div>
             <div>
               <dt>{translate('finance.expense')}</dt>
               <dd className={hidden ? undefined : 'lm-finance-month-card__expense'}>
-                {format.money(state.expense)}
-                {hiddenLabel}
+                <PrivateText hidden={hidden} hiddenLabel={hiddenValue}>
+                  {format.money(state.expense)}
+                </PrivateText>
               </dd>
             </div>
           </dl>
@@ -95,7 +103,9 @@ function FinanceMonthCard({ overview, status, onRetry }: FinanceMonthCardProps) 
           {budget ? (
             <div className={`lm-finance-month-card__budget lm-finance-month-card__budget--${budgetTone}`}>
               <p className="lm-home-card__line">
-                {translate('finance.budget', { spent: format.money(budget.spent), limit: format.money(budget.limit) })}
+                <PrivateText hidden={hidden} hiddenLabel={translate('finance.budgetHidden')}>
+                  {translate('finance.budget', { spent: format.money(budget.spent), limit: format.money(budget.limit) })}
+                </PrivateText>
               </p>
               <div
                 className="lm-home-card__bar"
@@ -111,7 +121,9 @@ function FinanceMonthCard({ overview, status, onRetry }: FinanceMonthCardProps) 
               </div>
               {budget.tightest ? (
                 <p className="lm-home-card__line">
-                  {translate('finance.tightest', { name: budget.tightest.name, percent: format.percent(budget.tightest.ratio) })}
+                  <PrivateText hidden={hidden} hiddenLabel={translate('finance.tightest', { name: budget.tightest.name, percent: hiddenValue })}>
+                    {translate('finance.tightest', { name: budget.tightest.name, percent: format.percent(budget.tightest.ratio) })}
+                  </PrivateText>
                 </p>
               ) : null}
             </div>
