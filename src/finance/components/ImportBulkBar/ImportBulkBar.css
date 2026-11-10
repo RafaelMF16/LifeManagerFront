@@ -41,9 +41,4 @@
   .lm-import-bulk__select {
     width: 100%;
   }
-
-  /* Its search list opens below the field, in the flow: the whole width reads better than half. */
-  .lm-import-bulk__category {
-    grid-column: 1 / -1;
-  }
 }

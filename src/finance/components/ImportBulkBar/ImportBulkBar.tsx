@@ -37,7 +37,8 @@ function ImportBulkBar({ count, busy, onSetCategory, onSetType, onSetIncluded, o
           value={null}
           disabled={busy}
           onChange={(category) => category && onSetCategory(category.id)}
-          containerClassName="lm-import-bulk__select lm-import-bulk__category"
+          popup="floating"
+          containerClassName="lm-import-bulk__select"
         />
         <Select
           size="sm"

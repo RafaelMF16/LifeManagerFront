@@ -15,8 +15,21 @@
   overflow: hidden;
 }
 
-/* Five options tall, then it scrolls. */
+/*
+ * Over the page (toolbars, list rows), so opening it doesn't push the other controls around. Its place (below or
+ * above the field), width and max-height are set by the component; hidden until placed.
+ */
+.lm-category-picker__popup--floating {
+  position: fixed;
+  z-index: 30;
+  visibility: hidden;
+  box-shadow: var(--elevation-2);
+}
+
+/* Five options tall, then it scrolls (a floating list also shrinks to the room it has on screen). */
 .lm-category-picker__list {
+  flex: 0 1 auto;
+  min-height: 0;
   max-height: calc(var(--control-height-md) * 5);
   margin: 0;
   padding: 0;

@@ -1,16 +1,22 @@
-import { useEffect, useId, useReducer, useRef } from 'react'
+import { useEffect, useId, useLayoutEffect, useReducer, useRef } from 'react'
 import type { KeyboardEvent, Ref } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import Icon from '../../../shared/components/Icon/Icon'
 import Input from '../../../shared/components/Input/Input'
 import { useCategorySearch } from '../../hooks/useCategorySearch'
 import { comboboxReducer, initialComboboxState } from '../../utils/comboboxState'
+import { floatingPopupPosition } from '../../utils/floatingPopup'
 import './CategoryPicker.css'
 
 export interface CategoryOption {
   id: number
   name: string
 }
+
+/** A floating list's preferred height: five options plus a status line, at the touch size of an option. */
+const FLOATING_PREFERRED_HEIGHT = 6 * 44
+const FLOATING_MIN_WIDTH = 220
 
 type PickerRow =
   | { kind: 'all' }
@@ -39,11 +45,17 @@ interface CategoryPickerProps {
   containerClassName?: string
   inputRef?: Ref<HTMLInputElement>
   onBlur?: () => void
+  /**
+   * `inline` (default) puts the list in the page flow below the field: right inside a dialog's bottom sheet, which
+   * scrolls instead of clipping it. `floating` lays it over the page (toolbars, list rows), so opening it doesn't
+   * push the controls around.
+   */
+  popup?: 'inline' | 'floating'
 }
 
 /**
- * Searchable category field: a WAI-ARIA combobox with a listbox popup, rendered in the page flow (not floating) so
- * it works inside a bottom sheet with the phone's keyboard open. The state machine lives in `comboboxState`.
+ * Searchable category field: a WAI-ARIA combobox with a listbox popup, either in the page flow (inside dialogs) or
+ * floating over the page (see `popup`). The state machine lives in `comboboxState`.
  */
 function CategoryPicker({
   value,
@@ -61,6 +73,7 @@ function CategoryPicker({
   containerClassName,
   inputRef,
   onBlur,
+  popup = 'inline',
 }: CategoryPickerProps) {
   const { t: translate } = useTranslation('finance')
   const listId = useId()
@@ -68,6 +81,9 @@ function CategoryPicker({
   const [state, dispatch] = useReducer(comboboxReducer, valueName, initialComboboxState)
   const search = useCategorySearch(state.query, state.isOpen)
   const listRef = useRef<HTMLUListElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const popupRef = useRef<HTMLDivElement>(null)
+  const isFloating = popup === 'floating'
 
   const term = state.query.trim()
   const excluded = new Set(excludeIds ?? [])
@@ -97,10 +113,42 @@ function CategoryPicker({
 
   // Opening scrolls the list into view, so it stays visible above the phone's keyboard inside a bottom sheet.
   useEffect(() => {
-    if (!state.isOpen) return
+    if (!state.isOpen || isFloating) return
     const frame = requestAnimationFrame(() => listRef.current?.scrollIntoView({ block: 'nearest' }))
     return () => cancelAnimationFrame(frame)
-  }, [state.isOpen])
+  }, [state.isOpen, isFloating])
+
+  // A floating list follows its field (below it, or above near the bottom of the screen) while the page scrolls.
+  // The position is written straight to the popup's style: it tracks the DOM, it isn't React state.
+  useLayoutEffect(() => {
+    if (!isFloating || !state.isOpen) return
+
+    function place() {
+      const control = containerRef.current?.querySelector('.lm-input-field__control')
+      const element = popupRef.current
+      if (!control || !element) return
+
+      const position = floatingPopupPosition(
+        control.getBoundingClientRect(),
+        { width: window.innerWidth, height: window.innerHeight },
+        { preferredHeight: FLOATING_PREFERRED_HEIGHT, minWidth: FLOATING_MIN_WIDTH },
+      )
+      element.style.left = `${position.left}px`
+      element.style.width = `${position.width}px`
+      element.style.maxHeight = `${position.maxHeight}px`
+      element.style.top = position.placement === 'below' ? `${position.top}px` : 'auto'
+      element.style.bottom = position.placement === 'above' ? `${position.bottom}px` : 'auto'
+      element.style.visibility = 'visible'
+    }
+
+    place()
+    window.addEventListener('scroll', place, true)
+    window.addEventListener('resize', place)
+    return () => {
+      window.removeEventListener('scroll', place, true)
+      window.removeEventListener('resize', place)
+    }
+  }, [isFloating, state.isOpen])
 
   useEffect(() => {
     if (state.activeIndex < 0) return
@@ -208,8 +256,41 @@ function CategoryPicker({
   const isSelected = (row: PickerRow) =>
     (row.kind === 'category' && row.category.id === value?.id) || (row.kind === 'all' && value === null)
 
+  const popupElement = (
+    <div
+      ref={popupRef}
+      className={['lm-category-picker__popup', isFloating && 'lm-category-picker__popup--floating'].filter(Boolean).join(' ')}
+    >
+      <ul ref={listRef} id={listId} role="listbox" aria-label={label ?? ariaLabel} className="lm-category-picker__list">
+        {rows.map((row, index) => (
+          <li
+            key={row.kind === 'category' ? row.category.id : row.kind}
+            id={optionId(index)}
+            role="option"
+            aria-selected={isSelected(row)}
+            className={[
+              'lm-category-picker__option',
+              `lm-category-picker__option--${row.kind}`,
+              index === state.activeIndex && 'lm-category-picker__option--active',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+            // mousedown would blur the input (and revert) before the click lands.
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => choose(row)}
+          >
+            {row.kind === 'create' ? <Icon name="plus" size={14} aria-hidden="true" /> : null}
+            <span className="lm-category-picker__option-label">{rowLabel(row)}</span>
+            {isSelected(row) ? <Icon name="check" size={14} aria-hidden="true" /> : null}
+          </li>
+        ))}
+      </ul>
+      <div aria-live="polite">{renderStatus()}</div>
+    </div>
+  )
+
   return (
-    <div className={['lm-category-picker', containerClassName].filter(Boolean).join(' ')}>
+    <div ref={containerRef} className={['lm-category-picker', containerClassName].filter(Boolean).join(' ')}>
       <Input
         ref={inputRef}
         role="combobox"
@@ -240,35 +321,7 @@ function CategoryPicker({
         onBlur={handleBlur}
       />
 
-      {state.isOpen ? (
-        <div className="lm-category-picker__popup">
-          <ul ref={listRef} id={listId} role="listbox" aria-label={label ?? ariaLabel} className="lm-category-picker__list">
-            {rows.map((row, index) => (
-              <li
-                key={row.kind === 'category' ? row.category.id : row.kind}
-                id={optionId(index)}
-                role="option"
-                aria-selected={isSelected(row)}
-                className={[
-                  'lm-category-picker__option',
-                  `lm-category-picker__option--${row.kind}`,
-                  index === state.activeIndex && 'lm-category-picker__option--active',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-                // mousedown would blur the input (and revert) before the click lands.
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => choose(row)}
-              >
-                {row.kind === 'create' ? <Icon name="plus" size={14} aria-hidden="true" /> : null}
-                <span className="lm-category-picker__option-label">{rowLabel(row)}</span>
-                {isSelected(row) ? <Icon name="check" size={14} aria-hidden="true" /> : null}
-              </li>
-            ))}
-          </ul>
-          <div aria-live="polite">{renderStatus()}</div>
-        </div>
-      ) : null}
+      {state.isOpen ? (isFloating ? createPortal(popupElement, document.body) : popupElement) : null}
     </div>
   )
 }

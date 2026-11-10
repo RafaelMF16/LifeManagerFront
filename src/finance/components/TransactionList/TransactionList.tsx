@@ -241,6 +241,7 @@ function TransactionList({
             allLabel={translate('finance:transactions.list.filters.allCategories')}
             value={category}
             onChange={onCategoryChange}
+            popup="floating"
             containerClassName="lm-transaction-list__category-filter"
           />
           <Input

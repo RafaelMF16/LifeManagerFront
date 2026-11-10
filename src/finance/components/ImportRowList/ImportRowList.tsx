@@ -236,6 +236,7 @@ function ImportRowList({
             if ((category?.id ?? null) !== row.categoryId) onCategoryChange(row, category?.id ?? null)
           }}
           onCreateRequest={(name) => onCreateCategory(row, name)}
+          popup="floating"
           containerClassName={`lm-import-rows__category${missingCategory ? ' lm-import-rows__category--missing' : ''}`}
         />
 
