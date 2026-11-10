@@ -46,7 +46,8 @@ function getSnapshot() {
 }
 
 /**
- * Privacy mode: hides every amount in the Finance module (e.g. when the user is in public).
+ * Privacy mode: hides every amount (Finance and the Home), e.g. when the user is in public.
+ * The key keeps its old `lm-finance-` name so nobody loses the preference.
  * One state shared by every caller, persisted per device in `localStorage` and synced across tabs.
  */
 export function usePrivacyMode() {

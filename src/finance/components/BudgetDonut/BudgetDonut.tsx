@@ -2,7 +2,7 @@ import { useId, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
-import { usePrivacyMode } from '../../hooks/usePrivacyMode'
+import { usePrivacyMode } from '../../../shared/hooks/usePrivacyMode'
 import { donutArcPath, donutSegments } from '../../utils/donutGeometry'
 import './BudgetDonut.css'
 

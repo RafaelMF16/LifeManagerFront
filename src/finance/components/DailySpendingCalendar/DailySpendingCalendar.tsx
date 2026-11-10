@@ -7,7 +7,7 @@ import Skeleton from '../../../shared/components/Skeleton/Skeleton'
 import SkeletonGroup from '../../../shared/components/Skeleton/SkeletonGroup'
 import { useDashboardDays } from '../../hooks/useDashboardDays'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
-import { usePrivacyMode } from '../../hooks/usePrivacyMode'
+import { usePrivacyMode } from '../../../shared/hooks/usePrivacyMode'
 import type { DashboardDayDto } from '../../types/DashboardDtos'
 import { calendarGrid, calendarKeyTarget } from '../../utils/calendarGrid'
 import { dayHeatLevel } from '../../utils/dayHeatLevel'
@@ -111,7 +111,7 @@ function DailySpendingCalendar({ months }: DailySpendingCalendarProps) {
 
     return translate('finance:dashboard.days.dayAria', {
       day: fullDayLabel(date),
-      amount: hidden ? translate('finance:privacy.hiddenValue') : money(day.total),
+      amount: hidden ? translate('common:privacy.hiddenValue') : money(day.total),
       count: day.count,
     })
   }

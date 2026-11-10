@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import Icon from '../../../shared/components/Icon/Icon'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
-import { usePrivacyMode } from '../../hooks/usePrivacyMode'
+import { usePrivacyMode } from '../../../shared/hooks/usePrivacyMode'
 import './DashboardChange.css'
 
 interface DashboardChangeProps {

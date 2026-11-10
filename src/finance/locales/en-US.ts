@@ -13,11 +13,6 @@ export default {
       categories: 'Categories',
     },
   },
-  privacy: {
-    hide: 'Hide amounts',
-    show: 'Show amounts',
-    hiddenValue: 'Hidden amount',
-  },
   actions: {
     cancel: 'Cancel',
     close: 'Close',
