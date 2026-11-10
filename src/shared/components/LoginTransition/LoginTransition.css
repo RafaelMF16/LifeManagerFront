@@ -1,4 +1,4 @@
-/* Above every other layer (the tour overlay is 80): nothing is reachable while the wallet plays. */
+/* Above every other layer (the tour overlay is 80): nothing is reachable while the helm plays. */
 .lm-login-transition {
   position: fixed;
   inset: 0;
@@ -14,7 +14,7 @@
   pointer-events: none;
 }
 
-/* Read by screen readers ("Entrando…"); the wallet itself is decorative. */
+/* Read by screen readers ("Entrando…"); the helm itself is decorative. */
 .lm-login-transition__label {
   position: absolute;
   width: 1px;

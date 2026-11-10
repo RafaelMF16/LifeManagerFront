@@ -1,26 +1,14 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES, getInitialLanguage } from '../shared/i18n/languages'
-import commonEnUS from '../shared/locales/en-US'
-import commonPtBR from '../shared/locales/pt-BR'
-import authEnUS from '../auth/locales/en-US'
-import authPtBR from '../auth/locales/pt-BR'
-import homeEnUS from '../home/locales/en-US'
-import homePtBR from '../home/locales/pt-BR'
-import financeEnUS from '../finance/locales/en-US'
-import financePtBR from '../finance/locales/pt-BR'
-import habitsEnUS from '../habits/locales/en-US'
-import habitsPtBR from '../habits/locales/pt-BR'
+import { EAGER_NAMESPACES, resources } from './resources'
 
 void i18n.use(initReactI18next).init({
-  resources: {
-    'en-US': { common: commonEnUS, auth: authEnUS, home: homeEnUS, finance: financeEnUS, habits: habitsEnUS },
-    'pt-BR': { common: commonPtBR, auth: authPtBR, home: homePtBR, finance: financePtBR, habits: habitsPtBR },
-  },
+  resources,
   lng: getInitialLanguage(),
   fallbackLng: DEFAULT_LANGUAGE,
   supportedLngs: SUPPORTED_LANGUAGES,
-  ns: ['common', 'auth', 'home', 'finance', 'habits'],
+  ns: [...EAGER_NAMESPACES],
   defaultNS: 'common',
   interpolation: { escapeValue: false },
   returnNull: false,

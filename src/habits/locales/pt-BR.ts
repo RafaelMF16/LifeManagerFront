@@ -593,6 +593,7 @@ export default {
     grid: {
       title: 'Todas as conquistas',
       hint: 'Bronze, prata e ouro. Desbloqueada é para sempre.',
+      familyCount: '{{unlocked}} de {{total}}',
     },
     locked: 'Bloqueada',
     unlockedOn: 'Desbloqueada em {{date}}',

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { budgetStatus, closedMonthsScore, isMonthOpen } from './budgetStatus'
+import { budgetStatus, closedMonthsScore, isMonthOpen, overspentCategories } from './budgetStatus'
 
 describe('budgetStatus', () => {
   it.each([
@@ -46,5 +46,22 @@ describe('closedMonthsScore', () => {
     )
 
     expect(score).toEqual({ achieved: 1, total: 2 })
+  })
+})
+
+describe('overspentCategories', () => {
+  it('keeps only the categories past their limit, in the order received', () => {
+    const categories = [
+      { name: 'Mercado', gap: 120 },
+      { name: 'Lazer', gap: 0 },
+      { name: 'Transporte', gap: -40 },
+      { name: 'Saúde', gap: 0.01 },
+    ]
+
+    expect(overspentCategories(categories).map((category) => category.name)).toEqual(['Mercado', 'Saúde'])
+  })
+
+  it('returns an empty list when every category is within its limit', () => {
+    expect(overspentCategories([{ gap: 0 }, { gap: -10 }])).toEqual([])
   })
 })

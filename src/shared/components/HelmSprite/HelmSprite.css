@@ -1,10 +1,10 @@
-.lm-wallet-sprite {
+.lm-helm-sprite {
   display: block;
   flex-shrink: 0;
   overflow: hidden;
 }
 
-.lm-wallet-sprite__strip {
+.lm-helm-sprite__strip {
   display: block;
   max-width: none;
   /* Pixel art: scale by whole multiples of 64 px without smoothing the pixels. */

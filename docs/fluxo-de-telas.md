@@ -130,7 +130,7 @@ As listas (meses, lançamentos, categorias, recorrências, hábitos, recompensas
 ### Sessão
 
 - A sessão se renova sozinha enquanto você usa o app.
-- Ao abrir uma nova aba ou recarregar a página, o app recupera a sessão sem pedir login. Enquanto isso, se demorar, aparece a carteira animada com "Carregando…".
+- Ao abrir uma nova aba ou recarregar a página, o app recupera a sessão sem pedir login. Enquanto isso, se demorar, aparece o leme animado, com moedas chegando, e "Carregando…".
 - Quando a sessão expira, aparece "Sua sessão expirou. Entre novamente." e o app volta para o login.
 - Quem abre um link sem estar logado vai para o login e, depois de entrar, **volta para a tela que tentou abrir**.
 
@@ -147,7 +147,7 @@ A tela tem duas abas: **Entrar** e **Criar conta**.
 | E-mail | Obrigatório, formato `algo@algo.algo` |
 | Senha | Obrigatória |
 
-- **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra a carteira recebendo uma nota (cerca de 1,6 segundo) e abre a Home (ou a tela que você tentou abrir antes). Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
+- **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra uma moeda chegando no leme, que dá uma volta (cerca de 1,6 segundo), e abre a Home (ou a tela que você tentou abrir antes). Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
 - **Não tem conta? Criar conta:** troca para a aba de cadastro.
 - **Esqueceu a senha?:** abre a tela [Esqueceu a senha?](#esqueceu-a-senha).
 
@@ -235,7 +235,7 @@ A escolha fica salva neste dispositivo e vale para todas as abas abertas.
 - **Gastos por categoria** e **Investimentos por categoria:** as 8 maiores categorias e "Outras". Clicar numa categoria abre o detalhe **Por mês**.
 - **Orçamento do período:**
   - Limite de gastos e alvo de investimento do mês, com "Dentro do limite em X de N meses fechados". O mês atual fica fora da contagem. O limite de gastos de um mês é o total do orçamento menos a fatia de Investimentos; o alvo de investimento é essa fatia.
-  - **Categorias que mais estouraram**.
+  - **Categorias que mais estouraram:** só as categorias que passaram do limite no período, da que mais passou para a que menos passou, com "Passou R$ X". Se nenhuma passou, aparece "Nenhuma categoria passou do limite no período."
   - **Criar orçamento** (sem orçamento no período) ou **Ver orçamento** abrem a tela de Orçamento.
 - Se o painel não carregar: **Tentar de novo**.
 
@@ -604,6 +604,7 @@ Metas da semana para fazer um pouco mais que o normal num hábito: mais dias, ou
 - **Todas as conquistas**, por família: Check-ins, Ofensiva, Nível, Resgates, Dias limpos, Superação, Ranking (vitórias: "5 semanas em 1º num grupo"; pódios: "3 semanas no pódio de um grupo") e Finanças (meses fechados dentro do orçamento, com a meta de investimento batida ou poupando 20% da renda). Cada cartão mostra o nível (bronze, prata ou ouro), o nome, o que é preciso ("100 check-ins"), o bônus ("+100 moedas · +150 XP") e o título que libera.
   - **Bloqueada:** em cinza, com um cadeado e a barra de progresso ("37 / 100").
   - **Desbloqueada:** na cor da medalha, com a data. Uma conquista desbloqueada é para sempre, mesmo que um check-in seja desfeito.
+  - Cada família abre e fecha tocando no cabeçalho, que mostra o ícone, o nome, quantas já saíram ("3 de 5") e as medalhas ganhas. No computador todas vêm abertas; no celular vêm fechadas, menos a família da primeira de **Quase lá** e as que têm conquista nova que você ainda não viu.
 
 ### Ranking
 

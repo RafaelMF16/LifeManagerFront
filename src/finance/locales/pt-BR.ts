@@ -129,6 +129,7 @@ export default {
       investmentCategoriesTitle: 'Investimentos por meta',
       noExpenseCategories: 'Nenhuma categoria com limite de gastos.',
       noInvestmentCategories: 'Nenhuma categoria com alvo de investimento.',
+      noOverspent: 'Nenhuma categoria passou do limite no período.',
       over: 'Passou {{amount}}',
       short: 'Faltaram {{amount}}',
       withinLimit: 'Dentro do limite',

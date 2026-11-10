@@ -1,14 +1,18 @@
 import { useTranslation } from 'react-i18next'
+import { useOutletContext } from 'react-router-dom'
 import Icon from '../../shared/components/Icon/Icon'
 import AchievementGrid from '../components/AchievementGrid/AchievementGrid'
 import AchievementNearList from '../components/AchievementGrid/AchievementNearList'
 import { useAchievements } from '../hooks/useAchievements'
+import type { HabitsOutletContext } from '../types/HabitsOutletContext'
 import './AchievementsPage.css'
 
 /** The player's achievements: how many are unlocked, the next goals ("Almost there") and every one with its progress. */
 function AchievementsPage() {
   const { t: translate } = useTranslation('habits')
   const achievements = useAchievements()
+  const { profile } = useOutletContext<HabitsOutletContext>()
+  const unseen = profile?.newAchievements?.map((achievement) => achievement.code) ?? []
   const { data } = achievements
 
   return (
@@ -29,6 +33,7 @@ function AchievementsPage() {
 
       <AchievementGrid
         achievements={data?.achievements}
+        unseen={unseen}
         status={achievements.status}
         isFetching={achievements.isFetching}
         onRetry={achievements.reload}

@@ -593,6 +593,7 @@ export default {
     grid: {
       title: 'All achievements',
       hint: 'Bronze, silver and gold. Once unlocked, it stays.',
+      familyCount: '{{unlocked}} of {{total}}',
     },
     locked: 'Locked',
     unlockedOn: 'Unlocked on {{date}}',
