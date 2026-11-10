@@ -37,6 +37,8 @@ interface CategoryPickerProps {
   disabled?: boolean
   /** Categories not offered (e.g. the ones that already have a budget slice). */
   excludeIds?: readonly number[]
+  /** Shown when the search found categories but every one of them is in `excludeIds`. */
+  allExcludedLabel?: string
   /** Adds a "Create category "<term>"" option for the typed text; the caller opens the category form. */
   onCreateRequest?: (term: string) => void
   /** Adds a first option with this label that chooses `null` (e.g. "All categories" in a filter). */
@@ -67,6 +69,7 @@ function CategoryPicker({
   error,
   disabled,
   excludeIds,
+  allExcludedLabel,
   onCreateRequest,
   allLabel,
   size = 'md',
@@ -204,7 +207,9 @@ function CategoryPicker({
   }
 
   function handleBlur() {
-    if (state.isOpen || state.text !== valueName) dispatch({ type: 'revert', text: valueName })
+    // Only an open list holds loose text. Closed, the text is a choice whose value may still be on its way (a list
+    // row saves it to the server first); `sync` corrects the text when the value arrives.
+    if (state.isOpen) dispatch({ type: 'revert', text: valueName })
     onBlur?.()
   }
 
@@ -243,11 +248,13 @@ function CategoryPicker({
     }
 
     if (categories.length === 0) {
-      return (
-        <p className="lm-category-picker__status">
-          {translate(term ? 'categoryPicker.empty' : 'categoryPicker.noCategories')}
-        </p>
-      )
+      // Decided on what the search found, before the exclusion: having categories that are all excluded isn't
+      // the same as having none.
+      const message =
+        search.categories.length > 0
+          ? (allExcludedLabel ?? translate('categoryPicker.empty'))
+          : translate(term ? 'categoryPicker.empty' : 'categoryPicker.noCategories')
+      return <p className="lm-category-picker__status">{message}</p>
     }
 
     return null

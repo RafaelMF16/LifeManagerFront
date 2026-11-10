@@ -467,6 +467,7 @@ export default {
       title: 'Adicionar ao orçamento',
       investmentHint: 'Quanto você quer investir no mês',
       categoryLabel: 'Categoria',
+      allInBudget: 'Estas categorias já estão no orçamento.',
     },
     empty: {
       title: 'Este mês ainda não tem orçamento',

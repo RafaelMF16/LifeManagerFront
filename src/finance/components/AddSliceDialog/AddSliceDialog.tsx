@@ -60,6 +60,7 @@ function AddSliceDialog({ slices, onAdd, onClose }: AddSliceDialogProps) {
           label={translate('finance:budgetPlan.add.categoryLabel')}
           value={null}
           excludeIds={options.excludedCategoryIds}
+          allExcludedLabel={translate('finance:budgetPlan.add.allInBudget')}
           onChange={(category) => {
             if (category) add({ type: 'Expense', categoryId: category.id, categoryName: category.name, percent: 0 })
           }}

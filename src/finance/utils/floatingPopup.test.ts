@@ -42,6 +42,15 @@ describe('floatingPopupPosition', () => {
     expect(position).toMatchObject({ placement: 'below', top: 286, maxHeight: 306 })
   })
 
+  it('stays below when both sides have the same room', () => {
+    // A field at 200–232 in a 432-tall viewport has 188 free above it and 188 below.
+    const middle = { ...anchor, top: 200, bottom: 232 }
+
+    expect(floatingPopupPosition(middle, { width: 1280, height: 432 }, { preferredHeight: 264, minWidth: 220 }).placement).toBe(
+      'below',
+    )
+  })
+
   it('stays inside the viewport horizontally', () => {
     const right = { ...anchor, left: 1200 }
     const left = { ...anchor, left: -20 }

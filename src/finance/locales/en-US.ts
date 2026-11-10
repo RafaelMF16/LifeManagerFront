@@ -467,6 +467,7 @@ export default {
       title: 'Add to budget',
       investmentHint: 'How much you want to invest this month',
       categoryLabel: 'Category',
+      allInBudget: 'These categories are already in the budget.',
     },
     empty: {
       title: "This month doesn't have a budget yet",
