@@ -1,10 +1,9 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { usePrivacyMode } from '../../shared/hooks/usePrivacyMode'
-import { createMoneyFormat, maskedLayout, MINUS_SIGN } from '../../shared/utils/money'
+import { createMoneyFormat, MINUS_SIGN } from '../../shared/utils/money'
 
 const CURRENCY = 'BRL'
-const PERCENT_MASK = '••'
 /** Changes beyond ±999% read as noise; they show capped (">+999%"). */
 const CHANGE_RATIO_CAP = 9.99
 /** A tiny income (a cashback before the salary) sends the savings rate to thousands of percent; below this it shows capped ("<−100%"). */
@@ -26,7 +25,7 @@ function parseYearMonth(value: string) {
  */
 export function createFinanceFormat(language: string, hidden: boolean) {
   const monthFormatter = new Intl.DateTimeFormat(language, { month: 'long', timeZone: 'UTC' })
-  const { maskedMoney, money, signedMoney } = createMoneyFormat(language, hidden)
+  const { maskedMoney, maskedPercent, money, signedMoney, percent } = createMoneyFormat(language, hidden)
 
   const dayMonthFormatter = new Intl.DateTimeFormat(language, { day: 'numeric', month: 'short', timeZone: 'UTC' })
   const percentFormatter = new Intl.NumberFormat(language, { style: 'percent', maximumFractionDigits: 1 })
@@ -45,7 +44,6 @@ export function createFinanceFormat(language: string, hidden: boolean) {
     narrow: new Intl.DateTimeFormat(language, { weekday: 'narrow', timeZone: 'UTC' }),
   }
 
-  const maskedPercent = maskedLayout(percentFormatter, PERCENT_MASK)
 
   const monthName = (month: number) => capitalize(monthFormatter.format(Date.UTC(2000, month - 1, 1)))
   const shortMonthName = (month: number) =>
@@ -69,7 +67,7 @@ export function createFinanceFormat(language: string, hidden: boolean) {
       return capitalize(fullDayFormatter.format(Date.UTC(year, month - 1, day)))
     },
     /** A 0–1 ratio as a percentage, e.g. 0.623 → "62,3%". */
-    percent: (ratio: number) => (hidden ? maskedPercent : percentFormatter.format(ratio)),
+    percent,
     /** A budget share already in percent (0–100, 2 places), e.g. 33.33 → "33,33%". */
     sharePercent: (percent: number) => (hidden ? maskedPercent : sharePercentFormatter.format(percent / 100)),
     /** "Setembro 2026" / "September 2026". */

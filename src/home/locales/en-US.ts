@@ -36,6 +36,21 @@ export default {
       action: 'Create first habit',
     },
   },
+  finance: {
+    title: 'Finance · {{month}}',
+    titleLoading: 'Finance',
+    loading: 'Loading the month',
+    balance: "Month's balance",
+    income: 'Income',
+    expense: 'Expenses',
+    budget: '{{spent}} of {{limit}} budget',
+    budgetLabel: "Month's budget used",
+    tightest: 'Tightest: {{name}} · {{percent}}',
+    noMonth: '{{month}} has no transactions yet.',
+    newTransaction: 'New transaction',
+    viewMonth: 'View month',
+    goToFinance: 'Go to Finance',
+  },
   modulesTitle: 'Modules',
   modules: {
     financas: {

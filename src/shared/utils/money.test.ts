@@ -25,4 +25,10 @@ describe('createMoneyFormat', () => {
     expect(normalize(portuguese.signedMoney(-1234.5))).toBe('R$ ••••••')
     expect(english.money(9)).toBe('R$••••••')
   })
+
+  it('formats a 0–1 ratio as a percentage, masked in privacy mode', () => {
+    expect(createMoneyFormat('pt-BR', false).percent(0.923)).toBe('92,3%')
+    expect(createMoneyFormat('en-US', false).percent(1.5)).toBe('150%')
+    expect(createMoneyFormat('pt-BR', true).percent(0.923)).toBe('••%')
+  })
 })

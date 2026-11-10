@@ -5,6 +5,7 @@ import Footer from '../../shared/components/Footer/Footer'
 import Header from '../../shared/components/Header/Header'
 import { useCurrentUser } from '../../shared/hooks/useCurrentUser'
 import { readPendingInvite } from '../../shared/utils/pendingInvite'
+import FinanceMonthCard from '../components/FinanceMonthCard/FinanceMonthCard'
 import HabitsTodayCard from '../components/HabitsTodayCard/HabitsTodayCard'
 import ModuleCard from '../components/ModuleCard/ModuleCard'
 import { useHomeOverview } from '../hooks/useHomeOverview'
@@ -42,6 +43,7 @@ function HomePage() {
 
         <div className="lm-home-page__cards">
           <HabitsTodayCard overview={data} status={status} onRetry={retry} />
+          <FinanceMonthCard overview={data} status={status} onRetry={retry} />
         </div>
 
         <section className="lm-home-page__modules" aria-labelledby="lm-home-modules-title">

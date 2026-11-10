@@ -36,6 +36,21 @@ export default {
       action: 'Criar primeiro hábito',
     },
   },
+  finance: {
+    title: 'Finanças · {{month}}',
+    titleLoading: 'Finanças',
+    loading: 'Carregando o mês',
+    balance: 'Saldo do mês',
+    income: 'Receitas',
+    expense: 'Despesas',
+    budget: '{{spent}} de {{limit}} do orçamento',
+    budgetLabel: 'Orçamento do mês usado',
+    tightest: 'Mais apertada: {{name}} · {{percent}}',
+    noMonth: '{{month}} ainda não tem lançamentos.',
+    newTransaction: 'Novo lançamento',
+    viewMonth: 'Ver mês',
+    goToFinance: 'Ir para Finanças',
+  },
   modulesTitle: 'Módulos',
   modules: {
     financas: {
