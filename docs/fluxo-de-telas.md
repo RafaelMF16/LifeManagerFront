@@ -17,6 +17,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   - [Esqueceu a senha?](#esqueceu-a-senha)
   - [Escolher uma nova senha](#escolher-uma-nova-senha)
 - [Home](#home)
+- [Minha conta](#minha-conta)
 - [Financeiro](#financeiro)
   - [Painel](#painel)
   - [Meses](#meses)
@@ -49,6 +50,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
 /auth/set-password          Escolher a senha do cadastro (link do e-mail)
 /auth/reset-password        Escolher uma nova senha (link do e-mail)
 /home                       Resumo do dia
+/account                    Minha conta
 /invite/:código             Convite para um grupo de ranking (link)
 /finance                    → Painel
   /finance/dashboard        Painel
@@ -86,12 +88,13 @@ Aparece no topo de todas as telas depois do login.
 
 - **Botão do usuário** (canto direito): abre um menu com:
   - o **nome** do usuário;
+  - **Minha conta:** abre a tela [Minha conta](#minha-conta);
   - **Tema:** alterna entre claro (sol) e escuro (lua);
   - **Idioma:** português ou inglês;
   - **Sair:** encerra a sessão, mostra "Você saiu da sua conta." e volta para o login.
 - Tema e idioma mudam na hora e são salvos na conta: valem em qualquer dispositivo no próximo login.
 - No Financeiro, ao lado do menu fica o botão **Ocultar valores / Mostrar valores** (veja [Modo privacidade](#modo-privacidade)).
-- **Tour desta tela** (ícone de interrogação), na Home, no Financeiro e nos Hábitos: aparece em todas as telas desses módulos e abre um tour guiado da tela aberta.
+- **Tour desta tela** (ícone de interrogação), na Home, em Minha conta, no Financeiro e nos Hábitos: aparece em todas as telas desses módulos e abre um tour guiado da tela aberta.
   - O primeiro passo explica para que serve a tela; os seguintes destacam um controle por vez, com uma explicação curta e o contador "Passo X de N".
   - **Próximo**, **Anterior** e, no último passo, **Concluir**. **Pular**, o **X** ou Esc fecham o tour. Pelo teclado, as setas também avançam e voltam.
   - Enquanto o tour está aberto, a tela não recebe cliques: ele só explica, não faz nada por você.
@@ -150,6 +153,7 @@ A tela tem duas abas: **Entrar** e **Criar conta**.
 | Senha | Obrigatória |
 
 - **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra uma moeda chegando no leme, que dá uma volta (cerca de 1,6 segundo), e abre a Home (ou a tela que você tentou abrir antes). Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
+- Se a conta estava com a exclusão agendada, entrar cancela a exclusão e, depois da animação, aparece "Bem-vindo de volta! A exclusão da sua conta foi cancelada."
 - **Não tem conta? Criar conta:** troca para a aba de cadastro.
 - **Esqueceu a senha?:** abre a tela [Esqueceu a senha?](#esqueceu-a-senha).
 
@@ -225,6 +229,28 @@ O resumo do dia, com atalhos para agir. Uma coluna no celular, duas no computado
 - Enquanto carrega, os cartões mostram um esqueleto. Se der erro, cada cartão mostra **Tentar de novo**.
 - Ao voltar para a aba num outro dia, o resumo recarrega sozinho.
 - Um convite de grupo aberto antes de entrar leva direto ao Ranking.
+
+## Minha conta
+
+**Rota:** `/account`, aberta pelo item **Minha conta** do menu do usuário no cabeçalho.
+
+Uma coluna de cartões, com o tour da tela no cabeçalho.
+
+- **Perfil:**
+  - o **nome**, com **Editar**: abre uma janela com o campo Nome (obrigatório, até 100 caracteres). **Salvar** mostra "Nome atualizado." e o nome novo aparece na hora no cabeçalho, na saudação da Home e no Perfil dos Hábitos;
+  - o **e-mail**, só para leitura: é o seu login e não pode ser trocado.
+- **Segurança:**
+  - **Trocar senha:** janela com **Senha atual**, **Nova senha** (de 8 a 50 caracteres) e **Confirme a nova senha**. Senha atual errada: "Senha atual incorreta", no campo. Deu certo: "Senha alterada. Os outros aparelhos foram desconectados." Este aparelho continua conectado; os outros caem para o login na próxima vez que o app renovar a sessão.
+  - **Sair de todos os aparelhos:** pede confirmação ("Você vai sair da conta em todos os aparelhos, este incluído…") e, ao confirmar, volta para o login com "Você saiu de todos os aparelhos."
+  - Como entrar já desconecta a sessão anterior da conta, na prática só um aparelho fica conectado por vez.
+- **Meus dados:** **Baixar meus dados (JSON)** baixa um arquivo `lifemanager-aaaa-mm-dd.json` com tudo o que você registrou (finanças, hábitos, jogo e preferências). Enquanto prepara, o botão mostra "Preparando…". Depois de 3 downloads na mesma hora: "Você já baixou há pouco. Tente de novo em alguns minutos."
+- **Zona de perigo** (borda vermelha): **Excluir conta** abre um aviso:
+  - "Sua conta e todos os dados serão apagados em 7 dias";
+  - "Entrar de novo até lá cancela a exclusão";
+  - "Grupos de ranking que você criou passam para o membro mais antigo".
+  - Pede a **Senha** e que você digite **EXCLUIR** (em inglês, **DELETE**); até a palavra estar certa, o botão **Excluir conta** fica desabilitado. Senha errada: "Senha atual incorreta", no campo.
+  - Ao confirmar, todos os aparelhos saem da conta, chega um e-mail com a data, e o app volta para o login com "Exclusão agendada para dd/mm. Entre de novo até lá para cancelar."
+- Muitas tentativas seguidas de trocar a senha ou excluir a conta: "Muitas tentativas. Espere alguns minutos e tente de novo."
 
 ## Financeiro
 

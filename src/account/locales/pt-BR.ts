@@ -75,4 +75,28 @@ export default {
     },
     success: 'Exclusão agendada para {{date}}. Entre de novo até lá para cancelar.',
   },
+  tour: {
+    account: {
+      intro: {
+        title: 'Minha conta',
+        body: 'Aqui ficam o seu nome, a senha, os seus dados e a exclusão da conta. Abra pelo menu do canto superior.',
+      },
+      profile: {
+        title: 'Perfil',
+        body: 'Troque o nome que aparece no topo e no ranking. O e-mail é o seu login e não muda.',
+      },
+      security: {
+        title: 'Segurança',
+        body: 'Troque a senha (os outros aparelhos saem da conta) ou saia de todos os aparelhos de uma vez.',
+      },
+      data: {
+        title: 'Meus dados',
+        body: 'Baixe tudo o que você registrou num arquivo JSON, com a data no nome.',
+      },
+      danger: {
+        title: 'Zona de perigo',
+        body: 'Excluir a conta apaga tudo depois de 7 dias. Entrar de novo até lá cancela.',
+      },
+    },
+  },
 }

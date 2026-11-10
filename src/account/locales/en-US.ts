@@ -75,4 +75,28 @@ export default {
     },
     success: 'Deletion scheduled for {{date}}. Sign in again before then to cancel.',
   },
+  tour: {
+    account: {
+      intro: {
+        title: 'My account',
+        body: 'Your name, password, data and the account’s deletion live here. Open it from the menu at the top corner.',
+      },
+      profile: {
+        title: 'Profile',
+        body: 'Change the name shown at the top and in the ranking. Your e-mail is your sign-in and doesn’t change.',
+      },
+      security: {
+        title: 'Security',
+        body: 'Change the password (your other devices are signed out) or sign out of every device at once.',
+      },
+      data: {
+        title: 'My data',
+        body: 'Download everything you recorded as a JSON file, dated in its name.',
+      },
+      danger: {
+        title: 'Danger zone',
+        body: 'Deleting the account erases everything after 7 days. Signing in again before then cancels it.',
+      },
+    },
+  },
 }

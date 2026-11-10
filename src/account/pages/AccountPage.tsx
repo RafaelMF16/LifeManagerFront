@@ -2,10 +2,12 @@ import '../locales/register'
 import { useTranslation } from 'react-i18next'
 import Footer from '../../shared/components/Footer/Footer'
 import Header from '../../shared/components/Header/Header'
+import TourButton from '../../shared/components/Tour/TourButton'
 import DangerZoneSection from '../components/DangerZoneSection/DangerZoneSection'
 import DataSection from '../components/DataSection/DataSection'
 import ProfileSection from '../components/ProfileSection/ProfileSection'
 import SecuritySection from '../components/SecuritySection/SecuritySection'
+import { ACCOUNT_TOURS } from '../utils/accountTours'
 import './AccountPage.css'
 
 /** "My account": the name, the password and sessions, the data export and the account deletion. */
@@ -14,7 +16,7 @@ function AccountPage() {
 
   return (
     <div className="lm-account-page">
-      <Header />
+      <Header actions={<TourButton tours={ACCOUNT_TOURS} />} />
 
       <main className="lm-account-page__main">
         <div className="lm-account-page__heading">
@@ -25,6 +27,7 @@ function AccountPage() {
         <ProfileSection />
         <SecuritySection />
         <DataSection />
+        {/* Notifications (the habit-reminders module) goes here, between the data and the danger zone. */}
         <DangerZoneSection />
       </main>
 
