@@ -1,11 +1,5 @@
 import { z } from 'zod'
-
-// Espelha LifeManager.Domain/Users/ValueObjects/UserName.cs (UserName.Create)
-const userNameSchema = z
-  .string()
-  .trim()
-  .min(1, { message: 'auth:validation.name.required' }) // code: User.UserNameIsNullOrWhiteSpace
-  .max(100, { message: 'auth:validation.name.tooLong' }) // code: User.UserNameTooLong
+import { userNameSchema } from '../../shared/validation/userFields'
 
 // Espelha LifeManager.Domain/Users/ValueObjects/Email.cs (Email.Create)
 // Não é um regex de e-mail "de verdade" (não cobre todos os casos do RFC), mas exige
@@ -21,13 +15,6 @@ const emailSchema = z
     message: 'auth:validation.email.invalid', // code: User.EmailIsInvalid
   })
 
-// Espelha LifeManager.Domain/Users/ValueObjects/PlainPassword.cs (PlainPassword.Create)
-const plainPasswordSchema = z
-  .string()
-  .min(1, { message: 'auth:validation.password.required' }) // code: User.PlainPasswordIsNullOrWhiteSpace
-  .min(8, { message: 'auth:validation.password.tooShort' }) // code: User.PlainPasswordTooShort
-  .max(50, { message: 'auth:validation.password.tooLong' }) // code: User.PlainPasswordTooLong
-
 // Só nome e e-mail: a senha é escolhida depois, na página aberta pelo link de confirmação (newPasswordSchema).
 export const registerSchema = z.object({
   name: userNameSchema,
@@ -35,20 +22,6 @@ export const registerSchema = z.object({
 })
 
 export type RegisterFormValues = z.infer<typeof registerSchema>
-
-// Página de definir senha (cadastro) e de redefinir senha (recuperação).
-export const newPasswordSchema = z
-  .object({
-    password: plainPasswordSchema,
-    confirmPassword: z.string().min(1, { message: 'auth:validation.confirmPassword.required' }),
-  })
-  // Cross-field: regra só de UI, sem equivalente no backend (o backend só recebe "password").
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'auth:validation.confirmPassword.mismatch',
-    path: ['confirmPassword'],
-  })
-
-export type NewPasswordFormValues = z.infer<typeof newPasswordSchema>
 
 // "Esqueceu a senha?": só o e-mail.
 export const forgotPasswordSchema = z.object({
@@ -64,7 +37,7 @@ export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>
 // gastar uma request.
 export const loginSchema = z.object({
   email: emailSchema,
-  password: z.string().min(1, { message: 'auth:validation.password.required' }),
+  password: z.string().min(1, { message: 'common:validation.password.required' }),
 })
 
 export type LoginFormValues = z.infer<typeof loginSchema>

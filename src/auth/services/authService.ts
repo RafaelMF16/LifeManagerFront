@@ -1,10 +1,6 @@
 import { apiRequest } from '../../shared/services/httpClient'
-import type {
-  ForgotPasswordFormValues,
-  LoginFormValues,
-  NewPasswordFormValues,
-  RegisterFormValues,
-} from '../validation/userSchemas'
+import type { NewPasswordFormValues } from '../../shared/validation/userFields'
+import type { ForgotPasswordFormValues, LoginFormValues, RegisterFormValues } from '../validation/userSchemas'
 import type {
   CompleteRegistrationRequestDto,
   EmailTokenRequestDto,

@@ -62,7 +62,8 @@ async function tryRefreshAccessToken(): Promise<boolean> {
   }
 }
 
-export async function apiRequest<TResponse>(path: string, options: RequestOptions): Promise<TResponse> {
+/** Sends the request, renewing the access token once on a 401 outside /api/Auth, and throws on an error status. */
+async function sendChecked(path: string, options: RequestOptions): Promise<Response> {
   let response = await send(path, options)
 
   if (response.status === 401 && !path.startsWith(AUTH_PATH_PREFIX)) {
@@ -76,5 +77,18 @@ export async function apiRequest<TResponse>(path: string, options: RequestOption
     throw isApiError(errorBody) ? errorBody : new Error(`Erro inesperado do servidor (${response.status}).`)
   }
 
+  return response
+}
+
+export async function apiRequest<TResponse>(path: string, options: RequestOptions): Promise<TResponse> {
+  const response = await sendChecked(path, options)
+
   return (await parseBody<TResponse>(response)) as TResponse
+}
+
+/** A file the backend sends as an attachment (e.g. the data export): its bytes and the `Content-Disposition` header. */
+export async function apiDownload(path: string, signal?: AbortSignal): Promise<{ blob: Blob; contentDisposition: string | null }> {
+  const response = await sendChecked(path, { method: 'GET', signal })
+
+  return { blob: await response.blob(), contentDisposition: response.headers.get('Content-Disposition') }
 }

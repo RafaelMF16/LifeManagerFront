@@ -6,9 +6,9 @@ import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
 import { isApiError } from '../../../shared/types/ApiError'
 import { INVALID_EMAIL_TOKEN_CODE, newPasswordErrorFieldMap } from '../../validation/userErrorMap'
-import { newPasswordSchema } from '../../validation/userSchemas'
+import { newPasswordSchema } from '../../../shared/validation/userFields'
 import { authErrorMessageKey } from '../../utils/authApiErrors'
-import type { NewPasswordFormValues } from '../../validation/userSchemas'
+import type { NewPasswordFormValues } from '../../../shared/validation/userFields'
 import '../AuthForm.css'
 
 interface NewPasswordFormProps {

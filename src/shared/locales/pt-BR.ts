@@ -45,6 +45,21 @@ export default {
     show: 'Mostrar valores',
     hiddenValue: 'Valor oculto',
   },
+  validation: {
+    name: {
+      required: 'Nome é obrigatório',
+      tooLong: 'Nome não pode ter mais de 100 caracteres',
+    },
+    password: {
+      required: 'Senha é obrigatória',
+      tooShort: 'Senha deve ter no mínimo 8 caracteres',
+      tooLong: 'Senha não pode ter mais de 50 caracteres',
+    },
+    confirmPassword: {
+      required: 'Confirme sua senha',
+      mismatch: 'As senhas não coincidem',
+    },
+  },
   tour: {
     start: 'Tour desta tela',
     step: 'Passo {{current}} de {{total}}',

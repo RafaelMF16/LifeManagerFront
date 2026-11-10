@@ -24,7 +24,7 @@ const MODULES: HomeModule[] = [
 function HomePage() {
   const { t: translate, i18n } = useTranslation('home')
   const navigate = useNavigate()
-  // Loaded once here and handed to the Header, which would otherwise ask for it too.
+  // The same state the Header reads: one request for both.
   const { name } = useCurrentUser()
   const { data, status, retry } = useHomeOverview()
   const greeting = translate(`greeting.${greetingPeriod(new Date())}`)
@@ -36,7 +36,7 @@ function HomePage() {
 
   return (
     <div className="lm-home-page">
-      <Header actions={<TourButton tours={HOME_TOURS} />} userName={name} />
+      <Header actions={<TourButton tours={HOME_TOURS} />} />
 
       <main className="lm-home-page__main">
         <div className="lm-home-page__greeting">

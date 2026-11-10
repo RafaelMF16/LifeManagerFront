@@ -1,14 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { loginSchema, newPasswordSchema, registerSchema } from './userSchemas'
+import { loginSchema, registerSchema } from './userSchemas'
 
 const validRegisterPayload = {
   name: 'Ada Lovelace',
   email: 'ada@example.com',
-}
-
-const validNewPasswordPayload = {
-  password: '12345678',
-  confirmPassword: '12345678',
 }
 
 describe('registerSchema - name', () => {
@@ -57,58 +52,6 @@ describe('registerSchema - email', () => {
   it('aceita e-mail com @ no meio', () => {
     const result = registerSchema.safeParse({ ...validRegisterPayload, email: 'foo@bar.com' })
     expect(result.success).toBe(true)
-  })
-})
-
-describe('newPasswordSchema', () => {
-  it('rejeita senha vazia', () => {
-    const result = newPasswordSchema.safeParse({
-      ...validNewPasswordPayload,
-      password: '',
-      confirmPassword: '',
-    })
-    expect(result.success).toBe(false)
-  })
-
-  it('rejeita senha com menos de 8 caracteres', () => {
-    const result = newPasswordSchema.safeParse({
-      ...validNewPasswordPayload,
-      password: '1234567',
-      confirmPassword: '1234567',
-    })
-    expect(result.success).toBe(false)
-  })
-
-  it('rejeita senha com mais de 50 caracteres', () => {
-    const longPassword = '1'.repeat(51)
-    const result = newPasswordSchema.safeParse({
-      ...validNewPasswordPayload,
-      password: longPassword,
-      confirmPassword: longPassword,
-    })
-    expect(result.success).toBe(false)
-  })
-
-  it('aceita senha e confirmação iguais', () => {
-    const result = newPasswordSchema.safeParse(validNewPasswordPayload)
-    expect(result.success).toBe(true)
-  })
-
-  it('rejeita confirmação vazia', () => {
-    const result = newPasswordSchema.safeParse({ ...validNewPasswordPayload, confirmPassword: '' })
-    expect(result.success).toBe(false)
-  })
-
-  it('rejeita quando confirmPassword diverge de password', () => {
-    const result = newPasswordSchema.safeParse({
-      ...validNewPasswordPayload,
-      confirmPassword: '87654321',
-    })
-    expect(result.success).toBe(false)
-    if (!result.success) {
-      const confirmError = result.error.issues.find((issue) => issue.path.includes('confirmPassword'))
-      expect(confirmError?.message).toBe('auth:validation.confirmPassword.mismatch')
-    }
   })
 })
 
