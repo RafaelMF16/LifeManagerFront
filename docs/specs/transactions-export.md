@@ -16,7 +16,7 @@ Baixar os lançamentos de um período em CSV, direto da tela de Meses ou do Pain
    - **tipo**: Todos / Despesas / Receitas / Investimentos;
    - **formato**: "Planilha em português (Excel BR)" ou "Planilha em inglês", com o padrão vindo do idioma da interface;
    - validação local: até ≥ de, e no máximo 36 meses (`validation/exportSchema.ts`, os mesmos limites do back).
-   - **"Baixar":** `fetch` com o token → `blob` → `shared/utils/downloadBlob.ts` (do `account-settings`, ou criado aqui se este módulo vier antes). O nome do arquivo vem do `Content-Disposition`. O botão mostra "Preparando…" e o dialog fecha ao terminar, com o toast "Arquivo baixado".
+   - **"Baixar":** `fetch` com o token → `blob` → `shared/utils/downloadBlob.ts` (já existe, do `account-settings`: `fileNameFromContentDisposition` e `saveBlob`; o `apiDownload` do `httpClient` traz o blob e o cabeçalho). O nome do arquivo vem do `Content-Disposition`. O botão mostra "Preparando…" e o dialog fecha ao terminar, com o toast "Arquivo baixado".
    - **Erros:** os códigos de período do dashboard pelo mapa existente, e 429 "Tente de novo em alguns minutos".
 3. O CSV é gerado no back. O front não monta nenhuma linha.
 
