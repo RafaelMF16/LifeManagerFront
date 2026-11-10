@@ -39,6 +39,6 @@ export function getMonthlySummaryYears(signal?: AbortSignal): Promise<number[]> 
 export function createMonthlySummary(data: MonthlySummaryFormValues): Promise<MonthlySummaryResponseDto> {
   return apiRequest<MonthlySummaryResponseDto>(MONTHLY_SUMMARIES_PATH, {
     method: 'POST',
-    body: { month: data.month } satisfies MonthlySummaryRequestDto,
+    body: { month: data.month, year: data.year } satisfies MonthlySummaryRequestDto,
   })
 }

@@ -188,7 +188,6 @@ export default {
       title: 'Novo mês',
       monthLabel: 'Mês',
       yearLabel: 'Ano',
-      yearHint: 'Meses são criados no ano atual',
       create: 'Criar mês',
     },
     toasts: {
@@ -198,8 +197,10 @@ export default {
       month: {
         required: 'Escolha o mês',
         invalid: 'Escolha um mês entre janeiro e dezembro',
-        yearNotCurrent: 'Só é possível criar meses do ano atual',
         taken: 'Esse mês já foi criado',
+      },
+      year: {
+        notAllowed: 'Só dá para criar meses deste ano ou do anterior',
       },
     },
   },

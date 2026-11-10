@@ -188,7 +188,6 @@ export default {
       title: 'New month',
       monthLabel: 'Month',
       yearLabel: 'Year',
-      yearHint: 'Months are created in the current year',
       create: 'Create month',
     },
     toasts: {
@@ -198,8 +197,10 @@ export default {
       month: {
         required: 'Choose a month',
         invalid: 'Choose a month from January to December',
-        yearNotCurrent: 'Months can only be created in the current year',
         taken: 'This month already exists',
+      },
+      year: {
+        notAllowed: 'Months can only be created in this year or the previous one',
       },
     },
   },

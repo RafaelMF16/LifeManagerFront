@@ -7,6 +7,8 @@ export type BalanceFilter = 'All' | 'Positive' | 'Negative'
 // Espelha LifeManager.Application/MonthlySummaries/DTOs
 export interface MonthlySummaryRequestDto {
   month: number
+  /** The current year or the previous one; the backend uses the current year when it's left out. */
+  year?: number
 }
 
 export interface MonthlySummaryResponseDto {
