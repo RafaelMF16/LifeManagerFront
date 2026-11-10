@@ -106,7 +106,7 @@ A exceção foi o `review-fixes`: um spec só, no front, que juntou as correçõ
 | Ordem | Módulo | Back (`LifeManager/docs/specs/`) | Front (`LifeManagerFront/docs/specs/`) | Branch (a partir da `dev`) | Status |
 |---|---|---|---|---|---|
 | 1 | `review-fixes` | — | — (removido) | `fix/review-fixes` (nos dois repos) | **mergeado na `dev`** em 10/11/2026 (PRs RafaelMF16/LifeManager#41 e RafaelMF16/LifeManagerFront#39) |
-| 2 | `integration-tests` | [integration-tests](../../../LifeManager/docs/specs/integration-tests.md) | — | `test/integration-tests` | aprovado |
+| 2 | `integration-tests` | — (removido) | — | `test/integration-tests` | **mergeado na `dev`** em 10/11/2026 (PR RafaelMF16/LifeManager#43) |
 | 3 | `quick-transaction` | [quick-transaction](../../../LifeManager/docs/specs/quick-transaction.md) | [quick-transaction](quick-transaction.md) | `feature/quick-transaction` | aprovado |
 | 3 | `category-picker` | — | [category-picker](category-picker.md) | `feature/category-picker` | aprovado |
 | 4 | `home-overview` | [home-overview](../../../LifeManager/docs/specs/home-overview.md) | [home-overview](home-overview.md) | `feature/home-overview` | aprovado |
@@ -118,7 +118,7 @@ A exceção foi o `review-fixes`: um spec só, no front, que juntou as correçõ
 
 São **10 módulos e 17 branches**: 8 no back e 9 no front.
 
-**Spec implementado e mergeado na `dev` sai da pasta.** O histórico fica no git, e as regras passam para o `CLAUDE.md` e as docs. Os specs de loadings (`splash`, `auth-entrance`, `skeleton` e o mapa `loadings`), implementados no PR #38, já saíram, e o `review-fixes` também (PRs #41 do back e #39 do front).
+**Spec implementado e mergeado na `dev` sai da pasta.** O histórico fica no git, e as regras passam para o `CLAUDE.md` e as docs. Os specs de loadings (`splash`, `auth-entrance`, `skeleton` e o mapa `loadings`), implementados no PR #38, já saíram. Também saíram o `review-fixes` (PRs #41 do back e #39 do front) e o `integration-tests` (PR #43 do back).
 
 ## Comandos
 
@@ -197,6 +197,7 @@ public static Result<MonthlySummaryYear> Create(int value, int currentYear) { ..
 - **Pipeline:** os testes com banco (Testcontainers) entram no pipeline, e um workflow `ci.yml` novo roda os testes de cada repo em todo PR para a `dev` (e a `main`). Fica no `review-fixes`.
 - **PWA aprovado**, com o `vite-plugin-pwa` e o ajuste da CSP.
 - **Ícone:** a roda das áreas da vida (quatro fatias, Finanças e Hábitos com os seus ícones) substitui o ícone padrão do Vite (favicon e `apple-touch-icon`), a partir de `public/favicon.svg`. Fica no `review-fixes`, e o `pwa` gera os seus ícones do mesmo SVG.
+- **`integration-tests` (10/11/2026):** o teste da cascata da exclusão do usuário achou um bug. As quatro FKs `NO ACTION` (`HabitCheckIns`/`HabitProgressEntries.UserId` e `Transactions`/`RecurringTransactions.CategoryId`) travavam o `DELETE` do usuário, porque o Postgres checa o `NO ACTION` no fim de cada cascata. A correção entrou no mesmo PR: a migration `MakeUserDeletionForeignKeysDeferrable` as deixa `DEFERRABLE INITIALLY DEFERRED`. Isso destrava a exclusão definitiva do `account-settings`.
 - **Ícone e animação (10/11/2026):** o leme substitui a roda na logo e nos ícones, e a carteira nas animações de carregamento (em pixel art, com moedas chegando no lugar das notas). A carteira dava a ideia de app de finanças, e o leme fala de controle da vida.
 - **As cinco correções viraram um módulo só:** `clock-fixes`, `test-hygiene`, `front-shell`, `pt-plurals` e `mobile-polish` agora são o `review-fixes`, com um spec só (`review-fixes.md`, já removido) e uma branch só, `fix/review-fixes`, a partir da `dev`, com o mesmo nome nos dois repos.
 
