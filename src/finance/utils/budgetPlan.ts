@@ -120,27 +120,14 @@ export function assignColorSlots(keys: string[], previous: Record<string, number
   return slots
 }
 
-function normalize(text: string) {
-  return text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLocaleLowerCase().trim()
-}
-
 /**
- * What can still be added to the plan: the investment slice while there is none, and the categories without a
- * slice, filtered by `search` (ignoring accents and case; `investmentLabel` is what the search matches it by).
+ * What can still be added to the plan: the investment slice while there is none, and every category but the ones
+ * that already have a slice (the category picker searches the rest in the backend).
  */
-export function sliceOptions<TCategory extends { id: number; name: string }>(
-  categories: TCategory[],
-  slices: DraftSlice[],
-  search: string,
-  investmentLabel = '',
-) {
-  const term = normalize(search)
-  const sliced = new Set(slices.map(sliceKey))
-  const matches = (name: string) => term === '' || normalize(name).includes(term)
-
+export function sliceOptions(slices: DraftSlice[]) {
   return {
-    investment: !sliced.has('investment') && matches(investmentLabel),
-    categories: categories.filter((category) => !sliced.has(`category-${category.id}`) && matches(category.name)),
+    investment: !slices.some((slice) => slice.type === 'Investment'),
+    excludedCategoryIds: slices.flatMap((slice) => (slice.type === 'Expense' && slice.categoryId !== null ? [slice.categoryId] : [])),
   }
 }
 

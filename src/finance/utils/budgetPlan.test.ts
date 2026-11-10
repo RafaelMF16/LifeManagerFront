@@ -218,33 +218,12 @@ describe('assignColorSlots', () => {
 })
 
 describe('sliceOptions', () => {
-  const categories = [
-    { id: 1, name: 'Mercado' },
-    { id: 2, name: 'Farmácia' },
-    { id: 3, name: 'Lazer' },
-  ]
-
-  it('offers investments first and the categories without a slice', () => {
-    expect(sliceOptions(categories, [expense(1, 25)], '')).toEqual({
-      investment: true,
-      categories: [
-        { id: 2, name: 'Farmácia' },
-        { id: 3, name: 'Lazer' },
-      ],
-    })
+  it('leaves out the categories that already have a slice', () => {
+    expect(sliceOptions([expense(1, 25), expense(3, 10)])).toEqual({ investment: true, excludedCategoryIds: [1, 3] })
   })
 
   it('stops offering investments once the plan has that slice', () => {
-    expect(sliceOptions(categories, [investment(20)], '').investment).toBe(false)
-  })
-
-  it('searches ignoring accents and case', () => {
-    expect(sliceOptions(categories, [], 'FARMA').categories).toEqual([{ id: 2, name: 'Farmácia' }])
-  })
-
-  it('matches investments by its own label when searching', () => {
-    expect(sliceOptions(categories, [], 'inves', 'Investimentos').investment).toBe(true)
-    expect(sliceOptions(categories, [], 'merc', 'Investimentos').investment).toBe(false)
+    expect(sliceOptions([investment(20)])).toEqual({ investment: false, excludedCategoryIds: [] })
   })
 })
 
