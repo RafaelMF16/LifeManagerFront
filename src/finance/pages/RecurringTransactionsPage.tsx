@@ -8,7 +8,6 @@ import { isApiError } from '../../shared/types/ApiError'
 import DeleteRecurringTransactionModal from '../components/DeleteRecurringTransactionModal/DeleteRecurringTransactionModal'
 import RecurringTransactionFormModal from '../components/RecurringTransactionFormModal/RecurringTransactionFormModal'
 import RecurringTransactionList from '../components/RecurringTransactionList/RecurringTransactionList'
-import { useCategoryOptions } from '../hooks/useCategoryOptions'
 import { useRecurringTransactions } from '../hooks/useRecurringTransactions'
 import type { RecurringTransactionResponseDto } from '../types/RecurringTransactionDtos'
 import {
@@ -26,7 +25,6 @@ function RecurringTransactionsPage() {
   const { show: showToast } = useToast()
   const { show: showErrorModal } = useErrorModal()
   const recurring = useRecurringTransactions()
-  const categoryOptions = useCategoryOptions()
   const [formTarget, setFormTarget] = useState<FormTarget | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<RecurringTransactionResponseDto | null>(null)
   const [pendingId, setPendingId] = useState<number | null>(null)
@@ -135,8 +133,6 @@ function RecurringTransactionsPage() {
       {formTarget ? (
         <RecurringTransactionFormModal
           recurringTransaction={formTarget.mode === 'edit' ? formTarget.recurringTransaction : undefined}
-          categories={categoryOptions.categories}
-          categoriesStatus={categoryOptions.status}
           onClose={() => setFormTarget(null)}
           onSubmit={handleSubmitForm}
         />

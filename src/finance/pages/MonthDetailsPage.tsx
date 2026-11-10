@@ -16,7 +16,6 @@ import MonthBudgetsSummary from '../components/MonthBudgetsSummary/MonthBudgetsS
 import MonthTotals from '../components/MonthTotals/MonthTotals'
 import TransactionFormModal from '../components/TransactionFormModal/TransactionFormModal'
 import TransactionList from '../components/TransactionList/TransactionList'
-import { useCategoryOptions } from '../hooks/useCategoryOptions'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
 import { useMonthlySummaryDetails } from '../hooks/useMonthlySummaryDetails'
 import { useTransactions } from '../hooks/useTransactions'
@@ -86,7 +85,8 @@ function MonthDetailsPage() {
     setBudgetsRefreshKey((key) => key + 1)
   }, [reloadMonth])
   const transactions = useTransactions(monthlySummaryId, handleTransactionsMutated)
-  const categoryOptions = useCategoryOptions()
+  // The filter's name for the picker; the transactions hook keeps only the id (cleared filters reset it to null).
+  const [categoryFilterName, setCategoryFilterName] = useState('')
   const [formTarget, setFormTarget] = useState<FormTarget | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<TransactionResponseDto | null>(null)
 
@@ -209,11 +209,13 @@ function MonthDetailsPage() {
         status={transactions.status}
         isFetching={transactions.isFetching}
         monthTransactionCount={data.incomeCount + data.expenseCount + data.investmentCount}
-        categories={categoryOptions.categories}
         type={transactions.type}
         onTypeChange={transactions.setType}
-        categoryId={transactions.categoryId}
-        onCategoryChange={transactions.setCategoryId}
+        category={transactions.categoryId === null ? null : { id: transactions.categoryId, name: categoryFilterName }}
+        onCategoryChange={(category) => {
+          setCategoryFilterName(category?.name ?? '')
+          transactions.setCategoryId(category?.id ?? null)
+        }}
         searchInput={transactions.searchInput}
         onSearchChange={transactions.setSearchInput}
         hasFilters={transactions.hasFilters}
@@ -235,8 +237,6 @@ function MonthDetailsPage() {
           year={data.year}
           month={data.month}
           transaction={formTarget.mode === 'edit' ? formTarget.transaction : undefined}
-          categories={categoryOptions.categories}
-          categoriesStatus={categoryOptions.status}
           onClose={() => setFormTarget(null)}
           onSubmit={handleSubmitForm}
         />

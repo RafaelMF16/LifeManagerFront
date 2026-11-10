@@ -1,20 +1,16 @@
-import { useId } from 'react'
-import { useWatch } from 'react-hook-form'
+import { useId, useState } from 'react'
+import { Controller, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
 import Button from '../../../shared/components/Button/Button'
 import Dialog from '../../../shared/components/Dialog/Dialog'
 import IconButton from '../../../shared/components/IconButton/IconButton'
 import Input from '../../../shared/components/Input/Input'
 import SegmentedControl from '../../../shared/components/SegmentedControl/SegmentedControl'
-import Select from '../../../shared/components/Select/Select'
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
 import { isSessionExpiredError } from '../../../shared/services/httpClient'
 import { isApiError } from '../../../shared/types/ApiError'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
-import type { CategoryOptionsStatus } from '../../hooks/useCategoryOptions'
-import type { CategoryResponseDto } from '../../types/CategoryDtos'
 import type { RecurringTransactionResponseDto } from '../../types/RecurringTransactionDtos'
 import type { MoneyFlowType } from '../../types/TransactionDtos'
 import { toYearMonth } from '../../utils/yearMonth'
@@ -30,6 +26,7 @@ import {
 } from '../../validation/recurringTransactionSchema'
 import type { RecurringTransactionFormValues } from '../../validation/recurringTransactionSchema'
 import { TRANSACTION_DESCRIPTION_MAX_LENGTH } from '../../validation/transactionSchema'
+import CategoryPicker from '../CategoryPicker/CategoryPicker'
 import MonthYearSelect from '../MonthYearSelect/MonthYearSelect'
 import MoneyInput from '../MoneyInput/MoneyInput'
 import './RecurringTransactionFormModal.css'
@@ -39,8 +36,6 @@ const TYPES: MoneyFlowType[] = ['Income', 'Expense', 'Investment']
 interface RecurringTransactionFormModalProps {
   /** The recurrence being edited; omitted when creating a new one. */
   recurringTransaction?: RecurringTransactionResponseDto
-  categories: CategoryResponseDto[]
-  categoriesStatus: CategoryOptionsStatus
   onClose: () => void
   /** Persists the values; a rejection is shown on the form and keeps the modal open. */
   onSubmit: (values: RecurringTransactionFormValues) => Promise<void>
@@ -57,8 +52,6 @@ function hasStarted(recurringTransaction: RecurringTransactionResponseDto) {
 
 function RecurringTransactionFormModal({
   recurringTransaction,
-  categories,
-  categoriesStatus,
   onClose,
   onSubmit,
 }: RecurringTransactionFormModalProps) {
@@ -98,15 +91,8 @@ function RecurringTransactionFormModal({
 
   const fieldError = (message: string | undefined) => (message ? translate(message) : undefined)
 
-  // The edited recurrence's category stays selectable even if it isn't among the loaded options.
-  const categoryOptions = [
-    { value: '', label: translate('finance:recurring.form.categoryPlaceholder') },
-    ...categories.map((category) => ({ value: String(category.id), label: category.name })),
-    ...(recurringTransaction && !categories.some((category) => category.id === recurringTransaction.categoryId)
-      ? [{ value: String(recurringTransaction.categoryId), label: recurringTransaction.categoryName }]
-      : []),
-  ]
-  const hasNoCategories = categoriesStatus === 'ready' && categories.length === 0 && !recurringTransaction
+  // The picker shows the category's name, which the form value (an id) doesn't carry.
+  const [categoryName, setCategoryName] = useState(recurringTransaction?.categoryName ?? '')
 
   const submit = handleSubmit(async (values) => {
     try {
@@ -123,31 +109,6 @@ function RecurringTransactionFormModal({
       }
     }
   })
-
-  function renderCategoryField() {
-    if (categoriesStatus === 'loading' && !recurringTransaction) {
-      return <p className="lm-recurring-form__note">{translate('finance:recurring.form.categoriesLoading')}</p>
-    }
-
-    if (hasNoCategories) {
-      return (
-        <div className="lm-recurring-form__note">
-          <span>{translate('finance:recurring.form.noCategories')}</span>
-          <Link to="/finance/categories">{translate('finance:recurring.form.createCategory')}</Link>
-        </div>
-      )
-    }
-
-    return (
-      <Select
-        label={translate('finance:recurring.form.categoryLabel')}
-        options={categoryOptions}
-        hint={categoriesStatus === 'error' ? translate('finance:recurring.form.categoriesError') : undefined}
-        error={fieldError(errors.categoryId?.message)}
-        {...register('categoryId')}
-      />
-    )
-  }
 
   return (
     <Dialog labelledBy={titleId} onClose={onClose}>
@@ -209,7 +170,23 @@ function RecurringTransactionFormModal({
               />
             </div>
 
-            {renderCategoryField()}
+            <Controller
+              control={control}
+              name="categoryId"
+              render={({ field }) => (
+                <CategoryPicker
+                  label={translate('finance:recurring.form.categoryLabel')}
+                  value={field.value ? { id: Number(field.value), name: categoryName } : null}
+                  onChange={(category) => {
+                    setCategoryName(category?.name ?? '')
+                    field.onChange(category ? String(category.id) : '')
+                  }}
+                  onBlur={field.onBlur}
+                  inputRef={field.ref}
+                  error={fieldError(errors.categoryId?.message)}
+                />
+              )}
+            />
 
             <div className="lm-recurring-form__row">
               <MonthYearSelect
@@ -247,7 +224,7 @@ function RecurringTransactionFormModal({
           <Button variant="secondary" onClick={onClose}>
             {translate('finance:actions.cancel')}
           </Button>
-          <Button type="submit" variant="primary" loading={isSubmitting} disabled={hasNoCategories}>
+          <Button type="submit" variant="primary" loading={isSubmitting}>
             {translate(isEditing ? 'finance:recurring.form.save' : 'finance:recurring.form.create')}
           </Button>
         </div>

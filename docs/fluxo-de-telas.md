@@ -125,6 +125,7 @@ As listas (meses, lançamentos, categorias, recorrências, hábitos, recompensas
 - Uma ação concluída mostra um aviso rápido na parte de baixo ("Categoria criada").
 - Um erro que não é de um campo específico abre uma janela de erro. Sem conexão com o servidor, aparece **Erro de conexão**.
 - Erros de um campo (nome repetido, valor inválido) aparecem embaixo do próprio campo.
+- **Campos de categoria** (lançamento, recorrência, filtro da lista de lançamentos, adicionar ao orçamento e a importação) têm **busca**: ao tocar, abre logo abaixo do campo uma lista com as 20 primeiras categorias em ordem alfabética; digitar busca entre todas, ignorando acentos e maiúsculas ("mer" acha "Mercado"), e **Ver mais** traz as próximas. No teclado: ↑/↓ andam pela lista, Enter escolhe, Esc fecha. Sair do campo sem escolher volta à categoria que estava: o texto digitado nunca vira categoria. Sem resultado, aparece "Nenhuma categoria encontrada"; se a busca falhar, **Tentar de novo**.
 - Campos de valor em R$ (transação, recorrência, linha de importação, total do orçamento e o **Valor** do valor exato) se preenchem da direita para a esquerda, centavos primeiro, como no app do banco: digitar 5, 0, 0 mostra 5,00, com o separador de milhar do idioma. Apagar tira o último dígito, e apagar tudo deixa o campo vazio. O celular abre o teclado só de números.
 
 ### Sessão
@@ -274,7 +275,7 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
 
 **Lançamentos**
 - Lista com Data, Descrição, Categoria e Valor. Os lançamentos feitos por uma recorrência têm um ícone de repetição ("Lançado por uma recorrência").
-- **Filtros:** Tipo (Todos, Receitas, Gastos, Investimentos), Categoria e **Buscar descrição**.
+- **Filtros:** Tipo (Todos, Receitas, Gastos, Investimentos), Categoria (com busca; **Todas** tira o filtro) e **Buscar descrição**.
 - **Ordenação:** Data (padrão: mais recente primeiro), Descrição, Categoria ou Valor.
 - **Novo lançamento:** abre o formulário.
 - **Editar** (em cada linha): abre o mesmo formulário preenchido. **Salvar** mostra "Lançamento atualizado".
@@ -289,7 +290,7 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
 | Descrição | Obrigatória, até 80 caracteres |
 | Valor | Maior que zero; aceita `1.234,56` ou `1234.56` |
 | Data | Precisa estar dentro do mês ("A data precisa estar em …") |
-| Categoria | Obrigatória. Sem categorias, aparece o link **Criar categoria**, que leva à tela de Categorias |
+| Categoria | Obrigatória, escolhida com busca. Sem nenhuma categoria, a lista diz "Você ainda não tem categorias." |
 
 **Salvar lançamento** mostra "Receita registrada", "Gasto registrado" ou "Investimento registrado".
 
@@ -314,7 +315,7 @@ Cada mês tem o seu orçamento: um **Total do mês** dividido em fatias de %, um
   - **tocar no %** abre **Valor exato**, para digitar a **Porcentagem** ou o **Valor** em R$ ("Até … (R$ …)");
   - **Remover** (lixeira): tira a fatia; o % dela volta para o Livre.
 - **Livre:** o % e o valor que sobram, com "Gastos sem fatia: R$ X de R$ Y" (o que foi gasto em categorias sem fatia).
-- **Adicionar categoria:** abre "Adicionar ao orçamento", com **Investimentos** primeiro (enquanto não estiver no orçamento) e as categorias que ainda não têm fatia, com busca. A fatia entra com 0% e o slider já selecionado.
+- **Adicionar categoria:** abre "Adicionar ao orçamento", com **Investimentos** primeiro (enquanto não estiver no orçamento) e o campo **Categoria**, com busca, que só oferece as categorias que ainda não têm fatia. A fatia entra com 0% e o slider já selecionado.
 - **Alterações não salvas:** aparece uma barra no fim da tela com **Descartar** e **Salvar**. Sem o total, ela avisa "Informe o total do mês para salvar.". **Salvar** grava o mês inteiro e mostra "Orçamento salvo". Se as fatias passarem de 100%: "As fatias passam de 100%. Diminua alguma antes de salvar.".
 - **Sair sem salvar:** trocar de mês ou ir para outra tela com alterações não salvas pergunta "Sair sem salvar?" ("Você tem alterações não salvas no orçamento de ‹mês›. Se sair agora, elas serão perdidas."), com **Continuar editando** e **Sair sem salvar**. Sair da conta ou ter a sessão expirada não pergunta: a sessão já acabou e as alterações não poderiam mais ser salvas. Fechar ou recarregar a aba mostra o aviso do próprio navegador.
 - **Excluir orçamento** (no topo, quando o mês tem um): pede confirmação ("Excluir o orçamento de ‹mês›? Os outros meses não mudam.") e mostra "Orçamento excluído".
@@ -406,7 +407,7 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
   - **Entre contas:** um Pix ou transferência com o nome do seu cadastro ou de um dos seus [titulares](#importar-extrato) (dinheiro entre as suas contas) vem fora da importação. Cada nome precisa ter pelo menos duas palavras e aparecer no extrato: com duas palavras, elas precisam estar juntas no extrato; com três ou mais, o banco pode ter nomes a mais no meio.
   - O que você já decidiu antes para o mesmo estabelecimento vale mais que esses selos. Incluir um desses lançamentos ensina a próxima importação.
 - **Possível duplicata:** o lançamento parece já estar nos seus meses (mesma linha de um extrato já importado, ou mesma data e valor de um lançamento feito à mão). Vem fora da importação; **Ver no mês** abre o mês do lançamento existente numa nova aba.
-- **Categoria** (em cada lançamento): escolher salva na hora. **+ Nova categoria…** abre o formulário de categoria e já usa a nova.
+- **Categoria** (em cada lançamento): busca e escolher salva na hora; **Sem categoria** tira a categoria. Digitar um nome que não existe oferece **Criar categoria "…"**, que abre o formulário de categoria já com o nome e usa a nova.
 - **Deixar de fora / Incluir na importação** (ícone de olho): tira ou devolve o lançamento.
 - **Editar:** abre o formulário completo (Tipo, Descrição, Valor, Data entre 01/01/2000 e hoje, Categoria, **Incluir na importação** e **Conta no mês seguinte**). A data pode mudar de mês.
 - **Conta no mês seguinte:** para um salário ou uma conta paga no fim do mês que pertence ao mês seguinte. O lançamento guarda a data do banco, mas vai para o dia 1º do mês seguinte ("Conta em Setembro 2026 (lançado no dia 1º)."). Trocar a data desmarca a caixa. O lançamento ganha o selo **Conta em Setembro 2026**; quando o app marcou sozinho, pelo que você fez nas importações anteriores com o mesmo estabelecimento (só nos últimos 5 dias do mês), o selo diz **Conta em Setembro 2026 · pelo histórico**.
