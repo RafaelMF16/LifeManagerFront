@@ -1,0 +1,93 @@
+.lm-category-picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+/* In the page flow, below the field: inside a bottom sheet nothing is clipped and the sheet scrolls as usual. */
+.lm-category-picker__popup {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-raised);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-input);
+  overflow: hidden;
+}
+
+/* Five options tall, then it scrolls. */
+.lm-category-picker__list {
+  max-height: calc(var(--control-height-md) * 5);
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+}
+
+.lm-category-picker__list:empty {
+  display: none;
+}
+
+.lm-category-picker__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height-md);
+  padding: 0 var(--space-3);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.lm-category-picker__option-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lm-category-picker__option[aria-selected='true'] {
+  font-weight: var(--weight-medium);
+}
+
+.lm-category-picker__option--active {
+  background: var(--accent-tint);
+}
+
+@media (hover: hover) {
+  .lm-category-picker__option:not(.lm-category-picker__option--active):hover {
+    background: var(--surface-hover);
+  }
+}
+
+.lm-category-picker__option--more,
+.lm-category-picker__option--create {
+  color: var(--accent-text);
+}
+
+.lm-category-picker__option--all {
+  color: var(--text-secondary);
+}
+
+.lm-category-picker__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.lm-category-picker__retry {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--accent-text);
+  text-decoration: underline;
+  cursor: pointer;
+}

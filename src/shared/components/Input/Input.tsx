@@ -1,5 +1,5 @@
 import { useId } from 'react'
-import type { InputHTMLAttributes } from 'react'
+import type { InputHTMLAttributes, Ref } from 'react'
 import Icon from '../Icon/Icon'
 import type { IconName } from '../Icon/Icon'
 import './Input.css'
@@ -16,6 +16,7 @@ interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' 
   numeric?: boolean
   size?: InputSize
   containerClassName?: string
+  ref?: Ref<HTMLInputElement>
 }
 
 function Input({

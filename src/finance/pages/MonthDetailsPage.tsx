@@ -235,8 +235,6 @@ function MonthDetailsPage() {
           year={data.year}
           month={data.month}
           transaction={formTarget.mode === 'edit' ? formTarget.transaction : undefined}
-          categories={categoryOptions.categories}
-          categoriesStatus={categoryOptions.status}
           onClose={() => setFormTarget(null)}
           onSubmit={handleSubmitForm}
         />
