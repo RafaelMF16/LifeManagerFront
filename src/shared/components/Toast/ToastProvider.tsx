@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import Toast from './Toast'
 import { ToastContext } from './ToastContext'
-import type { ToastAction } from './ToastContext'
+import type { ToastAction, ToastOptions } from './ToastContext'
 
 interface ToastState {
   message: string
@@ -27,9 +27,10 @@ export function ToastProvider({ children }: ToastProviderProps) {
     setToast(null)
   }, [])
 
-  const show = useCallback((message: string, detail?: string, action?: ToastAction) => {
+  const show = useCallback((message: string, detail?: string, action?: ToastAction, options?: ToastOptions) => {
     clearTimeout(timeoutRef.current)
     setToast({ message, detail, action })
+    if (options?.persistent) return
     timeoutRef.current = setTimeout(() => setToast(null), action ? AUTO_DISMISS_WITH_ACTION_MS : AUTO_DISMISS_MS)
   }, [])
 

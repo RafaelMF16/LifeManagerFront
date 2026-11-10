@@ -7,6 +7,7 @@ import PublicOnlyRoute from './shared/components/PublicOnlyRoute/PublicOnlyRoute
 import RouteError from './shared/components/RouteError/RouteError'
 import SplashScreen from './shared/components/SplashScreen/SplashScreen'
 import { ToastProvider } from './shared/components/Toast/ToastProvider'
+import UpdatePrompt from './shared/components/UpdatePrompt/UpdatePrompt'
 import { useSessionExpiredRedirect } from './shared/hooks/useSessionExpiredRedirect'
 
 /**
@@ -81,6 +82,7 @@ const router = createBrowserRouter(
 function App() {
   return (
     <ToastProvider>
+      <UpdatePrompt />
       <ErrorModalProvider>
         <LoginTransitionProvider>
           <RouterProvider router={router} />

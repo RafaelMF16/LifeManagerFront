@@ -21,6 +21,10 @@ export default {
   splash: {
     loading: 'Loading…',
   },
+  update: {
+    available: 'New version available',
+    action: 'Update',
+  },
   routeError: {
     title: 'Something went wrong',
     chunkMessage: 'A new version of the app came out while it was open. Reload to continue.',

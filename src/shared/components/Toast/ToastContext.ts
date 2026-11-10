@@ -6,8 +6,13 @@ export interface ToastAction {
   onClick: () => void
 }
 
+export interface ToastOptions {
+  /** Stays until the user closes it or clicks its action (e.g. "New version available"). */
+  persistent?: boolean
+}
+
 export interface ToastContextValue {
-  show: (message: string, detail?: string, action?: ToastAction) => void
+  show: (message: string, detail?: string, action?: ToastAction, options?: ToastOptions) => void
 }
 
 export const ToastContext = createContext<ToastContextValue | null>(null)
