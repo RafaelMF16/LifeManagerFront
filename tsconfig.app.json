@@ -22,5 +22,7 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  // Checked by tsconfig.sw.json (worker globals, no DOM).
+  "exclude": ["src/sw.ts"]
 }
