@@ -1,5 +1,5 @@
 import type { ApiErrorFieldMap } from '../../shared/utils/applyApiErrorToForm'
-import type { ChangePasswordFormValues, EditNameFormValues } from './accountSchemas'
+import type { ChangePasswordFormValues, DeleteAccountFormValues, EditNameFormValues } from './accountSchemas'
 
 // Espelha LifeManager.Domain/Users/Errors/UserErrors.cs (User.Rename)
 export const editNameErrorFieldMap: ApiErrorFieldMap<EditNameFormValues> = {
@@ -19,4 +19,9 @@ export const changePasswordErrorFieldMap: ApiErrorFieldMap<ChangePasswordFormVal
   'User.PlainPasswordIsNullOrWhiteSpace': { field: 'newPassword', message: 'common:validation.password.required' },
   'User.PlainPasswordTooShort': { field: 'newPassword', message: 'common:validation.password.tooShort' },
   'User.PlainPasswordTooLong': { field: 'newPassword', message: 'common:validation.password.tooLong' },
+}
+
+// POST /api/Users/Me/Deletion: só a senha é conferida no backend.
+export const deleteAccountErrorFieldMap: ApiErrorFieldMap<DeleteAccountFormValues> = {
+  [WRONG_PASSWORD_CODE]: { field: 'password', message: 'account:security.password.wrong' },
 }

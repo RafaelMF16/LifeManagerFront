@@ -56,4 +56,23 @@ export default {
     tooManyRequests: 'Você já baixou há pouco. Tente de novo em alguns minutos.',
     errorTitle: 'Não deu para baixar',
   },
+  danger: {
+    title: 'Zona de perigo',
+    label: 'Excluir conta',
+    description: 'Apaga a sua conta e todos os seus dados depois de 7 dias.',
+    action: 'Excluir conta',
+    dialog: {
+      title: 'Excluir a sua conta?',
+      grace: 'Sua conta e todos os dados serão apagados em 7 dias.',
+      cancel: 'Entrar de novo até lá cancela a exclusão.',
+      groups: 'Grupos de ranking que você criou passam para o membro mais antigo.',
+      password: 'Senha',
+      passwordRequired: 'Digite a sua senha',
+      confirmation: 'Digite {{word}} para confirmar',
+      confirmationMismatch: 'Digite {{word}} para confirmar',
+      submit: 'Excluir conta',
+      tooManyRequests: 'Muitas tentativas. Espere alguns minutos e tente de novo.',
+    },
+    success: 'Exclusão agendada para {{date}}. Entre de novo até lá para cancelar.',
+  },
 }

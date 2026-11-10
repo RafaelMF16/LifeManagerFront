@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { changePasswordSchema, editNameSchema } from './accountSchemas'
+import { changePasswordSchema, deleteAccountSchema, deleteConfirmationWord, editNameSchema, isDeleteConfirmed } from './accountSchemas'
 
 describe('editNameSchema', () => {
   it('apara o nome', () => {
@@ -39,5 +39,30 @@ describe('changePasswordSchema', () => {
       path: ['confirmPassword'],
       message: 'common:validation.confirmPassword.mismatch',
     })
+  })
+})
+
+describe('confirmação da exclusão', () => {
+  it('pede EXCLUIR em português e DELETE em inglês', () => {
+    expect(deleteConfirmationWord('pt-BR')).toBe('EXCLUIR')
+    expect(deleteConfirmationWord('en-US')).toBe('DELETE')
+  })
+
+  it('aceita a palavra do idioma com espaços e em minúsculas, e recusa a do outro idioma', () => {
+    expect(isDeleteConfirmed(' excluir ', 'pt-BR')).toBe(true)
+    expect(isDeleteConfirmed('DELETE', 'pt-BR')).toBe(false)
+    expect(isDeleteConfirmed('delete', 'en-US')).toBe(true)
+    expect(isDeleteConfirmed('EXCLUIR', 'en-US')).toBe(false)
+  })
+
+  it('o schema exige a senha e a palavra do idioma', () => {
+    expect(deleteAccountSchema('pt-BR').safeParse({ password: 'senha1234', confirmation: 'EXCLUIR' }).success).toBe(true)
+    expect(deleteAccountSchema('en-US').safeParse({ password: 'senha1234', confirmation: 'EXCLUIR' }).error?.issues[0]).toMatchObject({
+      path: ['confirmation'],
+      message: 'account:danger.dialog.confirmationMismatch',
+    })
+    expect(deleteAccountSchema('en-US').safeParse({ password: '', confirmation: 'DELETE' }).error?.issues[0].message).toBe(
+      'account:danger.dialog.passwordRequired',
+    )
   })
 })

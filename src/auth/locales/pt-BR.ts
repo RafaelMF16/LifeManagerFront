@@ -11,6 +11,7 @@ export default {
     noAccount: 'Não tem conta?',
     createAccount: 'Criar conta',
     successToast: 'Login realizado com sucesso',
+    deletionCancelledToast: 'Bem-vindo de volta! A exclusão da sua conta foi cancelada.',
     entering: 'Entrando…',
   },
   register: {

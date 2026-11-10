@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   completeRegistration,
+  login,
   register,
   requestPasswordReset,
   resetPassword,
@@ -118,5 +119,33 @@ describe('password reset', () => {
     expect(String(input)).toMatch(/\/api\/Auth\/ResetPassword$/)
     expect(JSON.parse(String(init?.body))).toEqual({ token: 'tok_en', password: 'password123' })
     expect(getAccessToken()).toBeNull()
+  })
+})
+
+describe('login', () => {
+  const fetchMock = vi.fn<typeof fetch>()
+
+  beforeEach(() => {
+    vi.stubGlobal('fetch', fetchMock)
+  })
+
+  afterEach(() => {
+    fetchMock.mockReset()
+    vi.unstubAllGlobals()
+  })
+
+  it('stores the access token and tells whether the sign-in cancelled a scheduled deletion', async () => {
+    fetchMock.mockResolvedValue(new Response(JSON.stringify({ accessToken: 'token', deletionCancelled: true }), { status: 200 }))
+
+    const result = await login({ email: 'ana@email.com', password: 'senha1234' })
+
+    expect(result).toEqual({ deletionCancelled: true })
+    expect(getAccessToken()).toBe('token')
+  })
+
+  it('reads a missing flag as no cancellation', async () => {
+    fetchMock.mockResolvedValue(new Response(JSON.stringify({ accessToken: 'token' }), { status: 200 }))
+
+    expect(await login({ email: 'ana@email.com', password: 'senha1234' })).toEqual({ deletionCancelled: false })
   })
 })

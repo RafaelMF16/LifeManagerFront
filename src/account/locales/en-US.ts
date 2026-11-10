@@ -56,4 +56,23 @@ export default {
     tooManyRequests: 'You downloaded it a moment ago. Try again in a few minutes.',
     errorTitle: 'Couldn’t download',
   },
+  danger: {
+    title: 'Danger zone',
+    label: 'Delete account',
+    description: 'Deletes your account and all your data after 7 days.',
+    action: 'Delete account',
+    dialog: {
+      title: 'Delete your account?',
+      grace: 'Your account and all its data will be deleted in 7 days.',
+      cancel: 'Signing in again before then cancels the deletion.',
+      groups: 'Ranking groups you created pass to their oldest member.',
+      password: 'Password',
+      passwordRequired: 'Type your password',
+      confirmation: 'Type {{word}} to confirm',
+      confirmationMismatch: 'Type {{word}} to confirm',
+      submit: 'Delete account',
+      tooManyRequests: 'Too many attempts. Wait a few minutes and try again.',
+    },
+    success: 'Deletion scheduled for {{date}}. Sign in again before then to cancel.',
+  },
 }

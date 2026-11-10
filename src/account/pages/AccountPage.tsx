@@ -2,6 +2,7 @@ import '../locales/register'
 import { useTranslation } from 'react-i18next'
 import Footer from '../../shared/components/Footer/Footer'
 import Header from '../../shared/components/Header/Header'
+import DangerZoneSection from '../components/DangerZoneSection/DangerZoneSection'
 import DataSection from '../components/DataSection/DataSection'
 import ProfileSection from '../components/ProfileSection/ProfileSection'
 import SecuritySection from '../components/SecuritySection/SecuritySection'
@@ -24,6 +25,7 @@ function AccountPage() {
         <ProfileSection />
         <SecuritySection />
         <DataSection />
+        <DangerZoneSection />
       </main>
 
       <Footer />

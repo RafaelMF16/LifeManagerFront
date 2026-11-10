@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { changePasswordErrorFieldMap, editNameErrorFieldMap } from './accountErrorMap'
+import { changePasswordErrorFieldMap, deleteAccountErrorFieldMap, editNameErrorFieldMap } from './accountErrorMap'
 
 describe('editNameErrorFieldMap', () => {
   it('leva os erros do nome ao campo', () => {
@@ -18,5 +18,11 @@ describe('changePasswordErrorFieldMap', () => {
 
   it('mostra as regras da senha no campo da senha nova', () => {
     expect(changePasswordErrorFieldMap['User.PlainPasswordTooShort'].field).toBe('newPassword')
+  })
+})
+
+describe('deleteAccountErrorFieldMap', () => {
+  it('mostra a senha errada no campo da senha', () => {
+    expect(deleteAccountErrorFieldMap['User.WrongPassword'].field).toBe('password')
   })
 })

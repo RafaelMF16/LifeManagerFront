@@ -7,6 +7,8 @@ export interface LoginRequestDto {
 
 export interface LoginResponseDto {
   accessToken: string
+  /** The sign-in cancelled the account's scheduled deletion (My account → delete account). */
+  deletionCancelled?: boolean
 }
 
 // language/theme: os da tela de cadastro; viram o idioma do e-mail, das categorias padrão e as preferências
