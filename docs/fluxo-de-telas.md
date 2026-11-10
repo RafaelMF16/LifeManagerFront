@@ -48,7 +48,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
 /auth/forgot-password       Esqueceu a senha? (só sem sessão)
 /auth/set-password          Escolher a senha do cadastro (link do e-mail)
 /auth/reset-password        Escolher uma nova senha (link do e-mail)
-/home                       Escolha do módulo
+/home                       Resumo do dia
 /invite/:código             Convite para um grupo de ranking (link)
 /finance                    → Painel
   /finance/dashboard        Painel
@@ -91,7 +91,7 @@ Aparece no topo de todas as telas depois do login.
   - **Sair:** encerra a sessão, mostra "Você saiu da sua conta." e volta para o login.
 - Tema e idioma mudam na hora e são salvos na conta: valem em qualquer dispositivo no próximo login.
 - No Financeiro, ao lado do menu fica o botão **Ocultar valores / Mostrar valores** (veja [Modo privacidade](#modo-privacidade)).
-- **Tour desta tela** (ícone de interrogação), no Financeiro e nos Hábitos: aparece em todas as telas desses módulos e abre um tour guiado da tela aberta.
+- **Tour desta tela** (ícone de interrogação), na Home, no Financeiro e nos Hábitos: aparece em todas as telas desses módulos e abre um tour guiado da tela aberta.
   - O primeiro passo explica para que serve a tela; os seguintes destacam um controle por vez, com uma explicação curta e o contador "Passo X de N".
   - **Próximo**, **Anterior** e, no último passo, **Concluir**. **Pular**, o **X** ou Esc fecham o tour. Pelo teclado, as setas também avançam e voltam.
   - Enquanto o tour está aberto, a tela não recebe cliques: ele só explica, não faz nada por você.
@@ -207,10 +207,24 @@ O cadastro tem duas etapas: aqui você informa nome e e-mail; a senha é escolhi
 
 **Rota:** `/home` (também é para onde vai qualquer endereço desconhecido).
 
-Mostra um cartão por módulo. Clicar abre o módulo:
+O resumo do dia, com atalhos para agir. Uma coluna no celular, duas no computador.
 
-- **Financeiro:** abre o Painel.
-- **Hábitos:** abre a tela Hoje.
+- **Saudação:** "Bom dia", "Boa tarde" ou "Boa noite", pela hora do aparelho, com o seu nome e a data de hoje.
+- **Cartão Hábitos:**
+  - quantos hábitos você já fez hoje ("1 de 4 feitos hoje"), com uma barra;
+  - os que ainda dá para marcar de ontem, a sua maior sequência e as recaídas de hoje, quando houver;
+  - nível, HP e moedas, depois da primeira jogada.
+  - **Ir para Hoje** abre a tela Hoje. Sem nenhum hábito ainda, o botão é **Criar primeiro hábito**, que abre a lista de Hábitos.
+- **Cartão Finanças (o mês corrente):**
+  - saldo em destaque, receitas e despesas;
+  - com orçamento no mês: quanto já foi gasto do limite ("R$ 3.120,50 de R$ 4.510,00 do orçamento"), com uma barra que fica amarela a partir de 85% e vermelha passando do limite, e a categoria mais apertada ("Mais apertada: Mercado · 92%").
+  - Sem o mês criado: "Novembro ainda não tem lançamentos."
+  - O **olho** esconde os valores aqui e em Finanças (e vice-versa), inclusive em outras abas.
+  - **Novo lançamento** abre o formulário de lançamento na tela Meses. **Ver mês** abre o detalhe do mês, ou **Ir para Finanças** quando o mês ainda não existe.
+- **Módulos:** os atalhos para Financeiro (abre o Painel) e Hábitos (abre a tela Hoje), no fim.
+- Enquanto carrega, os cartões mostram um esqueleto. Se der erro, cada cartão mostra **Tentar de novo**.
+- Ao voltar para a aba num outro dia, o resumo recarrega sozinho.
+- Um convite de grupo aberto antes de entrar leva direto ao Ranking.
 
 ## Financeiro
 

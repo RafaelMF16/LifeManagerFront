@@ -51,6 +51,22 @@ export default {
     viewMonth: 'Ver mês',
     goToFinance: 'Ir para Finanças',
   },
+  tour: {
+    home: {
+      intro: {
+        title: 'Seu dia',
+        body: 'A Home resume o que importa hoje: os hábitos que faltam e como está o mês. Os botões levam direto para agir.',
+      },
+      habits: {
+        title: 'Hábitos de hoje',
+        body: 'Quantos hábitos você já fez hoje, o que ainda dá para marcar de ontem, a maior sequência e o seu nível, HP e moedas.',
+      },
+      finance: {
+        title: 'O mês',
+        body: 'Saldo, receitas e despesas do mês, o orçamento e a categoria mais perto do limite. O olho esconde os valores, aqui e em Finanças.',
+      },
+    },
+  },
   modulesTitle: 'Módulos',
   modules: {
     financas: {

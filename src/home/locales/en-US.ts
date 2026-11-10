@@ -51,6 +51,22 @@ export default {
     viewMonth: 'View month',
     goToFinance: 'Go to Finance',
   },
+  tour: {
+    home: {
+      intro: {
+        title: 'Your day',
+        body: 'The Home sums up what matters today: the habits left and how the month is going. The buttons take you straight to it.',
+      },
+      habits: {
+        title: "Today's habits",
+        body: "How many habits you've done today, what you can still check in from yesterday, your best streak and your level, HP and coins.",
+      },
+      finance: {
+        title: 'The month',
+        body: "The month's balance, income and expenses, the budget and the category closest to its limit. The eye hides the amounts, here and in Finance.",
+      },
+    },
+  },
   modulesTitle: 'Modules',
   modules: {
     financas: {

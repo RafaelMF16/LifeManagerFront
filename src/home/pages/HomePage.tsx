@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import Footer from '../../shared/components/Footer/Footer'
 import Header from '../../shared/components/Header/Header'
+import TourButton from '../../shared/components/Tour/TourButton'
 import { useCurrentUser } from '../../shared/hooks/useCurrentUser'
 import { readPendingInvite } from '../../shared/utils/pendingInvite'
 import FinanceMonthCard from '../components/FinanceMonthCard/FinanceMonthCard'
@@ -11,6 +12,7 @@ import ModuleCard from '../components/ModuleCard/ModuleCard'
 import { useHomeOverview } from '../hooks/useHomeOverview'
 import type { HomeModule } from '../types/HomeModule'
 import { greetingPeriod, todayLabel } from '../utils/greeting'
+import { HOME_TOURS } from '../utils/homeTours'
 import './HomePage.css'
 
 const MODULES: HomeModule[] = [
@@ -33,10 +35,10 @@ function HomePage() {
 
   return (
     <div className="lm-home-page">
-      <Header />
+      <Header actions={<TourButton tours={HOME_TOURS} />} />
 
       <main className="lm-home-page__main">
-        <div className="lm-home-page__greeting" data-tour="home.intro">
+        <div className="lm-home-page__greeting">
           <h1 className="lm-home-page__title">{name ? translate('greeting.withName', { greeting, name }) : greeting}</h1>
           {data ? <p className="lm-home-page__date">{todayLabel(data.today, i18n.language)}</p> : null}
         </div>
