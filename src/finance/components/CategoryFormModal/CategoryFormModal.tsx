@@ -18,12 +18,14 @@ import './CategoryFormModal.css'
 interface CategoryFormModalProps {
   /** The category being edited; omitted when creating a new one. */
   category?: CategoryResponseDto
+  /** Pre-fills the name of a new category (e.g. what was typed in a category picker). */
+  initialName?: string
   onClose: () => void
   /** Persists the values; a rejection is shown on the form and keeps the modal open. */
   onSubmit: (values: CategoryFormValues) => Promise<void>
 }
 
-function CategoryFormModal({ category, onClose, onSubmit }: CategoryFormModalProps) {
+function CategoryFormModal({ category, initialName, onClose, onSubmit }: CategoryFormModalProps) {
   const { t: translate } = useTranslation(['finance', 'common'])
   const titleId = useId()
   const { show: showErrorModal } = useErrorModal()
@@ -32,7 +34,7 @@ function CategoryFormModal({ category, onClose, onSubmit }: CategoryFormModalPro
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useZodForm(categorySchema, { defaultValues: { name: category?.name ?? '' } })
+  } = useZodForm(categorySchema, { defaultValues: { name: category?.name ?? initialName ?? '' } })
 
   const isEditing = Boolean(category)
 

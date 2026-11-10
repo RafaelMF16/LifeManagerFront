@@ -9,16 +9,15 @@ import Input from '../../../shared/components/Input/Input'
 import Pagination from '../../../shared/components/Pagination/Pagination'
 import Select from '../../../shared/components/Select/Select'
 import type { PagedResponse, SortDirection } from '../../../shared/types/Paging'
-import type { CategoryOptionsStatus } from '../../hooks/useCategoryOptions'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import type { ImportRowsStatus } from '../../hooks/useImportRows'
-import type { CategoryResponseDto } from '../../types/CategoryDtos'
 import type { StatementImportRowDto, StatementImportRowFilter, StatementImportRowSortBy } from '../../types/StatementImportDtos'
 import type { MoneyFlowType } from '../../types/TransactionDtos'
 import { monthShiftBadge, showsExcludedBadge, suggestionBadge } from '../../utils/statementImport/rowBadges'
 import type { DetectionSource } from '../../utils/statementImport/rowBadges'
 import { parseYearMonth } from '../../utils/yearMonth'
 import Amount from '../Amount/Amount'
+import CategoryPicker from '../CategoryPicker/CategoryPicker'
 import ImportRowListSkeleton from './ImportRowListSkeleton'
 import './ImportRowList.css'
 
@@ -30,9 +29,6 @@ const DETECTION_ICONS: Record<DetectionSource, IconName> = {
   InvestmentRedemption: 'coins',
   OwnTransfer: 'wallet',
 }
-
-/** The category select's extra option that opens the new-category form instead of filing the row. */
-export const NEW_CATEGORY_OPTION = '__new'
 
 // Same reading as the transactions list: money leaving the account (expense, investment) shows negative.
 const TYPE_DISPLAY: Record<MoneyFlowType, { icon: IconName; modifier: string; sign: 1 | -1 }> = {
@@ -57,16 +53,16 @@ interface ImportRowListProps {
   onToggleSortDirection: () => void
   onPageChange: (page: number) => void
   onRetry: () => void
-  categories: CategoryResponseDto[]
-  categoriesStatus: CategoryOptionsStatus
   selectedIds: ReadonlySet<number>
   onToggleSelected: (rowId: number) => void
   /** Selects every row of the page, or clears the selection when they all are selected already. */
   onToggleSelectPage: (rowIds: number[]) => void
   /** Rows whose change is being saved: their controls wait. */
   pendingIds: ReadonlySet<number>
-  /** The select's value: a category id, `''` (no category) or `NEW_CATEGORY_OPTION` (create one). */
-  onCategoryChange: (row: StatementImportRowDto, value: string) => void
+  /** Files the row under a category, or leaves it without one (`null`). */
+  onCategoryChange: (row: StatementImportRowDto, categoryId: number | null) => void
+  /** "Create category" in the row's picker: opens the category form with the typed name. */
+  onCreateCategory: (row: StatementImportRowDto, name: string) => void
   onToggleIncluded: (row: StatementImportRowDto) => void
   onEdit: (row: StatementImportRowDto) => void
   /** Rendered above the rows while some are selected (actions on the selection). */
@@ -93,13 +89,12 @@ function ImportRowList({
   onToggleSortDirection,
   onPageChange,
   onRetry,
-  categories,
-  categoriesStatus,
   selectedIds,
   onToggleSelected,
   onToggleSelectPage,
   pendingIds,
   onCategoryChange,
+  onCreateCategory,
   onToggleIncluded,
   onEdit,
   bulkBar,
@@ -110,19 +105,6 @@ function ImportRowList({
   const sortedLabel = translate(sortDirection === 'Asc' ? 'finance:imports.rows.sort.ascending' : 'finance:imports.rows.sort.descending')
   const pageIds = data?.items.map((row) => row.id) ?? []
   const pageSelected = pageIds.length > 0 && pageIds.every((id) => selectedIds.has(id))
-
-  function categoryOptions(row: StatementImportRowDto) {
-    const options = [
-      { value: '', label: translate('finance:imports.rows.categoryPlaceholder') },
-      ...categories.map((category) => ({ value: String(category.id), label: category.name })),
-    ]
-    // The row's category stays selectable even if it isn't among the loaded options (more than 100 categories).
-    if (row.categoryId !== null && !categories.some((category) => category.id === row.categoryId)) {
-      options.push({ value: String(row.categoryId), label: row.categoryName ?? '' })
-    }
-    if (categoriesStatus === 'ready') options.push({ value: NEW_CATEGORY_OPTION, label: translate('finance:imports.rows.newCategory') })
-    return options
-  }
 
   function renderBadges(row: StatementImportRowDto) {
     const badges = []
@@ -244,14 +226,16 @@ function ImportRowList({
           <Amount value={display.sign * row.amount} tone={row.type === 'Investment' ? 'investment' : 'signed'} />
         </div>
 
-        <Select
+        <CategoryPicker
           size="sm"
-          aria-label={translate('finance:imports.rows.category')}
-          options={categoryOptions(row)}
-          value={row.categoryId === null ? '' : String(row.categoryId)}
-          disabled={pending || categoriesStatus === 'loading'}
-          aria-invalid={missingCategory || undefined}
-          onChange={(event) => onCategoryChange(row, event.target.value)}
+          ariaLabel={translate('finance:imports.rows.category')}
+          allLabel={translate('finance:imports.rows.categoryPlaceholder')}
+          value={row.categoryId === null ? null : { id: row.categoryId, name: row.categoryName ?? '' }}
+          disabled={pending}
+          onChange={(category) => {
+            if ((category?.id ?? null) !== row.categoryId) onCategoryChange(row, category?.id ?? null)
+          }}
+          onCreateRequest={(name) => onCreateCategory(row, name)}
           containerClassName={`lm-import-rows__category${missingCategory ? ' lm-import-rows__category--missing' : ''}`}
         />
 

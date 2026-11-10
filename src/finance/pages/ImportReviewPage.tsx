@@ -16,9 +16,8 @@ import DeleteImportDialog from '../components/DeleteImportDialog/DeleteImportDia
 import ImportBulkBar from '../components/ImportBulkBar/ImportBulkBar'
 import ImportMonthsOverview from '../components/ImportMonthsOverview/ImportMonthsOverview'
 import ImportRowFormModal from '../components/ImportRowFormModal/ImportRowFormModal'
-import ImportRowList, { NEW_CATEGORY_OPTION } from '../components/ImportRowList/ImportRowList'
+import ImportRowList from '../components/ImportRowList/ImportRowList'
 import SimilarRowsPrompt from '../components/SimilarRowsPrompt/SimilarRowsPrompt'
-import { useCategoryOptions } from '../hooks/useCategoryOptions'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
 import { useImportRows } from '../hooks/useImportRows'
 import { useStatementImport } from '../hooks/useStatementImport'
@@ -101,12 +100,11 @@ function ImportReviewPage() {
   const details = useStatementImport(importId)
   const reloadDetails = details.reload
   const rows = useImportRows(importId, reloadDetails)
-  const categoryOptions = useCategoryOptions()
   const [selection, setSelection] = useState<{ ids: ReadonlySet<number>; pageKey: string }>({ ids: NO_SELECTION, pageKey: '' })
   const [pendingIds, setPendingIds] = useState<ReadonlySet<number>>(NO_SELECTION)
   const [bulkBusy, setBulkBusy] = useState(false)
   const [editTarget, setEditTarget] = useState<StatementImportRowDto | null>(null)
-  const [categoryTarget, setCategoryTarget] = useState<StatementImportRowDto | null>(null)
+  const [categoryTarget, setCategoryTarget] = useState<{ row: StatementImportRowDto; name: string } | null>(null)
   const [similar, setSimilar] = useState<SimilarOffer | null>(null)
   const [similarBusy, setSimilarBusy] = useState(false)
   const [isCommitOpen, setIsCommitOpen] = useState(false)
@@ -137,7 +135,6 @@ function ImportReviewPage() {
       rows.reloadAll()
     } else if (err.code === 'Category.NotFound') {
       showErrorModal(translate('finance:imports.errors.actionTitle'), translate('finance:transactions.validation.category.notFound'))
-      categoryOptions.reload()
     } else {
       showErrorModal(translate('finance:imports.errors.actionTitle'), translate('common:errors.generic'))
     }
@@ -160,12 +157,8 @@ function ImportReviewPage() {
     }
   }
 
-  function handleCategoryChange(row: StatementImportRowDto, value: string) {
-    if (value === NEW_CATEGORY_OPTION) {
-      setCategoryTarget(row)
-      return
-    }
-    void saveRowFromList(row, { ...toRequest(row), categoryId: value === '' ? null : Number(value) })
+  function handleCategoryChange(row: StatementImportRowDto, categoryId: number | null) {
+    void saveRowFromList(row, { ...toRequest(row), categoryId })
   }
 
   async function handleEditSubmit(values: ImportRowFormValues) {
@@ -187,9 +180,8 @@ function ImportReviewPage() {
   async function handleCreateCategory(values: CategoryFormValues) {
     if (!categoryTarget) return
     const created = await createCategory(values)
-    categoryOptions.reload()
     showToast(translate('finance:imports.toasts.categoryCreated'))
-    const row = categoryTarget
+    const { row } = categoryTarget
     setCategoryTarget(null)
     await saveRowFromList(row, { ...toRequest(row), categoryId: created.id })
   }
@@ -412,20 +404,18 @@ function ImportReviewPage() {
         onToggleSortDirection={rows.toggleSortDirection}
         onPageChange={rows.setPage}
         onRetry={rows.reload}
-        categories={categoryOptions.categories}
-        categoriesStatus={categoryOptions.status}
         selectedIds={selectedIds}
         onToggleSelected={toggleSelected}
         onToggleSelectPage={toggleSelectPage}
         pendingIds={pendingIds}
         onCategoryChange={handleCategoryChange}
+        onCreateCategory={(row, name) => setCategoryTarget({ row, name })}
         onToggleIncluded={(row) => void saveRowFromList(row, { ...toRequest(row), included: !row.included })}
         onEdit={setEditTarget}
         bulkBar={
           selectedIds.size > 0 ? (
             <ImportBulkBar
               count={selectedIds.size}
-              categories={categoryOptions.categories}
               busy={bulkBusy}
               onSetCategory={(categoryId) => void handleBulk({ categoryId, type: null, included: null })}
               onSetType={(type) => void handleBulk({ type, categoryId: null, included: null })}
@@ -440,13 +430,14 @@ function ImportReviewPage() {
       {editTarget ? (
         <ImportRowFormModal
           row={editTarget}
-          categories={categoryOptions.categories}
           onClose={() => setEditTarget(null)}
           onSubmit={handleEditSubmit}
         />
       ) : null}
 
-      {categoryTarget ? <CategoryFormModal onClose={() => setCategoryTarget(null)} onSubmit={handleCreateCategory} /> : null}
+      {categoryTarget ? (
+        <CategoryFormModal initialName={categoryTarget.name} onClose={() => setCategoryTarget(null)} onSubmit={handleCreateCategory} />
+      ) : null}
 
       {isCommitOpen ? <CommitImportDialog statementImport={data} onClose={() => setIsCommitOpen(false)} onConfirm={handleCommit} /> : null}
 

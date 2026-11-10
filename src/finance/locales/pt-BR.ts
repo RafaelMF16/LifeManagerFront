@@ -883,7 +883,6 @@ export default {
       selectPage: 'Selecionar todos desta página',
       category: 'Categoria',
       categoryPlaceholder: 'Sem categoria',
-      newCategory: '+ Nova categoria…',
       include: 'Incluir na importação',
       exclude: 'Deixar de fora',
       edit: 'Editar',

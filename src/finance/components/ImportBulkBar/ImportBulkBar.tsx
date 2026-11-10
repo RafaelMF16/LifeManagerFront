@@ -1,15 +1,14 @@
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import Select from '../../../shared/components/Select/Select'
-import type { CategoryResponseDto } from '../../types/CategoryDtos'
 import type { MoneyFlowType } from '../../types/TransactionDtos'
+import CategoryPicker from '../CategoryPicker/CategoryPicker'
 import './ImportBulkBar.css'
 
 const TYPES: MoneyFlowType[] = ['Expense', 'Income', 'Investment']
 
 interface ImportBulkBarProps {
   count: number
-  categories: CategoryResponseDto[]
   busy: boolean
   onSetCategory: (categoryId: number) => void
   onSetType: (type: MoneyFlowType) => void
@@ -22,7 +21,7 @@ interface ImportBulkBarProps {
  * What can be done to the selected rows at once: file them, change their type, include or leave them out, and
  * count them in the next month or in their date's month.
  */
-function ImportBulkBar({ count, categories, busy, onSetCategory, onSetType, onSetIncluded, onSetShiftToNextMonth, onClear }: ImportBulkBarProps) {
+function ImportBulkBar({ count, busy, onSetCategory, onSetType, onSetIncluded, onSetShiftToNextMonth, onClear }: ImportBulkBarProps) {
   const { t: translate } = useTranslation('finance')
 
   return (
@@ -31,17 +30,14 @@ function ImportBulkBar({ count, categories, busy, onSetCategory, onSetType, onSe
         {translate('finance:imports.bulk.selected', { count })}
       </span>
       <div className="lm-import-bulk__controls">
-        <Select
+        <CategoryPicker
           size="sm"
-          aria-label={translate('finance:imports.bulk.category')}
-          options={[
-            { value: '', label: translate('finance:imports.bulk.category') },
-            ...categories.map((category) => ({ value: String(category.id), label: category.name })),
-          ]}
-          value=""
+          ariaLabel={translate('finance:imports.bulk.category')}
+          placeholder={translate('finance:imports.bulk.category')}
+          value={null}
           disabled={busy}
-          onChange={(event) => event.target.value && onSetCategory(Number(event.target.value))}
-          containerClassName="lm-import-bulk__select"
+          onChange={(category) => category && onSetCategory(category.id)}
+          containerClassName="lm-import-bulk__select lm-import-bulk__category"
         />
         <Select
           size="sm"

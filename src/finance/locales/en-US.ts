@@ -883,7 +883,6 @@ export default {
       selectPage: 'Select all on this page',
       category: 'Category',
       categoryPlaceholder: 'No category',
-      newCategory: '+ New category…',
       include: 'Include in the import',
       exclude: 'Leave out',
       edit: 'Edit',
