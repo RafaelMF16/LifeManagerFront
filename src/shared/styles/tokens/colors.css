@@ -9,6 +9,14 @@
   --teal-700: #0f766e;
   --teal-800: #115e59;
 
+  /* ---- The coin flying into the animated helm (AnimatedHelm): the habits game's amber, fixed in both themes like
+     the mark itself. ---- */
+  --coin-200: #fde68a;
+  --coin-300: #fcd34d;
+  --coin-400: #fbbf24;
+  --coin-500: #f59e0b;
+  --coin-700: #b45309;
+
   /* ---- Neutrals: cool slate ---- */
   --slate-50: #f8fafc;
   --slate-100: #f1f5f9;
