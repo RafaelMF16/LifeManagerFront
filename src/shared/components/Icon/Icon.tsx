@@ -1,4 +1,12 @@
 import {
+  Plane,
+  House,
+  Car,
+  GraduationCap,
+  Laptop,
+  TreePalm,
+  Baby,
+  Umbrella,
   Bell,
   Download,
   Settings,
@@ -183,6 +191,14 @@ const ICONS = {
   settings: Settings,
   share: Share,
   'square-plus': SquarePlus,
+  plane: Plane,
+  house: House,
+  car: Car,
+  'graduation-cap': GraduationCap,
+  laptop: Laptop,
+  'tree-palm': TreePalm,
+  baby: Baby,
+  umbrella: Umbrella,
 } as const
 
 export type IconName = keyof typeof ICONS

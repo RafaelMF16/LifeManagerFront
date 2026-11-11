@@ -49,21 +49,28 @@ export function formatAmountInput(value: string, language: string) {
   return digits === '' ? '' : toFormAmount(Number(digits) / 100, language)
 }
 
+interface AmountFieldOptions {
+  /** Empty is valid (the caller reads it as zero) instead of `.required`. */
+  optional?: boolean
+  /** Zero is valid (an amount already saved) instead of `.notPositive`. */
+  allowZero?: boolean
+}
+
 /**
  * A money text field. `messages` is the translation-key prefix of the form's amount messages
  * (`.required`, `.invalid`, `.notPositive`, `.tooManyDecimals`, `.tooLarge`).
  */
-export function amountField(messages: string) {
+export function amountField(messages: string, { optional = false, allowZero = false }: AmountFieldOptions = {}) {
   return z
     .string()
     .trim()
     .superRefine((value, context) => {
       const fail = (key: string) => context.addIssue({ code: 'custom', message: `${messages}.${key}` })
-      if (value === '') return fail('required')
+      if (value === '') return optional ? undefined : fail('required')
 
       const amount = parseAmount(value)
       if (amount === null) return fail('invalid')
-      if (amount <= 0) return fail('notPositive')
+      if (allowZero ? amount < 0 : amount <= 0) return fail('notPositive')
       if (decimalPlaces(value) > AMOUNT_MAX_DECIMALS) return fail('tooManyDecimals')
       if (amount > AMOUNT_MAX_VALUE) return fail('tooLarge')
     })
