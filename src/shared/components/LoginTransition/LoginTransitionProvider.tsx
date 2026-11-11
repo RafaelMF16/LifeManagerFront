@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import type { LoginEntrance } from '../../utils/loginEntrance'
 import {
@@ -37,11 +37,23 @@ interface LoginTransitionProviderProps {
  */
 function afterFrames(count: number) {
   return new Promise<void>((resolve) => {
-    const step = (left: number) => (left === 0 ? resolve() : requestAnimationFrame(() => step(left - 1)))
+    let frame = 0
+    const done = () => {
+      cancelAnimationFrame(frame)
+      clearTimeout(limit)
+      resolve()
+    }
+    const step = (left: number) => {
+      if (left === 0) done()
+      else frame = requestAnimationFrame(() => step(left - 1))
+    }
+    const limit = setTimeout(done, FRAMES_LIMIT_MS)
     step(count)
-    setTimeout(resolve, FRAMES_LIMIT_MS)
   })
 }
+
+// The circle's duration, for `LoginTransition.css`, so the CSS and the removal timer can't drift apart.
+const COVER_STYLE = { '--lm-reveal-ms': `${REVEAL_MS}ms` } as CSSProperties
 
 /**
  * Hosts the post-sign-in cover: the helm receiving a coin, over everything. It sits outside the router so it
@@ -108,8 +120,7 @@ export function LoginTransitionProvider({ children }: LoginTransitionProviderPro
             .catch(() => {})
             .then(() => afterFrames(2))
             .then(() => {
-              const delay = revealDelay(performance.now() - startedAt, true)
-              if (delay !== null) later(delay, () => leave(id, exit))
+              later(revealDelay(performance.now() - startedAt), () => leave(id, exit))
             })
         })
       })
@@ -117,7 +128,15 @@ export function LoginTransitionProvider({ children }: LoginTransitionProviderPro
     [reduceMotion, clearTimers, later, leave],
   )
 
-  useEffect(() => clearTimers, [clearTimers])
+  // Unmounting mid-transition lets the caller's `await` go on (`false`: nothing played to the end).
+  useEffect(
+    () => () => {
+      clearTimers()
+      resolveRef.current?.(false)
+      resolveRef.current = null
+    },
+    [clearTimers],
+  )
 
   const phase = transition?.phase
   const entrance: LoginEntrance = phase === undefined ? null : phase === 'covering' ? 'hidden' : 'enter'
@@ -129,10 +148,14 @@ export function LoginTransitionProvider({ children }: LoginTransitionProviderPro
       {transition ? (
         <div
           className={`lm-login-transition${phase === 'covering' ? '' : ` lm-login-transition--${phase}`}`}
+          style={COVER_STYLE}
           role="status"
           aria-live="polite"
         >
-          <AnimatedHelm key={transition.id} variant="receive" />
+          {/* Its own box, so the cover can grow the helm as it opens without styling the helm's insides. */}
+          <span className="lm-login-transition__helm">
+            <AnimatedHelm key={transition.id} variant="receive" />
+          </span>
           <span className="lm-login-transition__label">{transition.label}</span>
         </div>
       ) : null}

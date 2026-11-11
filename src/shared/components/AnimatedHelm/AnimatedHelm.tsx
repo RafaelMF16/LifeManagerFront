@@ -31,8 +31,6 @@ interface AnimatedHelmProps {
   variant: AnimatedHelmVariant
   /** The helm's side in px (any size: it's vector). */
   size?: number
-  /** `receive` only: called once, when the animation has played (right away with reduced motion). */
-  onEnd?: () => void
 }
 
 function Coin({ id }: { id: 'coin1' | 'coin2' }) {
@@ -55,39 +53,19 @@ function Coin({ id }: { id: 'coin1' | 'coin2' }) {
  * rim's shine stays lit from the top left. Decorative: the caller labels what it means. With reduced motion, a still
  * helm.
  */
-function AnimatedHelm({ variant, size = 192, onEnd }: AnimatedHelmProps) {
+function AnimatedHelm({ variant, size = 192 }: AnimatedHelmProps) {
   const svgRef = useRef<SVGSVGElement>(null)
-  const onEndRef = useRef(onEnd)
-  // Survives StrictMode's second effect run, so `onEnd` fires once even when the first run already ended.
-  const endedRef = useRef(false)
   const reduceMotion = usePrefersReducedMotion()
 
   useEffect(() => {
-    onEndRef.current = onEnd
-  }, [onEnd])
-
-  useEffect(() => {
     const svg = svgRef.current
-    if (!svg) return
-
-    const end = () => {
-      if (variant !== 'receive' || endedRef.current) return
-      endedRef.current = true
-      onEndRef.current?.()
-    }
-
-    if (reduceMotion || typeof svg.animate !== 'function') {
-      end()
-      return
-    }
+    if (!svg || reduceMotion || typeof svg.animate !== 'function') return
 
     const { durationMs, iterations, tracks } = TIMELINES[variant]()
     const animations = tracks.flatMap(({ part, keyframes }) => {
       const element = svg.querySelector(`[data-part="${part}"]`)
       return element ? [element.animate(keyframes, { duration: durationMs, iterations, fill: 'forwards' })] : []
     })
-    // Cancelling (unmount, StrictMode) rejects `finished` with an AbortError: that run just never ends.
-    animations[0]?.finished.then(end, () => {})
 
     return () => animations.forEach((animation) => animation.cancel())
   }, [variant, reduceMotion])

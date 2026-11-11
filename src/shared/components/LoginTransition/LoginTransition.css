@@ -15,6 +15,12 @@
   justify-content: center;
   padding: var(--space-6) var(--page-gutter);
   background: var(--background);
+  /* The circle's pace; `--lm-reveal-ms` comes from `REVEAL_MS` (the provider sets it). */
+  --lm-reveal-ease: cubic-bezier(0.65, 0, 0.25, 1);
+}
+
+.lm-login-transition__helm {
+  display: block;
 }
 
 .lm-login-transition--revealing,
@@ -49,12 +55,12 @@
   .lm-login-transition--revealing {
     -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--lm-reveal-radius), #000 calc(var(--lm-reveal-radius) + 1px));
     mask-image: radial-gradient(circle at 50% 50%, transparent var(--lm-reveal-radius), #000 calc(var(--lm-reveal-radius) + 1px));
-    animation: lm-login-transition-reveal 700ms cubic-bezier(0.65, 0, 0.25, 1) both;
+    animation: lm-login-transition-reveal var(--lm-reveal-ms) var(--lm-reveal-ease) both;
   }
 
-  .lm-login-transition--revealing .lm-animated-helm {
+  .lm-login-transition--revealing .lm-login-transition__helm {
     transform: scale(1.35);
-    transition: transform 700ms cubic-bezier(0.65, 0, 0.25, 1);
+    transition: transform var(--lm-reveal-ms) var(--lm-reveal-ease);
   }
 }
 

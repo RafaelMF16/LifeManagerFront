@@ -1,3 +1,5 @@
+import { HELM_RECEIVE_SPARKLE_MS } from './helmTimeline'
+
 /**
  * When the sign-in cover (`LoginTransitionProvider`) opens over the screen underneath. Times count from the moment
  * the cover shows up.
@@ -6,8 +8,8 @@
 /** The navigation runs under the cover once it has faded in (`--duration-base`), so nothing shows through. */
 export const NAVIGATE_AFTER_MS = 250
 
-/** The helm's sparkles (`HELM_RECEIVE_SPARKLE_MS` plus their first frames): the earliest the circle opens. */
-export const REVEAL_AT_MS = 1450
+/** The helm's sparkles, once the first one has lit up: the earliest the circle opens. */
+export const REVEAL_AT_MS = HELM_RECEIVE_SPARKLE_MS + 170
 
 /** How long the circle takes to cover the screen. */
 export const REVEAL_MS = 700
@@ -19,11 +21,10 @@ export const REVEAL_MS = 700
 export const MAX_PLAY_MS = 3000
 
 /**
- * How long to wait, from now, before opening the circle: never before the sparkles, and never before the screen
- * underneath is there (`null`: keep waiting), so the circle never shows the sign-in screen.
+ * How long to wait before opening the circle, called once the screen underneath is painted (so the circle never
+ * shows the sign-in screen): until the sparkles, or not at all when they're past.
  */
-export function revealDelay(elapsedMs: number, screenReady: boolean): number | null {
-  if (!screenReady) return null
+export function revealDelay(elapsedMs: number): number {
   return Math.max(0, REVEAL_AT_MS - elapsedMs)
 }
 

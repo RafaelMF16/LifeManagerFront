@@ -11,7 +11,7 @@ O timão pixelado (`HelmSprite`) é o único elemento em pixel art do app. A UI 
 
 ## Escopo
 
-1. **`AnimatedHelm`** (`shared/components/AnimatedHelm/`) substitui o `HelmSprite`, com a mesma API: `variant: 'loop' | 'receive'`, `size?` (px, **qualquer valor**; padrão 192) e `onEnd?`.
+1. **`AnimatedHelm`** (`shared/components/AnimatedHelm/`) substitui o `HelmSprite`, com a mesma API: `variant: 'loop' | 'receive'`, `size?` (px, **qualquer valor**; padrão 192) e `onEnd?` (removido depois da revisão: a abertura usa o relógio do provider, decisão 1).
    - **Desenho:** a geometria do timão sai do `AppLogo` para um lugar só (ex.: `shared/components/AppLogo/helmGeometry.ts`, ângulos e medidas), usada pelos dois componentes. Mudar o logo muda a animação.
    - **Peças animadas:** os raios e manoplas giram, mas o reflexo do aro fica parado (luz de cima à esquerda). O miolo acende em âmbar e solta um anel. As moedas são âmbar, a cor das moedas do jogo de hábitos (token `--chart-coins` ou um token novo `--coin-*` em `colors.css`). Os brilhos são estrelas de 4 pontas.
    - **`loop`** (splash): ciclo de 2,6 s, infinito. A cada ciclo, duas moedas chegam em arco por lados opostos, e cada chegada acende o miolo e vira o timão 45°, com um leve passar do ponto. Como o desenho se repete a cada 45°, o loop não tem emenda.
