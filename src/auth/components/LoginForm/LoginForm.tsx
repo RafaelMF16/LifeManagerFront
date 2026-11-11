@@ -13,7 +13,7 @@ import { loadAndApplyUserPreferences } from '../../../shared/services/userPrefer
 import { login } from '../../services/authService'
 import { loginErrorFieldMap, loginFallbackMessage } from '../../validation/userErrorMap'
 import { loginSchema } from '../../validation/userSchemas'
-import { enterStyle } from '../../utils/enterStyle'
+import { enterStyle } from '../../../shared/utils/enterStyle'
 import '../AuthForm.css'
 
 interface LoginFormProps {

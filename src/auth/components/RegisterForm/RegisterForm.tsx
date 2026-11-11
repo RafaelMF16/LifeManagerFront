@@ -7,7 +7,7 @@ import { register as registerUser } from '../../services/authService'
 import { registerErrorFieldMap } from '../../validation/userErrorMap'
 import { registerSchema } from '../../validation/userSchemas'
 import EmailSentNotice from '../EmailSentNotice/EmailSentNotice'
-import { enterStyle } from '../../utils/enterStyle'
+import { enterStyle } from '../../../shared/utils/enterStyle'
 import '../AuthForm.css'
 
 interface RegisterFormProps {
