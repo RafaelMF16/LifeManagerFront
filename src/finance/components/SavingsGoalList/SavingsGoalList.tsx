@@ -132,10 +132,11 @@ function SavingsGoalList({
 
     return (
       <div className="lm-goal-list__grid">
-        {data.items.map((goal) => (
+        {data.items.map((goal, index) => (
           <SavingsGoalCard
             key={goal.id}
             goal={goal}
+            tourTarget={index === 0 ? 'savings.card' : undefined}
             title={
               <Link to={String(goal.id)} aria-label={translate('finance:savingsGoals.list.open', { name: goal.name })}>
                 {goal.name}

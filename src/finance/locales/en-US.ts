@@ -852,7 +852,6 @@ export default {
         invalidServer: 'Enter a target greater than zero, with up to 2 decimal places',
       },
       initialAmount: {
-        required: 'Enter the amount',
         invalid: 'Enter a valid amount, like 1,234.56',
         notPositive: 'The amount cannot be negative',
         tooManyDecimals: 'Use at most 2 decimal places',
@@ -872,9 +871,6 @@ export default {
       loadError: 'Could not load the goal.',
       retry: 'Try again',
       notFound: 'This goal no longer exists.',
-      saved: 'Saved',
-      target: 'Target',
-      remaining: 'Left',
       initial: 'Already saved',
       archivedNotice: 'Archived goal: it takes no new transactions until restored.',
       chart: {

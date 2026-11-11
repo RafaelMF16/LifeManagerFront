@@ -19,6 +19,8 @@ interface SavingsGoalCardProps {
   size?: 'default' | 'large'
   /** Edit/archive/restore buttons, at the card's top right. */
   actions?: ReactNode
+  /** The guided tour's anchor; only the list's first card takes it. */
+  tourTarget?: string
 }
 
 /**
@@ -26,7 +28,7 @@ interface SavingsGoalCardProps {
  * month and the pace badge (a word next to its color). Privacy mode masks the amounts, gives every bar the same
  * neutral length and hides "Guarde R$ X/mês", which would tell the amount left.
  */
-function SavingsGoalCard({ goal, title, size = 'default', actions }: SavingsGoalCardProps) {
+function SavingsGoalCard({ goal, title, size = 'default', actions, tourTarget }: SavingsGoalCardProps) {
   const { t: translate } = useTranslation('finance')
   const { money, percent, shortMonthName, dayLabel } = useFinanceFormat()
   const { hidden } = usePrivacyMode()
@@ -48,7 +50,7 @@ function SavingsGoalCard({ goal, title, size = 'default', actions }: SavingsGoal
     .join(' ')
 
   return (
-    <article className={classes} data-tour="savings.card">
+    <article className={classes} data-tour={tourTarget}>
       <div className="lm-goal-card__header">
         <span className="lm-goal-card__icon" aria-hidden="true">
           <Icon name={savingsGoalIcon(goal.icon)} size={size === 'large' ? 22 : 18} />

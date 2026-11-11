@@ -852,7 +852,6 @@ export default {
         invalidServer: 'Informe uma meta maior que zero, com até 2 casas decimais',
       },
       initialAmount: {
-        required: 'Informe o valor',
         invalid: 'Informe um valor válido, como 1.234,56',
         notPositive: 'O valor não pode ser negativo',
         tooManyDecimals: 'Use no máximo 2 casas decimais',
@@ -872,9 +871,6 @@ export default {
       loadError: 'Não foi possível carregar o objetivo.',
       retry: 'Tentar novamente',
       notFound: 'Esse objetivo não existe mais.',
-      saved: 'Guardado',
-      target: 'Meta',
-      remaining: 'Falta',
       initial: 'Já tinha guardado',
       archivedNotice: 'Objetivo arquivado: não recebe novos lançamentos até ser restaurado.',
       chart: {
