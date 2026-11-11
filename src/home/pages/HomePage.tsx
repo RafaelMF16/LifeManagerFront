@@ -5,6 +5,8 @@ import Footer from '../../shared/components/Footer/Footer'
 import Header from '../../shared/components/Header/Header'
 import TourButton from '../../shared/components/Tour/TourButton'
 import { useCurrentUser } from '../../shared/hooks/useCurrentUser'
+import { useLoginEntrance } from '../../shared/hooks/useLoginEntrance'
+import { enterStyle } from '../../shared/utils/enterStyle'
 import { readPendingInvite } from '../../shared/utils/pendingInvite'
 import FinanceMonthCard from '../components/FinanceMonthCard/FinanceMonthCard'
 import HabitsTodayCard from '../components/HabitsTodayCard/HabitsTodayCard'
@@ -28,6 +30,8 @@ function HomePage() {
   const { name } = useCurrentUser()
   const { data, status, retry } = useHomeOverview()
   const greeting = translate(`greeting.${greetingPeriod(new Date())}`)
+  // Landing here from the sign-in, the blocks arrive in turn as the cover opens.
+  const entrance = useLoginEntrance()
 
   // An invite link opened before a sign-up confirmed by e-mail: the login lands here, so carry on to the group.
   useEffect(() => {
@@ -35,21 +39,31 @@ function HomePage() {
   }, [navigate])
 
   return (
-    <div className="lm-home-page">
-      <Header actions={<TourButton tours={HOME_TOURS} />} />
+    <div className={`lm-home-page${entrance ? ` ${entrance}` : ''}`}>
+      <Header actions={<TourButton tours={HOME_TOURS} />} enterIndex={0} />
 
       <main className="lm-home-page__main">
-        <div className="lm-home-page__greeting">
+        <div className="lm-home-page__greeting" data-enter="" style={enterStyle(1)}>
           <h1 className="lm-home-page__title">{name ? translate('greeting.withName', { greeting, name }) : greeting}</h1>
           {data ? <p className="lm-home-page__date">{todayLabel(data.today, i18n.language)}</p> : null}
         </div>
 
         <div className="lm-home-page__cards">
-          <HabitsTodayCard overview={data} status={status} onRetry={retry} />
-          <FinanceMonthCard overview={data} status={status} onRetry={retry} />
+          {/* One grid cell each, so a card still stretches to its row while it rises. */}
+          <div className="lm-home-page__card-cell" data-enter="" style={enterStyle(2)}>
+            <HabitsTodayCard overview={data} status={status} onRetry={retry} />
+          </div>
+          <div className="lm-home-page__card-cell" data-enter="" style={enterStyle(3)}>
+            <FinanceMonthCard overview={data} status={status} onRetry={retry} />
+          </div>
         </div>
 
-        <section className="lm-home-page__modules" aria-labelledby="lm-home-modules-title">
+        <section
+          className="lm-home-page__modules"
+          aria-labelledby="lm-home-modules-title"
+          data-enter=""
+          style={enterStyle(4)}
+        >
           <h2 id="lm-home-modules-title" className="lm-home-page__section-title">
             {translate('modulesTitle')}
           </h2>

@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+import type { LoginEntrance } from '../../utils/loginEntrance'
 
 export interface LoginTransitionContextValue {
   /**
@@ -8,6 +9,8 @@ export interface LoginTransitionContextValue {
    * `false`.
    */
   play: (label: string, go: () => void | Promise<void>) => Promise<boolean>
+  /** Where the cover is, for the screen underneath (`useLoginEntrance`). */
+  entrance: LoginEntrance
 }
 
 export const LoginTransitionContext = createContext<LoginTransitionContextValue | null>(null)

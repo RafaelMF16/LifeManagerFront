@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+import type { LoginEntrance } from '../../utils/loginEntrance'
 import {
   MAX_PLAY_MS,
   NAVIGATE_AFTER_MS,
@@ -118,8 +119,9 @@ export function LoginTransitionProvider({ children }: LoginTransitionProviderPro
 
   useEffect(() => clearTimers, [clearTimers])
 
-  const value = useMemo(() => ({ play }), [play])
   const phase = transition?.phase
+  const entrance: LoginEntrance = phase === undefined ? null : phase === 'covering' ? 'hidden' : 'enter'
+  const value = useMemo(() => ({ play, entrance }), [play, entrance])
 
   return (
     <LoginTransitionContext.Provider value={value}>

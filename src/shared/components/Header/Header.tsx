@@ -12,15 +12,18 @@ import { useUserPreferencesSync } from '../../hooks/useUserPreferencesSync'
 import { useLogout } from '../../hooks/useLogout'
 import { useCurrentUser } from '../../hooks/useCurrentUser'
 import { useInstallPrompt } from '../../hooks/useInstallPrompt'
+import { enterStyle } from '../../utils/enterStyle'
 import type { SupportedLanguage } from '../../i18n/languages'
 import './Header.css'
 
 interface HeaderProps {
   /** Module-specific controls shown next to the user menu (e.g. Finance's privacy toggle). */
   actions?: ReactNode
+  /** Its place in the page's entrance cascade (`shared/styles/enter.css`), if the page plays one: it drops in. */
+  enterIndex?: number
 }
 
-function Header({ actions }: HeaderProps) {
+function Header({ actions, enterIndex }: HeaderProps) {
   const { t: translate } = useTranslation('common')
   const { theme, toggleTheme } = useTheme()
   const { language, setLanguage } = useLanguage()
@@ -57,7 +60,11 @@ function Header({ actions }: HeaderProps) {
   }, [menuOpen])
 
   return (
-    <header className="lm-header">
+    <header
+      className="lm-header"
+      data-enter={enterIndex === undefined ? undefined : 'drop'}
+      style={enterIndex === undefined ? undefined : enterStyle(enterIndex)}
+    >
       <div className="lm-header__brand">
         <AppLogo size={24} />
         <span>LifeManager</span>
