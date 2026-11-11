@@ -115,6 +115,7 @@ A exceção foi o `review-fixes`: um spec só, no front, que juntou as correçõ
 | 7 | `habit-reminders` | [habit-reminders](../../../LifeManager/docs/specs/habit-reminders.md) | [habit-reminders](habit-reminders.md) | `feature/habit-reminders` | aprovado · dependência em discussão |
 | 7 | `savings-goals` | [savings-goals](../../../LifeManager/docs/specs/savings-goals.md) | [savings-goals](savings-goals.md) | `feature/savings-goals` | aprovado |
 | 7 | `transactions-export` | [transactions-export](../../../LifeManager/docs/specs/transactions-export.md) | [transactions-export](transactions-export.md) | `feature/transactions-export` | aprovado |
+| 8 | `helm-reveal` | — | [helm-reveal](helm-reveal.md) | `feature/helm-reveal` | aprovado (pedido em 11/11/2026, fora do mapa original) |
 
 São **10 módulos e 17 branches**: 8 no back e 9 no front.
 
