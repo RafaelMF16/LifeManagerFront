@@ -94,9 +94,15 @@ export async function apiRequest<TResponse>(path: string, options: RequestOption
   return (await parseBody<TResponse>(response)) as TResponse
 }
 
-/** A file the backend sends as an attachment (e.g. the data export): its bytes and the `Content-Disposition` header. */
-export async function apiDownload(path: string, signal?: AbortSignal): Promise<{ blob: Blob; contentDisposition: string | null }> {
+/**
+ * A file the backend sends as an attachment (the data export, the transactions CSV): its bytes, the
+ * `Content-Disposition` header and every header (e.g. the CSV's `X-Row-Count`).
+ */
+export async function apiDownload(
+  path: string,
+  signal?: AbortSignal,
+): Promise<{ blob: Blob; contentDisposition: string | null; headers: Headers }> {
   const response = await sendChecked(path, { method: 'GET', signal })
 
-  return { blob: await response.blob(), contentDisposition: response.headers.get('Content-Disposition') }
+  return { blob: await response.blob(), contentDisposition: response.headers.get('Content-Disposition'), headers: response.headers }
 }

@@ -44,6 +44,13 @@
   gap: var(--space-3);
 }
 
+.lm-dashboard-page__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
 .lm-dashboard-page__period {
   display: flex;
   flex-direction: column;
@@ -117,6 +124,10 @@
 
   .lm-dashboard-page__period-select {
     width: 100%;
+  }
+
+  .lm-dashboard-page__buttons > .lm-button {
+    flex: 1;
   }
 
   .lm-dashboard-page__content {

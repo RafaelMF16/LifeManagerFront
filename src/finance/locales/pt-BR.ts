@@ -133,6 +133,41 @@ export default {
       categoryMeta_other: '{{percent}} da meta · {{achieved}} de {{count}} meses na meta',
     },
   },
+  export: {
+    button: 'Exportar',
+    title: 'Exportar lançamentos',
+    description: 'Baixe os lançamentos de um período numa planilha (CSV) que abre no Excel ou no Google Planilhas.',
+    fromLabel: 'De',
+    toLabel: 'Até',
+    typeLabel: 'Tipo',
+    types: {
+      All: 'Todos',
+      Expense: 'Gastos',
+      Income: 'Receitas',
+      Investment: 'Investimentos',
+    },
+    formatLabel: 'Formato',
+    formats: {
+      PtBr: 'Planilha em português (Excel BR)',
+      EnUs: 'Planilha em inglês',
+    },
+    formatHint: 'Em português: vírgula nos centavos e ponto e vírgula entre as colunas.',
+    submit: 'Baixar',
+    preparing: 'Preparando…',
+    downloaded: 'Arquivo baixado',
+    empty: 'Nenhum lançamento no período',
+    tooManyRequests: 'Muitas exportações seguidas. Tente de novo em alguns minutos.',
+    validation: {
+      from: {
+        invalid: 'Escolha o mês inicial',
+      },
+      to: {
+        invalid: 'Escolha o mês final',
+        beforeFrom: 'O mês final não pode ser anterior ao inicial',
+        tooLong: 'O período pode ter no máximo 36 meses',
+      },
+    },
+  },
   months: {
     title: 'Meses',
     newButton: 'Novo mês',
@@ -1128,6 +1163,10 @@ export default {
         title: 'Novo lançamento',
         body: 'Registre uma receita, um gasto ou um investimento sem sair do painel. O lançamento vai para o mês da data, que é criado se ainda não existir.',
       },
+      export: {
+        title: 'Exportar',
+        body: 'Baixe os lançamentos numa planilha para o Excel ou o Google Planilhas. O período do painel já vem preenchido.',
+      },
       totals: {
         title: 'Totais do período',
         body: 'Receitas, gastos, investido e poupado, com a variação em relação ao período de comparação e a sua taxa de poupança.',
@@ -1173,8 +1212,8 @@ export default {
         body: 'Cada mês reúne suas receitas, gastos e investimentos. Aqui você vê o saldo de todos e abre um mês para lançar e revisar transações.',
       },
       actions: {
-        title: 'Lançar, criar ou importar',
-        body: 'Novo lançamento registra uma receita, um gasto ou um investimento em qualquer data e cria o mês dela se ainda não existir. Novo mês cria um mês deste ano ou do anterior. Importar extrato traz os lançamentos de um arquivo do banco e cria os meses que faltarem.',
+        title: 'Lançar, criar, importar ou exportar',
+        body: 'Novo lançamento registra uma receita, um gasto ou um investimento em qualquer data e cria o mês dela se ainda não existir. Novo mês cria um mês deste ano ou do anterior. Importar extrato traz os lançamentos de um arquivo do banco e cria os meses que faltarem. Exportar baixa os lançamentos de um período numa planilha.',
       },
       filters: {
         title: 'Filtrar a lista',

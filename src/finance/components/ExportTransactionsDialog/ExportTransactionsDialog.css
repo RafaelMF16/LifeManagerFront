@@ -1,0 +1,22 @@
+.lm-export-form__intro {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-export-form__period,
+.lm-export-form__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.lm-export-form__options {
+  margin-top: var(--space-4);
+}
+
+.lm-export-form__error {
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-xs);
+  color: var(--danger);
+}

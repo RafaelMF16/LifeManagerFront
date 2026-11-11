@@ -133,6 +133,41 @@ export default {
       categoryMeta_other: '{{percent}} of the goal · {{achieved}} of {{count}} months on goal',
     },
   },
+  export: {
+    button: 'Export',
+    title: 'Export transactions',
+    description: 'Download a period’s transactions as a spreadsheet (CSV) that opens in Excel or Google Sheets.',
+    fromLabel: 'From',
+    toLabel: 'To',
+    typeLabel: 'Type',
+    types: {
+      All: 'All',
+      Expense: 'Expenses',
+      Income: 'Income',
+      Investment: 'Investments',
+    },
+    formatLabel: 'Format',
+    formats: {
+      PtBr: 'Portuguese spreadsheet (Brazilian Excel)',
+      EnUs: 'English spreadsheet',
+    },
+    formatHint: 'In Portuguese: decimal comma and semicolons between the columns.',
+    submit: 'Download',
+    preparing: 'Preparing…',
+    downloaded: 'File downloaded',
+    empty: 'No transactions in this period',
+    tooManyRequests: 'Too many exports in a row. Try again in a few minutes.',
+    validation: {
+      from: {
+        invalid: 'Choose the first month',
+      },
+      to: {
+        invalid: 'Choose the last month',
+        beforeFrom: 'The last month can’t come before the first one',
+        tooLong: 'The period can have at most 36 months',
+      },
+    },
+  },
   months: {
     title: 'Months',
     newButton: 'New month',
@@ -1128,6 +1163,10 @@ export default {
         title: 'New transaction',
         body: 'Record income, an expense or an investment without leaving the dashboard. It goes to the month of its date, which is created if it doesn’t exist yet.',
       },
+      export: {
+        title: 'Export',
+        body: 'Download the transactions as a spreadsheet for Excel or Google Sheets. The dashboard’s period comes filled in.',
+      },
       totals: {
         title: 'Period totals',
         body: 'Income, expenses, invested and saved, with the change from the comparison period and your savings rate.',
@@ -1173,8 +1212,8 @@ export default {
         body: 'Each month gathers your income, expenses and investments. Here you see every balance and open a month to add and review transactions.',
       },
       actions: {
-        title: 'Add, create or import',
-        body: 'New transaction records income, an expense or an investment on any date and creates its month if it doesn’t exist yet. New month creates a month of this year or the previous one. Import statement brings in a bank file and creates any missing months.',
+        title: 'Add, create, import or export',
+        body: 'New transaction records income, an expense or an investment on any date and creates its month if it doesn’t exist yet. New month creates a month of this year or the previous one. Import statement brings in a bank file and creates any missing months. Export downloads a period’s transactions as a spreadsheet.',
       },
       filters: {
         title: 'Filter the list',
