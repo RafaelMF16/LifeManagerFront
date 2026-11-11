@@ -10,6 +10,7 @@ export const FINANCE_TOURS: TourDefinition[] = [
       { id: 'intro' },
       { id: 'period', target: 'dashboard.period' },
       { id: 'newTransaction', target: 'dashboard.newTransaction' },
+      { id: 'export', target: 'dashboard.export' },
       { id: 'totals', target: 'dashboard.totals' },
       { id: 'days', target: 'dashboard.days' },
       { id: 'chart', target: 'dashboard.chart' },

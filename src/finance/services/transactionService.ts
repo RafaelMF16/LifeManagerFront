@@ -1,4 +1,5 @@
-import { apiRequest } from '../../shared/services/httpClient'
+import { apiDownload, apiRequest } from '../../shared/services/httpClient'
+import { fileNameFromContentDisposition, saveBlob } from '../../shared/utils/downloadBlob'
 import type { PagedResponse } from '../../shared/types/Paging'
 import type {
   QuickTransactionResponseDto,
@@ -6,7 +7,9 @@ import type {
   TransactionRequestDto,
   TransactionResponseDto,
 } from '../types/TransactionDtos'
+import { exportFallbackFileName, exportPath, parseRowCount } from '../utils/exportQuery'
 import { parseAmount } from '../validation/amountSchema'
+import type { ExportFormValues } from '../validation/exportSchema'
 import type { TransactionFormValues } from '../validation/transactionSchema'
 
 function transactionsPath(monthlySummaryId: number) {
@@ -67,4 +70,17 @@ export function updateTransaction(monthlySummaryId: number, id: number, values: 
 
 export async function deleteTransaction(monthlySummaryId: number, id: number): Promise<void> {
   await apiRequest<void>(`${transactionsPath(monthlySummaryId)}/${id}`, { method: 'DELETE' })
+}
+
+/**
+ * Downloads the period's transactions as CSV (`GET /api/Transactions/Export`) and saves it, unless the backend says
+ * the period has none (`X-Row-Count: 0`): then nothing is saved. Resolves with the row count (null when unknown).
+ */
+export async function exportTransactions(values: ExportFormValues, signal?: AbortSignal): Promise<{ rowCount: number | null }> {
+  const { blob, contentDisposition, headers } = await apiDownload(exportPath(values), signal)
+  const rowCount = parseRowCount(headers.get('X-Row-Count'))
+
+  if (rowCount !== 0) saveBlob(blob, fileNameFromContentDisposition(contentDisposition, exportFallbackFileName(values)))
+
+  return { rowCount }
 }
