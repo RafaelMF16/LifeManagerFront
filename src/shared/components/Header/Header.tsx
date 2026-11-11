@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import AppLogo from '../AppLogo/AppLogo'
+import InstallAppDialog from '../InstallAppDialog/InstallAppDialog'
 import Icon from '../Icon/Icon'
 import SegmentedControl from '../SegmentedControl/SegmentedControl'
 import { useTheme } from '../../hooks/useTheme'
@@ -10,6 +11,7 @@ import { useLanguage } from '../../hooks/useLanguage'
 import { useUserPreferencesSync } from '../../hooks/useUserPreferencesSync'
 import { useLogout } from '../../hooks/useLogout'
 import { useCurrentUser } from '../../hooks/useCurrentUser'
+import { useInstallPrompt } from '../../hooks/useInstallPrompt'
 import type { SupportedLanguage } from '../../i18n/languages'
 import './Header.css'
 
@@ -27,6 +29,9 @@ function Header({ actions }: HeaderProps) {
   // Shared with the page (the Home's greeting, My account): loaded once, a new name shows here at once.
   const { name: userName } = useCurrentUser()
   const navigate = useNavigate()
+  // "Install app": the browser's prompt (Chrome, Edge, Android) or the steps for Safari on iOS; hidden otherwise.
+  const { option: installOption, install } = useInstallPrompt()
+  const [installStepsOpen, setInstallStepsOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -99,6 +104,22 @@ function Header({ actions }: HeaderProps) {
                 {translate('account')}
               </button>
 
+              {installOption ? (
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="lm-header__menu-item"
+                  onClick={() => {
+                    setMenuOpen(false)
+                    if (installOption === 'prompt') void install()
+                    else setInstallStepsOpen(true)
+                  }}
+                >
+                  <Icon name="download" size={16} />
+                  {translate('install.action')}
+                </button>
+              ) : null}
+
               <div className="lm-header__menu-divider" />
 
               <div className="lm-header__menu-row">
@@ -155,6 +176,8 @@ function Header({ actions }: HeaderProps) {
           ) : null}
         </div>
       </div>
+
+      {installStepsOpen ? <InstallAppDialog onClose={() => setInstallStepsOpen(false)} /> : null}
     </header>
   )
 }

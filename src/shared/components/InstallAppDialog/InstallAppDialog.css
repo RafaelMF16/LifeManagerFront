@@ -1,0 +1,22 @@
+.lm-install-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+}
+
+.lm-install-steps li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.lm-install-steps svg {
+  flex-shrink: 0;
+  color: var(--text-primary);
+}

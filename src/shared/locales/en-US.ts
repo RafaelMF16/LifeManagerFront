@@ -21,6 +21,18 @@ export default {
   splash: {
     loading: 'Loading…',
   },
+  install: {
+    action: 'Install app',
+    iosTitle: 'Install LifeManager',
+    iosStepShare: 'Tap Share in the Safari toolbar.',
+    iosStepAdd: 'Choose "Add to Home Screen".',
+    iosStepConfirm: 'Tap Add. The app opens straight from your home screen, full screen.',
+    iosClose: 'Got it',
+  },
+  update: {
+    available: 'New version available',
+    action: 'Update',
+  },
   routeError: {
     title: 'Something went wrong',
     chunkMessage: 'A new version of the app came out while it was open. Reload to continue.',

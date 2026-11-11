@@ -89,6 +89,7 @@ Aparece no topo de todas as telas depois do login.
 - **Botão do usuário** (canto direito): abre um menu com:
   - o **nome** do usuário;
   - **Minha conta:** abre a tela [Minha conta](#minha-conta);
+  - **Instalar app:** só aparece quando dá para instalar e o app ainda não está instalado. No Chrome e no Edge (computador e Android), abre a janela do próprio navegador para instalar; no Safari do iPhone e do iPad, abre uma janela com os passos: **Compartilhar** → **Adicionar à Tela de Início** → **Adicionar**. Instalado, o app abre pelo ícone direto na Home, em tela cheia; segurar o ícone mostra os atalhos **Hoje** e **Novo lançamento**;
   - **Tema:** alterna entre claro (sol) e escuro (lua);
   - **Idioma:** português ou inglês;
   - **Sair:** encerra a sessão, mostra "Você saiu da sua conta." e volta para o login.
@@ -127,6 +128,7 @@ As listas (meses, lançamentos, categorias, recorrências, hábitos, recompensas
 
 - Formulários e confirmações abrem numa janela sobre a tela. No celular, ela sobe da parte de baixo. **Cancelar** ou **Fechar** fecha sem salvar.
 - Uma ação concluída mostra um aviso rápido na parte de baixo ("Categoria criada"). Alguns avisos trazem um botão ("Ver mês"); esses ficam mais tempo na tela.
+- **Nova versão disponível:** quando sai uma versão nova do app enquanto ele está aberto, aparece um aviso com o botão **Atualizar**, que fica na tela até você tocar nele ou fechar. **Atualizar** recarrega o app já na versão nova; fechando, ela entra na próxima vez que o app abrir.
 - Um erro que não é de um campo específico abre uma janela de erro. Sem conexão com o servidor, aparece **Erro de conexão**.
 - Erros de um campo (nome repetido, valor inválido) aparecem embaixo do próprio campo.
 - **Campos de categoria** (lançamento, recorrência, filtro da lista de lançamentos, adicionar ao orçamento e a importação) têm **busca**: ao tocar, abre logo abaixo do campo uma lista com as 20 primeiras categorias em ordem alfabética; digitar busca entre todas, ignorando acentos e maiúsculas ("mer" acha "Mercado"), e **Ver mais** traz as próximas. No teclado: ↑/↓ andam pela lista, Enter escolhe, Esc fecha. Sair do campo sem escolher volta à categoria que estava: o texto digitado nunca vira categoria. Sem resultado, aparece "Nenhuma categoria encontrada"; se a busca falhar, **Tentar de novo**.
