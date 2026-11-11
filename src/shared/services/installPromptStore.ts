@@ -51,13 +51,17 @@ export function getInstallPromptSnapshot(): boolean {
 
 /**
  * Opens the browser's install prompt. The event works once, so it is forgotten whatever the answer; null when there
- * is none to open.
+ * is none to open or the browser refused to open it (the next `beforeinstallprompt` brings the item back).
  */
 export async function promptInstall(): Promise<'accepted' | 'dismissed' | null> {
   const event = promptEvent
   if (!event) return null
 
   setPromptEvent(null)
-  await event.prompt()
-  return (await event.userChoice).outcome
+  try {
+    await event.prompt()
+    return (await event.userChoice).outcome
+  } catch {
+    return null
+  }
 }

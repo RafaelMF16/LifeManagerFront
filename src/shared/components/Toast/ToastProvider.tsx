@@ -3,12 +3,7 @@ import type { ReactNode } from 'react'
 import Toast from './Toast'
 import { ToastContext } from './ToastContext'
 import type { ToastAction, ToastOptions } from './ToastContext'
-
-interface ToastState {
-  message: string
-  detail?: string
-  action?: ToastAction
-}
+import { closeVisibleToast, EMPTY_TOAST_STACK, expireTransientToast, showToast, visibleToast } from './toastStack'
 
 const AUTO_DISMISS_MS = 4000
 /** A toast with a button stays longer, so there is time to reach it. */
@@ -19,22 +14,28 @@ interface ToastProviderProps {
 }
 
 export function ToastProvider({ children }: ToastProviderProps) {
-  const [toast, setToast] = useState<ToastState | null>(null)
+  const [stack, setStack] = useState(EMPTY_TOAST_STACK)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   const close = useCallback(() => {
     clearTimeout(timeoutRef.current)
-    setToast(null)
+    setStack(closeVisibleToast)
   }, [])
 
   const show = useCallback((message: string, detail?: string, action?: ToastAction, options?: ToastOptions) => {
+    const persistent = options?.persistent === true
     clearTimeout(timeoutRef.current)
-    setToast({ message, detail, action })
-    if (options?.persistent) return
-    timeoutRef.current = setTimeout(() => setToast(null), action ? AUTO_DISMISS_WITH_ACTION_MS : AUTO_DISMISS_MS)
+    setStack((current) => showToast(current, { message, detail, action }, persistent))
+    if (persistent) return
+    timeoutRef.current = setTimeout(
+      () => setStack(expireTransientToast),
+      action ? AUTO_DISMISS_WITH_ACTION_MS : AUTO_DISMISS_MS,
+    )
   }, [])
 
   useEffect(() => () => clearTimeout(timeoutRef.current), [])
+
+  const toast = visibleToast(stack)
 
   return (
     <ToastContext.Provider value={{ show }}>

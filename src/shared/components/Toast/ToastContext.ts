@@ -7,7 +7,8 @@ export interface ToastAction {
 }
 
 export interface ToastOptions {
-  /** Stays until the user closes it or clicks its action (e.g. "New version available"). */
+  /** Stays until the user closes it or clicks its action (e.g. "New version available"); a timed toast shows over it
+   * and it comes back afterwards (`toastStack.ts`). */
   persistent?: boolean
 }
 

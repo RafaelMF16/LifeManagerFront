@@ -52,6 +52,15 @@ describe('installPromptStore', () => {
     await expect(promptInstall()).resolves.toBeNull()
   })
 
+  it('esquece o evento e devolve null quando o navegador recusa abrir o prompt', async () => {
+    const event = promptEvent()
+    event.prompt = vi.fn(() => Promise.reject(new Error('NotAllowedError')))
+    target.dispatchEvent(event)
+
+    await expect(promptInstall()).resolves.toBeNull()
+    expect(getInstallPromptSnapshot()).toBe(false)
+  })
+
   it('para de ouvir quando desligado', () => {
     stop()
     target.dispatchEvent(promptEvent())
