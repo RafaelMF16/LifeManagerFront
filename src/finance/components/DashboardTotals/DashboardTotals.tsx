@@ -2,7 +2,7 @@ import { useId } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
-import { usePrivacyMode } from '../../hooks/usePrivacyMode'
+import { usePrivacyMode } from '../../../shared/hooks/usePrivacyMode'
 import type { DashboardAmountDto, DashboardTotalsDto } from '../../types/DashboardDtos'
 import Amount from '../Amount/Amount'
 import DashboardChange from '../DashboardChange/DashboardChange'
@@ -76,7 +76,7 @@ function DashboardTotals({ totals, comparisonRange }: DashboardTotalsProps) {
         </span>
         <span aria-hidden={hidden || undefined}>{savingsRate(totals.savingsRate)}</span>
         {hidden ? (
-          <span className="lm-dashboard-totals__visually-hidden">{translate('finance:privacy.hiddenValue')}</span>
+          <span className="lm-dashboard-totals__visually-hidden">{translate('common:privacy.hiddenValue')}</span>
         ) : null}
       </span>
     )

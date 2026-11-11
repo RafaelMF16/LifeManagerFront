@@ -11,11 +11,33 @@ export default {
   preferences: {
     saveError: 'Could not save your preferences.',
   },
+  account: 'My account',
+  actions: {
+    cancel: 'Cancel',
+  },
   logout: 'Log out',
   logoutSuccessToast: 'You have been signed out.',
   sessionExpiredToast: 'Your session has expired. Please sign in again.',
   splash: {
     loading: 'Loading…',
+  },
+  install: {
+    action: 'Install app',
+    iosTitle: 'Install LifeManager',
+    iosStepShare: 'Tap Share in the Safari toolbar.',
+    iosStepAdd: 'Choose "Add to Home Screen".',
+    iosStepConfirm: 'Tap Add. The app opens straight from your home screen, full screen.',
+    iosClose: 'Got it',
+  },
+  update: {
+    available: 'New version available',
+    action: 'Update',
+  },
+  routeError: {
+    title: 'Something went wrong',
+    chunkMessage: 'A new version of the app came out while it was open. Reload to continue.',
+    message: 'This screen could not open. Reload to try again.',
+    reload: 'Reload',
   },
   pagination: {
     navAria: 'Pagination',
@@ -33,6 +55,26 @@ export default {
     collapse: 'Collapse menu',
     expand: 'Expand menu',
     close: 'Close menu',
+  },
+  privacy: {
+    hide: 'Hide amounts',
+    show: 'Show amounts',
+    hiddenValue: 'Hidden amount',
+  },
+  validation: {
+    name: {
+      required: 'Name is required',
+      tooLong: 'Name cannot be more than 100 characters',
+    },
+    password: {
+      required: 'Password is required',
+      tooShort: 'Password must be at least 8 characters',
+      tooLong: 'Password cannot be more than 50 characters',
+    },
+    confirmPassword: {
+      required: 'Confirm your password',
+      mismatch: "Passwords don't match",
+    },
   },
   tour: {
     start: 'Tour of this screen',

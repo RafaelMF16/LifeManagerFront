@@ -1,3 +1,4 @@
+import '../../locales/register'
 import { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import Footer from '../../../shared/components/Footer/Footer'

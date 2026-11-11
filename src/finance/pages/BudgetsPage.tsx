@@ -22,9 +22,8 @@ import MoneyInput from '../components/MoneyInput/MoneyInput'
 import UnsavedChangesBar from '../components/UnsavedChangesBar/UnsavedChangesBar'
 import { useBudgetPlan } from '../hooks/useBudgetPlan'
 import { useBudgetTotalField } from '../hooks/useBudgetTotalField'
-import { useCategoryOptions } from '../hooks/useCategoryOptions'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
-import { usePrivacyMode } from '../hooks/usePrivacyMode'
+import { usePrivacyMode } from '../../shared/hooks/usePrivacyMode'
 import { assignColorSlots, freeAmount, freePercent, maxPercentFor, sliceAmount, sliceKey, sliceRatio } from '../utils/budgetPlan'
 import type { DraftSlice } from '../utils/budgetPlan'
 import { parseYearMonth, toYearMonth } from '../utils/yearMonth'
@@ -91,7 +90,6 @@ function BudgetsPage() {
   const [exactKey, setExactKey] = useState<string | null>(null)
   const [isCopying, setIsCopying] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
-  const categoryOptions = useCategoryOptions()
 
   const draftTotal = plan.draft?.total ?? null
   const totalField = useBudgetTotalField(month, draftTotal, plan.setTotal)
@@ -289,8 +287,6 @@ function BudgetsPage() {
 
         {isAdding ? (
           <AddSliceDialog
-            categories={categoryOptions.categories}
-            categoriesStatus={categoryOptions.status}
             slices={draft.slices}
             onAdd={addSlice}
             onClose={() => setIsAdding(false)}

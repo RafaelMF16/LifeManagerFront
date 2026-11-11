@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Button from '../../shared/components/Button/Button'
 import Select from '../../shared/components/Select/Select'
@@ -8,6 +9,7 @@ import DashboardBudgets from '../components/DashboardBudgets/DashboardBudgets'
 import DailySpendingCalendar from '../components/DailySpendingCalendar/DailySpendingCalendar'
 import DashboardTotals from '../components/DashboardTotals/DashboardTotals'
 import MonthlyFlowChart from '../components/MonthlyFlowChart/MonthlyFlowChart'
+import QuickTransactionModal from '../components/QuickTransactionModal/QuickTransactionModal'
 import { useFinanceDashboard } from '../hooks/useFinanceDashboard'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
 import type { DashboardPresetId } from '../types/DashboardDtos'
@@ -64,6 +66,7 @@ function DashboardPage() {
   const { t: translate } = useTranslation('finance')
   const { rangeLabel } = useFinanceFormat()
   const { data, status, isFetching, reload, preset, setPreset, presets } = useFinanceDashboard()
+  const [isQuickOpen, setIsQuickOpen] = useState(false)
 
   const presetOptions = presets.map((option) => ({
     value: option,
@@ -131,23 +134,36 @@ function DashboardPage() {
           <h1 className="lm-dashboard-page__title">{translate('finance:dashboard.title')}</h1>
         </div>
 
-        <div className="lm-dashboard-page__period" data-tour="dashboard.period">
-          <Select
-            label={translate('finance:dashboard.periodLabel')}
-            options={presetOptions}
-            value={preset}
-            onChange={(event) => setPreset(event.target.value as DashboardPresetId)}
-            containerClassName="lm-dashboard-page__period-select"
-          />
-          {data ? (
-            <span className="lm-dashboard-page__comparison">
-              {translate('finance:dashboard.comparedTo', { range: comparisonRange })}
-            </span>
-          ) : null}
+        <div className="lm-dashboard-page__tools">
+          <Button
+            variant="primary"
+            icon="plus"
+            data-tour="dashboard.newTransaction"
+            onClick={() => setIsQuickOpen(true)}
+          >
+            {translate('finance:transactions.newButton')}
+          </Button>
+
+          <div className="lm-dashboard-page__period" data-tour="dashboard.period">
+            <Select
+              label={translate('finance:dashboard.periodLabel')}
+              options={presetOptions}
+              value={preset}
+              onChange={(event) => setPreset(event.target.value as DashboardPresetId)}
+              containerClassName="lm-dashboard-page__period-select"
+            />
+            {data ? (
+              <span className="lm-dashboard-page__comparison">
+                {translate('finance:dashboard.comparedTo', { range: comparisonRange })}
+              </span>
+            ) : null}
+          </div>
         </div>
       </div>
 
       {renderContent()}
+
+      {isQuickOpen ? <QuickTransactionModal onClose={() => setIsQuickOpen(false)} onSaved={reload} /> : null}
     </main>
   )
 }

@@ -14,10 +14,16 @@ export function monthDateRange(year: number, month: number) {
   return { min: `${year}-${pad(month)}-01`, max: `${year}-${pad(month)}-${pad(lastDay)}` }
 }
 
-/** The form validates the date against the month it belongs to, so the schema is built per month. */
-export function createTransactionSchema(year: number, month: number) {
-  const { min, max } = monthDateRange(year, month)
+/** The earliest date a quick entry takes: the backend's oldest year for a month (`MonthlySummaryYear`). */
+export const QUICK_TRANSACTION_MIN_DATE = '2000-01-01'
 
+/** The latest date a quick entry takes: the end of the current year. Whether a missing month opens is the backend's call. */
+export function quickTransactionMaxDate(currentYear: number) {
+  return `${currentYear}-12-31`
+}
+
+/** Every field but the date's range, which depends on the form (inside one month, or the quick entry's years). */
+function transactionSchema(min: string, max: string, outOfRangeMessage: string) {
   return z.object({
     type: z.enum(['Expense', 'Income', 'Investment'], { message: 'finance:transactions.validation.type.invalid' }), // code: Transaction.InvalidType
     description: z
@@ -31,10 +37,24 @@ export function createTransactionSchema(year: number, month: number) {
       .string()
       .min(1, { message: 'finance:transactions.validation.date.required' })
       .refine((value) => DATE_PATTERN.test(value) && value >= min && value <= max, {
-        message: 'finance:transactions.validation.date.outsideMonth', // code: Transaction.DateOutsideMonth
+        message: outOfRangeMessage,
       }),
     categoryId: z.string().min(1, { message: 'finance:transactions.validation.category.required' }),
   })
+}
+
+/** The form validates the date against the month it belongs to, so the schema is built per month. */
+export function createTransactionSchema(year: number, month: number) {
+  const { min, max } = monthDateRange(year, month)
+  return transactionSchema(min, max, 'finance:transactions.validation.date.outsideMonth') // code: Transaction.DateOutsideMonth
+}
+
+/**
+ * The quick entry has no month: any date from `minDate` to `maxDate`. The backend still refuses to open a missing month
+ * outside the current or the previous year (`MonthlySummary.YearNotCurrent`).
+ */
+export function createQuickTransactionSchema(minDate: string, maxDate: string) {
+  return transactionSchema(minDate, maxDate, 'finance:transactions.validation.date.outOfRange')
 }
 
 export type TransactionFormValues = z.infer<ReturnType<typeof createTransactionSchema>>

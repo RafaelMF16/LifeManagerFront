@@ -13,11 +13,6 @@ export default {
       categories: 'Categories',
     },
   },
-  privacy: {
-    hide: 'Hide amounts',
-    show: 'Show amounts',
-    hiddenValue: 'Hidden amount',
-  },
   actions: {
     cancel: 'Cancel',
     close: 'Close',
@@ -129,6 +124,7 @@ export default {
       investmentCategoriesTitle: 'Investments by target',
       noExpenseCategories: 'No category with a spending limit.',
       noInvestmentCategories: 'No category with an investment target.',
+      noOverspent: 'No category went over its limit in this period.',
       over: '{{amount}} over',
       short: '{{amount}} short',
       withinLimit: 'Within the limit',
@@ -187,7 +183,6 @@ export default {
       title: 'New month',
       monthLabel: 'Month',
       yearLabel: 'Year',
-      yearHint: 'Months are created in the current year',
       create: 'Create month',
     },
     toasts: {
@@ -197,8 +192,10 @@ export default {
       month: {
         required: 'Choose a month',
         invalid: 'Choose a month from January to December',
-        yearNotCurrent: 'Months can only be created in the current year',
         taken: 'This month already exists',
+      },
+      year: {
+        notAllowed: 'Months can only be created in this year or the previous one',
       },
     },
   },
@@ -290,13 +287,13 @@ export default {
       amountPlaceholder: '0.00',
       dateLabel: 'Date',
       categoryLabel: 'Category',
-      categoryPlaceholder: 'Choose a category',
-      categoriesLoading: 'Loading categories…',
-      categoriesError: 'Could not load your categories.',
-      noCategories: 'You don’t have any categories yet.',
-      createCategory: 'Create category',
       create: 'Save transaction',
       save: 'Save',
+    },
+    quick: {
+      saved: 'Transaction saved in {{period}}',
+      savedMonthCreated: 'Transaction saved in {{period}} · month created',
+      viewMonth: 'View month',
     },
     delete: {
       title: 'Delete transaction',
@@ -329,6 +326,8 @@ export default {
       date: {
         required: 'Enter the date',
         outsideMonth: 'The date must be in {{period}}',
+        outOfRange: 'Use a date from 2000 to the end of this year',
+        yearNotCurrent: 'Months can only be created in this year or the previous one',
       },
       category: {
         required: 'Choose a category',
@@ -336,6 +335,17 @@ export default {
       },
       notFound: 'This transaction no longer exists. The list has been refreshed.',
     },
+  },
+  categoryPicker: {
+    placeholder: 'Search category',
+    searching: 'Searching…',
+    empty: 'No category found',
+    noCategories: 'You don’t have any categories yet.',
+    error: 'Couldn’t search your categories.',
+    retry: 'Try again',
+    loadMore: 'Show more',
+    loadingMore: 'Loading…',
+    create: 'Create category "{{term}}"',
   },
   categories: {
     title: 'Categories',
@@ -459,11 +469,8 @@ export default {
       button: 'Add category',
       title: 'Add to budget',
       investmentHint: 'How much you want to invest this month',
-      search: 'Search category',
-      empty: 'Every category is already in the budget.',
-      noResults: 'No category found.',
-      loading: 'Loading categories…',
-      loadError: "Couldn't load the categories.",
+      categoryLabel: 'Category',
+      allInBudget: 'These categories are already in the budget.',
     },
     empty: {
       title: "This month doesn't have a budget yet",
@@ -603,11 +610,6 @@ export default {
       dayLabel: 'Day of month',
       dayHint: 'In shorter months it falls on the last day.',
       categoryLabel: 'Category',
-      categoryPlaceholder: 'Choose a category',
-      categoriesLoading: 'Loading categories…',
-      categoriesError: 'Couldn’t load the categories.',
-      noCategories: 'You don’t have any categories yet.',
-      createCategory: 'Create category',
       startLabel: 'Starts',
       endLabel: 'Ends',
       noEnd: 'No end date',
@@ -885,7 +887,6 @@ export default {
       selectPage: 'Select all on this page',
       category: 'Category',
       categoryPlaceholder: 'No category',
-      newCategory: '+ New category…',
       include: 'Include in the import',
       exclude: 'Leave out',
       edit: 'Edit',
@@ -1123,6 +1124,10 @@ export default {
         title: 'Period',
         body: 'Pick the months the dashboard looks at. Next to it is the period the totals are compared with.',
       },
+      newTransaction: {
+        title: 'New transaction',
+        body: 'Record income, an expense or an investment without leaving the dashboard. It goes to the month of its date, which is created if it doesn’t exist yet.',
+      },
       totals: {
         title: 'Period totals',
         body: 'Income, expenses, invested and saved, with the change from the comparison period and your savings rate.',
@@ -1168,8 +1173,8 @@ export default {
         body: 'Each month gathers your income, expenses and investments. Here you see every balance and open a month to add and review transactions.',
       },
       actions: {
-        title: 'Create or import',
-        body: 'New month creates a month of the current year. Import statement brings in a bank file and creates any missing months.',
+        title: 'Add, create or import',
+        body: 'New transaction records income, an expense or an investment on any date and creates its month if it doesn’t exist yet. New month creates a month of this year or the previous one. Import statement brings in a bank file and creates any missing months.',
       },
       filters: {
         title: 'Filter the list',

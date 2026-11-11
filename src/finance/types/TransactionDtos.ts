@@ -29,6 +29,14 @@ export interface TransactionResponseDto {
   recurringTransactionId: number | null
 }
 
+// Espelha QuickTransactionResponseDto (POST /api/Transactions)
+export interface QuickTransactionResponseDto extends TransactionResponseDto {
+  /** The month the entry went to, which may have just been opened. */
+  monthlySummaryId: number
+  /** The month was missing and this entry opened it. */
+  monthCreated: boolean
+}
+
 // Espelha TransactionListQueryDto (query string de GET /api/MonthlySummaries/{id}/Transactions)
 export interface TransactionListQuery {
   page: number

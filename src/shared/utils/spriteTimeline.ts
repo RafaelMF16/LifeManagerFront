@@ -3,15 +3,14 @@ export interface SpriteTimeline {
   durationMs: number
 }
 
-/** The wallet's loop (`splash_loop`): 24 frames of 70 ms. */
-export const WALLET_LOOP_FRAMES: readonly number[] = Array.from({ length: 24 }, () => 70)
+/** The helm's loop (one spoke turned, two coins in): 24 frames of 70 ms. */
+export const HELM_LOOP_FRAMES: readonly number[] = Array.from({ length: 24 }, () => 70)
 
 /**
- * The bill going into the wallet (`feedback_receita`), shortened from 2.9 s to 1.63 s so it doesn't hold up a daily
- * sign-in: the first frame goes from 400 to 120 ms, the final sparkle from 700 to 250 ms, and the 22 in between play
- * at 70% of their original length (70→49, 80→56, 90→63, 100→70, 110→77, 120→84).
+ * The coin going into the helm, 1.63 s so it doesn't hold up a daily sign-in: the still helm (120 ms), the coin's
+ * flight (13 frames of 49 ms), the full turn slowing down as it settles (56 → 84 ms) and the final sparkle (250 ms).
  */
-export const WALLET_RECEIVE_FRAMES: readonly number[] = [
+export const HELM_RECEIVE_FRAMES: readonly number[] = [
   120,
   ...Array.from({ length: 13 }, () => 49),
   56, 56, 56, 63, 70, 77, 84, 77, 84,

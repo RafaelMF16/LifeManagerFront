@@ -1,27 +1,18 @@
-import { useEffect, useState } from 'react'
-import { getCurrentUser } from '../services/currentUserService'
+import { useEffect, useSyncExternalStore } from 'react'
+import { getCurrentUserSnapshot, loadCurrentUser, subscribeCurrentUser } from '../services/currentUserStore'
 
-/** Loads the signed-in user's name; stays `null` while loading or if the request fails (`failed` tells them apart). */
+/**
+ * The signed-in user's name and e-mail (`null` while loading or if the request failed; `failed` tells them apart).
+ * One state shared by every caller (`shared/services/currentUserStore.ts`): loaded once per session, and a new name
+ * saved in "My account" shows everywhere at once.
+ */
 export function useCurrentUser() {
-  const [name, setName] = useState<string | null>(null)
-  const [failed, setFailed] = useState(false)
+  const { user, failed } = useSyncExternalStore(subscribeCurrentUser, getCurrentUserSnapshot)
 
   useEffect(() => {
-    // Aborted on unmount, which also fires the backend's CancellationToken.
-    const controller = new AbortController()
-
-    getCurrentUser(controller.signal).then(
-      (user) => {
-        if (!controller.signal.aborted) setName(user.name)
-      },
-      () => {
-        if (!controller.signal.aborted) setFailed(true)
-        // Nothing else to show: an expired session is already redirected by the root route (RootLayout in App.tsx).
-      },
-    )
-
-    return () => controller.abort()
+    void loadCurrentUser()
   }, [])
 
-  return { name, failed }
+  // `retry`: after a failure, asks again (the screen shows it loading meanwhile).
+  return { name: user?.name ?? null, email: user?.email ?? null, failed, retry: loadCurrentUser }
 }

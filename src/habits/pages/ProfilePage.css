@@ -140,13 +140,49 @@
     font-size: var(--text-xl);
   }
 
+  /* Stacked: the avatar and "Editar" share the top row, and the name gets the whole width below, never cut. */
   .lm-profile-identity {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "avatar edit"
+      "info info";
+    align-items: center;
     gap: var(--space-4);
     padding: var(--space-4);
   }
 
+  .lm-profile-identity > :first-child {
+    grid-area: avatar;
+  }
+
+  .lm-profile-identity > .lm-profile-identity__skeleton {
+    grid-area: 1 / 1 / -1 / -1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .lm-profile-identity__info {
+    grid-area: info;
+  }
+
+  .lm-profile-identity__edit {
+    grid-area: edit;
+    justify-self: end;
+    align-self: center;
+  }
+
   .lm-profile-identity__name {
+    overflow: visible;
     font-size: var(--text-lg);
+    text-overflow: clip;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .lm-profile-identity__title,
+  .lm-profile-identity__meta {
+    overflow-wrap: anywhere;
   }
 }

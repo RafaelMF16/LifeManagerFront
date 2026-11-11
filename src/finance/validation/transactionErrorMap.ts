@@ -16,3 +16,9 @@ export const transactionErrorFieldMap: ApiErrorFieldMap<TransactionFormValues> =
   // The chosen category was deleted (or never belonged to the user) after the options were loaded.
   'Category.NotFound': { field: 'categoryId', message: 'finance:transactions.validation.category.notFound' },
 }
+
+/** The quick entry (`POST /api/Transactions`) may also be refused the month it would open. */
+export const quickTransactionErrorFieldMap: ApiErrorFieldMap<TransactionFormValues> = {
+  ...transactionErrorFieldMap,
+  'MonthlySummary.YearNotCurrent': { field: 'date', message: 'finance:transactions.validation.date.yearNotCurrent' },
+}

@@ -10,7 +10,6 @@ import Select from '../../../shared/components/Select/Select'
 import type { PagedResponse, SortDirection } from '../../../shared/types/Paging'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
 import type { TransactionsStatus } from '../../hooks/useTransactions'
-import type { CategoryResponseDto } from '../../types/CategoryDtos'
 import type {
   MoneyFlowType,
   TransactionResponseDto,
@@ -18,10 +17,11 @@ import type {
   TransactionTypeFilter,
 } from '../../types/TransactionDtos'
 import Amount from '../Amount/Amount'
+import CategoryPicker from '../CategoryPicker/CategoryPicker'
+import type { CategoryOption } from '../CategoryPicker/CategoryPicker'
 import TransactionListSkeleton from './TransactionListSkeleton'
 import './TransactionList.css'
 
-const ALL_CATEGORIES = 'all'
 const TYPE_FILTERS: TransactionTypeFilter[] = ['All', 'Income', 'Expense', 'Investment']
 
 // How each type reads in a row. Money leaving the account (expense, investment) shows negative, so the
@@ -52,11 +52,11 @@ interface TransactionListProps {
   isFetching: boolean
   /** How many transactions the month has in all, to tell "empty month" apart from "no results". */
   monthTransactionCount: number
-  categories: CategoryResponseDto[]
   type: TransactionTypeFilter
   onTypeChange: (type: TransactionTypeFilter) => void
-  categoryId: number | null
-  onCategoryChange: (categoryId: number | null) => void
+  /** The category filter; `null` = all categories. */
+  category: CategoryOption | null
+  onCategoryChange: (category: CategoryOption | null) => void
   searchInput: string
   onSearchChange: (value: string) => void
   hasFilters: boolean
@@ -80,10 +80,9 @@ function TransactionList({
   status,
   isFetching,
   monthTransactionCount,
-  categories,
   type,
   onTypeChange,
-  categoryId,
+  category,
   onCategoryChange,
   searchInput,
   onSearchChange,
@@ -102,11 +101,6 @@ function TransactionList({
 }: TransactionListProps) {
   const { t: translate } = useTranslation('finance')
   const { dayLabel } = useFinanceFormat()
-
-  const categoryOptions = [
-    { value: ALL_CATEGORIES, label: translate('finance:transactions.list.filters.allCategories') },
-    ...categories.map((category) => ({ value: String(category.id), label: category.name })),
-  ]
 
   const sortedLabel = translate(
     sortDirection === 'Asc' ? 'finance:transactions.list.sort.ascending' : 'finance:transactions.list.sort.descending',
@@ -241,12 +235,13 @@ function TransactionList({
               className="lm-transaction-list__type-control"
             />
           </div>
-          <Select
+          <CategoryPicker
             size="sm"
             label={translate('finance:transactions.list.filters.category')}
-            options={categoryOptions}
-            value={categoryId === null ? ALL_CATEGORIES : String(categoryId)}
-            onChange={(event) => onCategoryChange(event.target.value === ALL_CATEGORIES ? null : Number(event.target.value))}
+            allLabel={translate('finance:transactions.list.filters.allCategories')}
+            value={category}
+            onChange={onCategoryChange}
+            popup="floating"
             containerClassName="lm-transaction-list__category-filter"
           />
           <Input

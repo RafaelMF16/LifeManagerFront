@@ -1,0 +1,14 @@
+.lm-helm-sprite {
+  display: block;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.lm-helm-sprite__strip {
+  display: block;
+  max-width: none;
+  /* Pixel art: scale by whole multiples of 64 px without smoothing the pixels. */
+  image-rendering: pixelated;
+  user-select: none;
+  will-change: transform;
+}

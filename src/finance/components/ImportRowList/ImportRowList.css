@@ -219,7 +219,7 @@
   white-space: nowrap;
 }
 
-.lm-import-rows__category--missing .lm-select-field__control {
+.lm-import-rows__category--missing .lm-input-field__control {
   border-color: var(--warning);
 }
 

@@ -1,4 +1,5 @@
 import { clearPendingInvite } from '../utils/pendingInvite'
+import { resetCurrentUser } from './currentUserStore'
 import { apiRequest } from './httpClient'
 import { emitSessionExpired } from './sessionEvents'
 import { clearAccessToken, getAccessToken, setAccessToken } from './tokenStorage'
@@ -16,9 +17,28 @@ export async function logout(): Promise<void> {
   } catch {
     // Ignored on purpose: signing out locally must not depend on the server.
   } finally {
-    clearAccessToken()
-    clearPendingInvite()
+    endLocalSession()
   }
+}
+
+/**
+ * "Sign out of every device" (My account): the backend ends every session of the user, this one included, and
+ * deletes the cookie. Unlike `logout`, a failure is the caller's to show: nothing ended, so the user stays here.
+ */
+export async function logoutAll(): Promise<void> {
+  await apiRequest<void>('/api/Auth/LogoutAll', { method: 'POST' })
+  endLocalSession()
+}
+
+/**
+ * Forgets this tab's session: the access token, a pending invite (so it isn't offered to whoever signs in next on
+ * this browser) and the loaded user. For when the backend already ended the session (logout, sign out everywhere,
+ * account deletion).
+ */
+export function endLocalSession(): void {
+  clearAccessToken()
+  clearPendingInvite()
+  resetCurrentUser()
 }
 
 let refreshInFlight: Promise<boolean> | null = null

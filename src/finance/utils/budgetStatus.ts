@@ -30,3 +30,11 @@ export function closedMonthsScore(months: { year: number; month: number; achieve
 
   return { achieved: closed.filter((month) => month.achieved).length, total: closed.length }
 }
+
+/**
+ * The expense categories that went past their limit in the period (`gap` is how far past, > 0), in the backend's
+ * order (furthest first). The dashboard lists only these: a category within its limit isn't news.
+ */
+export function overspentCategories<T extends { gap: number }>(categories: T[]): T[] {
+  return categories.filter((category) => category.gap > 0)
+}

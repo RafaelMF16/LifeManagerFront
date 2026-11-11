@@ -70,6 +70,8 @@ Na tela inicial, escolha **Criar conta**, cadastre-se e entre. Depois escolha um
 | `npm run lint` | Oxlint |
 | `npm test` | Testes do Vitest |
 
+O app é um PWA (instalável, com service worker só para o shell). O service worker não roda no `npm run dev`: para testar a instalação e o aviso de versão nova, use `npm run build && npm run preview` (com a API rodando: o preview repassa `/api` para a API do `.env` (`https://localhost:7233`), como o Firebase Hosting faz em produção) e confira em DevTools → Application.
+
 ## Deploy (Firebase Hosting)
 
 O front é publicado no Firebase Hosting, que também repassa `/api/**` para a API no Cloud Run. Assim o navegador fala com uma origem só e o build de produção chama `/api/...` sem URL fixa (`.env.production`). A API precisa estar publicada antes; veja `docs/deploy.md` no repositório da API.

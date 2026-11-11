@@ -1,67 +1,74 @@
-import { useId } from 'react'
-import { useWatch } from 'react-hook-form'
+import { useId, useState } from 'react'
+import { Controller, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
 import Button from '../../../shared/components/Button/Button'
 import Dialog from '../../../shared/components/Dialog/Dialog'
 import IconButton from '../../../shared/components/IconButton/IconButton'
 import Input from '../../../shared/components/Input/Input'
 import SegmentedControl from '../../../shared/components/SegmentedControl/SegmentedControl'
-import Select from '../../../shared/components/Select/Select'
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
 import { isSessionExpiredError } from '../../../shared/services/httpClient'
 import { isApiError } from '../../../shared/types/ApiError'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
-import type { CategoryOptionsStatus } from '../../hooks/useCategoryOptions'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
-import type { CategoryResponseDto } from '../../types/CategoryDtos'
 import type { MoneyFlowType, TransactionResponseDto } from '../../types/TransactionDtos'
 import { toFormAmount } from '../../validation/amountSchema'
-import { transactionErrorFieldMap } from '../../validation/transactionErrorMap'
-import { TRANSACTION_DESCRIPTION_MAX_LENGTH, createTransactionSchema, monthDateRange } from '../../validation/transactionSchema'
+import { quickTransactionErrorFieldMap, transactionErrorFieldMap } from '../../validation/transactionErrorMap'
+import {
+  QUICK_TRANSACTION_MIN_DATE,
+  TRANSACTION_DESCRIPTION_MAX_LENGTH,
+  createQuickTransactionSchema,
+  createTransactionSchema,
+  monthDateRange,
+  quickTransactionMaxDate,
+} from '../../validation/transactionSchema'
 import type { TransactionFormValues } from '../../validation/transactionSchema'
+import CategoryPicker from '../CategoryPicker/CategoryPicker'
 import MoneyInput from '../MoneyInput/MoneyInput'
 import './TransactionFormModal.css'
 
 const TYPES: MoneyFlowType[] = ['Expense', 'Income', 'Investment']
 
-interface TransactionFormModalProps {
-  year: number
-  month: number
+interface CommonProps {
   /** The transaction being edited; omitted when creating a new one. */
   transaction?: TransactionResponseDto
-  categories: CategoryResponseDto[]
-  categoriesStatus: CategoryOptionsStatus
   onClose: () => void
   /** Persists the values; a rejection is shown on the form and keeps the modal open. */
   onSubmit: (values: TransactionFormValues) => Promise<void>
 }
 
-/** Today when the month is the current one, otherwise its first day: the date must fall inside the month. */
-function defaultDate(year: number, month: number) {
-  const today = new Date()
-  const { min } = monthDateRange(year, month)
-  if (today.getFullYear() !== year || today.getMonth() + 1 !== month) return min
+/**
+ * `month` (default): a transaction of that month, whose date must fall inside it. `quick`: a new transaction with no
+ * month, dated anywhere from 2000 to the end of this year; the backend puts it in the month of its date.
+ */
+type TransactionFormModalProps = CommonProps & ({ mode?: 'month'; year: number; month: number } | { mode: 'quick' })
 
-  return `${min.slice(0, 8)}${String(today.getDate()).padStart(2, '0')}`
+const ISO_DATE = /^(\d{4})-(\d{2})-\d{2}$/
+
+function todayIso() {
+  const today = new Date()
+  const pad = (value: number) => String(value).padStart(2, '0')
+  return `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`
 }
 
-function TransactionFormModal({
-  year,
-  month,
-  transaction,
-  categories,
-  categoriesStatus,
-  onClose,
-  onSubmit,
-}: TransactionFormModalProps) {
+/** Today when the month is the current one, otherwise its first day: the date must fall inside the month. */
+function defaultDate(year: number, month: number) {
+  const today = todayIso()
+  const { min, max } = monthDateRange(year, month)
+  return today >= min && today <= max ? today : min
+}
+
+function TransactionFormModal(props: TransactionFormModalProps) {
+  const { transaction, onClose, onSubmit } = props
+  const isQuick = props.mode === 'quick'
   const { t: translate, i18n } = useTranslation(['finance', 'common'])
   const titleId = useId()
   const { show: showErrorModal } = useErrorModal()
   const { periodLabel } = useFinanceFormat()
-  const period = periodLabel(month, year)
-  const { min, max } = monthDateRange(year, month)
+  const { min, max } = isQuick
+    ? { min: QUICK_TRANSACTION_MIN_DATE, max: quickTransactionMaxDate(new Date().getFullYear()) }
+    : monthDateRange(props.year, props.month)
   const isEditing = Boolean(transaction)
 
   const {
@@ -71,30 +78,32 @@ function TransactionFormModal({
     setError,
     setValue,
     formState: { errors, isSubmitting },
-  } = useZodForm(createTransactionSchema(year, month), {
+  } = useZodForm(isQuick ? createQuickTransactionSchema(min, max) : createTransactionSchema(props.year, props.month), {
     defaultValues: {
       type: transaction?.type ?? 'Expense',
       description: transaction?.description ?? '',
       amount: transaction ? toFormAmount(transaction.amount, i18n.language) : '',
-      date: transaction?.date ?? defaultDate(year, month),
+      date: transaction?.date ?? (isQuick ? todayIso() : defaultDate(props.year, props.month)),
       categoryId: transaction ? String(transaction.categoryId) : '',
     },
   })
   const type = useWatch({ control, name: 'type' })
+  const date = useWatch({ control, name: 'date' })
+
+  // The month the transaction goes to: fixed, or (quick) the month of the date typed so far.
+  const dateMatch = isQuick ? ISO_DATE.exec(date) : null
+  const period = isQuick
+    ? dateMatch
+      ? periodLabel(Number(dateMatch[2]), Number(dateMatch[1]))
+      : ''
+    : periodLabel(props.month, props.year)
 
   // Some messages name the month ("The date must be in March 2026").
   const translateMessage = (key: string) => translate(key, { period })
   const fieldError = (message: string | undefined) => (message ? translateMessage(message) : undefined)
 
-  // The edited transaction's category stays selectable even if it isn't among the loaded options.
-  const categoryOptions = [
-    { value: '', label: translate('finance:transactions.form.categoryPlaceholder') },
-    ...categories.map((category) => ({ value: String(category.id), label: category.name })),
-    ...(transaction && !categories.some((category) => category.id === transaction.categoryId)
-      ? [{ value: String(transaction.categoryId), label: transaction.categoryName }]
-      : []),
-  ]
-  const hasNoCategories = categoriesStatus === 'ready' && categories.length === 0 && !transaction
+  // The picker shows the category's name, which the form value (an id) doesn't carry.
+  const [categoryName, setCategoryName] = useState(transaction?.categoryName ?? '')
 
   const submit = handleSubmit(async (values) => {
     try {
@@ -102,37 +111,17 @@ function TransactionFormModal({
     } catch (err) {
       if (isSessionExpiredError(err)) return
       if (isApiError(err)) {
-        applyApiErrorToForm(err, setError, transactionErrorFieldMap, translateMessage)
+        applyApiErrorToForm(
+          err,
+          setError,
+          isQuick ? quickTransactionErrorFieldMap : transactionErrorFieldMap,
+          translateMessage,
+        )
       } else {
         showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
       }
     }
   })
-
-  function renderCategoryField() {
-    if (categoriesStatus === 'loading' && !transaction) {
-      return <p className="lm-transaction-form__note">{translate('finance:transactions.form.categoriesLoading')}</p>
-    }
-
-    if (hasNoCategories) {
-      return (
-        <div className="lm-transaction-form__note">
-          <span>{translate('finance:transactions.form.noCategories')}</span>
-          <Link to="/finance/categories">{translate('finance:transactions.form.createCategory')}</Link>
-        </div>
-      )
-    }
-
-    return (
-      <Select
-        label={translate('finance:transactions.form.categoryLabel')}
-        options={categoryOptions}
-        hint={categoriesStatus === 'error' ? translate('finance:transactions.form.categoriesError') : undefined}
-        error={fieldError(errors.categoryId?.message)}
-        {...register('categoryId')}
-      />
-    )
-  }
 
   return (
     <Dialog labelledBy={titleId} onClose={onClose}>
@@ -142,7 +131,7 @@ function TransactionFormModal({
             <h2 id={titleId} className="lm-dialog__title">
               {translate(isEditing ? 'finance:transactions.form.editTitle' : 'finance:transactions.form.createTitle')}
             </h2>
-            <span className="lm-transaction-form__period">{period}</span>
+            {period ? <span className="lm-transaction-form__period">{period}</span> : null}
           </div>
           <IconButton icon="x" size="sm" label={translate('finance:actions.close')} onClick={onClose} />
         </div>
@@ -194,7 +183,23 @@ function TransactionFormModal({
               />
             </div>
 
-            {renderCategoryField()}
+            <Controller
+              control={control}
+              name="categoryId"
+              render={({ field }) => (
+                <CategoryPicker
+                  label={translate('finance:transactions.form.categoryLabel')}
+                  value={field.value ? { id: Number(field.value), name: categoryName } : null}
+                  onChange={(category) => {
+                    setCategoryName(category?.name ?? '')
+                    field.onChange(category ? String(category.id) : '')
+                  }}
+                  onBlur={field.onBlur}
+                  inputRef={field.ref}
+                  error={fieldError(errors.categoryId?.message)}
+                />
+              )}
+            />
           </div>
 
           {errors.root?.serverError?.message ? (
@@ -208,7 +213,7 @@ function TransactionFormModal({
           <Button variant="secondary" onClick={onClose}>
             {translate('finance:actions.cancel')}
           </Button>
-          <Button type="submit" variant="primary" loading={isSubmitting} disabled={hasNoCategories}>
+          <Button type="submit" variant="primary" loading={isSubmitting}>
             {translate(isEditing ? 'finance:transactions.form.save' : 'finance:transactions.form.create')}
           </Button>
         </div>

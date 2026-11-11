@@ -1,19 +1,17 @@
-import { useId } from 'react'
-import { useWatch } from 'react-hook-form'
+import { useId, useState } from 'react'
+import { Controller, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import Button from '../../../shared/components/Button/Button'
 import Dialog from '../../../shared/components/Dialog/Dialog'
 import IconButton from '../../../shared/components/IconButton/IconButton'
 import Input from '../../../shared/components/Input/Input'
 import SegmentedControl from '../../../shared/components/SegmentedControl/SegmentedControl'
-import Select from '../../../shared/components/Select/Select'
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
 import { isSessionExpiredError } from '../../../shared/services/httpClient'
 import { isApiError } from '../../../shared/types/ApiError'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
-import type { CategoryResponseDto } from '../../types/CategoryDtos'
 import type { StatementImportRowDto } from '../../types/StatementImportDtos'
 import type { MoneyFlowType } from '../../types/TransactionDtos'
 import { nextMonthOf } from '../../utils/statementImport/monthShift'
@@ -24,6 +22,7 @@ import { IMPORT_ROW_MIN_DATE, createImportRowSchema } from '../../validation/imp
 import type { ImportRowFormValues } from '../../validation/importRowSchema'
 import { importRowErrorFieldMap } from '../../validation/statementImportErrorMap'
 import { TRANSACTION_DESCRIPTION_MAX_LENGTH } from '../../validation/transactionSchema'
+import CategoryPicker from '../CategoryPicker/CategoryPicker'
 import MoneyInput from '../MoneyInput/MoneyInput'
 import './ImportRowFormModal.css'
 
@@ -31,7 +30,6 @@ const TYPES: MoneyFlowType[] = ['Expense', 'Income', 'Investment']
 
 interface ImportRowFormModalProps {
   row: StatementImportRowDto
-  categories: CategoryResponseDto[]
   onClose: () => void
   /** Saves the row; a rejection is shown on the form and keeps the modal open. */
   onSubmit: (values: ImportRowFormValues) => Promise<void>
@@ -42,7 +40,7 @@ interface ImportRowFormModalProps {
  * month (from 2000 to today), and the category may stay empty for now. "Count in the next month" keeps the bank's
  * date but posts it on the 1st of the next month; changing the date unticks it, so the user decides again.
  */
-function ImportRowFormModal({ row, categories, onClose, onSubmit }: ImportRowFormModalProps) {
+function ImportRowFormModal({ row, onClose, onSubmit }: ImportRowFormModalProps) {
   const { t: translate, i18n } = useTranslation(['finance', 'common'])
   const titleId = useId()
   const { show: showErrorModal } = useErrorModal()
@@ -74,13 +72,8 @@ function ImportRowFormModal({ row, categories, onClose, onSubmit }: ImportRowFor
 
   const fieldError = (message: string | undefined) => (message ? translate(message) : undefined)
 
-  const categoryOptions = [
-    { value: '', label: translate('finance:imports.rows.categoryPlaceholder') },
-    ...categories.map((category) => ({ value: String(category.id), label: category.name })),
-    ...(row.categoryId !== null && !categories.some((category) => category.id === row.categoryId)
-      ? [{ value: String(row.categoryId), label: row.categoryName ?? '' }]
-      : []),
-  ]
+  // The picker shows the category's name, which the form value (an id) doesn't carry.
+  const [categoryName, setCategoryName] = useState(row.categoryName ?? '')
 
   const submit = handleSubmit(async (values) => {
     try {
@@ -151,11 +144,24 @@ function ImportRowFormModal({ row, categories, onClose, onSubmit }: ImportRowFor
               />
             </div>
 
-            <Select
-              label={translate('finance:transactions.form.categoryLabel')}
-              options={categoryOptions}
-              error={fieldError(errors.categoryId?.message)}
-              {...register('categoryId')}
+            <Controller
+              control={control}
+              name="categoryId"
+              render={({ field }) => (
+                <CategoryPicker
+                  label={translate('finance:transactions.form.categoryLabel')}
+                  // A row may stay without a category until the import is committed.
+                  allLabel={translate('finance:imports.rows.categoryPlaceholder')}
+                  value={field.value ? { id: Number(field.value), name: categoryName } : null}
+                  onChange={(category) => {
+                    setCategoryName(category?.name ?? '')
+                    field.onChange(category ? String(category.id) : '')
+                  }}
+                  onBlur={field.onBlur}
+                  inputRef={field.ref}
+                  error={fieldError(errors.categoryId?.message)}
+                />
+              )}
             />
 
             <label className="lm-import-row-form__check">

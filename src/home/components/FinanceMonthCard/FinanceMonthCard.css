@@ -1,0 +1,67 @@
+.lm-finance-month-card__balance {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lm-finance-month-card__label,
+.lm-finance-month-card__flows dt {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-finance-month-card__balance-value {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.lm-finance-month-card__flows {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.lm-finance-month-card__flows dd {
+  margin: 2px 0 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.lm-finance-month-card__flows .lm-finance-month-card__income {
+  color: var(--success);
+}
+
+.lm-finance-month-card__flows .lm-finance-month-card__expense {
+  color: var(--danger);
+}
+
+.lm-finance-month-card__budget {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--border);
+}
+
+.lm-finance-month-card__budget--ok {
+  --lm-home-bar-color: var(--accent);
+}
+
+.lm-finance-month-card__budget--near {
+  --lm-home-bar-color: var(--warning);
+}
+
+.lm-finance-month-card__budget--over {
+  --lm-home-bar-color: var(--danger);
+}
+
+.lm-finance-month-card__budget--hidden {
+  --lm-home-bar-color: var(--border-strong);
+}

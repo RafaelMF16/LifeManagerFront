@@ -4,16 +4,6 @@
   gap: var(--space-3);
 }
 
-.lm-add-slice__options {
-  display: flex;
-  flex-direction: column;
-  max-height: min(50vh, 360px);
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-  list-style: none;
-}
-
 .lm-add-slice__option {
   display: flex;
   align-items: center;
@@ -76,10 +66,3 @@
   color: var(--text-secondary);
 }
 
-.lm-add-slice__state {
-  margin: 0;
-  padding: var(--space-4) 0;
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-  text-align: center;
-}

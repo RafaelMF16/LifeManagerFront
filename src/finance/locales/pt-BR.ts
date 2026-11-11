@@ -13,11 +13,6 @@ export default {
       categories: 'Categorias',
     },
   },
-  privacy: {
-    hide: 'Ocultar valores',
-    show: 'Mostrar valores',
-    hiddenValue: 'Valor oculto',
-  },
   actions: {
     cancel: 'Cancelar',
     close: 'Fechar',
@@ -129,6 +124,7 @@ export default {
       investmentCategoriesTitle: 'Investimentos por meta',
       noExpenseCategories: 'Nenhuma categoria com limite de gastos.',
       noInvestmentCategories: 'Nenhuma categoria com alvo de investimento.',
+      noOverspent: 'Nenhuma categoria passou do limite no período.',
       over: 'Passou {{amount}}',
       short: 'Faltaram {{amount}}',
       withinLimit: 'Dentro do limite',
@@ -187,7 +183,6 @@ export default {
       title: 'Novo mês',
       monthLabel: 'Mês',
       yearLabel: 'Ano',
-      yearHint: 'Meses são criados no ano atual',
       create: 'Criar mês',
     },
     toasts: {
@@ -197,8 +192,10 @@ export default {
       month: {
         required: 'Escolha o mês',
         invalid: 'Escolha um mês entre janeiro e dezembro',
-        yearNotCurrent: 'Só é possível criar meses do ano atual',
         taken: 'Esse mês já foi criado',
+      },
+      year: {
+        notAllowed: 'Só dá para criar meses deste ano ou do anterior',
       },
     },
   },
@@ -290,13 +287,13 @@ export default {
       amountPlaceholder: '0,00',
       dateLabel: 'Data',
       categoryLabel: 'Categoria',
-      categoryPlaceholder: 'Escolha uma categoria',
-      categoriesLoading: 'Carregando categorias…',
-      categoriesError: 'Não foi possível carregar as categorias.',
-      noCategories: 'Você ainda não tem categorias.',
-      createCategory: 'Criar categoria',
       create: 'Salvar lançamento',
       save: 'Salvar',
+    },
+    quick: {
+      saved: 'Lançamento salvo em {{period}}',
+      savedMonthCreated: 'Lançamento salvo em {{period}} · mês criado',
+      viewMonth: 'Ver mês',
     },
     delete: {
       title: 'Excluir lançamento',
@@ -329,6 +326,8 @@ export default {
       date: {
         required: 'Informe a data',
         outsideMonth: 'A data precisa estar em {{period}}',
+        outOfRange: 'Use uma data de 2000 até o fim deste ano',
+        yearNotCurrent: 'Só dá para criar meses deste ano ou do anterior',
       },
       category: {
         required: 'Escolha uma categoria',
@@ -336,6 +335,17 @@ export default {
       },
       notFound: 'Esse lançamento não existe mais. A lista foi atualizada.',
     },
+  },
+  categoryPicker: {
+    placeholder: 'Buscar categoria',
+    searching: 'Buscando…',
+    empty: 'Nenhuma categoria encontrada',
+    noCategories: 'Você ainda não tem categorias.',
+    error: 'Não foi possível buscar as categorias.',
+    retry: 'Tentar de novo',
+    loadMore: 'Ver mais',
+    loadingMore: 'Carregando…',
+    create: 'Criar categoria "{{term}}"',
   },
   categories: {
     title: 'Categorias',
@@ -459,11 +469,8 @@ export default {
       button: 'Adicionar categoria',
       title: 'Adicionar ao orçamento',
       investmentHint: 'Quanto você quer investir no mês',
-      search: 'Buscar categoria',
-      empty: 'Todas as categorias já estão no orçamento.',
-      noResults: 'Nenhuma categoria encontrada.',
-      loading: 'Carregando categorias…',
-      loadError: 'Não foi possível carregar as categorias.',
+      categoryLabel: 'Categoria',
+      allInBudget: 'Estas categorias já estão no orçamento.',
     },
     empty: {
       title: 'Este mês ainda não tem orçamento',
@@ -603,11 +610,6 @@ export default {
       dayLabel: 'Dia do mês',
       dayHint: 'Em meses mais curtos, cai no último dia.',
       categoryLabel: 'Categoria',
-      categoryPlaceholder: 'Escolha uma categoria',
-      categoriesLoading: 'Carregando categorias…',
-      categoriesError: 'Não foi possível carregar as categorias.',
-      noCategories: 'Você ainda não tem categorias.',
-      createCategory: 'Criar categoria',
       startLabel: 'Começa em',
       endLabel: 'Termina em',
       noEnd: 'Sem data de fim',
@@ -885,7 +887,6 @@ export default {
       selectPage: 'Selecionar todos desta página',
       category: 'Categoria',
       categoryPlaceholder: 'Sem categoria',
-      newCategory: '+ Nova categoria…',
       include: 'Incluir na importação',
       exclude: 'Deixar de fora',
       edit: 'Editar',
@@ -1123,6 +1124,10 @@ export default {
         title: 'Período',
         body: 'Escolha os meses que o painel analisa. Ao lado aparece o período usado na comparação dos totais.',
       },
+      newTransaction: {
+        title: 'Novo lançamento',
+        body: 'Registre uma receita, um gasto ou um investimento sem sair do painel. O lançamento vai para o mês da data, que é criado se ainda não existir.',
+      },
       totals: {
         title: 'Totais do período',
         body: 'Receitas, gastos, investido e poupado, com a variação em relação ao período de comparação e a sua taxa de poupança.',
@@ -1168,8 +1173,8 @@ export default {
         body: 'Cada mês reúne suas receitas, gastos e investimentos. Aqui você vê o saldo de todos e abre um mês para lançar e revisar transações.',
       },
       actions: {
-        title: 'Criar ou importar',
-        body: 'Novo mês cria um mês do ano atual. Importar extrato traz os lançamentos de um arquivo do banco e cria os meses que faltarem.',
+        title: 'Lançar, criar ou importar',
+        body: 'Novo lançamento registra uma receita, um gasto ou um investimento em qualquer data e cria o mês dela se ainda não existir. Novo mês cria um mês deste ano ou do anterior. Importar extrato traz os lançamentos de um arquivo do banco e cria os meses que faltarem.',
       },
       filters: {
         title: 'Filtrar a lista',

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
-import WalletSprite from '../WalletSprite/WalletSprite'
+import HelmSprite from '../HelmSprite/HelmSprite'
 import { LoginTransitionContext } from './LoginTransitionContext'
 import './LoginTransition.css'
 
-// The wallet animation lasts ~1.6 s; a backgrounded tab can pause it, so the sign-in never waits longer than this.
+// The helm animation lasts ~1.6 s; a backgrounded tab can pause it, so the sign-in never waits longer than this.
 const MAX_PLAY_MS = 2000
 // Matches the fade-out (`--duration-slow`, 260 ms) plus a margin, then the cover is removed.
 const LEAVE_MS = 300
@@ -22,7 +22,7 @@ interface LoginTransitionProviderProps {
 }
 
 /**
- * Hosts the post-sign-in cover: the wallet receiving a bill, over everything. It sits outside the router so it
+ * Hosts the post-sign-in cover: the helm receiving a coin, over everything. It sits outside the router so it
  * survives the navigation it covers, then fades out over the screen the user lands on.
  */
 export function LoginTransitionProvider({ children }: LoginTransitionProviderProps) {
@@ -83,7 +83,7 @@ export function LoginTransitionProvider({ children }: LoginTransitionProviderPro
           role="status"
           aria-live="polite"
         >
-          <WalletSprite key={transition.id} variant="receive" onEnd={finish} />
+          <HelmSprite key={transition.id} variant="receive" onEnd={finish} />
           <span className="lm-login-transition__label">{transition.label}</span>
         </div>
       ) : null}

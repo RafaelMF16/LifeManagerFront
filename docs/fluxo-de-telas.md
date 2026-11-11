@@ -17,9 +17,11 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   - [Esqueceu a senha?](#esqueceu-a-senha)
   - [Escolher uma nova senha](#escolher-uma-nova-senha)
 - [Home](#home)
+- [Minha conta](#minha-conta)
 - [Financeiro](#financeiro)
   - [Painel](#painel)
   - [Meses](#meses)
+  - [Lançamento rápido](#lançamento-rápido)
   - [Detalhe do mês](#detalhe-do-mês)
   - [Planejamento: Orçamento](#planejamento-orçamento)
   - [Planejamento: Recorrentes](#planejamento-recorrentes)
@@ -47,7 +49,8 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
 /auth/forgot-password       Esqueceu a senha? (só sem sessão)
 /auth/set-password          Escolher a senha do cadastro (link do e-mail)
 /auth/reset-password        Escolher uma nova senha (link do e-mail)
-/home                       Escolha do módulo
+/home                       Resumo do dia
+/account                    Minha conta
 /invite/:código             Convite para um grupo de ranking (link)
 /finance                    → Painel
   /finance/dashboard        Painel
@@ -85,12 +88,14 @@ Aparece no topo de todas as telas depois do login.
 
 - **Botão do usuário** (canto direito): abre um menu com:
   - o **nome** do usuário;
+  - **Minha conta:** abre a tela [Minha conta](#minha-conta);
+  - **Instalar app:** só aparece quando dá para instalar e o app ainda não está instalado. No Chrome e no Edge (computador e Android), abre a janela do próprio navegador para instalar; no Safari do iPhone e do iPad, abre uma janela com os passos: **Compartilhar** → **Adicionar à Tela de Início** → **Adicionar**. Instalado, o app abre pelo ícone direto na Home, em tela cheia; segurar o ícone mostra os atalhos **Hoje** e **Novo lançamento**;
   - **Tema:** alterna entre claro (sol) e escuro (lua);
   - **Idioma:** português ou inglês;
   - **Sair:** encerra a sessão, mostra "Você saiu da sua conta." e volta para o login.
 - Tema e idioma mudam na hora e são salvos na conta: valem em qualquer dispositivo no próximo login.
 - No Financeiro, ao lado do menu fica o botão **Ocultar valores / Mostrar valores** (veja [Modo privacidade](#modo-privacidade)).
-- **Tour desta tela** (ícone de interrogação), no Financeiro e nos Hábitos: aparece em todas as telas desses módulos e abre um tour guiado da tela aberta.
+- **Tour desta tela** (ícone de interrogação), na Home, em Minha conta, no Financeiro e nos Hábitos: aparece em todas as telas desses módulos e abre um tour guiado da tela aberta.
   - O primeiro passo explica para que serve a tela; os seguintes destacam um controle por vez, com uma explicação curta e o contador "Passo X de N".
   - **Próximo**, **Anterior** e, no último passo, **Concluir**. **Pular**, o **X** ou Esc fecham o tour. Pelo teclado, as setas também avançam e voltam.
   - Enquanto o tour está aberto, a tela não recebe cliques: ele só explica, não faz nada por você.
@@ -122,15 +127,17 @@ As listas (meses, lançamentos, categorias, recorrências, hábitos, recompensas
 ### Janelas e avisos
 
 - Formulários e confirmações abrem numa janela sobre a tela. No celular, ela sobe da parte de baixo. **Cancelar** ou **Fechar** fecha sem salvar.
-- Uma ação concluída mostra um aviso rápido na parte de baixo ("Categoria criada").
+- Uma ação concluída mostra um aviso rápido na parte de baixo ("Categoria criada"). Alguns avisos trazem um botão ("Ver mês"); esses ficam mais tempo na tela.
+- **Nova versão disponível:** quando sai uma versão nova do app enquanto ele está aberto, aparece um aviso com o botão **Atualizar**, que fica na tela até você tocar nele ou fechar. **Atualizar** recarrega o app já na versão nova; fechando, ela entra na próxima vez que o app abrir.
 - Um erro que não é de um campo específico abre uma janela de erro. Sem conexão com o servidor, aparece **Erro de conexão**.
 - Erros de um campo (nome repetido, valor inválido) aparecem embaixo do próprio campo.
+- **Campos de categoria** (lançamento, recorrência, filtro da lista de lançamentos, adicionar ao orçamento e a importação) têm **busca**: ao tocar, abre logo abaixo do campo uma lista com as 20 primeiras categorias em ordem alfabética; digitar busca entre todas, ignorando acentos e maiúsculas ("mer" acha "Mercado"), e **Ver mais** traz as próximas. No teclado: ↑/↓ andam pela lista, Enter escolhe, Esc fecha. Sair do campo sem escolher volta à categoria que estava: o texto digitado nunca vira categoria. Sem resultado, aparece "Nenhuma categoria encontrada"; se a busca falhar, **Tentar de novo**.
 - Campos de valor em R$ (transação, recorrência, linha de importação, total do orçamento e o **Valor** do valor exato) se preenchem da direita para a esquerda, centavos primeiro, como no app do banco: digitar 5, 0, 0 mostra 5,00, com o separador de milhar do idioma. Apagar tira o último dígito, e apagar tudo deixa o campo vazio. O celular abre o teclado só de números.
 
 ### Sessão
 
 - A sessão se renova sozinha enquanto você usa o app.
-- Ao abrir uma nova aba ou recarregar a página, o app recupera a sessão sem pedir login. Enquanto isso, se demorar, aparece a carteira animada com "Carregando…".
+- Ao abrir uma nova aba ou recarregar a página, o app recupera a sessão sem pedir login. Enquanto isso, se demorar, aparece o leme animado, com moedas chegando, e "Carregando…".
 - Quando a sessão expira, aparece "Sua sessão expirou. Entre novamente." e o app volta para o login.
 - Quem abre um link sem estar logado vai para o login e, depois de entrar, **volta para a tela que tentou abrir**.
 
@@ -147,7 +154,8 @@ A tela tem duas abas: **Entrar** e **Criar conta**.
 | E-mail | Obrigatório, formato `algo@algo.algo` |
 | Senha | Obrigatória |
 
-- **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra a carteira recebendo uma nota (cerca de 1,6 segundo) e abre a Home (ou a tela que você tentou abrir antes). Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
+- **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra uma moeda chegando no leme, que dá uma volta (cerca de 1,6 segundo), e abre a Home (ou a tela que você tentou abrir antes). Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
+- Se a conta estava com a exclusão agendada, entrar cancela a exclusão e, depois da animação, aparece "Bem-vindo de volta! A exclusão da sua conta foi cancelada."
 - **Não tem conta? Criar conta:** troca para a aba de cadastro.
 - **Esqueceu a senha?:** abre a tela [Esqueceu a senha?](#esqueceu-a-senha).
 
@@ -205,10 +213,47 @@ O cadastro tem duas etapas: aqui você informa nome e e-mail; a senha é escolhi
 
 **Rota:** `/home` (também é para onde vai qualquer endereço desconhecido).
 
-Mostra um cartão por módulo. Clicar abre o módulo:
+O resumo do dia, com atalhos para agir. Uma coluna no celular, duas no computador.
 
-- **Financeiro:** abre o Painel.
-- **Hábitos:** abre a tela Hoje.
+- **Saudação:** "Bom dia", "Boa tarde" ou "Boa noite", pela hora do aparelho, com o seu nome e a data de hoje.
+- **Cartão Hábitos:**
+  - quantos hábitos você já fez hoje ("1 de 4 feitos hoje"), com uma barra;
+  - os que ainda dá para marcar de ontem, a sua maior sequência e as recaídas de hoje, quando houver;
+  - nível, HP e moedas, depois da primeira jogada.
+  - **Ir para Hoje** abre a tela Hoje. Sem nenhum hábito ainda, o botão é **Criar primeiro hábito**, que abre a lista de Hábitos.
+- **Cartão Finanças (o mês corrente):**
+  - saldo em destaque, receitas e despesas;
+  - com orçamento no mês: quanto já foi gasto do limite ("R$ 3.120,50 de R$ 4.510,00 do orçamento"), com uma barra que fica amarela a partir de 80% (como na tela Orçamento) e vermelha passando do limite, e a categoria mais apertada ("Mais apertada: Mercado · 92%").
+  - Sem o mês criado: "Novembro ainda não tem lançamentos."
+  - O **olho** esconde os valores aqui e em Finanças (e vice-versa), inclusive em outras abas.
+  - **Novo lançamento** abre o formulário de lançamento na tela Meses. **Ver mês** abre o detalhe do mês, ou **Ir para Finanças** quando o mês ainda não existe.
+- **Módulos:** os atalhos para Financeiro (abre o Painel) e Hábitos (abre a tela Hoje), no fim.
+- Enquanto carrega, os cartões mostram um esqueleto. Se der erro, cada cartão mostra **Tentar de novo**.
+- Ao voltar para a aba num outro dia, o resumo recarrega sozinho.
+- Um convite de grupo aberto antes de entrar leva direto ao Ranking.
+
+## Minha conta
+
+**Rota:** `/account`, aberta pelo item **Minha conta** do menu do usuário no cabeçalho.
+
+Uma coluna de cartões, com o tour da tela no cabeçalho.
+
+- **Perfil:**
+  - o **nome**, com **Editar**: abre uma janela com o campo Nome (obrigatório, até 100 caracteres). **Salvar** mostra "Nome atualizado." e o nome novo aparece na hora no cabeçalho, na saudação da Home e no Perfil dos Hábitos;
+  - o **e-mail**, só para leitura: é o seu login e não pode ser trocado.
+  - Enquanto carrega, o cartão mostra um esqueleto; se falhar, "Não deu para carregar seus dados." com **Tentar de novo**.
+- **Segurança:**
+  - **Trocar senha:** janela com **Senha atual**, **Nova senha** (de 8 a 50 caracteres) e **Confirme a nova senha**. Senha atual errada: "Senha atual incorreta", no campo. Deu certo: "Senha alterada. Os outros aparelhos foram desconectados." Este aparelho continua conectado; os outros caem para o login na próxima vez que o app renovar a sessão.
+  - **Sair de todos os aparelhos:** pede confirmação ("Você vai sair da conta em todos os aparelhos, este incluído…") e, ao confirmar, volta para o login com "Você saiu de todos os aparelhos."
+  - Como entrar já desconecta a sessão anterior da conta, na prática só um aparelho fica conectado por vez.
+- **Meus dados:** **Baixar meus dados (JSON)** baixa um arquivo `lifemanager-aaaa-mm-dd.json` com tudo o que você registrou (finanças, hábitos, jogo e preferências). Enquanto prepara, o botão mostra "Preparando…". Depois de 3 downloads na mesma hora: "Você já baixou há pouco. Tente de novo em alguns minutos."
+- **Zona de perigo** (borda vermelha): **Excluir conta** abre um aviso:
+  - "Sua conta e todos os dados serão apagados em 7 dias";
+  - "Entrar de novo até lá cancela a exclusão";
+  - "Grupos de ranking que você criou passam para o membro mais antigo".
+  - Pede a **Senha** e que você digite **EXCLUIR** (em inglês, **DELETE**); até a palavra estar certa, o botão **Excluir conta** fica desabilitado. Senha errada: "Senha atual incorreta", no campo.
+  - Ao confirmar, todos os aparelhos saem da conta, chega um e-mail com a data, e o app volta para o login com "Exclusão agendada para dd/mm. Entre de novo até lá para cancelar."
+- Muitas tentativas seguidas de trocar a senha ou excluir a conta: "Muitas tentativas. Espere alguns minutos e tente de novo."
 
 ## Financeiro
 
@@ -224,6 +269,7 @@ A escolha fica salva neste dispositivo e vale para todas as abas abertas.
 
 **Rota:** `/finance/dashboard` (é a tela inicial do Financeiro).
 
+- **Novo lançamento:** abre o [lançamento rápido](#lançamento-rápido); ao salvar, o painel recarrega o período.
 - **Período:** Este mês, Últimos 3 meses, **Últimos 6 meses** (padrão), Últimos 12 meses, Este ano e cada ano anterior em que você tem meses. Ao lado aparece "Comparado com …", o período usado na comparação.
 - **Totais do período:** Receitas, Gastos, Investido e **Poupado**, cada um com a variação ("Subiu 12% em relação a …"). Poupado é o que sobrou das receitas depois dos gastos: investir conta como guardar, não como gastar. Ao lado do nome vem a **taxa de poupança** (a parte das receitas que foi poupada; não aparece sem receitas, e abaixo de −100% aparece como "<−100%") e embaixo a divisão: quanto foi **investido** e quanto ficou **em conta** (o mesmo Saldo da tela do mês, que pode ser negativo quando você investiu dinheiro de meses anteriores).
 - **Gastos por dia:** um calendário do mês com o total de gastos de cada dia (só despesas; receitas e investimentos ficam de fora). Quanto mais vermelho o dia, mais se gastou, sempre em relação ao **maior dia daquele mês** (legenda **Menos** … **Mais**). Abre no mês mais recente do período; as setas **Mês anterior** e **Próximo mês** andam só pelos meses do período. Hoje tem contorno e os dias futuros ficam apagados, sem clique.
@@ -235,7 +281,7 @@ A escolha fica salva neste dispositivo e vale para todas as abas abertas.
 - **Gastos por categoria** e **Investimentos por categoria:** as 8 maiores categorias e "Outras". Clicar numa categoria abre o detalhe **Por mês**.
 - **Orçamento do período:**
   - Limite de gastos e alvo de investimento do mês, com "Dentro do limite em X de N meses fechados". O mês atual fica fora da contagem. O limite de gastos de um mês é o total do orçamento menos a fatia de Investimentos; o alvo de investimento é essa fatia.
-  - **Categorias que mais estouraram**.
+  - **Categorias que mais estouraram:** só as categorias que passaram do limite no período, da que mais passou para a que menos passou, com "Passou R$ X". Se nenhuma passou, aparece "Nenhuma categoria passou do limite no período."
   - **Criar orçamento** (sem orçamento no período) ou **Ver orçamento** abrem a tela de Orçamento.
 - Se o painel não carregar: **Tentar de novo**.
 
@@ -248,13 +294,23 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
 - **Filtros:** **Ano** (Todos ou um ano) e **Saldo** (Todos, Positivo, Negativo).
 - **Ordenação:** Mês (padrão: mais recente primeiro), Receitas, Gastos, Investido ou Saldo.
 - **Clicar numa linha** abre o [Detalhe do mês](#detalhe-do-mês).
+- **Novo lançamento** (o botão principal; no celular, o primeiro, numa linha só dele): abre o [lançamento rápido](#lançamento-rápido); ao salvar, a lista recarrega. O endereço `/finance/months?new=1` abre a tela já com ele aberto (e tira o `?new=1` do endereço).
 - **Novo mês:** abre a janela "Novo mês".
   - **Mês:** escolha de janeiro a dezembro.
-  - **Ano:** fixo no ano atual e desabilitado ("Meses são criados no ano atual").
+  - **Ano:** o atual (padrão) ou o anterior. Assim, em janeiro ainda dá para criar dezembro. Outro ano: "Só dá para criar meses deste ano ou do anterior".
   - **Criar mês:** cria e mostra "Mês criado". Se o mês já existe: "Esse mês já foi criado".
 - **Importar extrato:** abre a tela [Importar extrato](#importar-extrato).
 
-> Meses de lançamentos recorrentes são criados sozinhos quando a recorrência é lançada. Meses de anos anteriores entram pela [importação de extrato](#importar-extrato).
+> Meses de lançamentos recorrentes são criados sozinhos quando a recorrência é lançada. Meses de anos mais antigos entram pela [importação de extrato](#importar-extrato).
+
+### Lançamento rápido
+
+Abre com **Novo lançamento** em [Meses](#meses) ou no [Painel](#painel). É o [formulário de lançamento](#detalhe-do-mês) sem um mês escolhido antes:
+
+- **Data:** começa em hoje e pode ser qualquer dia de 01/01/2000 até o fim deste ano ("Use uma data de 2000 até o fim deste ano"). O topo da janela mostra o mês da data.
+- O lançamento vai para o mês da data. Se esse mês ainda não existe, ele é **criado junto**, desde que seja deste ano ou do anterior; senão a data mostra "Só dá para criar meses deste ano ou do anterior". Um mês que já existe aceita lançamentos de qualquer ano.
+- **Salvar lançamento** mostra "Lançamento salvo em novembro de 2026" (ou "… · mês criado") com o botão **Ver mês**, que abre o mês do lançamento.
+- Os outros campos e regras são os do formulário de lançamento.
 
 ### Detalhe do mês
 
@@ -274,7 +330,7 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
 
 **Lançamentos**
 - Lista com Data, Descrição, Categoria e Valor. Os lançamentos feitos por uma recorrência têm um ícone de repetição ("Lançado por uma recorrência").
-- **Filtros:** Tipo (Todos, Receitas, Gastos, Investimentos), Categoria e **Buscar descrição**.
+- **Filtros:** Tipo (Todos, Receitas, Gastos, Investimentos), Categoria (com busca; **Todas** tira o filtro) e **Buscar descrição**.
 - **Ordenação:** Data (padrão: mais recente primeiro), Descrição, Categoria ou Valor.
 - **Novo lançamento:** abre o formulário.
 - **Editar** (em cada linha): abre o mesmo formulário preenchido. **Salvar** mostra "Lançamento atualizado".
@@ -289,7 +345,7 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
 | Descrição | Obrigatória, até 80 caracteres |
 | Valor | Maior que zero; aceita `1.234,56` ou `1234.56` |
 | Data | Precisa estar dentro do mês ("A data precisa estar em …") |
-| Categoria | Obrigatória. Sem categorias, aparece o link **Criar categoria**, que leva à tela de Categorias |
+| Categoria | Obrigatória, escolhida com busca. Sem nenhuma categoria, a lista diz "Você ainda não tem categorias." |
 
 **Salvar lançamento** mostra "Receita registrada", "Gasto registrado" ou "Investimento registrado".
 
@@ -314,7 +370,7 @@ Cada mês tem o seu orçamento: um **Total do mês** dividido em fatias de %, um
   - **tocar no %** abre **Valor exato**, para digitar a **Porcentagem** ou o **Valor** em R$ ("Até … (R$ …)");
   - **Remover** (lixeira): tira a fatia; o % dela volta para o Livre.
 - **Livre:** o % e o valor que sobram, com "Gastos sem fatia: R$ X de R$ Y" (o que foi gasto em categorias sem fatia).
-- **Adicionar categoria:** abre "Adicionar ao orçamento", com **Investimentos** primeiro (enquanto não estiver no orçamento) e as categorias que ainda não têm fatia, com busca. A fatia entra com 0% e o slider já selecionado.
+- **Adicionar categoria:** abre "Adicionar ao orçamento", com **Investimentos** primeiro (enquanto não estiver no orçamento) e o campo **Categoria**, com busca, que só oferece as categorias que ainda não têm fatia. A fatia entra com 0% e o slider já selecionado.
 - **Alterações não salvas:** aparece uma barra no fim da tela com **Descartar** e **Salvar**. Sem o total, ela avisa "Informe o total do mês para salvar.". **Salvar** grava o mês inteiro e mostra "Orçamento salvo". Se as fatias passarem de 100%: "As fatias passam de 100%. Diminua alguma antes de salvar.".
 - **Sair sem salvar:** trocar de mês ou ir para outra tela com alterações não salvas pergunta "Sair sem salvar?" ("Você tem alterações não salvas no orçamento de ‹mês›. Se sair agora, elas serão perdidas."), com **Continuar editando** e **Sair sem salvar**. Sair da conta ou ter a sessão expirada não pergunta: a sessão já acabou e as alterações não poderiam mais ser salvas. Fechar ou recarregar a aba mostra o aviso do próprio navegador.
 - **Excluir orçamento** (no topo, quando o mês tem um): pede confirmação ("Excluir o orçamento de ‹mês›? Os outros meses não mudam.") e mostra "Orçamento excluído".
@@ -406,7 +462,7 @@ Traz o extrato do banco para o app: os meses que faltam (de qualquer ano) e as t
   - **Entre contas:** um Pix ou transferência com o nome do seu cadastro ou de um dos seus [titulares](#importar-extrato) (dinheiro entre as suas contas) vem fora da importação. Cada nome precisa ter pelo menos duas palavras e aparecer no extrato: com duas palavras, elas precisam estar juntas no extrato; com três ou mais, o banco pode ter nomes a mais no meio.
   - O que você já decidiu antes para o mesmo estabelecimento vale mais que esses selos. Incluir um desses lançamentos ensina a próxima importação.
 - **Possível duplicata:** o lançamento parece já estar nos seus meses (mesma linha de um extrato já importado, ou mesma data e valor de um lançamento feito à mão). Vem fora da importação; **Ver no mês** abre o mês do lançamento existente numa nova aba.
-- **Categoria** (em cada lançamento): escolher salva na hora. **+ Nova categoria…** abre o formulário de categoria e já usa a nova.
+- **Categoria** (em cada lançamento): busca e escolher salva na hora; **Sem categoria** tira a categoria. Digitar um nome que não existe oferece **Criar categoria "…"**, que abre o formulário de categoria já com o nome e usa a nova.
 - **Deixar de fora / Incluir na importação** (ícone de olho): tira ou devolve o lançamento.
 - **Editar:** abre o formulário completo (Tipo, Descrição, Valor, Data entre 01/01/2000 e hoje, Categoria, **Incluir na importação** e **Conta no mês seguinte**). A data pode mudar de mês.
 - **Conta no mês seguinte:** para um salário ou uma conta paga no fim do mês que pertence ao mês seguinte. O lançamento guarda a data do banco, mas vai para o dia 1º do mês seguinte ("Conta em Setembro 2026 (lançado no dia 1º)."). Trocar a data desmarca a caixa. O lançamento ganha o selo **Conta em Setembro 2026**; quando o app marcou sozinho, pelo que você fez nas importações anteriores com o mesmo estabelecimento (só nos últimos 5 dias do mês), o selo diz **Conta em Setembro 2026 · pelo histórico**.
@@ -604,6 +660,7 @@ Metas da semana para fazer um pouco mais que o normal num hábito: mais dias, ou
 - **Todas as conquistas**, por família: Check-ins, Ofensiva, Nível, Resgates, Dias limpos, Superação, Ranking (vitórias: "5 semanas em 1º num grupo"; pódios: "3 semanas no pódio de um grupo") e Finanças (meses fechados dentro do orçamento, com a meta de investimento batida ou poupando 20% da renda). Cada cartão mostra o nível (bronze, prata ou ouro), o nome, o que é preciso ("100 check-ins"), o bônus ("+100 moedas · +150 XP") e o título que libera.
   - **Bloqueada:** em cinza, com um cadeado e a barra de progresso ("37 / 100").
   - **Desbloqueada:** na cor da medalha, com a data. Uma conquista desbloqueada é para sempre, mesmo que um check-in seja desfeito.
+  - Cada família abre e fecha tocando no cabeçalho, que mostra o ícone, o nome, quantas já saíram ("3 de 5") e as medalhas ganhas. No computador todas vêm abertas; no celular vêm fechadas, menos a família da primeira de **Quase lá** e as que têm conquista nova que você ainda não viu.
 
 ### Ranking
 

@@ -13,6 +13,8 @@ import {
   achievementRemaining,
   achievementTitle,
   groupAchievementsByFamily,
+  initiallyOpenFamilies,
+  unseenFamilies,
   nearestAchievements,
 } from './achievements'
 
@@ -150,5 +152,45 @@ describe('nearestAchievements', () => {
 
   it('is empty when everything is unlocked', () => {
     expect(nearestAchievements([{ ...checkIns10, unlockedAt: '2026-10-28T12:00:00Z' }])).toEqual([])
+  })
+})
+
+describe('initiallyOpenFamilies', () => {
+  const catalog = [
+    achievement({ code: 'CheckIns10', family: 'CheckIns', unlockedAt: '2026-10-01T12:00:00Z' }),
+    achievement({ code: 'CheckIns100', family: 'CheckIns' }),
+    achievement({ code: 'Streak7', family: 'Streak' }),
+    achievement({ code: 'Level5', family: 'Level', unlockedAt: '2026-10-02T12:00:00Z' }),
+    achievement({ code: 'Redemptions1', family: 'Redemptions' }),
+  ]
+  const near = [achievement({ code: 'Streak7', family: 'Streak' }), achievement({ code: 'CheckIns100', family: 'CheckIns' })]
+
+  it('opens every family on wide screens', () => {
+    expect(initiallyOpenFamilies(catalog, near, false, [])).toEqual(new Set(['CheckIns', 'Streak', 'Level', 'Redemptions']))
+  })
+
+  it('opens only the first "Almost there" family on compact screens when nothing is unseen', () => {
+    expect(initiallyOpenFamilies(catalog, near, true, [])).toEqual(new Set(['Streak']))
+  })
+
+  it('also opens the families of unseen unlocks on compact screens', () => {
+    expect(initiallyOpenFamilies(catalog, near, true, ['Level5'])).toEqual(new Set(['Streak', 'Level']))
+  })
+
+  it('opens nothing on compact screens when nothing is near or unseen', () => {
+    expect(initiallyOpenFamilies(catalog, [], true, [])).toEqual(new Set())
+  })
+})
+
+describe('unseenFamilies', () => {
+  it('returns the families of the unseen unlocks, once each', () => {
+    const catalog = [
+      achievement({ code: 'CheckIns10', family: 'CheckIns' }),
+      achievement({ code: 'CheckIns100', family: 'CheckIns' }),
+      achievement({ code: 'Level5', family: 'Level' }),
+    ]
+
+    expect(unseenFamilies(catalog, ['CheckIns10', 'CheckIns100'])).toEqual(new Set(['CheckIns']))
+    expect(unseenFamilies(catalog, [])).toEqual(new Set())
   })
 })

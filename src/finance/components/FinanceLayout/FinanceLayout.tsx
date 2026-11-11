@@ -1,10 +1,11 @@
+import '../../locales/register'
 import { Outlet } from 'react-router-dom'
 import Footer from '../../../shared/components/Footer/Footer'
 import Header from '../../../shared/components/Header/Header'
 import TourButton from '../../../shared/components/Tour/TourButton'
 import { FINANCE_TOURS } from '../../utils/financeTours'
 import FinanceSidebar from '../FinanceSidebar/FinanceSidebar'
-import PrivacyToggle from '../PrivacyToggle/PrivacyToggle'
+import PrivacyToggle from '../../../shared/components/PrivacyToggle/PrivacyToggle'
 import './FinanceLayout.css'
 
 /** Shell shared by every Finance screen: header, module sidebar, and the routed page via `<Outlet />`. */

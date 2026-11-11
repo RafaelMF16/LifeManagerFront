@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import Icon from '../../../shared/components/Icon/Icon'
+import AppLogo from '../../../shared/components/AppLogo/AppLogo'
 import IconButton from '../../../shared/components/IconButton/IconButton'
 import SegmentedControl from '../../../shared/components/SegmentedControl/SegmentedControl'
 import { useTheme } from '../../../shared/hooks/useTheme'
@@ -35,7 +35,7 @@ function AuthLayout({ children, entrance = false }: AuthLayoutProps) {
         <div className="lm-auth-page__header" data-enter="drop" style={enterStyle(0)}>
           <span className="lm-auth-page__header-spacer" />
           <div className="lm-auth-page__brand">
-            <Icon name="wallet" size={20} />
+            <AppLogo size={28} />
             <span>LifeManager</span>
           </div>
           <div className="lm-auth-page__theme-toggle">

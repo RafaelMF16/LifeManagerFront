@@ -2,9 +2,23 @@
 <html lang="en-US">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>lifemanagerfront</title>
+    <title>LifeManager</title>
+    <meta name="description" content="LifeManager: your finances and your habits in one place." />
+    <!-- The --background token of each theme. -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafc" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#020617" />
+    <!-- The app icon (a ship's helm): favicon.svg, and the PNGs scripts/generate-icons.mjs renders from it (public/icons/ too). -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Installable app (PWA): the manifest, and how iOS shows it from the home screen (status bar in the theme's color). -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="LifeManager" />
   </head>
   <body>
     <div id="root"></div>
