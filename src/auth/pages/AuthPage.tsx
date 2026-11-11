@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import AuthLayout from '../components/AuthLayout/AuthLayout'
 import AuthTabs from '../components/AuthTabs/AuthTabs'
@@ -14,6 +14,11 @@ export interface AuthPageState {
 function AuthPage() {
   const location = useLocation()
   const [mode, setMode] = useState<AuthMode>(() => (location.state as AuthPageState | null)?.mode ?? 'login')
+
+  // Warms the Home's chunk (where most sign-ins land), so the screen is ready under the cover by the time it opens.
+  useEffect(() => {
+    import('../../home/pages/HomePage').catch(() => {})
+  }, [])
 
   return (
     <AuthLayout entrance>

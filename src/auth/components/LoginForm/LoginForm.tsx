@@ -49,15 +49,16 @@ function LoginForm({ onSwitchToSignup }: LoginFormProps) {
 
     // A failure here must not block the login: the locally stored preferences stay applied.
     await loadAndApplyUserPreferences().catch(() => {})
-    // After the preferences, so the cover already has the user's theme. The helm animation is the success feedback; the toast
-    // only stands in for it when the user prefers reduced motion.
-    const played = await playLoginTransition(translate('auth:login.entering'))
+    // Back to the screen ProtectedRoute bounced the user from; `replace` so "back" doesn't return to /auth.
+    const from = (location.state as { from?: Location } | null)?.from
+    const target = from ? `${from.pathname}${from.search}` : '/home'
+    // After the preferences, so the cover already has the user's theme. The navigation runs under the cover, which
+    // then opens over the new screen. The helm animation is the success feedback; the toast only stands in for it
+    // when the user prefers reduced motion.
+    const played = await playLoginTransition(translate('auth:login.entering'), () => navigate(target, { replace: true }))
     // A sign-in that cancelled the account's deletion always says so, after the transition.
     if (deletionCancelled) showToast(translate('auth:login.deletionCancelledToast'))
     else if (!played) showToast(translate('auth:login.successToast'))
-    // Back to the screen ProtectedRoute bounced the user from; `replace` so "back" doesn't return to /auth.
-    const from = (location.state as { from?: Location } | null)?.from
-    navigate(from ? `${from.pathname}${from.search}` : '/home', { replace: true })
   })
 
   return (
