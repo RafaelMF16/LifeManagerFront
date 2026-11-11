@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
-import HelmSprite from '../HelmSprite/HelmSprite'
+import AnimatedHelm from '../AnimatedHelm/AnimatedHelm'
 import { LoginTransitionContext } from './LoginTransitionContext'
 import './LoginTransition.css'
 
-// The helm animation lasts ~1.6 s; a backgrounded tab can pause it, so the sign-in never waits longer than this.
+// The helm animation lasts ~1.75 s; a backgrounded tab can pause it, so the sign-in never waits longer than this.
 const MAX_PLAY_MS = 2000
 // Matches the fade-out (`--duration-slow`, 260 ms) plus a margin, then the cover is removed.
 const LEAVE_MS = 300
@@ -83,7 +83,7 @@ export function LoginTransitionProvider({ children }: LoginTransitionProviderPro
           role="status"
           aria-live="polite"
         >
-          <HelmSprite key={transition.id} variant="receive" onEnd={finish} />
+          <AnimatedHelm key={transition.id} variant="receive" onEnd={finish} />
           <span className="lm-login-transition__label">{transition.label}</span>
         </div>
       ) : null}

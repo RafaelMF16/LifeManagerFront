@@ -1,14 +1,15 @@
 import { useEffect, useRef } from 'react'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
-import { helmLoopTimeline } from '../../utils/helmTimeline'
+import { helmLoopTimeline, helmReceiveTimeline } from '../../utils/helmTimeline'
 import type { HelmTimeline } from '../../utils/helmTimeline'
 import { HelmHub, HelmShine, HelmWheel } from '../AppLogo/HelmParts'
 import './AnimatedHelm.css'
 
-export type AnimatedHelmVariant = 'loop'
+export type AnimatedHelmVariant = 'loop' | 'receive'
 
 const TIMELINES: Record<AnimatedHelmVariant, () => HelmTimeline> = {
   loop: helmLoopTimeline,
+  receive: helmReceiveTimeline,
 }
 
 /** A four-point star centered at (0, 0). */
@@ -23,10 +24,15 @@ const SPARKS = [
 ] as const
 
 interface AnimatedHelmProps {
-  /** `loop`: the helm turns a spoke for each coin that lands in its hub, forever. */
+  /**
+   * `loop`: the helm turns a spoke for each coin that lands in its hub, forever. `receive`: one coin lands, the helm
+   * turns a full circle and sparkles, once.
+   */
   variant: AnimatedHelmVariant
   /** The helm's side in px (any size: it's vector). */
   size?: number
+  /** `receive` only: called once, when the animation has played (right away with reduced motion). */
+  onEnd?: () => void
 }
 
 function Coin({ id }: { id: 'coin1' | 'coin2' }) {
@@ -49,19 +55,39 @@ function Coin({ id }: { id: 'coin1' | 'coin2' }) {
  * rim's shine stays lit from the top left. Decorative: the caller labels what it means. With reduced motion, a still
  * helm.
  */
-function AnimatedHelm({ variant, size = 192 }: AnimatedHelmProps) {
+function AnimatedHelm({ variant, size = 192, onEnd }: AnimatedHelmProps) {
   const svgRef = useRef<SVGSVGElement>(null)
+  const onEndRef = useRef(onEnd)
+  // Survives StrictMode's second effect run, so `onEnd` fires once even when the first run already ended.
+  const endedRef = useRef(false)
   const reduceMotion = usePrefersReducedMotion()
 
   useEffect(() => {
+    onEndRef.current = onEnd
+  }, [onEnd])
+
+  useEffect(() => {
     const svg = svgRef.current
-    if (!svg || reduceMotion || typeof svg.animate !== 'function') return
+    if (!svg) return
+
+    const end = () => {
+      if (variant !== 'receive' || endedRef.current) return
+      endedRef.current = true
+      onEndRef.current?.()
+    }
+
+    if (reduceMotion || typeof svg.animate !== 'function') {
+      end()
+      return
+    }
 
     const { durationMs, iterations, tracks } = TIMELINES[variant]()
     const animations = tracks.flatMap(({ part, keyframes }) => {
       const element = svg.querySelector(`[data-part="${part}"]`)
       return element ? [element.animate(keyframes, { duration: durationMs, iterations, fill: 'forwards' })] : []
     })
+    // Cancelling (unmount, StrictMode) rejects `finished` with an AbortError: that run just never ends.
+    animations[0]?.finished.then(end, () => {})
 
     return () => animations.forEach((animation) => animation.cancel())
   }, [variant, reduceMotion])

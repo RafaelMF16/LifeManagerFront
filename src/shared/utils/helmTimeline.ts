@@ -129,3 +129,50 @@ export function helmLoopTimeline(): HelmTimeline {
     ],
   }
 }
+
+/** The `receive` animation's length; the sparkles start at `HELM_RECEIVE_SPARKLE_MS`. */
+export const HELM_RECEIVE_DURATION_MS = 1750
+export const HELM_RECEIVE_SPARKLE_MS = 1280
+
+/** One four-point sparkle growing, turning and fading out from `start`, an offset. */
+function sparkTrack(part: HelmPart, start: number): HelmTrack {
+  return {
+    part,
+    keyframes: [
+      { offset: 0, opacity: 0, transform: 'scale(0) rotate(0deg)' },
+      { offset: start, opacity: 0, transform: 'scale(0) rotate(0deg)' },
+      { offset: clamp(start + 0.06), opacity: 1, transform: 'scale(1.15) rotate(45deg)' },
+      { offset: clamp(start + 0.17), opacity: 0, transform: 'scale(.3) rotate(90deg)' },
+      { offset: 1, opacity: 0, transform: 'scale(.3) rotate(90deg)' },
+    ],
+  }
+}
+
+/**
+ * The sign-in: the helm still for a moment (120 ms), one coin flying into the hub, which lights up (720 ms), a full
+ * turn that settles with a small overshoot (1420 ms) and four sparkles around the rim, one after another.
+ */
+export function helmReceiveTimeline(): HelmTimeline {
+  const at = (ms: number) => ms / HELM_RECEIVE_DURATION_MS
+  const landed = at(720)
+  const sparks = ['spark0', 'spark1', 'spark2', 'spark3'] as const
+
+  return {
+    durationMs: HELM_RECEIVE_DURATION_MS,
+    iterations: 1,
+    tracks: [
+      {
+        part: 'wheel',
+        keyframes: [
+          { offset: 0, transform: 'rotate(0deg)' },
+          { offset: landed, transform: 'rotate(0deg)', easing: 'cubic-bezier(.2,.65,.3,1.08)' },
+          { offset: at(1420), transform: 'rotate(360deg)' },
+          { offset: 1, transform: 'rotate(360deg)' },
+        ],
+      },
+      ...coinTracks('coin1', at(120), landed, 52, -54),
+      ...hubTracks([landed], 0.22),
+      ...sparks.map((part, index) => sparkTrack(part, at(HELM_RECEIVE_SPARKLE_MS + index * 70))),
+    ],
+  }
+}
