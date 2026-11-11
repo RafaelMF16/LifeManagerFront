@@ -1,0 +1,207 @@
+.lm-goal-card {
+  --lm-goal-color: var(--chart-investment);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-4);
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+}
+
+.lm-goal-card--large {
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.lm-goal-card--Done {
+  --lm-goal-color: var(--success);
+}
+
+.lm-goal-card--archived {
+  --lm-goal-color: var(--border-strong);
+}
+
+/* Privacy mode: same-length neutral bars, so neither the length nor a color tells the progress. */
+.lm-goal-card--hidden {
+  --lm-goal-color: var(--border-strong);
+}
+
+.lm-goal-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.lm-goal-card__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--investment-tint);
+  color: var(--amount-investment);
+}
+
+.lm-goal-card--large .lm-goal-card__icon {
+  width: 44px;
+  height: 44px;
+}
+
+.lm-goal-card--archived .lm-goal-card__icon {
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+
+.lm-goal-card__title {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lm-goal-card--large .lm-goal-card__title {
+  font-size: var(--text-lg);
+}
+
+.lm-goal-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.lm-goal-card__title a:hover {
+  text-decoration: underline;
+}
+
+.lm-goal-card__title a:focus-visible {
+  outline: none;
+  border-radius: 2px;
+  box-shadow: var(--ring-focus);
+}
+
+.lm-goal-card__actions {
+  display: flex;
+  flex: none;
+  gap: 2px;
+}
+
+.lm-goal-card__progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lm-goal-card__figures {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.lm-goal-card--large .lm-goal-card__figures {
+  font-size: var(--text-base);
+  color: var(--text-primary);
+}
+
+.lm-goal-card__track {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.lm-goal-card--large .lm-goal-card__track {
+  height: 12px;
+  border-radius: 6px;
+}
+
+.lm-goal-card__fill {
+  display: block;
+  width: calc(var(--lm-bar) * 100%);
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  background: var(--lm-goal-color);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lm-goal-card__fill {
+    transition: width var(--duration-base) var(--ease-standard);
+  }
+}
+
+.lm-goal-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.lm-goal-card__deadline {
+  flex: 1 1 auto;
+}
+
+.lm-goal-card__needed {
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.lm-goal-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.lm-goal-card__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.lm-goal-card__badge--success {
+  background: var(--positive-tint);
+}
+
+.lm-goal-card__badge--success .lm-goal-card__dot {
+  background: var(--success);
+}
+
+.lm-goal-card__badge--positive {
+  background: var(--investment-tint);
+}
+
+.lm-goal-card__badge--positive .lm-goal-card__dot {
+  background: var(--chart-investment);
+}
+
+.lm-goal-card__badge--warning {
+  background: var(--warning-tint);
+}
+
+.lm-goal-card__badge--warning .lm-goal-card__dot {
+  background: var(--warning);
+}
+
+.lm-goal-card__badge--archived {
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}

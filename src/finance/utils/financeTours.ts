@@ -71,6 +71,18 @@ export const FINANCE_TOURS: TourDefinition[] = [
     ],
   },
   {
+    id: 'savings',
+    path: '/finance/planning/savings',
+    namespace: 'finance',
+    steps: [
+      { id: 'intro' },
+      { id: 'tabs', target: 'planning.tabs' },
+      { id: 'create', target: 'savings.create' },
+      { id: 'filters', target: 'savings.filters' },
+      { id: 'card', target: 'savings.card' },
+    ],
+  },
+  {
     id: 'imports',
     path: '/finance/imports',
     namespace: 'finance',

@@ -13,6 +13,8 @@ export interface TransactionRequestDto {
   description: string
   /** ISO date, `YYYY-MM-DD` (C# `DateOnly`). */
   date: string
+  /** The savings goal this investment counts towards; only an investment takes one. */
+  savingsGoalId: number | null
 }
 
 export interface TransactionResponseDto {
@@ -27,6 +29,10 @@ export interface TransactionResponseDto {
   date: string
   /** The recurrence that posted it; null for transactions entered by hand. */
   recurringTransactionId: number | null
+  /** The savings goal this investment counts towards; null for none. */
+  savingsGoalId: number | null
+  /** The goal's name (archived goals too); only on the reads (one transaction, the month's listing). */
+  savingsGoalName?: string | null
 }
 
 // Espelha QuickTransactionResponseDto (POST /api/Transactions)
@@ -46,6 +52,8 @@ export interface TransactionListQuery {
   categoryId: number | null
   /** One day of the month, ISO `YYYY-MM-DD`; left out means every day. */
   date?: string
+  /** Only the transactions linked to this savings goal. */
+  savingsGoalId?: number
   search?: string
   sortBy: TransactionSortBy
   sortDirection: SortDirection

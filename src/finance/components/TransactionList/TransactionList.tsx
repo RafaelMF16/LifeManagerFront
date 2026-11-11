@@ -164,6 +164,21 @@ function TransactionList({
           </span>
           <span className="lm-transaction-list__category">
             <span className="lm-transaction-list__badge">{transaction.categoryName}</span>
+            {transaction.savingsGoalName ? (
+              <span
+                className="lm-transaction-list__badge lm-transaction-list__badge--goal"
+                title={translate('finance:transactions.list.goal', { name: transaction.savingsGoalName })}
+              >
+                <Icon
+                  name="target"
+                  size={10}
+                  role="img"
+                  aria-label={translate('finance:transactions.form.goalLabel')}
+                  className="lm-transaction-list__goal-icon"
+                />
+                {transaction.savingsGoalName}
+              </span>
+            ) : null}
           </span>
           <span className="lm-transaction-list__amount">
             <Amount

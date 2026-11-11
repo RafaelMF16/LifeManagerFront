@@ -16,7 +16,8 @@ function transactionsPath(monthlySummaryId: number) {
   return `/api/MonthlySummaries/${monthlySummaryId}/Transactions`
 }
 
-function toRequestDto(values: TransactionFormValues): TransactionRequestDto {
+/** The goal goes only with an investment: another type sends none, whatever the form still holds. */
+export function toTransactionRequestDto(values: TransactionFormValues): TransactionRequestDto {
   return {
     type: values.type,
     categoryId: Number(values.categoryId),
@@ -24,6 +25,7 @@ function toRequestDto(values: TransactionFormValues): TransactionRequestDto {
     amount: parseAmount(values.amount) ?? 0,
     description: values.description,
     date: values.date,
+    savingsGoalId: values.type === 'Investment' && values.savingsGoalId ? Number(values.savingsGoalId) : null,
   }
 }
 
@@ -41,6 +43,7 @@ export function getTransactions(
   })
   if (query.categoryId !== null) params.set('categoryId', String(query.categoryId))
   if (query.date) params.set('date', query.date)
+  if (query.savingsGoalId !== undefined) params.set('savingsGoalId', String(query.savingsGoalId))
   if (query.search) params.set('search', query.search)
 
   return apiRequest<PagedResponse<TransactionResponseDto>>(`${transactionsPath(monthlySummaryId)}?${params}`, { method: 'GET', signal })
@@ -49,7 +52,7 @@ export function getTransactions(
 export function createTransaction(monthlySummaryId: number, values: TransactionFormValues): Promise<TransactionResponseDto> {
   return apiRequest<TransactionResponseDto>(transactionsPath(monthlySummaryId), {
     method: 'POST',
-    body: toRequestDto(values),
+    body: toTransactionRequestDto(values),
   })
 }
 
@@ -57,14 +60,14 @@ export function createTransaction(monthlySummaryId: number, values: TransactionF
 export function createQuickTransaction(values: TransactionFormValues): Promise<QuickTransactionResponseDto> {
   return apiRequest<QuickTransactionResponseDto>('/api/Transactions', {
     method: 'POST',
-    body: toRequestDto(values),
+    body: toTransactionRequestDto(values),
   })
 }
 
 export function updateTransaction(monthlySummaryId: number, id: number, values: TransactionFormValues): Promise<TransactionResponseDto> {
   return apiRequest<TransactionResponseDto>(`${transactionsPath(monthlySummaryId)}/${id}`, {
     method: 'PUT',
-    body: toRequestDto(values),
+    body: toTransactionRequestDto(values),
   })
 }
 
