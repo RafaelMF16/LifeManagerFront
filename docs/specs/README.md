@@ -114,12 +114,12 @@ A exceção foi o `review-fixes`: um spec só, no front, que juntou as correçõ
 | 6 | `pwa` | — | — (removido) | `feature/pwa` | **mergeado na `dev`** em 10/11/2026 (PR RafaelMF16/LifeManagerFront#49) |
 | 7 | `habit-reminders` | [habit-reminders](../../../LifeManager/docs/specs/habit-reminders.md) | [habit-reminders](habit-reminders.md) | `feature/habit-reminders` | aprovado · dependência em discussão |
 | 7 | `savings-goals` | [savings-goals](../../../LifeManager/docs/specs/savings-goals.md) | [savings-goals](savings-goals.md) | `feature/savings-goals` | aprovado |
-| 7 | `transactions-export` | [transactions-export](../../../LifeManager/docs/specs/transactions-export.md) | [transactions-export](transactions-export.md) | `feature/transactions-export` | **implementado na branch** (aguardando PR) |
-| 8 | `helm-reveal` | — | [helm-reveal](helm-reveal.md) | `feature/helm-reveal` | **implementado na branch** (aguardando PR) |
+| 7 | `transactions-export` | — (removido) | — (removido) | `feature/transactions-export` | **mergeado na `dev`** em 11/11/2026 (PRs RafaelMF16/LifeManager#53 e RafaelMF16/LifeManagerFront#53) |
+| 8 | `helm-reveal` | — | — (removido) | `feature/helm-reveal` | **mergeado na `dev`** em 11/11/2026 (PR RafaelMF16/LifeManagerFront#52) |
 
 São **10 módulos e 17 branches**: 8 no back e 9 no front.
 
-**Spec implementado e mergeado na `dev` sai da pasta.** O histórico fica no git, e as regras passam para o `CLAUDE.md` e as docs. Os specs de loadings (`splash`, `auth-entrance`, `skeleton` e o mapa `loadings`), implementados no PR #38, já saíram. Também saíram o `review-fixes` (PRs #41 do back e #39 do front) o `integration-tests` (PR #43 do back), o `category-picker` (PR #42 do front), o `quick-transaction` (PRs #45 do back e #43 do front), o `home-overview` (PRs #47 do back e #45 do front), o `account-settings` (PRs #50 do back e #47 do front) e o `pwa` (PR #49 do front).
+**Spec implementado e mergeado na `dev` sai da pasta.** O histórico fica no git, e as regras passam para o `CLAUDE.md` e as docs. Os specs de loadings (`splash`, `auth-entrance`, `skeleton` e o mapa `loadings`), implementados no PR #38, já saíram. Também saíram o `review-fixes` (PRs #41 do back e #39 do front) o `integration-tests` (PR #43 do back), o `category-picker` (PR #42 do front), o `quick-transaction` (PRs #45 do back e #43 do front), o `home-overview` (PRs #47 do back e #45 do front), o `account-settings` (PRs #50 do back e #47 do front), o `pwa` (PR #49 do front), o `helm-reveal` (PR #52 do front, com o protótipo) e o `transactions-export` (PRs #53 do back e #53 do front).
 
 ## Comandos
 
