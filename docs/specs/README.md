@@ -113,7 +113,7 @@ A exceção foi o `review-fixes`: um spec só, no front, que juntou as correçõ
 | 5 | `account-settings` | — (removido) | — (removido) | `feature/account-settings` | **mergeado na `dev`** em 10/11/2026 (PRs RafaelMF16/LifeManager#50 e RafaelMF16/LifeManagerFront#47) |
 | 6 | `pwa` | — | — (removido) | `feature/pwa` | **mergeado na `dev`** em 10/11/2026 (PR RafaelMF16/LifeManagerFront#49) |
 | 7 | `habit-reminders` | [habit-reminders](../../../LifeManager/docs/specs/habit-reminders.md) | [habit-reminders](habit-reminders.md) | `feature/habit-reminders` | aprovado · dependência em discussão |
-| 7 | `savings-goals` | [savings-goals](../../../LifeManager/docs/specs/savings-goals.md) | [savings-goals](savings-goals.md) | `feature/savings-goals` | aprovado |
+| 7 | `savings-goals` | [savings-goals](../../../LifeManager/docs/specs/savings-goals.md) | [savings-goals](savings-goals.md) | `feature/savings-goals` | implementado nas branches (back + front), falta o PR |
 | 7 | `transactions-export` | — (removido) | — (removido) | `feature/transactions-export` | **mergeado na `dev`** em 11/11/2026 (PRs RafaelMF16/LifeManager#53 e RafaelMF16/LifeManagerFront#53) |
 | 8 | `helm-reveal` | — | — (removido) | `feature/helm-reveal` | **mergeado na `dev`** em 11/11/2026 (PR RafaelMF16/LifeManagerFront#52) |
 

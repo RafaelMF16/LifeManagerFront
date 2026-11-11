@@ -26,6 +26,7 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   - [Detalhe do mês](#detalhe-do-mês)
   - [Planejamento: Orçamento](#planejamento-orçamento)
   - [Planejamento: Recorrentes](#planejamento-recorrentes)
+  - [Planejamento: Objetivos](#planejamento-objetivos)
   - [Importar extrato](#importar-extrato)
   - [Revisar importação](#revisar-importação)
   - [Categorias](#categorias)
@@ -60,6 +61,8 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   /finance/planning         → Orçamento
     /finance/planning/goals      Orçamento (?month=aaaa-mm)
     /finance/planning/recurring  Recorrentes
+    /finance/planning/savings    Objetivos
+    /finance/planning/savings/:id  Detalhe do objetivo
   /finance/imports          Importar extrato
   /finance/imports/:id      Revisar importação
   /finance/categories       Categorias
@@ -344,7 +347,7 @@ Abre com **Exportar** em [Meses](#meses) ou no [Painel](#painel). Baixa os lanç
 - **Ver orçamento** abre a tela de Orçamento já neste mês. Sem orçamento, aparece "Este mês não tem orçamento." e **Criar orçamento**.
 
 **Lançamentos**
-- Lista com Data, Descrição, Categoria e Valor. Os lançamentos feitos por uma recorrência têm um ícone de repetição ("Lançado por uma recorrência").
+- Lista com Data, Descrição, Categoria e Valor. Os lançamentos feitos por uma recorrência têm um ícone de repetição ("Lançado por uma recorrência"). Um investimento ligado a um objetivo mostra, ao lado da categoria, um selo com o nome do objetivo.
 - **Filtros:** Tipo (Todos, Receitas, Gastos, Investimentos), Categoria (com busca; **Todas** tira o filtro) e **Buscar descrição**.
 - **Ordenação:** Data (padrão: mais recente primeiro), Descrição, Categoria ou Valor.
 - **Novo lançamento:** abre o formulário.
@@ -361,6 +364,7 @@ Abre com **Exportar** em [Meses](#meses) ou no [Painel](#painel). Baixa os lanç
 | Valor | Maior que zero; aceita `1.234,56` ou `1234.56` |
 | Data | Precisa estar dentro do mês ("A data precisa estar em …") |
 | Categoria | Obrigatória, escolhida com busca. Sem nenhuma categoria, a lista diz "Você ainda não tem categorias." |
+| Objetivo | Só aparece com o tipo Investimento. Opcional (**Nenhum**): os objetivos em andamento e os concluídos; ao editar, um objetivo que foi arquivado aparece como "… (arquivado)". Trocar o tipo para Gasto ou Receita tira o objetivo. |
 
 **Salvar lançamento** mostra "Receita registrada", "Gasto registrado" ou "Investimento registrado".
 
@@ -416,6 +420,44 @@ Lista de **Transações recorrentes**, um cartão por recorrência com:
 - **Pausar / Retomar:** os meses em que ela ficou pausada não são lançados.
 - **Excluir:** pede confirmação. As transações já lançadas continuam nos meses.
 - Se a recorrência acabou de ser lançada enquanto você editava, aparece "Essa recorrência acabou de ser lançada. Tente de novo."
+
+### Planejamento: Objetivos
+
+**Rota:** `/finance/planning/savings` (aba **Objetivos** dentro de **Planejamento**).
+
+Objetivos de economia ("Viagem: R$ 5.000 até Dez 2027"). O que conta para um objetivo é o valor que você já tinha guardado mais os lançamentos de **Investimento** ligados a ele (campo **Objetivo** do [formulário de lançamento](#detalhe-do-mês)).
+
+Lista de **Objetivos**, um cartão por objetivo (uma coluna no celular) com:
+- ícone e nome (tocar no nome abre o detalhe);
+- a barra de progresso e "R$ 2.300,00 de R$ 5.000,00 (46%)";
+- o prazo: "até Dez 2027 · faltam 13 meses", "vence este mês", "prazo encerrado" ou "Sem prazo";
+- "Guarde R$ 208,34/mês" (ou "Guarde R$ X este mês" no mês do prazo ou depois dele), enquanto falta guardar;
+- o selo de ritmo, sempre com o texto: **No ritmo** (a média guardada nos últimos 3 meses, o atual incluído, cobre o "Guarde por mês"), **Atrasado** ou **Concluído** ("Meta atingida em …"). Sem prazo não há selo.
+
+- **Filtros:** Em andamento (padrão), Concluídos, Arquivados e **Buscar objetivo**.
+- **Ordenar por:** Nome (padrão), Prazo (sem prazo por último) ou Progresso, com **Inverter ordem**.
+- **Novo objetivo:** abre o formulário.
+
+  | Campo | Regra |
+  |---|---|
+  | Nome | Obrigatório, até 60 caracteres; dois objetivos ativos não podem ter o mesmo nome ("Já existe um objetivo ativo com esse nome") |
+  | Meta | Maior que zero |
+  | Já tenho guardado | Opcional; zero ou mais |
+  | Prazo | Opcional ("Sem prazo"); não pode ser antes do mês atual |
+  | Ícone | Um de 12 ícones (Alvo, Viagem, Casa, Carro…) |
+
+  **Criar objetivo** mostra "Objetivo criado".
+- **Editar:** o mesmo formulário preenchido; mudar a meta, o prazo ou o valor inicial recalcula o progresso.
+- **Arquivar:** pede confirmação. Os lançamentos ligados continuam nos meses; o objetivo vai para **Arquivados** e não recebe novos lançamentos.
+- **Restaurar** (em Arquivados): volta para a lista. Se outro objetivo ativo já usa o nome: "Já existe um objetivo ativo com esse nome. Renomeie um deles e tente de novo."
+- Um objetivo que atingiu a meta vai para **Concluídos** e fica lá, mesmo que um lançamento ligado seja apagado depois.
+
+**Detalhe do objetivo** (`/finance/planning/savings/:id`)
+- O cartão grande, com **Editar** e **Arquivar** (ou **Restaurar**, quando arquivado).
+- **Guardado por mês:** uma barra por mês dos últimos 12, na cor de investimento; tocar num mês mostra o valor dele.
+- **Lançamentos ligados:** de qualquer mês, o mais recente primeiro, com data, descrição, categoria, valor e um link para o mês de cada um. Mostra também "Já tinha guardado", quando houver.
+
+No **modo privacidade**, os valores ficam mascarados, as barras ficam do mesmo tamanho e cinzas e o "Guarde R$ X/mês" some.
 
 ### Importar extrato
 
