@@ -17,6 +17,11 @@
   gap: var(--space-6);
 }
 
+.lm-home-page__card-cell {
+  display: grid;
+  min-width: 0;
+}
+
 .lm-home-page__greeting {
   display: flex;
   flex-direction: column;

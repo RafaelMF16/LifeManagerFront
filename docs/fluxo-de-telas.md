@@ -154,7 +154,7 @@ A tela tem duas abas: **Entrar** e **Criar conta**.
 | E-mail | Obrigatório, formato `algo@algo.algo` |
 | Senha | Obrigatória |
 
-- **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra uma moeda chegando no leme, que dá uma volta (cerca de 1,6 segundo), e abre a Home (ou a tela que você tentou abrir antes). Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
+- **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra uma moeda chegando no leme, que dá uma volta e brilha; a tela de destino, a Home ou a tela que você tentou abrir antes, se abre num círculo que sai do centro do leme (cerca de 2,2 segundos ao todo). Na Home, o cabeçalho, a saudação, os cartões e os módulos chegam um depois do outro. Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
 - Se a conta estava com a exclusão agendada, entrar cancela a exclusão e, depois da animação, aparece "Bem-vindo de volta! A exclusão da sua conta foi cancelada."
 - **Não tem conta? Criar conta:** troca para a aba de cadastro.
 - **Esqueceu a senha?:** abre a tela [Esqueceu a senha?](#esqueceu-a-senha).
