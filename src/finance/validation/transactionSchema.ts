@@ -40,6 +40,8 @@ function transactionSchema(min: string, max: string, outOfRangeMessage: string) 
         message: outOfRangeMessage,
       }),
     categoryId: z.string().min(1, { message: 'finance:transactions.validation.category.required' }),
+    /** The savings goal id as text; empty (or missing) means none. Only sent for an investment. */
+    savingsGoalId: z.string().optional(),
   })
 }
 

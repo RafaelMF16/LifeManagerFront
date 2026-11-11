@@ -201,7 +201,23 @@
 
 .lm-transaction-list__category {
   display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
   min-width: 0;
+}
+
+/* The goal an investment counts towards, in the investment tint, next to its category. */
+.lm-transaction-list__badge--goal {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--investment-tint);
+  color: var(--text-primary);
+}
+
+.lm-transaction-list__goal-icon {
+  flex: none;
+  color: var(--amount-investment);
 }
 
 .lm-transaction-list__badge {

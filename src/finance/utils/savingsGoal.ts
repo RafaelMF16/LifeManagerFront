@@ -99,3 +99,28 @@ export function savingsChartBars(monthly: SavingsGoalMonthDto[]): { scaleMax: nu
     bars: monthly.map((item) => ({ month: item.month, amount: item.amount, ratio: barRatio(item.amount, scaleMax) })),
   }
 }
+
+export interface SavingsGoalOption {
+  id: number
+  name: string
+  /** A goal the transaction already has but that was archived since: kept so editing doesn't drop it. */
+  archived: boolean
+}
+
+/**
+ * The goals an investment can be linked to (active and completed, A→Z), plus the transaction's current goal when it
+ * is no longer among them (archived): keeping it is allowed, so the form must still show it.
+ */
+export function savingsGoalOptions(
+  goals: Pick<SavingsGoalResponseDto, 'id' | 'name'>[],
+  current: { id: number | null; name?: string | null } | null,
+): SavingsGoalOption[] {
+  const options = goals
+    .map((goal) => ({ id: goal.id, name: goal.name, archived: false }))
+    .sort((left, right) => left.name.localeCompare(right.name) || left.id - right.id)
+
+  if (current?.id != null && !options.some((option) => option.id === current.id)) {
+    options.push({ id: current.id, name: current.name ?? String(current.id), archived: true })
+  }
+  return options
+}

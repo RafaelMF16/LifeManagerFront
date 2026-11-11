@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { apiDownload } from '../../shared/services/httpClient'
 import { saveBlob } from '../../shared/utils/downloadBlob'
 import type { ExportFormValues } from '../validation/exportSchema'
-import { exportTransactions } from './transactionService'
+import { exportTransactions, toTransactionRequestDto } from './transactionService'
 
 vi.mock('../../shared/services/httpClient', () => ({ apiDownload: vi.fn(), apiRequest: vi.fn() }))
 vi.mock('../../shared/utils/downloadBlob', async (importOriginal) => ({
@@ -56,5 +56,36 @@ describe('exportTransactions', () => {
 
     expect(await exportTransactions({ ...values, format: 'EnUs' })).toEqual({ rowCount: null })
     expect(saveBlob).toHaveBeenCalledWith(blob, 'transactions-2026-01_2026-11.csv')
+  })
+})
+
+describe('toTransactionRequestDto', () => {
+  const values = {
+    type: 'Investment' as const,
+    description: 'Aporte',
+    amount: '500,00',
+    date: '2026-11-11',
+    categoryId: '3',
+    savingsGoalId: '7',
+  }
+
+  it('sends the goal with an investment', () => {
+    expect(toTransactionRequestDto(values)).toEqual({
+      type: 'Investment',
+      categoryId: 3,
+      amount: 500,
+      description: 'Aporte',
+      date: '2026-11-11',
+      savingsGoalId: 7,
+    })
+  })
+
+  it.each(['Expense', 'Income'] as const)('never sends a goal with an %s', (type) => {
+    expect(toTransactionRequestDto({ ...values, type }).savingsGoalId).toBeNull()
+  })
+
+  it('sends no goal when none is picked', () => {
+    expect(toTransactionRequestDto({ ...values, savingsGoalId: '' }).savingsGoalId).toBeNull()
+    expect(toTransactionRequestDto({ ...values, savingsGoalId: undefined }).savingsGoalId).toBeNull()
   })
 })

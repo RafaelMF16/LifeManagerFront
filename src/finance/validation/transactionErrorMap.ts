@@ -15,6 +15,10 @@ export const transactionErrorFieldMap: ApiErrorFieldMap<TransactionFormValues> =
   'Transaction.DateOutsideMonth': { field: 'date', message: 'finance:transactions.validation.date.outsideMonth' },
   // The chosen category was deleted (or never belonged to the user) after the options were loaded.
   'Category.NotFound': { field: 'categoryId', message: 'finance:transactions.validation.category.notFound' },
+  // The goal was deleted or archived after the options were loaded, or the type changed under it.
+  'SavingsGoal.NotFound': { field: 'savingsGoalId', message: 'finance:transactions.validation.goal.notFound' },
+  'SavingsGoal.Archived': { field: 'savingsGoalId', message: 'finance:transactions.validation.goal.archived' },
+  'Transaction.GoalRequiresInvestment': { field: 'savingsGoalId', message: 'finance:transactions.validation.goal.requiresInvestment' },
 }
 
 /** The quick entry (`POST /api/Transactions`) may also be refused the month it would open. */

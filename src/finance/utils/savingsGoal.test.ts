@@ -7,6 +7,7 @@ import {
   progressBarRatio,
   savingsChartBars,
   savingsGoalIcon,
+  savingsGoalOptions,
 } from './savingsGoal'
 
 describe('savingsGoalIcon', () => {
@@ -109,5 +110,24 @@ describe('savingsChartBars', () => {
 
     expect(scaleMax).toBe(1)
     expect(bars.map((bar) => bar.ratio)).toEqual([0, 0])
+  })
+})
+
+describe('savingsGoalOptions', () => {
+  const goals = [
+    { id: 2, name: 'Viagem' },
+    { id: 1, name: 'Reserva' },
+  ]
+
+  it('lists the goals by name', () => {
+    expect(savingsGoalOptions(goals, null).map((option) => option.name)).toEqual(['Reserva', 'Viagem'])
+  })
+
+  it('keeps the current goal when it is no longer linkable, marked archived', () => {
+    expect(savingsGoalOptions(goals, { id: 9, name: 'Carro' }).at(-1)).toEqual({ id: 9, name: 'Carro', archived: true })
+  })
+
+  it('does not repeat a current goal that is still listed', () => {
+    expect(savingsGoalOptions(goals, { id: 2, name: 'Viagem' })).toHaveLength(2)
   })
 })
