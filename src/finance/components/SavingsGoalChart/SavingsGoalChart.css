@@ -1,0 +1,206 @@
+.lm-goal-chart {
+  --lm-plot-height: 160px;
+  --lm-axis-width: 64px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-5);
+  background: var(--surface);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+}
+
+.lm-goal-chart__header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lm-goal-chart__title {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-goal-chart__subtitle {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+/* The selected month's amount: what a tooltip would show, but always visible and reachable by touch. */
+.lm-goal-chart__detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+}
+
+.lm-goal-chart__detail-month {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.lm-goal-chart__plot {
+  position: relative;
+  padding-left: var(--lm-axis-width);
+}
+
+/* Hairline gridlines behind the bars, each with its value in the left gutter. */
+.lm-goal-chart__grid {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--lm-plot-height);
+  pointer-events: none;
+}
+
+.lm-goal-chart__gridline {
+  position: absolute;
+  left: var(--lm-axis-width);
+  right: 0;
+  bottom: calc(var(--lm-bar) * 100%);
+  border-top: var(--border-width) solid var(--border);
+}
+
+.lm-goal-chart__gridlabel {
+  position: absolute;
+  right: 100%;
+  top: 0;
+  transform: translateY(-50%);
+  padding-right: var(--space-2);
+  font-size: var(--text-2xs);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.lm-goal-chart__columns {
+  position: relative;
+  display: flex;
+  gap: 2px;
+}
+
+/* Each month is the hit target: far bigger than its bar, so it's easy to point at or tap. */
+.lm-goal-chart__column {
+  appearance: none;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 2px var(--space-1);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-standard);
+}
+
+.lm-goal-chart__column:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}
+
+@media (hover: hover) {
+  .lm-goal-chart__column:hover {
+    background: var(--surface-hover);
+  }
+}
+
+.lm-goal-chart__column--selected {
+  background: var(--surface-sunken);
+}
+
+.lm-goal-chart__slot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: var(--lm-plot-height);
+}
+
+/* Thin columns, 4px rounded at the data end and square on the baseline. */
+.lm-goal-chart__bar {
+  width: 100%;
+  max-width: 24px;
+  height: calc(var(--lm-bar) * 100%);
+  min-height: 2px;
+  border-radius: 4px 4px 0 0;
+  background: var(--chart-investment);
+}
+
+.lm-goal-chart__bar--empty {
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lm-goal-chart__bar {
+    transition: height var(--duration-base) var(--ease-standard);
+  }
+}
+
+/* Privacy mode: same-size neutral placeholders, so not even the proportions show. */
+.lm-goal-chart--hidden .lm-goal-chart__bar {
+  background: var(--border-strong);
+}
+
+.lm-goal-chart__month {
+  padding-top: 6px;
+  font-size: var(--text-2xs);
+  color: var(--text-secondary);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.lm-goal-chart__hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* The screen-reader alternative to the bars, hidden through a wrapper (a table grows to its content). */
+.lm-goal-chart__table {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .lm-goal-chart {
+    --lm-plot-height: 140px;
+
+    padding: var(--space-4);
+  }
+
+  /* No room for an axis at 360px: the detail line carries the exact amount. */
+  .lm-goal-chart__plot {
+    padding-left: 0;
+  }
+
+  .lm-goal-chart__grid {
+    display: none;
+  }
+
+  .lm-goal-chart__columns {
+    gap: 0;
+  }
+
+  .lm-goal-chart__column {
+    padding: 0 1px var(--space-1);
+  }
+}

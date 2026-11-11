@@ -52,6 +52,8 @@ const router = createBrowserRouter(
             <Route index element={<Navigate to="goals" replace />} />
             <Route path="goals" lazy={page(() => import('./finance/pages/BudgetsPage'))} />
             <Route path="recurring" lazy={page(() => import('./finance/pages/RecurringTransactionsPage'))} />
+            <Route path="savings" lazy={page(() => import('./finance/pages/SavingsGoalsPage'))} />
+            <Route path="savings/:goalId" lazy={page(() => import('./finance/pages/SavingsGoalDetailsPage'))} />
           </Route>
         </Route>
         <Route path="/habits" lazy={page(() => import('./habits/components/HabitsLayout/HabitsLayout'))}>
