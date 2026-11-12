@@ -11,6 +11,7 @@ import type { PagedResponse, SortDirection } from '../../../shared/types/Paging'
 import type { HabitsStatus } from '../../hooks/useHabits'
 import type { HabitResponseDto, HabitSortBy, HabitStatusFilter } from '../../types/HabitDtos'
 import { formatFrequency } from '../../utils/formatFrequency'
+import { formatReminderHour } from '../../utils/reminderHour'
 import { HABIT_TEMPLATES } from '../../utils/starterTemplates'
 import type { HabitTemplateId } from '../../utils/starterTemplates'
 import StarterSuggestions from '../StarterSuggestions/StarterSuggestions'
@@ -162,6 +163,15 @@ function HabitList({
             </span>
             <span className="lm-habit-list__badge">{translate(`habits:habits.list.difficulty.${habit.difficulty}`)}</span>
             <span className="lm-habit-list__frequency">{formatFrequency(habit, translate, i18n.language)}</span>
+            {habit.reminderHour != null ? (
+              <span className="lm-habit-list__reminder">
+                <Icon name="bell" size={12} aria-hidden="true" />
+                <span aria-hidden="true">{formatReminderHour(habit.reminderHour, i18n.language)}</span>
+                <span className="lm-habit-list__visually-hidden">
+                  {translate('habits:habits.form.reminderAt', { hour: formatReminderHour(habit.reminderHour, i18n.language) })}
+                </span>
+              </span>
+            ) : null}
           </span>
           {habit.trigger ? <span className="lm-habit-list__trigger">{habit.trigger}</span> : null}
         </div>

@@ -6,6 +6,7 @@ import Dialog from '../../../shared/components/Dialog/Dialog'
 import IconButton from '../../../shared/components/IconButton/IconButton'
 import Input from '../../../shared/components/Input/Input'
 import SegmentedControl from '../../../shared/components/SegmentedControl/SegmentedControl'
+import Select from '../../../shared/components/Select/Select'
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
 import { isSessionExpiredError } from '../../../shared/services/httpClient'
@@ -24,6 +25,7 @@ import {
   habitSchema,
 } from '../../validation/habitSchema'
 import type { HabitFormValues } from '../../validation/habitSchema'
+import { reminderHourOptions } from '../../utils/reminderHour'
 import WeekdayPicker from '../WeekdayPicker/WeekdayPicker'
 import './HabitFormModal.css'
 
@@ -57,12 +59,13 @@ function toDefaultValues(habit: HabitResponseDto | undefined, initialValues?: Pa
     targetValue: habit?.targetValue != null ? String(habit.targetValue) : '',
     targetUnit: habit?.targetUnit ?? '',
     targetStep: habit?.targetStep != null ? String(habit.targetStep) : '',
+    reminderHour: habit?.reminderHour != null ? String(habit.reminderHour) : '',
   }
   return habit ? defaults : { ...defaults, ...initialValues }
 }
 
 function HabitFormModal({ habit, initialValues, onClose, onSubmit }: HabitFormModalProps) {
-  const { t: translate } = useTranslation(['habits', 'common'])
+  const { t: translate, i18n } = useTranslation(['habits', 'common'])
   const titleId = useId()
   const { show: showErrorModal } = useErrorModal()
   const isEditing = Boolean(habit)
@@ -127,8 +130,11 @@ function HabitFormModal({ habit, initialValues, onClose, onSubmit }: HabitFormMo
           value={kind}
           onChange={(value) => {
             setValue('kind', value, { shouldValidate: true })
-            // Only a habit to build takes a target; switching to "avoid" drops it.
-            if (value === 'Negative') setValue('measured', false, { shouldValidate: true })
+            // Only a habit to build takes a target or a reminder; switching to "avoid" drops both.
+            if (value === 'Negative') {
+              setValue('measured', false, { shouldValidate: true })
+              setValue('reminderHour', '', { shouldValidate: true })
+            }
           }}
           className="lm-habit-form__segments lm-habit-form__segments--2"
         />
@@ -254,6 +260,23 @@ function HabitFormModal({ habit, initialValues, onClose, onSubmit }: HabitFormMo
     )
   }
 
+  function renderReminderField() {
+    if (kind !== 'Positive') return null
+
+    return (
+      <Select
+        label={translate('habits:habits.form.reminderLabel')}
+        hint={translate('habits:habits.form.reminderHint')}
+        options={[
+          { value: '', label: translate('habits:habits.form.reminderNone') },
+          ...reminderHourOptions(i18n.language, habit?.reminderHour),
+        ]}
+        error={fieldError(errors.reminderHour?.message)}
+        {...register('reminderHour')}
+      />
+    )
+  }
+
   return (
     <Dialog labelledBy={titleId} onClose={onClose}>
       <form onSubmit={submit} noValidate>
@@ -299,6 +322,8 @@ function HabitFormModal({ habit, initialValues, onClose, onSubmit }: HabitFormMo
             {renderFrequencyField()}
 
             {renderTargetField()}
+
+            {renderReminderField()}
 
             <Input
               label={translate('habits:habits.form.triggerLabel')}

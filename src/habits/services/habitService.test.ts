@@ -15,6 +15,7 @@ const values: HabitFormValues = {
   targetValue: '',
   targetUnit: '',
   targetStep: '',
+  reminderHour: '',
 }
 
 describe('toRequestDto', () => {
@@ -31,7 +32,17 @@ describe('toRequestDto', () => {
       targetValue: null,
       targetUnit: null,
       targetStep: null,
+      reminderHour: null,
     })
+  })
+
+  it('sends the reminder hour of a habit to build', () => {
+    expect(toRequestDto({ ...values, reminderHour: '20' }).reminderHour).toBe(20)
+    expect(toRequestDto({ ...values, reminderHour: '0' }).reminderHour).toBe(0)
+  })
+
+  it('sends no reminder for a habit to avoid', () => {
+    expect(toRequestDto({ ...values, kind: 'Negative', reminderHour: '20' }).reminderHour).toBeNull()
   })
 
   it('sends the daily target of a measured habit, without a blank step', () => {

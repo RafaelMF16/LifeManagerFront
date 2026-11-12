@@ -258,6 +258,10 @@ export default {
       targetUnitLabel: 'Unidade',
       targetStepLabel: 'Incremento',
       targetStepPlaceholder: 'Opcional',
+      reminderLabel: 'Lembrete',
+      reminderNone: 'Sem lembrete',
+      reminderHint: "Uma notificação nesse horário se o hábito ainda não estiver feito. Ative as notificações neste aparelho em Minha conta.",
+      reminderAt: 'Lembrete às {{hour}}',
       targetUnits: {
         ml: 'ml',
         pages: 'páginas',
@@ -318,6 +322,10 @@ export default {
         unitTooLong: 'Use no máximo 15 caracteres',
         step: 'Informe um número inteiro de 1 até a meta',
         notAllowed: 'Só hábitos para construir podem ter meta',
+      },
+      reminder: {
+        invalid: 'Escolha um horário válido',
+        notAllowed: 'Só hábitos para construir podem ter lembrete',
       },
       notFound: 'Esse hábito não existe mais.',
       archived: 'Esse hábito foi arquivado. Restaure-o para editar.',

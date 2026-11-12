@@ -143,4 +143,22 @@ describe('habitSchema', () => {
       expect(habitSchema.safeParse({ ...broken, kind: 'Negative' }).success).toBe(true)
     })
   })
+
+  describe('reminder hour', () => {
+    it('defaults to no reminder', () => {
+      expect(habitSchema.parse(valid).reminderHour).toBe('')
+    })
+
+    it.each(['0', '6', '23'])('accepts the hour %j', (reminderHour) => {
+      expect(habitSchema.safeParse({ ...valid, reminderHour }).success).toBe(true)
+    })
+
+    it.each(['24', '-1', '7.5', 'abc'])('rejects the hour %j', (reminderHour) => {
+      expect(messagesFor({ ...valid, reminderHour }, 'reminderHour')).toEqual(['habits:habits.validation.reminder.invalid'])
+    })
+
+    it('ignores the hour of a habit to avoid, which never has a reminder', () => {
+      expect(habitSchema.safeParse({ ...valid, kind: 'Negative', reminderHour: 'abc' }).success).toBe(true)
+    })
+  })
 })
