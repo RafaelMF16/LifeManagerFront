@@ -60,6 +60,8 @@ describe('isIosDevice', () => {
     expect(isIosDevice(IPHONE_SAFARI)).toBe(true)
     expect(isIosDevice(MAC_SAFARI, 5)).toBe(true)
     expect(isIosDevice(MAC_SAFARI, 0)).toBe(false)
+    // A Mac with a single touch point (a trackpad reporting one) isn't an iPad.
+    expect(isIosDevice(MAC_SAFARI, 1)).toBe(false)
     expect(isIosDevice(ANDROID_CHROME)).toBe(false)
   })
 })

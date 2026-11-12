@@ -1,4 +1,5 @@
 import type { PushPublicKeyDto, PushSubscriptionRequestDto } from '../types/PushDtos'
+import { accessTokenUserId, clearPushOwner, readPushOwner, savePushOwner } from '../utils/pushOwner'
 import { deviceLabel, isIosDevice, pushSupportState } from '../utils/pushSupport'
 import type { PushSupportState } from '../utils/pushSupport'
 import { vapidKeyToBytes } from '../utils/vapidKey'
@@ -6,6 +7,14 @@ import { apiRequest } from './httpClient'
 import { getAccessToken } from './tokenStorage'
 
 const PUSH_PATH = '/api/Push'
+/** The sign-out doesn't wait longer than this for the backend to forget the device. */
+export const FORGET_TIMEOUT_MS = 5000
+
+export interface PushStatus {
+  state: PushSupportState
+  /** This browser has a subscription of the signed-in account (another account's doesn't count). */
+  subscribed: boolean
+}
 
 /*
  * The habit reminders on this device: the browser's push subscription (`PushManager`, through the app's service
@@ -32,21 +41,35 @@ async function getSubscription(): Promise<PushSubscription | null> {
   return (await registration?.pushManager?.getSubscription()) ?? null
 }
 
-/** Reads what this device can do now (see `pushSupportState`). */
-export async function readPushState(): Promise<PushSupportState> {
+function currentUserId(): string | null {
+  return accessTokenUserId(getAccessToken())
+}
+
+/** The subscription is the signed-in account's: the one that turned it on here (see `pushOwner`). */
+function isOwnedByCurrentUser(): boolean {
+  const userId = currentUserId()
+  return userId !== null && readPushOwner() === userId
+}
+
+/**
+ * Reads what this device can do now (see `pushSupportState`). A subscription left by another account reads as
+ * none: turning the reminders on takes it over.
+ */
+export async function readPushState(): Promise<PushStatus> {
   const registration = await getRegistration()
   const hasNotification = 'Notification' in window
-  const subscription = (await registration?.pushManager?.getSubscription()) ?? null
+  const subscribed = ((await registration?.pushManager?.getSubscription()) ?? null) !== null && isOwnedByCurrentUser()
 
-  return pushSupportState({
+  const state = pushSupportState({
     hasServiceWorker: registration !== undefined,
     hasPushManager: 'PushManager' in window && registration?.pushManager !== undefined,
     hasNotification,
     ios: isIosDevice(navigator.userAgent, navigator.maxTouchPoints),
     standalone: isStandalone(),
     permission: hasNotification ? Notification.permission : 'default',
-    subscribed: subscription !== null,
+    subscribed,
   })
+  return { state, subscribed }
 }
 
 function sameKey(subscription: PushSubscription, key: Uint8Array): boolean {
@@ -91,8 +114,14 @@ export async function enablePush(): Promise<NotificationPermission> {
     await apiRequest<void>(`${PUSH_PATH}/Subscriptions`, { method: 'PUT', body: toRequest(subscription) })
   } catch (error) {
     await subscription.unsubscribe().catch(() => undefined)
+    clearPushOwner()
     throw error
   }
+
+  // The backend's upsert gives the device to this account, even one another account had subscribed.
+  const userId = currentUserId()
+  if (userId) savePushOwner(userId)
+  else clearPushOwner()
 
   return permission
 }
@@ -109,13 +138,15 @@ export async function disablePush(): Promise<void> {
     await apiRequest<void>(`${PUSH_PATH}/Subscriptions`, { method: 'DELETE', body: { endpoint: subscription.endpoint } })
   } finally {
     await subscription.unsubscribe().catch(() => undefined)
+    clearPushOwner()
   }
 }
 
 /**
  * Before signing out: the next person on this phone must not get this account's reminders. The backend copy is
- * deleted only while this tab has an access token (otherwise a 401 would try a refresh and announce an expired
- * session in the middle of the logout); the browser subscription goes either way. Never throws.
+ * deleted only while this tab has an access token, with no refresh on a 401 (an expired session isn't announced in
+ * the middle of the logout) and at most `FORGET_TIMEOUT_MS`; the browser subscription goes either way, and a push to
+ * it answers 410, which deletes the backend copy then. Never throws.
  */
 export async function forgetPushOnThisDevice(): Promise<void> {
   try {
@@ -123,12 +154,34 @@ export async function forgetPushOnThisDevice(): Promise<void> {
     if (!subscription) return
 
     if (getAccessToken()) {
-      await apiRequest<void>(`${PUSH_PATH}/Subscriptions`, { method: 'DELETE', body: { endpoint: subscription.endpoint } }).catch(
-        () => undefined,
-      )
+      await apiRequest<void>(`${PUSH_PATH}/Subscriptions`, {
+        method: 'DELETE',
+        body: { endpoint: subscription.endpoint },
+        renewOnUnauthorized: false,
+        signal: AbortSignal.timeout(FORGET_TIMEOUT_MS),
+      }).catch(() => undefined)
     }
     await subscription.unsubscribe()
   } catch {
     // Signing out never depends on the notifications.
+  } finally {
+    clearPushOwner()
+  }
+}
+
+/**
+ * After a login: a subscription another account left here (its session expired, nobody signed out) is dropped, so
+ * this account never gets the other one's reminders. The same account keeps its own. Never throws.
+ */
+export async function releasePushOfOtherAccount(userId: string | null): Promise<void> {
+  try {
+    const subscription = await getSubscription()
+    if (!subscription) return
+    if (userId !== null && readPushOwner() === userId) return
+
+    clearPushOwner()
+    await subscription.unsubscribe()
+  } catch {
+    // Signing in never depends on the notifications.
   }
 }

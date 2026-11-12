@@ -254,10 +254,11 @@ Uma coluna de cartões, com o tour da tela no cabeçalho.
 - **Notificações:** liga os **Lembretes de hábitos** neste aparelho (cada navegador ou app instalado se ativa sozinho). A hora de cada lembrete se escolhe no formulário do hábito. O que aparece depende do aparelho:
   - **Desativados:** **Ativar lembretes** pede a permissão do navegador (só nesse clique, nunca ao abrir a página) e mostra "Lembretes ativados neste aparelho.". Recusar a permissão não ativa nada.
   - **Ativados:** **Desativar** mostra "Lembretes desativados neste aparelho.".
-  - **Bloqueadas:** "As notificações estão bloqueadas. Libere nas configurações do navegador para este site e volte aqui." O cartão se atualiza ao voltar para a aba.
+  - **Bloqueadas:** "As notificações estão bloqueadas. Libere nas configurações do navegador para este site e volte aqui." O cartão se atualiza ao voltar para a aba. Se os lembretes estavam ativados antes do bloqueio, **Desativar** continua aparecendo para tirar o aparelho da lista.
   - **iPhone fora do app instalado:** "Instale o app para receber lembretes…", com **Como instalar** (os passos do Safari).
   - **Navegador sem suporte:** "Este navegador não recebe notificações. No celular, use o app instalado."
-  - Sair da conta, **Sair de todos os aparelhos** e **Excluir conta** também desativam os lembretes deste aparelho.
+  - **Servidor sem notificações** (só em desenvolvimento): depois de tentar ativar, "O servidor ainda não está configurado para enviar notificações.".
+  - Sair da conta, **Sair de todos os aparelhos** e **Excluir conta** também desativam os lembretes deste aparelho. Se a sessão de alguém expirou sem sair e outra pessoa entra no mesmo navegador, os lembretes da conta anterior são desativados no login.
 - **Zona de perigo** (borda vermelha): **Excluir conta** abre um aviso:
   - "Sua conta e todos os dados serão apagados em 7 dias";
   - "Entrar de novo até lá cancela a exclusão";

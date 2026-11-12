@@ -5,8 +5,6 @@ import InstallAppDialog from '../../../shared/components/InstallAppDialog/Instal
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { useToast } from '../../../shared/hooks/useToast'
 import { isSessionExpiredError } from '../../../shared/services/httpClient'
-import { isApiError } from '../../../shared/types/ApiError'
-import { PUSH_NOT_CONFIGURED_CODE } from '../../../shared/types/PushDtos'
 import { usePushNotifications } from '../../hooks/usePushNotifications'
 import AccountSection from '../AccountSection/AccountSection'
 
@@ -19,16 +17,12 @@ function NotificationsSection() {
   const { t: translate } = useTranslation(['account', 'common'])
   const { show: showToast } = useToast()
   const { show: showErrorModal } = useErrorModal()
-  const { state, busy, enable, disable } = usePushNotifications()
+  const { state, subscribed, busy, enable, disable } = usePushNotifications()
   const [installStepsOpen, setInstallStepsOpen] = useState(false)
 
   function showError(err: unknown) {
     if (isSessionExpiredError(err)) return
-    if (isApiError(err) && err.code === PUSH_NOT_CONFIGURED_CODE) {
-      showErrorModal(translate('account:notifications.errorTitle'), translate('account:notifications.notConfigured'))
-    } else {
-      showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
-    }
+    showErrorModal(translate('common:errors.connection.title'), translate('common:errors.connection.message'))
   }
 
   async function turnOn() {
@@ -57,7 +51,8 @@ function NotificationsSection() {
         </Button>
       )
     }
-    if (state === 'on') {
+    // Blocked after turning them on: the subscription is still here and on the server, so it can still be removed.
+    if (state === 'on' || (state === 'denied' && subscribed)) {
       return (
         <Button variant="secondary" size="sm" loading={busy} onClick={() => void turnOff()}>
           {translate('account:notifications.disable')}
