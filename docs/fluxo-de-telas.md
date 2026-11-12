@@ -96,7 +96,7 @@ Aparece no topo de todas as telas depois do login.
   - **Instalar app:** só aparece quando dá para instalar e o app ainda não está instalado. No Chrome e no Edge (computador e Android), abre a janela do próprio navegador para instalar; no Safari do iPhone e do iPad, abre uma janela com os passos: **Compartilhar** → **Adicionar à Tela de Início** → **Adicionar**. Instalado, o app abre pelo ícone direto na Home, em tela cheia; segurar o ícone mostra os atalhos **Hoje** e **Novo lançamento**;
   - **Tema:** alterna entre claro (sol) e escuro (lua);
   - **Idioma:** português ou inglês;
-  - **Sair:** encerra a sessão, mostra "Você saiu da sua conta." e volta para o login.
+  - **Sair:** encerra a sessão, mostra "Você saiu da sua conta." e volta para o login. Os lembretes de hábitos deste aparelho são desativados antes, para a próxima pessoa no mesmo celular não receber os seus.
 - Tema e idioma mudam na hora e são salvos na conta: valem em qualquer dispositivo no próximo login.
 - No Financeiro, ao lado do menu fica o botão **Ocultar valores / Mostrar valores** (veja [Modo privacidade](#modo-privacidade)).
 - **Tour desta tela** (ícone de interrogação), na Home, em Minha conta, no Financeiro e nos Hábitos: aparece em todas as telas desses módulos e abre um tour guiado da tela aberta.
@@ -251,6 +251,14 @@ Uma coluna de cartões, com o tour da tela no cabeçalho.
   - **Sair de todos os aparelhos:** pede confirmação ("Você vai sair da conta em todos os aparelhos, este incluído…") e, ao confirmar, volta para o login com "Você saiu de todos os aparelhos."
   - Como entrar já desconecta a sessão anterior da conta, na prática só um aparelho fica conectado por vez.
 - **Meus dados:** **Baixar meus dados (JSON)** baixa um arquivo `lifemanager-aaaa-mm-dd.json` com tudo o que você registrou (finanças, hábitos, jogo e preferências). Enquanto prepara, o botão mostra "Preparando…". Depois de 3 downloads na mesma hora: "Você já baixou há pouco. Tente de novo em alguns minutos."
+- **Notificações:** liga os **Lembretes de hábitos** neste aparelho (cada navegador ou app instalado se ativa sozinho). A hora de cada lembrete se escolhe no formulário do hábito. O que aparece depende do aparelho:
+  - **Desativados:** **Ativar lembretes** pede a permissão do navegador (só nesse clique, nunca ao abrir a página) e mostra "Lembretes ativados neste aparelho.". Recusar a permissão não ativa nada.
+  - **Ativados:** **Desativar** mostra "Lembretes desativados neste aparelho.".
+  - **Bloqueadas:** "As notificações estão bloqueadas. Libere nas configurações do navegador para este site e volte aqui." O cartão se atualiza ao voltar para a aba. Se os lembretes estavam ativados antes do bloqueio, **Desativar** continua aparecendo para tirar o aparelho da lista.
+  - **iPhone fora do app instalado:** "Instale o app para receber lembretes…", com **Como instalar** (os passos do Safari).
+  - **Navegador sem suporte:** "Este navegador não recebe notificações. No celular, use o app instalado."
+  - **Servidor sem notificações** (só em desenvolvimento): depois de tentar ativar, "O servidor ainda não está configurado para enviar notificações.".
+  - Sair da conta, **Sair de todos os aparelhos** e **Excluir conta** também desativam os lembretes deste aparelho. Se a sessão de alguém expirou sem sair e outra pessoa entra no mesmo navegador, os lembretes da conta anterior são desativados no login.
 - **Zona de perigo** (borda vermelha): **Excluir conta** abre um aviso:
   - "Sua conta e todos os dados serão apagados em 7 dias";
   - "Entrar de novo até lá cancela a exclusão";
@@ -609,7 +617,7 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 **Rota:** `/habits/list`.
 
 - Lista de **Seus hábitos**, com:
-  - o tipo (Construir/Evitar), a dificuldade e a frequência ("Todo dia", "3× por semana", "Até 2× por semana");
+  - o tipo (Construir/Evitar), a dificuldade e a frequência ("Todo dia", "3× por semana", "Até 2× por semana"), mais um sino com a hora quando o hábito tem lembrete;
   - a ofensiva e o recorde.
 - **Situação:** Ativos (padrão) ou Arquivados. Também há **Buscar hábito** e **Ordenar por** Nome ou Data de criação.
 - **Clicar num hábito** abre o [Detalhe do hábito](#detalhe-do-hábito).
@@ -627,6 +635,7 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
   | Meta por dia | Com **Medir quantidade**: número inteiro de 1 a 100000 |
   | Unidade | Com **Medir quantidade**: obrigatória, até 15 caracteres; sugere ml, páginas, min, passos, m e vezes, mas aceita qualquer texto |
   | Incremento | Com **Medir quantidade**, opcional: número inteiro de 1 até a meta; vira o botão de adicionar rápido |
+  | Lembrete | Só em **Construir**: **Sem lembrete** (padrão) ou um horário de 06:00 a 23:00. Nessa hora chega uma notificação se o hábito ainda não estiver feito (entre 5 e 10 minutos depois da hora cheia), uma por hora juntando os hábitos da mesma hora; tocar nela abre a tela **Hoje**. Precisa ativar as notificações em [Minha conta](#minha-conta) |
 
   **Criar hábito** mostra "Hábito criado".
 - **Editar:** muda tudo, menos o tipo. Mudanças na frequência valem a partir do próximo dia avaliado. Desligar **Medir quantidade** tira a meta ao salvar; ligar transforma o hábito num hábito com meta. Mudar a meta não muda nenhum dia já marcado.
@@ -638,7 +647,7 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 
 **Rota:** `/habits/list/:id`. Para chegar: clique num hábito da lista.
 
-- **Hábitos** (voltar) retorna à lista. Um hábito arquivado mostra o selo **Arquivado**. Um hábito com meta mostra "Meta: 2.000 ml por dia".
+- **Hábitos** (voltar) retorna à lista. Um hábito arquivado mostra o selo **Arquivado**. Um hábito com meta mostra "Meta: 2.000 ml por dia"; um com lembrete, "Lembrete às 20:00".
 - **Resumo:**
   - **Ofensiva** e recorde.
   - **Consistência (30 dias)**, ou **(4 semanas)** nos hábitos semanais.

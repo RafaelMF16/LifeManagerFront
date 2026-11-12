@@ -11,6 +11,7 @@ export const ACCOUNT_TOURS: TourDefinition[] = [
       { id: 'profile', target: 'account.profile' },
       { id: 'security', target: 'account.security' },
       { id: 'data', target: 'account.data' },
+      { id: 'notifications', target: 'account.notifications' },
       { id: 'danger', target: 'account.danger' },
     ],
   },

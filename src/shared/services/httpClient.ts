@@ -16,6 +16,8 @@ interface RequestOptions {
   method: HttpMethod
   body?: unknown
   signal?: AbortSignal
+  /** `false`: a 401 is the answer itself, with no refresh (and no expired-session announcement). Default `true`. */
+  renewOnUnauthorized?: boolean
 }
 
 export function isAbortError(error: unknown): boolean {
@@ -74,7 +76,7 @@ function canRenewOn401(path: string): boolean {
 async function sendChecked(path: string, options: RequestOptions): Promise<Response> {
   let response = await send(path, options)
 
-  if (response.status === 401 && canRenewOn401(path)) {
+  if (response.status === 401 && options.renewOnUnauthorized !== false && canRenewOn401(path)) {
     if (!(await tryRefreshAccessToken())) throw new SessionExpiredError()
 
     response = await send(path, options)

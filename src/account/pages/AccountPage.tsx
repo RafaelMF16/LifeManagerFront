@@ -5,12 +5,13 @@ import Header from '../../shared/components/Header/Header'
 import TourButton from '../../shared/components/Tour/TourButton'
 import DangerZoneSection from '../components/DangerZoneSection/DangerZoneSection'
 import DataSection from '../components/DataSection/DataSection'
+import NotificationsSection from '../components/NotificationsSection/NotificationsSection'
 import ProfileSection from '../components/ProfileSection/ProfileSection'
 import SecuritySection from '../components/SecuritySection/SecuritySection'
 import { ACCOUNT_TOURS } from '../utils/accountTours'
 import './AccountPage.css'
 
-/** "My account": the name, the password and sessions, the data export and the account deletion. */
+/** "My account": the name, the password and sessions, the data export, this device's notifications and the account deletion. */
 function AccountPage() {
   const { t: translate } = useTranslation('account')
 
@@ -27,7 +28,7 @@ function AccountPage() {
         <ProfileSection />
         <SecuritySection />
         <DataSection />
-        {/* Notifications (the habit-reminders module) goes here, between the data and the danger zone. */}
+        <NotificationsSection />
         <DangerZoneSection />
       </main>
 

@@ -28,6 +28,8 @@ export interface HabitUpdateRequestDto {
   targetUnit: string | null
   /** The quick-add amount (1 up to the target); null for none. */
   targetStep: number | null
+  /** The reminder's hour (0–23, the backend's business time zone); null for none. Only a habit to build has one. */
+  reminderHour: number | null
 }
 
 /** The kind is fixed once the habit is created, so only the create request carries it. */
@@ -57,6 +59,8 @@ export interface HabitResponseDto {
   targetValue: number | null
   targetUnit: string | null
   targetStep: number | null
+  /** The reminder's hour (0–23); null for none. */
+  reminderHour: number | null
 }
 
 // Espelha HabitListQueryDto (query string de GET /api/Habits)
