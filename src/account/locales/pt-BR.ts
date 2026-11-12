@@ -58,6 +58,25 @@ export default {
     tooManyRequests: 'Você já baixou há pouco. Tente de novo em alguns minutos.',
     errorTitle: 'Não deu para baixar',
   },
+  notifications: {
+    title: 'Notificações',
+    label: 'Lembretes de hábitos',
+    enable: 'Ativar lembretes',
+    disable: 'Desativar',
+    howToInstall: 'Como instalar',
+    enabledToast: 'Lembretes ativados neste aparelho.',
+    disabledToast: 'Lembretes desativados neste aparelho.',
+    errorTitle: 'Notificações indisponíveis',
+    notConfigured: 'O servidor ainda não está configurado para enviar notificações.',
+    states: {
+      loading: 'Verificando este aparelho…',
+      unsupported: 'Este navegador não recebe notificações. No celular, use o app instalado.',
+      'ios-install': 'Instale o app para receber lembretes: no iPhone, as notificações só chegam no app adicionado à Tela de Início.',
+      denied: 'As notificações estão bloqueadas. Libere nas configurações do navegador para este site e volte aqui.',
+      off: 'Desativados neste aparelho. A hora de cada lembrete se escolhe no formulário do hábito.',
+      on: 'Ativados neste aparelho. Você recebe um aviso na hora escolhida se o hábito ainda não estiver feito.',
+    },
+  },
   danger: {
     title: 'Zona de perigo',
     label: 'Excluir conta',
@@ -94,6 +113,10 @@ export default {
       data: {
         title: 'Meus dados',
         body: 'Baixe tudo o que você registrou num arquivo JSON, com a data no nome.',
+      },
+      notifications: {
+        title: 'Notificações',
+        body: 'Ative os lembretes neste aparelho; a hora de cada um fica no formulário do hábito.',
       },
       danger: {
         title: 'Zona de perigo',

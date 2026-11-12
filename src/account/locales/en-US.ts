@@ -58,6 +58,25 @@ export default {
     tooManyRequests: 'You downloaded it a moment ago. Try again in a few minutes.',
     errorTitle: 'Couldn’t download',
   },
+  notifications: {
+    title: 'Notifications',
+    label: 'Habit reminders',
+    enable: 'Turn on reminders',
+    disable: 'Turn off',
+    howToInstall: 'How to install',
+    enabledToast: 'Reminders turned on on this device.',
+    disabledToast: 'Reminders turned off on this device.',
+    errorTitle: 'Notifications unavailable',
+    notConfigured: "The server isn't set up to send notifications yet.",
+    states: {
+      loading: 'Checking this device…',
+      unsupported: "This browser doesn't receive notifications. On a phone, use the installed app.",
+      'ios-install': 'Install the app to get reminders: on an iPhone, notifications only reach the app added to the Home Screen.',
+      denied: 'Notifications are blocked. Allow them for this site in the browser settings, then come back.',
+      off: "Off on this device. Each reminder's time is set on the habit's form.",
+      on: "On on this device. You get a notice at the chosen time if the habit isn't done yet.",
+    },
+  },
   danger: {
     title: 'Danger zone',
     label: 'Delete account',
@@ -94,6 +113,10 @@ export default {
       data: {
         title: 'My data',
         body: 'Download everything you recorded as a JSON file, dated in its name.',
+      },
+      notifications: {
+        title: 'Notifications',
+        body: "Turn on reminders on this device; each one's time is on the habit's form.",
       },
       danger: {
         title: 'Danger zone',

@@ -8,6 +8,7 @@ import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { useToast } from '../../../shared/hooks/useToast'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
 import { endLocalSession } from '../../../shared/services/authSession'
+import { forgetPushOnThisDevice } from '../../../shared/services/pushService'
 import { isSessionExpiredError } from '../../../shared/services/httpClient'
 import { isApiError } from '../../../shared/types/ApiError'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
@@ -59,7 +60,9 @@ function DeleteAccountDialog({ onClose }: DeleteAccountDialogProps) {
       return
     }
 
-    // The backend already ended every session (and deleted the cookie): only this tab's state is left.
+    // The backend already ended every session (and deleted the cookie): only this tab's state is left, plus this
+    // device's reminders (the access token still works until it expires).
+    await forgetPushOnThisDevice()
     endLocalSession()
     showToast(translate('account:danger.success', { date: deletionDateLabel(scheduledFor, language) }))
     navigate('/auth', { replace: true })
