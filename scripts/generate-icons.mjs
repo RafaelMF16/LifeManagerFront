@@ -29,15 +29,15 @@ const work = mkdtempSync(join(tmpdir(), 'lm-icons-'))
 
 /**
  * Draws the SVG at `drawn` px, centered on a `canvas` px page: transparent, or on the light theme's --surface (white),
- * since iOS paints a transparent apple-touch-icon black.
+ * since iOS paints a transparent apple-touch-icon black. `filter` recolors the drawing (the white badge).
  */
-function saveIcon(canvas, drawn, opaque, name) {
+function saveIcon(canvas, drawn, opaque, name, filter = 'none') {
   const background = opaque ? '#ffffff' : 'transparent'
   const page = join(work, `${basename(name)}.html`)
   writeFileSync(
     page,
     `<!doctype html><html><head><style>html,body{margin:0;width:${canvas}px;height:${canvas}px;overflow:hidden;` +
-      `background:${background};display:grid;place-items:center}svg{width:${drawn}px;height:${drawn}px;display:block}` +
+      `background:${background};display:grid;place-items:center}svg{width:${drawn}px;height:${drawn}px;display:block;filter:${filter}}` +
       `</style></head><body>${svg}</body></html>`,
   )
   const output = join(publicDir, name)
@@ -67,6 +67,8 @@ try {
   saveIcon(192, 192, false, 'icons/icon-192.png')
   saveIcon(512, 512, false, 'icons/icon-512.png')
   saveIcon(512, 360, true, 'icons/icon-maskable-512.png')
+  // The notification badge (Android's status bar, src/sw.ts): only the alpha counts, so the helm in white.
+  saveIcon(96, 88, false, 'icons/badge-96.png', 'brightness(0) invert(1)')
 } finally {
   rmSync(work, { recursive: true, force: true })
 }

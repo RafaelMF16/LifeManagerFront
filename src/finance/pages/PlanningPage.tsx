@@ -8,9 +8,10 @@ import './PlanningPage.css'
 const TABS: { id: string; path: string; icon: IconName }[] = [
   { id: 'goals', path: 'goals', icon: 'target' },
   { id: 'recurring', path: 'recurring', icon: 'repeat' },
+  { id: 'savings', path: 'savings', icon: 'piggy-bank' },
 ]
 
-/** The Planning screen: monthly goals and recurring transactions, each a child route under one heading. */
+/** The Planning screen: monthly budgets, recurring transactions and savings goals, each a child route under one heading. */
 function PlanningPage() {
   const { t: translate } = useTranslation('finance')
 

@@ -8,7 +8,7 @@ const HABITS_PATH = '/api/Habits'
 /**
  * Sends only what the frequency uses (the backend rejects days on a TimesPerWeek habit and vice versa). Blank optional
  * texts go as null. The daily target goes only when measuring is on for a habit to build; otherwise all null, which
- * removes it.
+ * removes it. The reminder hour goes only for a habit to build (blank = none, which removes it).
  */
 export function toUpdateRequestDto(values: HabitFormValues): HabitUpdateRequestDto {
   const { frequencyType } = values
@@ -25,6 +25,7 @@ export function toUpdateRequestDto(values: HabitFormValues): HabitUpdateRequestD
     targetValue: measured ? Number(values.targetValue) : null,
     targetUnit: measured ? values.targetUnit : null,
     targetStep: measured && values.targetStep !== '' ? Number(values.targetStep) : null,
+    reminderHour: values.kind === 'Positive' && values.reminderHour !== '' ? Number(values.reminderHour) : null,
   }
 }
 

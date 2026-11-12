@@ -1,3 +1,10 @@
+/* The radius of the hole the cover opens (`--revealing`), typed so it animates smoothly. */
+@property --lm-reveal-radius {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
 /* Above every other layer (the tour overlay is 80): nothing is reachable while the helm plays. */
 .lm-login-transition {
   position: fixed;
@@ -8,9 +15,16 @@
   justify-content: center;
   padding: var(--space-6) var(--page-gutter);
   background: var(--background);
+  /* The circle's pace; `--lm-reveal-ms` comes from `REVEAL_MS` (the provider sets it). */
+  --lm-reveal-ease: cubic-bezier(0.65, 0, 0.25, 1);
 }
 
-.lm-login-transition--leaving {
+.lm-login-transition__helm {
+  display: block;
+}
+
+.lm-login-transition--revealing,
+.lm-login-transition--fading {
   pointer-events: none;
 }
 
@@ -32,8 +46,21 @@
     animation: lm-login-transition-in var(--duration-base) var(--ease-out) both;
   }
 
-  .lm-login-transition--leaving {
+  .lm-login-transition--fading {
     animation: lm-login-transition-out var(--duration-slow) var(--ease-standard) both;
+  }
+
+  /* The circle opens from the cover's center, which is the helm's hub: 100% of the gradient's ray is the farthest
+     corner, so it ends covering the whole screen. The helm grows as if the screen came through it. */
+  .lm-login-transition--revealing {
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--lm-reveal-radius), #000 calc(var(--lm-reveal-radius) + 1px));
+    mask-image: radial-gradient(circle at 50% 50%, transparent var(--lm-reveal-radius), #000 calc(var(--lm-reveal-radius) + 1px));
+    animation: lm-login-transition-reveal var(--lm-reveal-ms) var(--lm-reveal-ease) both;
+  }
+
+  .lm-login-transition--revealing .lm-login-transition__helm {
+    transform: scale(1.35);
+    transition: transform var(--lm-reveal-ms) var(--lm-reveal-ease);
   }
 }
 
@@ -49,5 +76,11 @@
   }
   to {
     opacity: 0;
+  }
+}
+
+@keyframes lm-login-transition-reveal {
+  to {
+    --lm-reveal-radius: 100%;
   }
 }

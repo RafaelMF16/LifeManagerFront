@@ -6,13 +6,16 @@ import Dialog from '../../../shared/components/Dialog/Dialog'
 import IconButton from '../../../shared/components/IconButton/IconButton'
 import Input from '../../../shared/components/Input/Input'
 import SegmentedControl from '../../../shared/components/SegmentedControl/SegmentedControl'
+import Select from '../../../shared/components/Select/Select'
 import { useErrorModal } from '../../../shared/hooks/useErrorModal'
 import { useZodForm } from '../../../shared/hooks/useZodForm'
 import { isSessionExpiredError } from '../../../shared/services/httpClient'
 import { isApiError } from '../../../shared/types/ApiError'
 import { applyApiErrorToForm } from '../../../shared/utils/applyApiErrorToForm'
 import { useFinanceFormat } from '../../hooks/useFinanceFormat'
+import { useLinkableSavingsGoals } from '../../hooks/useLinkableSavingsGoals'
 import type { MoneyFlowType, TransactionResponseDto } from '../../types/TransactionDtos'
+import { savingsGoalOptions } from '../../utils/savingsGoal'
 import { toFormAmount } from '../../validation/amountSchema'
 import { quickTransactionErrorFieldMap, transactionErrorFieldMap } from '../../validation/transactionErrorMap'
 import {
@@ -85,9 +88,21 @@ function TransactionFormModal(props: TransactionFormModalProps) {
       amount: transaction ? toFormAmount(transaction.amount, i18n.language) : '',
       date: transaction?.date ?? (isQuick ? todayIso() : defaultDate(props.year, props.month)),
       categoryId: transaction ? String(transaction.categoryId) : '',
+      savingsGoalId: transaction?.savingsGoalId != null ? String(transaction.savingsGoalId) : '',
     },
   })
   const type = useWatch({ control, name: 'type' })
+  const savingsGoalId = useWatch({ control, name: 'savingsGoalId' })
+  const isInvestment = type === 'Investment'
+  const linkableGoals = useLinkableSavingsGoals(isInvestment)
+  const currentGoal = transaction ? { id: transaction.savingsGoalId, name: transaction.savingsGoalName } : null
+  // While the goals load, the transaction's own goal is the only option, so the select already shows it.
+  const goalOptions =
+    linkableGoals === null
+      ? currentGoal?.id != null
+        ? [{ id: currentGoal.id, name: currentGoal.name ?? '', archived: false }]
+        : []
+      : savingsGoalOptions(linkableGoals, currentGoal)
   const date = useWatch({ control, name: 'date' })
 
   // The month the transaction goes to: fixed, or (quick) the month of the date typed so far.
@@ -150,7 +165,11 @@ function TransactionFormModal(props: TransactionFormModalProps) {
                   label: translate(`finance:transactions.form.typeOptions.${option}`),
                 }))}
                 value={type}
-                onChange={(value) => setValue('type', value, { shouldValidate: true })}
+                onChange={(value) => {
+                  setValue('type', value, { shouldValidate: true })
+                  // Only an investment counts towards a goal: another type drops it, so it's never sent.
+                  if (value !== 'Investment') setValue('savingsGoalId', '', { shouldValidate: true })
+                }}
                 className="lm-transaction-form__type-control"
               />
             </div>
@@ -200,6 +219,26 @@ function TransactionFormModal(props: TransactionFormModalProps) {
                 />
               )}
             />
+
+            {isInvestment ? (
+              <Select
+                label={translate('finance:transactions.form.goalLabel')}
+                hint={translate('finance:transactions.form.goalHint')}
+                options={[
+                  { value: '', label: translate('finance:transactions.form.goalNone') },
+                  ...goalOptions.map((option) => ({
+                    value: String(option.id),
+                    label: option.archived
+                      ? translate('finance:transactions.form.goalArchived', { name: option.name })
+                      : option.name,
+                  })),
+                ]}
+                value={savingsGoalId ?? ''}
+                disabled={linkableGoals === null}
+                onChange={(event) => setValue('savingsGoalId', event.target.value, { shouldValidate: true, shouldDirty: true })}
+                error={fieldError(errors.savingsGoalId?.message)}
+              />
+            ) : null}
           </div>
 
           {errors.root?.serverError?.message ? (

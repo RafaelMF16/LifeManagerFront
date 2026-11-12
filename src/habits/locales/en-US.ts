@@ -258,6 +258,10 @@ export default {
       targetUnitLabel: 'Unit',
       targetStepLabel: 'Step',
       targetStepPlaceholder: 'Optional',
+      reminderLabel: 'Reminder',
+      reminderNone: 'No reminder',
+      reminderHint: "A notification at this time if the habit isn't done yet. Turn on notifications on this device in My account.",
+      reminderAt: 'Reminder at {{hour}}',
       targetUnits: {
         ml: 'ml',
         pages: 'pages',
@@ -318,6 +322,10 @@ export default {
         unitTooLong: 'Use at most 15 characters',
         step: 'Enter a whole number from 1 up to the target',
         notAllowed: 'Only habits to build can have a target',
+      },
+      reminder: {
+        invalid: 'Pick a valid time',
+        notAllowed: 'Only habits to build can have a reminder',
       },
       notFound: 'This habit no longer exists.',
       archived: 'This habit was archived. Restore it to edit it.',

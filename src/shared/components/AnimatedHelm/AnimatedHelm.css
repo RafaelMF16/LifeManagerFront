@@ -1,0 +1,60 @@
+/* The helm's own box is `size` × `size`; the SVG overflows it by 22% on each side, the room the coins fly in from. */
+.lm-animated-helm {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+}
+
+.lm-animated-helm__svg {
+  position: absolute;
+  top: -22%;
+  left: -22%;
+  width: 144%;
+  height: 144%;
+  overflow: visible;
+}
+
+/* Turns and scales around the part's own center: the wheel and the hub are symmetric, so that's the helm's center. */
+.lm-animated-helm__spin {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Shown only while animated: still, the helm has no coin, glow, ring or sparkle. */
+.lm-animated-helm__hidden {
+  opacity: 0;
+}
+
+.lm-animated-helm__glow {
+  fill: var(--coin-300);
+}
+
+.lm-animated-helm__pulse {
+  fill: none;
+  stroke: var(--teal-300);
+  stroke-width: 2.5;
+}
+
+.lm-animated-helm__coin {
+  fill: var(--coin-500);
+  stroke: var(--coin-700);
+  stroke-width: 1.6;
+}
+
+.lm-animated-helm__coin-mark {
+  fill: none;
+  stroke: var(--coin-700);
+  stroke-width: 1.2;
+}
+
+.lm-animated-helm__coin-shine {
+  fill: var(--coin-200);
+}
+
+.lm-animated-helm__spark {
+  fill: var(--coin-400);
+}
+
+.lm-animated-helm__spark--teal {
+  fill: var(--teal-300);
+}

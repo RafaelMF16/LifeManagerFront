@@ -10,9 +10,13 @@ export const HABIT_MIN_TIMES_PER_WEEK = 1
 export const HABIT_MAX_TIMES_PER_WEEK = 6
 export const HABIT_TARGET_MAX_VALUE = 100_000
 export const HABIT_TARGET_UNIT_MAX_LENGTH = 15
+/** The hours (business time zone) the backend accepts for a reminder; the form offers from 06:00 on. */
+export const HABIT_REMINDER_MIN_HOUR = 0
+export const HABIT_REMINDER_MAX_HOUR = 23
 
 const TIMES_PATTERN = /^\d{1,2}$/
 const WHOLE_NUMBER_PATTERN = /^\d{1,6}$/
+const HOUR_PATTERN = /^\d{1,2}$/
 
 /** A whole number typed as text, between 1 and `max`; null otherwise. */
 export function parseWholeNumber(value: string, max: number): number | null {
@@ -49,6 +53,8 @@ export const habitSchema = z
     targetUnit: z.string().trim().default(''),
     /** Optional quick-add amount; blank for none. */
     targetStep: z.string().trim().default(''),
+    /** The reminder's hour as the select's value; blank for none. Only a habit to build has one. */
+    reminderHour: z.string().trim().default(''),
   })
   // The same rules for both kinds: for a habit to avoid, the days are the ones it is avoided on and the number is the
   // weekly limit.
@@ -68,6 +74,17 @@ export const habitSchema = z
           code: 'custom',
           path: ['timesPerWeek'],
           message: 'habits:habits.validation.timesPerWeek.invalid', // code: Habit.InvalidTimesPerWeek
+        })
+      }
+    }
+
+    if (values.kind === 'Positive' && values.reminderHour !== '') {
+      const hour = Number(values.reminderHour)
+      if (!HOUR_PATTERN.test(values.reminderHour) || hour < HABIT_REMINDER_MIN_HOUR || hour > HABIT_REMINDER_MAX_HOUR) {
+        context.addIssue({
+          code: 'custom',
+          path: ['reminderHour'],
+          message: 'habits:habits.validation.reminder.invalid', // code: Habit.InvalidReminderHour
         })
       }
     }

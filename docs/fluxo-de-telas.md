@@ -22,9 +22,11 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   - [Painel](#painel)
   - [Meses](#meses)
   - [Lançamento rápido](#lançamento-rápido)
+  - [Exportar lançamentos](#exportar-lançamentos)
   - [Detalhe do mês](#detalhe-do-mês)
   - [Planejamento: Orçamento](#planejamento-orçamento)
   - [Planejamento: Recorrentes](#planejamento-recorrentes)
+  - [Planejamento: Objetivos](#planejamento-objetivos)
   - [Importar extrato](#importar-extrato)
   - [Revisar importação](#revisar-importação)
   - [Categorias](#categorias)
@@ -59,6 +61,8 @@ Quem mantém o código: ao mudar uma tela, um botão ou um fluxo, atualize este 
   /finance/planning         → Orçamento
     /finance/planning/goals      Orçamento (?month=aaaa-mm)
     /finance/planning/recurring  Recorrentes
+    /finance/planning/savings    Objetivos
+    /finance/planning/savings/:id  Detalhe do objetivo
   /finance/imports          Importar extrato
   /finance/imports/:id      Revisar importação
   /finance/categories       Categorias
@@ -92,7 +96,7 @@ Aparece no topo de todas as telas depois do login.
   - **Instalar app:** só aparece quando dá para instalar e o app ainda não está instalado. No Chrome e no Edge (computador e Android), abre a janela do próprio navegador para instalar; no Safari do iPhone e do iPad, abre uma janela com os passos: **Compartilhar** → **Adicionar à Tela de Início** → **Adicionar**. Instalado, o app abre pelo ícone direto na Home, em tela cheia; segurar o ícone mostra os atalhos **Hoje** e **Novo lançamento**;
   - **Tema:** alterna entre claro (sol) e escuro (lua);
   - **Idioma:** português ou inglês;
-  - **Sair:** encerra a sessão, mostra "Você saiu da sua conta." e volta para o login.
+  - **Sair:** encerra a sessão, mostra "Você saiu da sua conta." e volta para o login. Os lembretes de hábitos deste aparelho são desativados antes, para a próxima pessoa no mesmo celular não receber os seus.
 - Tema e idioma mudam na hora e são salvos na conta: valem em qualquer dispositivo no próximo login.
 - No Financeiro, ao lado do menu fica o botão **Ocultar valores / Mostrar valores** (veja [Modo privacidade](#modo-privacidade)).
 - **Tour desta tela** (ícone de interrogação), na Home, em Minha conta, no Financeiro e nos Hábitos: aparece em todas as telas desses módulos e abre um tour guiado da tela aberta.
@@ -154,7 +158,7 @@ A tela tem duas abas: **Entrar** e **Criar conta**.
 | E-mail | Obrigatório, formato `algo@algo.algo` |
 | Senha | Obrigatória |
 
-- **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra uma moeda chegando no leme, que dá uma volta (cerca de 1,6 segundo), e abre a Home (ou a tela que você tentou abrir antes). Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
+- **Entrar:** com dados certos, aplica o tema e o idioma salvos na conta, mostra uma moeda chegando no leme, que dá uma volta e brilha; a tela de destino, a Home ou a tela que você tentou abrir antes, se abre num círculo que sai do centro do leme (cerca de 2,2 segundos ao todo). Na Home, o cabeçalho, a saudação, os cartões e os módulos chegam um depois do outro. Com a opção de reduzir movimento do sistema ligada, não há animação: aparece "Login realizado com sucesso" e a tela abre na hora. Com dados errados, mostra "E-mail ou senha inválidos".
 - Se a conta estava com a exclusão agendada, entrar cancela a exclusão e, depois da animação, aparece "Bem-vindo de volta! A exclusão da sua conta foi cancelada."
 - **Não tem conta? Criar conta:** troca para a aba de cadastro.
 - **Esqueceu a senha?:** abre a tela [Esqueceu a senha?](#esqueceu-a-senha).
@@ -247,6 +251,14 @@ Uma coluna de cartões, com o tour da tela no cabeçalho.
   - **Sair de todos os aparelhos:** pede confirmação ("Você vai sair da conta em todos os aparelhos, este incluído…") e, ao confirmar, volta para o login com "Você saiu de todos os aparelhos."
   - Como entrar já desconecta a sessão anterior da conta, na prática só um aparelho fica conectado por vez.
 - **Meus dados:** **Baixar meus dados (JSON)** baixa um arquivo `lifemanager-aaaa-mm-dd.json` com tudo o que você registrou (finanças, hábitos, jogo e preferências). Enquanto prepara, o botão mostra "Preparando…". Depois de 3 downloads na mesma hora: "Você já baixou há pouco. Tente de novo em alguns minutos."
+- **Notificações:** liga os **Lembretes de hábitos** neste aparelho (cada navegador ou app instalado se ativa sozinho). A hora de cada lembrete se escolhe no formulário do hábito. O que aparece depende do aparelho:
+  - **Desativados:** **Ativar lembretes** pede a permissão do navegador (só nesse clique, nunca ao abrir a página) e mostra "Lembretes ativados neste aparelho.". Recusar a permissão não ativa nada.
+  - **Ativados:** **Desativar** mostra "Lembretes desativados neste aparelho.".
+  - **Bloqueadas:** "As notificações estão bloqueadas. Libere nas configurações do navegador para este site e volte aqui." O cartão se atualiza ao voltar para a aba. Se os lembretes estavam ativados antes do bloqueio, **Desativar** continua aparecendo para tirar o aparelho da lista.
+  - **iPhone fora do app instalado:** "Instale o app para receber lembretes…", com **Como instalar** (os passos do Safari).
+  - **Navegador sem suporte:** "Este navegador não recebe notificações. No celular, use o app instalado."
+  - **Servidor sem notificações** (só em desenvolvimento): depois de tentar ativar, "O servidor ainda não está configurado para enviar notificações.".
+  - Sair da conta, **Sair de todos os aparelhos** e **Excluir conta** também desativam os lembretes deste aparelho. Se a sessão de alguém expirou sem sair e outra pessoa entra no mesmo navegador, os lembretes da conta anterior são desativados no login.
 - **Zona de perigo** (borda vermelha): **Excluir conta** abre um aviso:
   - "Sua conta e todos os dados serão apagados em 7 dias";
   - "Entrar de novo até lá cancela a exclusão";
@@ -270,6 +282,7 @@ A escolha fica salva neste dispositivo e vale para todas as abas abertas.
 **Rota:** `/finance/dashboard` (é a tela inicial do Financeiro).
 
 - **Novo lançamento:** abre o [lançamento rápido](#lançamento-rápido); ao salvar, o painel recarrega o período.
+- **Exportar:** abre [Exportar lançamentos](#exportar-lançamentos) já com o período do painel.
 - **Período:** Este mês, Últimos 3 meses, **Últimos 6 meses** (padrão), Últimos 12 meses, Este ano e cada ano anterior em que você tem meses. Ao lado aparece "Comparado com …", o período usado na comparação.
 - **Totais do período:** Receitas, Gastos, Investido e **Poupado**, cada um com a variação ("Subiu 12% em relação a …"). Poupado é o que sobrou das receitas depois dos gastos: investir conta como guardar, não como gastar. Ao lado do nome vem a **taxa de poupança** (a parte das receitas que foi poupada; não aparece sem receitas, e abaixo de −100% aparece como "<−100%") e embaixo a divisão: quanto foi **investido** e quanto ficou **em conta** (o mesmo Saldo da tela do mês, que pode ser negativo quando você investiu dinheiro de meses anteriores).
 - **Gastos por dia:** um calendário do mês com o total de gastos de cada dia (só despesas; receitas e investimentos ficam de fora). Quanto mais vermelho o dia, mais se gastou, sempre em relação ao **maior dia daquele mês** (legenda **Menos** … **Mais**). Abre no mês mais recente do período; as setas **Mês anterior** e **Próximo mês** andam só pelos meses do período. Hoje tem contorno e os dias futuros ficam apagados, sem clique.
@@ -300,6 +313,7 @@ Lista de **Todos os meses**, com Receitas, Gastos, Investido e Saldo. O mês cor
   - **Ano:** o atual (padrão) ou o anterior. Assim, em janeiro ainda dá para criar dezembro. Outro ano: "Só dá para criar meses deste ano ou do anterior".
   - **Criar mês:** cria e mostra "Mês criado". Se o mês já existe: "Esse mês já foi criado".
 - **Importar extrato:** abre a tela [Importar extrato](#importar-extrato).
+- **Exportar:** abre [Exportar lançamentos](#exportar-lançamentos), com os últimos 12 meses.
 
 > Meses de lançamentos recorrentes são criados sozinhos quando a recorrência é lançada. Meses de anos mais antigos entram pela [importação de extrato](#importar-extrato).
 
@@ -311,6 +325,18 @@ Abre com **Novo lançamento** em [Meses](#meses) ou no [Painel](#painel). É o [
 - O lançamento vai para o mês da data. Se esse mês ainda não existe, ele é **criado junto**, desde que seja deste ano ou do anterior; senão a data mostra "Só dá para criar meses deste ano ou do anterior". Um mês que já existe aceita lançamentos de qualquer ano.
 - **Salvar lançamento** mostra "Lançamento salvo em novembro de 2026" (ou "… · mês criado") com o botão **Ver mês**, que abre o mês do lançamento.
 - Os outros campos e regras são os do formulário de lançamento.
+
+### Exportar lançamentos
+
+Abre com **Exportar** em [Meses](#meses) ou no [Painel](#painel). Baixa os lançamentos de um período numa planilha (CSV) que abre no Excel ou no Google Planilhas.
+
+- **De** e **Até:** mês e ano. Em Meses, começa nos últimos 12 meses até o atual; no Painel, no período que o painel está mostrando. O período pode ter no máximo 36 meses ("O período pode ter no máximo 36 meses") e o fim não pode vir antes do início ("O mês final não pode ser anterior ao inicial").
+- **Tipo:** Todos, Gastos, Receitas ou Investimentos.
+- **Formato:** "Planilha em português (Excel BR)" (vírgula nos centavos e ponto e vírgula entre as colunas) ou "Planilha em inglês". Começa no idioma do app.
+- **Baixar** (vira "Preparando…" enquanto o arquivo é gerado): salva `lancamentos-aaaa-mm_aaaa-mm.csv` (ou `transactions-…` em inglês), fecha a janela e mostra "Arquivo baixado". No iPhone, abre a folha de compartilhar.
+  - Período sem lançamentos: nada é baixado, a janela continua aberta e aparece "Nenhum lançamento no período".
+  - Muitas exportações seguidas (mais de 10 em 10 minutos): "Muitas exportações seguidas. Tente de novo em alguns minutos."
+- **A planilha** tem Data, Descrição, Categoria, Tipo, Valor (com sinal: receitas positivas, gastos e investimentos negativos, então a soma é o saldo), Mês e Origem (Manual, Recorrente, Importação ou Resgate).
 
 ### Detalhe do mês
 
@@ -329,7 +355,7 @@ Abre com **Novo lançamento** em [Meses](#meses) ou no [Painel](#painel). É o [
 - **Ver orçamento** abre a tela de Orçamento já neste mês. Sem orçamento, aparece "Este mês não tem orçamento." e **Criar orçamento**.
 
 **Lançamentos**
-- Lista com Data, Descrição, Categoria e Valor. Os lançamentos feitos por uma recorrência têm um ícone de repetição ("Lançado por uma recorrência").
+- Lista com Data, Descrição, Categoria e Valor. Os lançamentos feitos por uma recorrência têm um ícone de repetição ("Lançado por uma recorrência"). Um investimento ligado a um objetivo mostra, ao lado da categoria, um selo com o nome do objetivo.
 - **Filtros:** Tipo (Todos, Receitas, Gastos, Investimentos), Categoria (com busca; **Todas** tira o filtro) e **Buscar descrição**.
 - **Ordenação:** Data (padrão: mais recente primeiro), Descrição, Categoria ou Valor.
 - **Novo lançamento:** abre o formulário.
@@ -346,6 +372,7 @@ Abre com **Novo lançamento** em [Meses](#meses) ou no [Painel](#painel). É o [
 | Valor | Maior que zero; aceita `1.234,56` ou `1234.56` |
 | Data | Precisa estar dentro do mês ("A data precisa estar em …") |
 | Categoria | Obrigatória, escolhida com busca. Sem nenhuma categoria, a lista diz "Você ainda não tem categorias." |
+| Objetivo | Só aparece com o tipo Investimento. Opcional (**Nenhum**): os objetivos em andamento e os concluídos; ao editar, um objetivo que foi arquivado aparece como "… (arquivado)". Trocar o tipo para Gasto ou Receita tira o objetivo. |
 
 **Salvar lançamento** mostra "Receita registrada", "Gasto registrado" ou "Investimento registrado".
 
@@ -401,6 +428,44 @@ Lista de **Transações recorrentes**, um cartão por recorrência com:
 - **Pausar / Retomar:** os meses em que ela ficou pausada não são lançados.
 - **Excluir:** pede confirmação. As transações já lançadas continuam nos meses.
 - Se a recorrência acabou de ser lançada enquanto você editava, aparece "Essa recorrência acabou de ser lançada. Tente de novo."
+
+### Planejamento: Objetivos
+
+**Rota:** `/finance/planning/savings` (aba **Objetivos** dentro de **Planejamento**).
+
+Objetivos de economia ("Viagem: R$ 5.000 até Dez 2027"). O que conta para um objetivo é o valor que você já tinha guardado mais os lançamentos de **Investimento** ligados a ele (campo **Objetivo** do [formulário de lançamento](#detalhe-do-mês)).
+
+Lista de **Objetivos**, um cartão por objetivo (uma coluna no celular) com:
+- ícone e nome (tocar no nome abre o detalhe);
+- a barra de progresso e "R$ 2.300,00 de R$ 5.000,00 (46%)";
+- o prazo: "até Dez 2027 · faltam 13 meses", "vence este mês", "prazo encerrado" ou "Sem prazo";
+- "Guarde R$ 208,34/mês" (ou "Guarde R$ X este mês" no mês do prazo ou depois dele), enquanto falta guardar;
+- o selo de ritmo, sempre com o texto: **No ritmo** (a média guardada nos últimos 3 meses, o atual incluído, cobre o "Guarde por mês"), **Atrasado** ou **Concluído** ("Meta atingida em …"). Sem prazo não há selo.
+
+- **Filtros:** Em andamento (padrão), Concluídos, Arquivados e **Buscar objetivo**.
+- **Ordenar por:** Nome (padrão), Prazo (sem prazo por último) ou Progresso, com **Inverter ordem**.
+- **Novo objetivo:** abre o formulário.
+
+  | Campo | Regra |
+  |---|---|
+  | Nome | Obrigatório, até 60 caracteres; dois objetivos ativos não podem ter o mesmo nome ("Já existe um objetivo ativo com esse nome") |
+  | Meta | Maior que zero |
+  | Já tenho guardado | Opcional; zero ou mais |
+  | Prazo | Opcional ("Sem prazo"); não pode ser antes do mês atual |
+  | Ícone | Um de 12 ícones (Alvo, Viagem, Casa, Carro…) |
+
+  **Criar objetivo** mostra "Objetivo criado".
+- **Editar:** o mesmo formulário preenchido; mudar a meta, o prazo ou o valor inicial recalcula o progresso.
+- **Arquivar:** pede confirmação. Os lançamentos ligados continuam nos meses; o objetivo vai para **Arquivados** e não recebe novos lançamentos.
+- **Restaurar** (em Arquivados): volta para a lista. Se outro objetivo ativo já usa o nome: "Já existe um objetivo ativo com esse nome. Renomeie um deles e tente de novo."
+- Um objetivo que atingiu a meta vai para **Concluídos** e fica lá, mesmo que um lançamento ligado seja apagado depois.
+
+**Detalhe do objetivo** (`/finance/planning/savings/:id`)
+- O cartão grande, com **Editar** e **Arquivar** (ou **Restaurar**, quando arquivado).
+- **Guardado por mês:** uma barra por mês dos últimos 12, na cor de investimento; tocar num mês mostra o valor dele.
+- **Lançamentos ligados:** de qualquer mês, o mais recente primeiro, com data, descrição, categoria, valor e um link para o mês de cada um. Mostra também "Já tinha guardado", quando houver.
+
+No **modo privacidade**, os valores ficam mascarados, as barras ficam do mesmo tamanho e cinzas e o "Guarde R$ X/mês" some.
 
 ### Importar extrato
 
@@ -552,7 +617,7 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 **Rota:** `/habits/list`.
 
 - Lista de **Seus hábitos**, com:
-  - o tipo (Construir/Evitar), a dificuldade e a frequência ("Todo dia", "3× por semana", "Até 2× por semana");
+  - o tipo (Construir/Evitar), a dificuldade e a frequência ("Todo dia", "3× por semana", "Até 2× por semana"), mais um sino com a hora quando o hábito tem lembrete;
   - a ofensiva e o recorde.
 - **Situação:** Ativos (padrão) ou Arquivados. Também há **Buscar hábito** e **Ordenar por** Nome ou Data de criação.
 - **Clicar num hábito** abre o [Detalhe do hábito](#detalhe-do-hábito).
@@ -570,6 +635,7 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
   | Meta por dia | Com **Medir quantidade**: número inteiro de 1 a 100000 |
   | Unidade | Com **Medir quantidade**: obrigatória, até 15 caracteres; sugere ml, páginas, min, passos, m e vezes, mas aceita qualquer texto |
   | Incremento | Com **Medir quantidade**, opcional: número inteiro de 1 até a meta; vira o botão de adicionar rápido |
+  | Lembrete | Só em **Construir**: **Sem lembrete** (padrão) ou um horário de 06:00 a 23:00. Nessa hora chega uma notificação se o hábito ainda não estiver feito (entre 5 e 10 minutos depois da hora cheia), uma por hora juntando os hábitos da mesma hora; tocar nela abre a tela **Hoje**. Precisa ativar as notificações em [Minha conta](#minha-conta) |
 
   **Criar hábito** mostra "Hábito criado".
 - **Editar:** muda tudo, menos o tipo. Mudanças na frequência valem a partir do próximo dia avaliado. Desligar **Medir quantidade** tira a meta ao salvar; ligar transforma o hábito num hábito com meta. Mudar a meta não muda nenhum dia já marcado.
@@ -581,7 +647,7 @@ Os números se atualizam depois de cada ação. As animações de moeda, nível 
 
 **Rota:** `/habits/list/:id`. Para chegar: clique num hábito da lista.
 
-- **Hábitos** (voltar) retorna à lista. Um hábito arquivado mostra o selo **Arquivado**. Um hábito com meta mostra "Meta: 2.000 ml por dia".
+- **Hábitos** (voltar) retorna à lista. Um hábito arquivado mostra o selo **Arquivado**. Um hábito com meta mostra "Meta: 2.000 ml por dia"; um com lembrete, "Lembrete às 20:00".
 - **Resumo:**
   - **Ofensiva** e recorde.
   - **Consistência (30 dias)**, ou **(4 semanas)** nos hábitos semanais.

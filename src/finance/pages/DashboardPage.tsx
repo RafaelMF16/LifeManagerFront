@@ -9,6 +9,7 @@ import DashboardBudgets from '../components/DashboardBudgets/DashboardBudgets'
 import DailySpendingCalendar from '../components/DailySpendingCalendar/DailySpendingCalendar'
 import DashboardTotals from '../components/DashboardTotals/DashboardTotals'
 import MonthlyFlowChart from '../components/MonthlyFlowChart/MonthlyFlowChart'
+import ExportTransactionsDialog from '../components/ExportTransactionsDialog/ExportTransactionsDialog'
 import QuickTransactionModal from '../components/QuickTransactionModal/QuickTransactionModal'
 import { useFinanceDashboard } from '../hooks/useFinanceDashboard'
 import { useFinanceFormat } from '../hooks/useFinanceFormat'
@@ -67,6 +68,7 @@ function DashboardPage() {
   const { rangeLabel } = useFinanceFormat()
   const { data, status, isFetching, reload, preset, setPreset, presets } = useFinanceDashboard()
   const [isQuickOpen, setIsQuickOpen] = useState(false)
+  const [isExportOpen, setIsExportOpen] = useState(false)
 
   const presetOptions = presets.map((option) => ({
     value: option,
@@ -135,14 +137,19 @@ function DashboardPage() {
         </div>
 
         <div className="lm-dashboard-page__tools">
-          <Button
-            variant="primary"
-            icon="plus"
-            data-tour="dashboard.newTransaction"
-            onClick={() => setIsQuickOpen(true)}
-          >
-            {translate('finance:transactions.newButton')}
-          </Button>
+          <div className="lm-dashboard-page__buttons">
+            <Button variant="secondary" icon="download" data-tour="dashboard.export" onClick={() => setIsExportOpen(true)}>
+              {translate('finance:export.button')}
+            </Button>
+            <Button
+              variant="primary"
+              icon="plus"
+              data-tour="dashboard.newTransaction"
+              onClick={() => setIsQuickOpen(true)}
+            >
+              {translate('finance:transactions.newButton')}
+            </Button>
+          </div>
 
           <div className="lm-dashboard-page__period" data-tour="dashboard.period">
             <Select
@@ -164,6 +171,13 @@ function DashboardPage() {
       {renderContent()}
 
       {isQuickOpen ? <QuickTransactionModal onClose={() => setIsQuickOpen(false)} onSaved={reload} /> : null}
+      {isExportOpen ? (
+        // The dashboard's period comes filled in (once loaded; the last 12 months before that).
+        <ExportTransactionsDialog
+          onClose={() => setIsExportOpen(false)}
+          initialPeriod={data ? { from: data.period.from, to: data.period.to } : undefined}
+        />
+      ) : null}
     </main>
   )
 }

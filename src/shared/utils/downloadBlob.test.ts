@@ -20,6 +20,12 @@ describe('fileNameFromContentDisposition', () => {
     ).toBe('meus dados.json')
   })
 
+  it('lê o nome sem aspas que o ASP.NET manda para o CSV dos lançamentos', () => {
+    expect(fileNameFromContentDisposition('attachment; filename=lancamentos-2026-01_2026-11.csv', 'x.csv')).toBe(
+      'lancamentos-2026-01_2026-11.csv',
+    )
+  })
+
   it('usa o padrão sem cabeçalho ou sem nome', () => {
     expect(fileNameFromContentDisposition(null, 'padrao.json')).toBe('padrao.json')
     expect(fileNameFromContentDisposition('attachment', 'padrao.json')).toBe('padrao.json')

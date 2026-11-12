@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import HelmSprite from '../HelmSprite/HelmSprite'
+import AnimatedHelm from '../AnimatedHelm/AnimatedHelm'
 import './SplashScreen.css'
 
 /**
@@ -11,7 +11,7 @@ function SplashScreen() {
 
   return (
     <div className="lm-splash" role="status" aria-live="polite">
-      <HelmSprite variant="loop" />
+      <AnimatedHelm variant="loop" />
       <p className="lm-splash__label">{translate('common:splash.loading')}</p>
     </div>
   )

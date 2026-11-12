@@ -7,7 +7,7 @@ import { useTheme } from '../../../shared/hooks/useTheme'
 import type { Theme } from '../../../shared/hooks/useTheme'
 import { useLanguage } from '../../../shared/hooks/useLanguage'
 import type { SupportedLanguage } from '../../../shared/i18n/languages'
-import { enterStyle } from '../../utils/enterStyle'
+import { enterStyle } from '../../../shared/utils/enterStyle'
 import './AuthLayout.css'
 
 interface AuthLayoutProps {
@@ -30,7 +30,7 @@ function AuthLayout({ children, entrance = false }: AuthLayoutProps) {
   const { language, setLanguage } = useLanguage()
 
   return (
-    <div className={`lm-auth-page${entrance ? ' lm-auth-page--entrance' : ''}`}>
+    <div className={`lm-auth-page${entrance ? ' lm-auth-page--entrance lm-enter' : ''}`}>
       <div className="lm-auth-page__content">
         <div className="lm-auth-page__header" data-enter="drop" style={enterStyle(0)}>
           <span className="lm-auth-page__header-spacer" />

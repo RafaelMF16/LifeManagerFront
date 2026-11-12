@@ -11,6 +11,7 @@ import LedgerList from '../components/LedgerList/LedgerList'
 import { useHabitStats } from '../hooks/useHabitStats'
 import { useLedger } from '../hooks/useLedger'
 import { formatFrequency } from '../utils/formatFrequency'
+import { formatReminderHour } from '../utils/reminderHour'
 import { formatAmount } from '../utils/habitProgress'
 import './HabitDetailsPage.css'
 
@@ -120,6 +121,12 @@ function HabitDetailsPage() {
           </span>
           <span className="lm-habit-details__badge">{translate(`habits:habits.list.difficulty.${habit.difficulty}`)}</span>
           <span className="lm-habit-details__frequency">{formatFrequency(habit, translate, i18n.language)}</span>
+          {habit.reminderHour != null ? (
+            <span className="lm-habit-details__reminder">
+              <Icon name="bell" size={12} aria-hidden="true" />
+              {translate('habits:habits.form.reminderAt', { hour: formatReminderHour(habit.reminderHour, i18n.language) })}
+            </span>
+          ) : null}
         </div>
         {target ? (
           <p className="lm-habit-details__target">

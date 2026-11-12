@@ -10,6 +10,7 @@ export const FINANCE_TOURS: TourDefinition[] = [
       { id: 'intro' },
       { id: 'period', target: 'dashboard.period' },
       { id: 'newTransaction', target: 'dashboard.newTransaction' },
+      { id: 'export', target: 'dashboard.export' },
       { id: 'totals', target: 'dashboard.totals' },
       { id: 'days', target: 'dashboard.days' },
       { id: 'chart', target: 'dashboard.chart' },
@@ -67,6 +68,18 @@ export const FINANCE_TOURS: TourDefinition[] = [
       { id: 'create', target: 'recurring.create' },
       { id: 'filters', target: 'recurring.filters' },
       { id: 'row', target: 'recurring.row' },
+    ],
+  },
+  {
+    id: 'savings',
+    path: '/finance/planning/savings',
+    namespace: 'finance',
+    steps: [
+      { id: 'intro' },
+      { id: 'tabs', target: 'planning.tabs' },
+      { id: 'create', target: 'savings.create' },
+      { id: 'filters', target: 'savings.filters' },
+      { id: 'card', target: 'savings.card' },
     ],
   },
   {

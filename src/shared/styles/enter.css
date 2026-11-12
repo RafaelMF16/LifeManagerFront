@@ -1,0 +1,34 @@
+/* Entrance cascade: inside an ancestor with `.lm-enter`, every `[data-enter]` block arrives in turn
+   (`--enter-index`, set with `shared/utils/enterStyle.ts`, `--stagger-step` apart): rising 16 px, or dropping 8 px
+   with `data-enter="drop"`. The sign-in screen (`AuthLayout` `entrance`) and the Home after a sign-in (`useLoginEntrance`) use it. Only
+   opacity and transform animate, and nothing waits for it: the blocks can be used from the first frame. */
+@media (prefers-reduced-motion: no-preference) {
+  .lm-enter [data-enter] {
+    /* backwards: hidden during its delay, then hands transform back (e.g. a button's pressed state) when done. */
+    animation: lm-enter-rise var(--duration-enter) var(--ease-out) backwards;
+    animation-delay: calc(var(--enter-index, 0) * var(--stagger-step));
+  }
+
+  .lm-enter [data-enter='drop'] {
+    animation-name: lm-enter-drop;
+  }
+
+  /* Before the cascade starts (a screen still under the sign-in cover, `useLoginEntrance`). */
+  .lm-enter-pending [data-enter] {
+    opacity: 0;
+  }
+}
+
+@keyframes lm-enter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes lm-enter-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}

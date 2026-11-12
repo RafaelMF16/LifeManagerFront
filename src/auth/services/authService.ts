@@ -13,8 +13,10 @@ import type {
   ResetPasswordRequestDto,
 } from '../types/AuthDtos'
 import { resetCurrentUser } from '../../shared/services/currentUserStore'
+import { releasePushOfOtherAccount } from '../../shared/services/pushService'
 import { clearAccessToken, setAccessToken } from '../../shared/services/tokenStorage'
 import type { UserPreferences } from '../../shared/types/UserPreferences'
+import { accessTokenUserId } from '../../shared/utils/pushOwner'
 import { toUserPreferencesDto } from '../../shared/utils/userPreferencesMapper'
 
 /** Signs in; `deletionCancelled` says the sign-in cancelled the account's scheduled deletion. */
@@ -25,8 +27,10 @@ export async function login(data: LoginFormValues): Promise<{ deletionCancelled:
   })
 
   setAccessToken(response.accessToken)
-  // A new session: whoever was loaded before (another account on this browser) is forgotten.
+  // A new session: whoever was loaded before (another account on this browser) is forgotten, and so are the habit
+  // reminders another account turned on here.
   resetCurrentUser()
+  await releasePushOfOtherAccount(accessTokenUserId(response.accessToken))
 
   return { deletionCancelled: response.deletionCancelled === true }
 }

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { AuthMode } from '../../types/AuthMode'
-import { enterStyle } from '../../utils/enterStyle'
+import { enterStyle } from '../../../shared/utils/enterStyle'
 import './AuthTabs.css'
 
 interface AuthTabsProps {

@@ -5,6 +5,7 @@ import Button from '../../shared/components/Button/Button'
 import { useToast } from '../../shared/hooks/useToast'
 import MonthlySummaryFormModal from '../components/MonthlySummaryFormModal/MonthlySummaryFormModal'
 import MonthlySummaryList from '../components/MonthlySummaryList/MonthlySummaryList'
+import ExportTransactionsDialog from '../components/ExportTransactionsDialog/ExportTransactionsDialog'
 import QuickTransactionModal from '../components/QuickTransactionModal/QuickTransactionModal'
 import { useMonthlySummaries } from '../hooks/useMonthlySummaries'
 import type { MonthlySummaryFormValues } from '../validation/monthlySummarySchema'
@@ -19,6 +20,7 @@ function MonthsPage() {
   // `?new=1` (the app's "New transaction" shortcut) opens the quick entry right away.
   const [searchParams, setSearchParams] = useSearchParams()
   const [isQuickOpen, setIsQuickOpen] = useState(() => searchParams.get('new') === '1')
+  const [isExportOpen, setIsExportOpen] = useState(false)
 
   // Drop `?new=1` once read, so a reload or going back doesn't open the entry again.
   useEffect(() => {
@@ -48,6 +50,9 @@ function MonthsPage() {
         <div className="lm-months-page__actions" data-tour="months.actions">
           <Button variant="secondary" icon="upload" onClick={() => navigate('/finance/imports')}>
             {translate('finance:imports.monthsButton')}
+          </Button>
+          <Button variant="secondary" icon="download" onClick={() => setIsExportOpen(true)}>
+            {translate('finance:export.button')}
           </Button>
           <Button variant="secondary" icon="calendar" onClick={() => setIsFormOpen(true)}>
             {translate('finance:months.newButton')}
@@ -81,6 +86,7 @@ function MonthsPage() {
 
       {isFormOpen ? <MonthlySummaryFormModal onClose={() => setIsFormOpen(false)} onSubmit={handleCreate} /> : null}
       {isQuickOpen ? <QuickTransactionModal onClose={() => setIsQuickOpen(false)} onSaved={months.reload} /> : null}
+      {isExportOpen ? <ExportTransactionsDialog onClose={() => setIsExportOpen(false)} /> : null}
     </main>
   )
 }

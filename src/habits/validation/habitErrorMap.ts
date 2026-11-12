@@ -34,4 +34,6 @@ export const habitErrorFieldMap: ApiErrorFieldMap<HabitFormValues> = {
   'Habit.InvalidTargetStep': { field: 'targetStep', message: 'habits:habits.validation.target.step' },
   'Habit.InvalidTargetCombination': { field: 'targetValue', message: 'habits:habits.validation.target.value' },
   'Habit.TargetNotAllowed': { field: 'targetValue', message: 'habits:habits.validation.target.notAllowed' },
+  'Habit.InvalidReminderHour': { field: 'reminderHour', message: 'habits:habits.validation.reminder.invalid' },
+  'Habit.ReminderNotAllowed': { field: 'reminderHour', message: 'habits:habits.validation.reminder.notAllowed' },
 }

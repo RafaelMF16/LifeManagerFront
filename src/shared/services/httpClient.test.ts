@@ -89,6 +89,20 @@ describe('apiRequest (renovação do access token)', () => {
     expect(fetchMock.mock.calls.filter(([input]) => isRefreshCall(input))).toHaveLength(1)
   })
 
+  it('não tenta refresh num 401 quando a chamada pede renewOnUnauthorized: false', async () => {
+    fetchMock.mockImplementation(async () => jsonResponse(401))
+    const listener = vi.fn()
+    const unsubscribe = onSessionExpired(listener)
+
+    await expect(apiRequest('/api/Push/Subscriptions', { method: 'DELETE', renewOnUnauthorized: false })).rejects.not.toSatisfy(
+      isSessionExpiredError,
+    )
+    unsubscribe()
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(listener).not.toHaveBeenCalled()
+  })
+
   it('não desloga quando o refresh falha por erro de rede', async () => {
     fetchMock.mockImplementation(async (input) => {
       if (isRefreshCall(input)) throw new TypeError('Failed to fetch')
